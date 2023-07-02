@@ -48,6 +48,7 @@ const AddLifeButton = ({ lifeTotal, setLifeTotal }: AddLifeButtonProps) => {
         <StyledLifeCounterButton
             onPointerDown={handleDownInput}
             onPointerUp={handleUpInput}
+            onTouchCancel={handleDownInput}
             onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 e.preventDefault();
             }}

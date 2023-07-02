@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { Player } from './Types/Player';
 
 const MainWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   overflow: hidden;
 `;
 
@@ -60,10 +60,16 @@ const players: Player[] = [
   },
 ];
 
-
 function App() {
+  const handleFullscreen = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    }
+  };
+
   return (
     <MainWrapper>
+      <button onClick={handleFullscreen}>Toggle Fullscreen</button>
       <Counters players={players} />
     </MainWrapper>
   );
