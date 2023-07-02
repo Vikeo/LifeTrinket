@@ -1,36 +1,44 @@
 import styled from "styled-components";
 
-
-//LifeCounterWrapper with a background color variable:
 export const LifeCounterWrapper = styled.div<{ backgroundColor?: string }>`
+  position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: ${props => props.backgroundColor || "antiquewhite"};
-  border-radius: 10px;
-
+  background-color: ${props => props.backgroundColor || "antiquewhite"}; 
 `;
 
-export const LifeCounterButton = styled.button`
+export const LifeCountainer = styled.div`
+  display: flex; 
+  flex-direction: row;
+  flex-grow: 1;
   width: 100%;
   height: 100%;
-  font-size: 5rem;
-  font-weight: bold;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
 `;
 
 export const LifeCounterText = styled.p`
-  font-size: 5rem;
-  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30vh;
   text-align: center;
+  text-size-adjust: auto;
   margin: 0;
   padding: 0;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+`;
 
+export const ExtraCountersGrid = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 100%;
 `;
 
 

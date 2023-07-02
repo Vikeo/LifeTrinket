@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const CountersWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color:   #4f4f4f;
+  width: 100%;
+  max-height: 100%;
+  background-color: black;
 `;
 
 export const CountersGrid = styled.div`
@@ -11,16 +11,27 @@ export const CountersGrid = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
+  row-gap: 4px;
+  column-gap: 4px;
 `;
 
 export const GridItemContainer = styled.div`
   display: flex;
-  width: 50%;
-  height: 50vh;
+  width: calc(50vw - 2px);
+  height: calc(50vh - 2px);
   justify-content: center;
   align-items: center;
 `;
+
+export const GridItemContainerFlipped = styled.div`
+  display: flex;
+  width: calc(50vw - 2px);
+  height: calc(50vh - 2px);
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
+`;
+
