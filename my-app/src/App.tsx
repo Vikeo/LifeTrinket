@@ -69,7 +69,7 @@ function App() {
 
   return (
     <MainWrapper>
-      <button onClick={handleFullscreen}>Toggle Fullscreen</button>
+      {/* <button onClick={handleFullscreen}>Toggle Fullscreen</button> */}
       <Counters players={players} />
     </MainWrapper>
   );
