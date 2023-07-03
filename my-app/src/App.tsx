@@ -2,11 +2,27 @@ import './App.css';
 import Counters from './Components/Counters/Counters';
 import styled from 'styled-components';
 import { Player } from './Types/Player';
+import { useState } from 'react';
 
 const MainWrapper = styled.div`
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
+`;
+
+const FullscreenButton = styled.button`
+  display: none;
+
+  @media (orientation: portrait) {
+    display: block;
+  }
+`;
+
+const CountersWrapper = styled.div`
+  display: flex;
+  @media (orientation: portrait) {
+    display: none;
+  }
 `;
 
 const players: Player[] = [
@@ -61,16 +77,26 @@ const players: Player[] = [
 ];
 
 function App() {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const handleFullscreen = () => {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
+    const element = document.documentElement;
+
+    if (isFullscreen) {
+      document.exitFullscreen();
+    } else {
+      element.requestFullscreen();
     }
+
+    setIsFullscreen(!isFullscreen);
   };
 
   return (
     <MainWrapper>
-      {/* <button onClick={handleFullscreen}>Toggle Fullscreen</button> */}
-      <Counters players={players} />
+      <FullscreenButton onClick={handleFullscreen}>Toggle Fullscreen</FullscreenButton>
+      <CountersWrapper>
+        <Counters players={players} />
+      </CountersWrapper>
     </MainWrapper>
   );
 }
