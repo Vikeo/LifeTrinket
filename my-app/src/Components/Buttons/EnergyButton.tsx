@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
-import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
-import PoisonIcon from '../../Icons/PoisonIcon';
 import styled from 'styled-components';
+import EnergyIcon from '../../Icons/EnergyIcon';
 
-export const StyledCommanderTaxButton = styled.button`
+export const StyledEnergyButton = styled.button`
   flex-grow: 1;
   border: none;
   outline: none;
@@ -12,15 +11,15 @@ export const StyledCommanderTaxButton = styled.button`
   user-select: none;
 `;
 
-const CommanderTaxButton = () => {
-  const [commanderTax, setCommanderTax] = useState(0);
+const EnergyButton = () => {
+  const [energyCount, setEnergyCount] = useState(0);
 
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const handleCommanderTaxChange = (increment: number) => {
-    setCommanderTax(commanderTax + increment);
+  const handleEnergyCountChange = (increment: number) => {
+    setEnergyCount(energyCount + increment);
   };
 
   const handleDownInput = () => {
@@ -28,7 +27,7 @@ const CommanderTaxButton = () => {
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handleCommanderTaxChange(-1);
+      handleEnergyCountChange(-1);
     }, 500);
   };
 
@@ -37,7 +36,7 @@ const CommanderTaxButton = () => {
       return;
     }
     clearTimeout(timeoutRef.current);
-    handleCommanderTaxChange(1);
+    handleEnergyCountChange(1);
     setHasPressedDown(false);
   };
 
@@ -48,7 +47,7 @@ const CommanderTaxButton = () => {
   };
 
   return (
-    <StyledCommanderTaxButton
+    <StyledEnergyButton
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -56,12 +55,13 @@ const CommanderTaxButton = () => {
         e.preventDefault();
       }}
     >
-      <CommanderTaxIcon
+      <EnergyIcon
         size="8vh"
-        text={commanderTax ? commanderTax : undefined}
+        text={energyCount ? energyCount : undefined}
+        color=""
       />
-    </StyledCommanderTaxButton>
+    </StyledEnergyButton>
   );
 };
 
-export default CommanderTaxButton;
+export default EnergyButton;

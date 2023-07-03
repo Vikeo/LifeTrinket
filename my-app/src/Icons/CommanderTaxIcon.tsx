@@ -1,9 +1,6 @@
-type CommanderTaxIconProps = {
-  size?: string;
-  text?: number;
-};
+import { IconProps } from '../Types/Icon';
 
-const CommanderTaxIcon = ({ size, text }: CommanderTaxIconProps) => {
+const CommanderTaxIcon = ({ size, text, color }: IconProps) => {
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <svg
@@ -12,9 +9,10 @@ const CommanderTaxIcon = ({ size, text }: CommanderTaxIconProps) => {
         viewBox="0 0 325 325"
         width={size || 'auto'}
         height={size || 'auto'}
+        fill={color || 'black'}
+        fillOpacity="0.5"
       >
         <title>CommanderTaxIcon</title>
-        <style>{`.s0 { fill: #000000; fill-opacity: 0.5}`}</style>
         <path
           id="Lager 1"
           className="s0"

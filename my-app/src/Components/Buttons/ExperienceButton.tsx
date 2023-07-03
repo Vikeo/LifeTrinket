@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
-import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
-import PoisonIcon from '../../Icons/PoisonIcon';
 import styled from 'styled-components';
+import ExperienceIcon from '../../Icons/ExperienceIcon';
 
-export const StyledCommanderTaxButton = styled.button`
+export const StyledExperienceButton = styled.button`
   flex-grow: 1;
   border: none;
   outline: none;
@@ -12,15 +11,15 @@ export const StyledCommanderTaxButton = styled.button`
   user-select: none;
 `;
 
-const CommanderTaxButton = () => {
-  const [commanderTax, setCommanderTax] = useState(0);
+const ExperienceButton = () => {
+  const [experienceCount, setExperienceCount] = useState(0);
 
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const handleCommanderTaxChange = (increment: number) => {
-    setCommanderTax(commanderTax + increment);
+  const handleExperienceCountChange = (increment: number) => {
+    setExperienceCount(experienceCount + increment);
   };
 
   const handleDownInput = () => {
@@ -28,7 +27,7 @@ const CommanderTaxButton = () => {
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handleCommanderTaxChange(-1);
+      handleExperienceCountChange(-1);
     }, 500);
   };
 
@@ -37,7 +36,7 @@ const CommanderTaxButton = () => {
       return;
     }
     clearTimeout(timeoutRef.current);
-    handleCommanderTaxChange(1);
+    handleExperienceCountChange(1);
     setHasPressedDown(false);
   };
 
@@ -48,7 +47,7 @@ const CommanderTaxButton = () => {
   };
 
   return (
-    <StyledCommanderTaxButton
+    <StyledExperienceButton
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -56,12 +55,13 @@ const CommanderTaxButton = () => {
         e.preventDefault();
       }}
     >
-      <CommanderTaxIcon
+      <ExperienceIcon
         size="8vh"
-        text={commanderTax ? commanderTax : undefined}
+        text={experienceCount ? experienceCount : undefined}
+        color=""
       />
-    </StyledCommanderTaxButton>
+    </StyledExperienceButton>
   );
 };
 
-export default CommanderTaxButton;
+export default ExperienceButton;

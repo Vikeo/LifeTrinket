@@ -3,7 +3,7 @@ import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import styled from 'styled-components';
 
-export const StyledCommanderTaxButton = styled.button`
+export const StyledPoisonButton = styled.button`
   flex-grow: 1;
   border: none;
   outline: none;
@@ -12,15 +12,15 @@ export const StyledCommanderTaxButton = styled.button`
   user-select: none;
 `;
 
-const CommanderTaxButton = () => {
-  const [commanderTax, setCommanderTax] = useState(0);
+const PoisonButton = () => {
+  const [poisonCount, setPoisonCount] = useState(0);
 
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const handleCommanderTaxChange = (increment: number) => {
-    setCommanderTax(commanderTax + increment);
+  const handlePoisonCountChange = (increment: number) => {
+    setPoisonCount(poisonCount + increment);
   };
 
   const handleDownInput = () => {
@@ -28,7 +28,7 @@ const CommanderTaxButton = () => {
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handleCommanderTaxChange(-1);
+      handlePoisonCountChange(-1);
     }, 500);
   };
 
@@ -37,7 +37,7 @@ const CommanderTaxButton = () => {
       return;
     }
     clearTimeout(timeoutRef.current);
-    handleCommanderTaxChange(1);
+    handlePoisonCountChange(1);
     setHasPressedDown(false);
   };
 
@@ -48,7 +48,7 @@ const CommanderTaxButton = () => {
   };
 
   return (
-    <StyledCommanderTaxButton
+    <StyledPoisonButton
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -56,12 +56,13 @@ const CommanderTaxButton = () => {
         e.preventDefault();
       }}
     >
-      <CommanderTaxIcon
+      <PoisonIcon
         size="8vh"
-        text={commanderTax ? commanderTax : undefined}
+        text={poisonCount ? poisonCount : undefined}
+        color=""
       />
-    </StyledCommanderTaxButton>
+    </StyledPoisonButton>
   );
 };
 
-export default CommanderTaxButton;
+export default PoisonButton;

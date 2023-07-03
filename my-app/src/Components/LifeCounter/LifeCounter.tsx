@@ -8,6 +8,9 @@ import AddLifeButton from '../Buttons/AddLifeButton';
 import SubtractLifeButton from '../Buttons/SubtractLifeButton';
 import CommanderDamageBar from '../Buttons/CommanderDamageBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
+import PoisonButton from '../Buttons/PoisonButton';
+import EnergyButton from '../Buttons/EnergyButton';
+import ExperienceButton from '../Buttons/ExperienceButton';
 
 type LifeCounterProps = {
   player: Player;
@@ -60,6 +63,9 @@ const LifeCounter = ({
           {Boolean(
             player.settings.useCommanderDamage && player.settings.usePartner
           ) && <PartnerCommanderTaxButton />}
+          {player.settings.usePoison && <PoisonButton />}
+          {player.settings.useEnergy && <EnergyButton />}
+          {player.settings.useExperience && <ExperienceButton />}
         </S.ExtraCountersGrid>
       </S.LifeCounterContentContainer>
 

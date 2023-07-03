@@ -49,11 +49,49 @@ const Settings = ({ player, onChange }: SettingsProps) => {
           checked={player.settings.useCommanderDamage}
           onChange={handleSettingsChange}
         />
+      </label>
+      <label>
         Use Partner Commander:
         <input
           type="checkbox"
           name="usePartner"
           checked={player.settings.usePartner}
+          onChange={handleSettingsChange}
+        />
+      </label>
+      <label>
+        Show Poison Damage:
+        <input
+          type="checkbox"
+          name="usePoison"
+          checked={player.settings.usePoison}
+          onChange={handleSettingsChange}
+        />
+      </label>
+      <label>
+        Show Energy:
+        <input
+          type="checkbox"
+          name="useEnergy"
+          checked={player.settings.useEnergy}
+          onChange={handleSettingsChange}
+        />
+      </label>
+      <label>
+        Show Energy:
+        <input
+          type="checkbox"
+          name="useEnergy"
+          checked={player.settings.useEnergy}
+          onChange={handleSettingsChange}
+        />
+      </label>
+      <label>
+        Show Experience:
+        <input
+          type="checkbox"
+          name="useExperience"
+          checked={player.settings.useExperience}
           onChange={handleSettingsChange}
         />
       </label>
