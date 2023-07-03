@@ -8,15 +8,39 @@ const MainWrapper = styled.div`
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
+  min-width: 254px;
 `;
+
+const FullScreenButtonContainer = styled.div`
+  height: 80px;
+  width: 80vw;
+  margin: auto;
+  position: relative;
+`
 
 const FullscreenButton = styled.button`
   display: none;
+  @media (orientation: portrait) {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+`;
+
+const TitleText = styled.h1`
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  user-select: none;
+  display: none;
+  padding: 5rem 1rem 2rem 1rem;
 
   @media (orientation: portrait) {
     display: block;
   }
 `;
+
 
 const CountersWrapper = styled.div`
   display: flex;
@@ -93,7 +117,17 @@ function App() {
 
   return (
     <MainWrapper>
-      <FullscreenButton onClick={handleFullscreen}>Toggle Fullscreen</FullscreenButton>
+
+      <TitleText>
+        You need to be in landscape mode to use this app.
+        <hr/>
+        Pressing the fullscreen button is also very recommended.
+      </TitleText>
+            <FullScreenButtonContainer>
+                    <FullscreenButton onClick={handleFullscreen}>Toggle Fullscreen
+      </FullscreenButton>
+      </FullScreenButtonContainer>
+
       <CountersWrapper>
         <Counters players={players} />
       </CountersWrapper>
