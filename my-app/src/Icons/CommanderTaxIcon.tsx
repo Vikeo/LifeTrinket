@@ -5,8 +5,14 @@ type CommanderTaxIconProps = {
 
 const CommanderTaxIcon = ({ size, text }: CommanderTaxIconProps) => {
   return (
-    <div style={{ position: 'relative', display: 'inline-block'}}>
-      <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 325 325" width={size || 'auto'} height={size || 'auto'}>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <svg
+        version="1.2"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 325 325"
+        width={size || 'auto'}
+        height={size || 'auto'}
+      >
         <title>CommanderTaxIcon</title>
         <style>{`.s0 { fill: #000000; fill-opacity: 0.5}`}</style>
         <path

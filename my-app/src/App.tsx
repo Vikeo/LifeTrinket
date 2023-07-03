@@ -16,16 +16,16 @@ const FullScreenButtonContainer = styled.div`
 
   @media (orientation: portrait) {
     display: block;
-      height: 80px;
-      width: 80vw;
-      margin: auto;
-      position: relative;
+    height: 80px;
+    width: 80vw;
+    margin: auto;
+    position: relative;
   }
 `;
 
 const FullscreenButton = styled.button`
   display: none;
-    @media (orientation: portrait) {
+  @media (orientation: portrait) {
     display: block;
     height: 100%;
     width: 100%;
@@ -46,7 +46,6 @@ const TitleText = styled.h1`
   }
 `;
 
-
 const CountersWrapper = styled.div`
   display: flex;
   @media (orientation: portrait) {
@@ -57,7 +56,7 @@ const CountersWrapper = styled.div`
 const players: Player[] = [
   {
     key: 1,
-    color: "grey",
+    color: 'grey',
     settings: {
       useCommanderDamage: true,
       usePartner: true,
@@ -65,11 +64,11 @@ const players: Player[] = [
       useExperience: true,
       usePoison: true,
       flipped: true,
-    }
+    },
   },
   {
     key: 2,
-    color: "mintcream",
+    color: 'mintcream',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -77,11 +76,11 @@ const players: Player[] = [
       useExperience: true,
       usePoison: true,
       flipped: true,
-    }
+    },
   },
   {
     key: 3,
-    color: "gold",
+    color: 'gold',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -89,11 +88,11 @@ const players: Player[] = [
       useExperience: true,
       usePoison: true,
       flipped: false,
-    }
+    },
   },
   {
     key: 4,
-    color: "aquamarine",
+    color: 'aquamarine',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -101,7 +100,7 @@ const players: Player[] = [
       useExperience: true,
       usePoison: true,
       flipped: false,
-    }
+    },
   },
 ];
 
@@ -122,10 +121,9 @@ function App() {
 
   return (
     <MainWrapper>
-
       <TitleText>
         You need to be in landscape mode to use this app.
-        <hr/>
+        <hr />
         Pressing the fullscreen button is also very recommended.
       </TitleText>
       <FullScreenButtonContainer>

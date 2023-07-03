@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import styled from "styled-components";
+import { useRef, useState } from 'react';
+import styled from 'styled-components';
 
 export const StyledLifeCounterButton = styled.button<{ align?: string }>`
   width: 50%;
@@ -12,51 +12,61 @@ export const StyledLifeCounterButton = styled.button<{ align?: string }>`
   outline: none;
   cursor: pointer;
   padding: 0 28px;
-  text-align: ${props => props.align || "center"};
+  text-align: ${(props) => props.align || 'center'};
   user-select: none;
 `;
 
 type AddLifeButtonProps = {
-    lifeTotal: number;
-    setLifeTotal: (lifeTotal: number) => void;
+  lifeTotal: number;
+  setLifeTotal: (lifeTotal: number) => void;
 };
 
 const AddLifeButton = ({ lifeTotal, setLifeTotal }: AddLifeButtonProps) => {
-    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-    const [timeoutFinished, setTimeoutFinished] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const [timeoutFinished, setTimeoutFinished] = useState(false);
+  const [hasPressedDown, setHasPressedDown] = useState(false);
 
-    const handleLifeChange = (increment: number) => {
-        setLifeTotal(lifeTotal + increment);
-    };
+  const handleLifeChange = (increment: number) => {
+    setLifeTotal(lifeTotal + increment);
+  };
 
-    const handleDownInput = () => {
-        setTimeoutFinished(false);
-        timeoutRef.current = setTimeout(() => {
-            handleLifeChange(10);
-            setTimeoutFinished(true);
-        }, 500)
+  const handleDownInput = () => {
+    setTimeoutFinished(false);
+    setHasPressedDown(true);
+    timeoutRef.current = setTimeout(() => {
+      handleLifeChange(10);
+      setTimeoutFinished(true);
+    }, 500);
+  };
+
+  const handleUpInput = () => {
+    if (!(hasPressedDown && !timeoutFinished)) {
+      return;
     }
+    clearTimeout(timeoutRef.current);
+    handleLifeChange(1);
+    setHasPressedDown(false);
+  };
 
-    const handleUpInput = () => {
-        if (!timeoutFinished) {
-            clearTimeout(timeoutRef.current);
-            handleLifeChange(1);
-        }
-    }
+  const handleLeaveInput = () => {
+    setTimeoutFinished(true);
+    clearTimeout(timeoutRef.current);
+    setHasPressedDown(false);
+  };
 
-    return ( 
-        <StyledLifeCounterButton
-            onPointerDown={handleDownInput}
-            onPointerUp={handleUpInput}
-            onTouchCancel={handleDownInput}
-            onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                e.preventDefault();
-            }}
-            align="right"
-        >
-            &#43;
-        </StyledLifeCounterButton>
-    );
+  return (
+    <StyledLifeCounterButton
+      onPointerDown={handleDownInput}
+      onPointerUp={handleUpInput}
+      onPointerLeave={handleLeaveInput}
+      onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+      }}
+      align="right"
+    >
+      &#43;
+    </StyledLifeCounterButton>
+  );
 };
 
 export default AddLifeButton;

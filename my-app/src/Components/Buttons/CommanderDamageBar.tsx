@@ -1,16 +1,16 @@
-import { useRef, useState } from "react";
-import { Player } from "../../Types/Player";
-import styled from "styled-components";
+import { useRef, useState } from 'react';
+import { Player } from '../../Types/Player';
+import styled from 'styled-components';
 
 const CommanderDamageGrid = styled.div`
-  display: flex; 
+  display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
 `;
 
 const CommanderDamageContainer = styled.div`
-  display: flex; 
+  display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
@@ -23,7 +23,7 @@ const CommanderDamageButton = styled.button<{ backgroundColor?: string }>`
   height: 10vh;
   outline: none;
   cursor: pointer;
-  background-color: ${props => props.backgroundColor || "antiquewhite"}; 
+  background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
 `;
 
 const CommanderDamageButtonText = styled.p`
@@ -39,136 +39,162 @@ const CommanderDamageButtonText = styled.p`
 `;
 
 const VerticalSeperator = styled.div`
-    width: 1px;
-    background-color: rgba(0, 0, 0, 1);
+  width: 1px;
+  background-color: rgba(0, 0, 0, 1);
 `;
 
-
-
 type CommanderDamageBarProps = {
-    lifeTotal: number;
-    setLifeTotal: (lifeTotal: number) => void;
-    opponents: Player[];
+  lifeTotal: number;
+  setLifeTotal: (lifeTotal: number) => void;
+  opponents: Player[];
 };
 
-const CommanderDamageBar = ({ opponents, lifeTotal, setLifeTotal }: CommanderDamageBarProps) => {
-    const [commanderDamage, setCommanderDamage] = useState<number[]>(
-        Array(opponents.length).fill(0)
-    );
-    const [partnerCommanderDamage, setPartnerCommanderDamage] = useState<number[]>(
-        Array(opponents.length).fill(0)
-    );
+const CommanderDamageBar = ({
+  opponents,
+  lifeTotal,
+  setLifeTotal,
+}: CommanderDamageBarProps) => {
+  const [commanderDamage, setCommanderDamage] = useState<number[]>(
+    Array(opponents.length).fill(0)
+  );
+  const [partnerCommanderDamage, setPartnerCommanderDamage] = useState<
+    number[]
+  >(Array(opponents.length).fill(0));
 
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const [timeoutFinished, setTimeoutFinished] = useState(false);
+  const [hasPressedDown, setHasPressedDown] = useState(false);
 
-    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-    const [timeoutFinished, setTimeoutFinished] = useState(false);
-
-    const handleCommanderDamageChange = (index: number, increment: number) => {
-        const currentCommanderDamage = commanderDamage[index];
-        if (currentCommanderDamage === 0 && increment === -1) {
-            return;
-        }
-
-        if (currentCommanderDamage === 21 && increment === 1) {
-            return;
-        }
-
-        const updatedCommanderDamage = [...commanderDamage];
-        updatedCommanderDamage[index] += increment;
-        setCommanderDamage(updatedCommanderDamage);
-        setLifeTotal(lifeTotal - increment);
-    };
-
-    const handlePartnerCommanderDamageChange = (index: number, increment: number) => {
-        const currentPartnerCommanderDamage = partnerCommanderDamage[index];
-        if (currentPartnerCommanderDamage === 0 && increment === -1) {
-            return;
-        }
-
-        const updatedPartnerCommanderDamage = [...partnerCommanderDamage];
-        updatedPartnerCommanderDamage[index] += increment;
-
-        setPartnerCommanderDamage(updatedPartnerCommanderDamage);
-        setLifeTotal(lifeTotal - increment);
-    };
-
-    const handleDownInput = (index: number) => {
-        setTimeoutFinished(false);
-        timeoutRef.current = setTimeout(() => {
-            setTimeoutFinished(true);
-            handleCommanderDamageChange(index, -1);
-        }, 500)
+  const handleCommanderDamageChange = (index: number, increment: number) => {
+    const currentCommanderDamage = commanderDamage[index];
+    if (currentCommanderDamage === 0 && increment === -1) {
+      return;
     }
 
-    const handleUpInput = (index: number) => {
-        if (!timeoutFinished) {
-            clearTimeout(timeoutRef.current);
-            handleCommanderDamageChange(index, 1);
-        }
-        clearTimeout(timeoutRef.current);
+    if (currentCommanderDamage === 21 && increment === 1) {
+      return;
     }
 
-    const handlePartnerDownInput = (index: number) => {
-        setTimeoutFinished(false);
-        timeoutRef.current = setTimeout(() => {
-            setTimeoutFinished(true);
-            handlePartnerCommanderDamageChange(index, -1);
-        }, 500)
+    const updatedCommanderDamage = [...commanderDamage];
+    updatedCommanderDamage[index] += increment;
+    setCommanderDamage(updatedCommanderDamage);
+    setLifeTotal(lifeTotal - increment);
+  };
+
+  const handlePartnerCommanderDamageChange = (
+    index: number,
+    increment: number
+  ) => {
+    const currentPartnerCommanderDamage = partnerCommanderDamage[index];
+    if (currentPartnerCommanderDamage === 0 && increment === -1) {
+      return;
     }
 
-    const handlePartnerUpInput = (index: number) => {
-        if (!timeoutFinished) {
-            clearTimeout(timeoutRef.current);
-            handlePartnerCommanderDamageChange(index, 1);
-        }
+    const updatedPartnerCommanderDamage = [...partnerCommanderDamage];
+    updatedPartnerCommanderDamage[index] += increment;
+
+    setPartnerCommanderDamage(updatedPartnerCommanderDamage);
+    setLifeTotal(lifeTotal - increment);
+  };
+
+  const handleDownInput = (index: number) => {
+    setTimeoutFinished(false);
+    setHasPressedDown(true);
+    timeoutRef.current = setTimeout(() => {
+      setTimeoutFinished(true);
+      handleCommanderDamageChange(index, -1);
+    }, 500);
+  };
+
+  const handleUpInput = (index: number) => {
+    if (!(hasPressedDown && !timeoutFinished)) {
+      return;
     }
+    clearTimeout(timeoutRef.current);
+    handleCommanderDamageChange(index, 1);
+    setHasPressedDown(false);
+  };
 
-    return (
-        <CommanderDamageGrid>
-            {opponents.map((opponent, index) => {
-                return (
-                    <CommanderDamageContainer>
-                        <CommanderDamageButton
-                            key={index}
-                            onPointerDown={() => handleDownInput(index)}
-                            onPointerUp={() => handleUpInput(index)}
-                            onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                                e.preventDefault();
-                            }
-                            }
-                            backgroundColor={opponent.color}
-                        >
-                            <CommanderDamageButtonText>
-                                {commanderDamage[index] > 0 ? commanderDamage[index] : ""}
-                            </CommanderDamageButtonText>
-                        </CommanderDamageButton>
+  const handleLeaveInput = () => {
+    setTimeoutFinished(true);
+    clearTimeout(timeoutRef.current);
+    setHasPressedDown(false);
+  };
 
-                        {opponent.settings.usePartner && (
-                            <>
-                                <VerticalSeperator />
-                                <CommanderDamageButton
-                                    key={index}
-                                    onPointerDown={() => handlePartnerDownInput(index)}
-                                    onPointerUp={() => handlePartnerUpInput(index)}
-                                    onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                                        e.preventDefault();
-                                    }
-                                    }
-                                    backgroundColor={opponent.color}
-                                >
-                                    <CommanderDamageButtonText>
-                                        {partnerCommanderDamage[index] > 0 ? partnerCommanderDamage[index] : ""}
-                                    </CommanderDamageButtonText>
-                                </CommanderDamageButton>
-                            </>
+  const handlePartnerDownInput = (index: number) => {
+    setTimeoutFinished(false);
+    setHasPressedDown(true);
+    timeoutRef.current = setTimeout(() => {
+      setTimeoutFinished(true);
+      handlePartnerCommanderDamageChange(index, -1);
+    }, 500);
+  };
 
-                        )
-                        }
-                    </CommanderDamageContainer>
-                )
-            })}
-        </CommanderDamageGrid>
-    );
+  const handlePartnerUpInput = (index: number) => {
+    if (!(hasPressedDown && !timeoutFinished)) {
+      return;
+    }
+    clearTimeout(timeoutRef.current);
+    handlePartnerCommanderDamageChange(index, 1);
+    setHasPressedDown(false);
+  };
+
+  const handlePartnerLeaveInput = () => {
+    setTimeoutFinished(true);
+    clearTimeout(timeoutRef.current);
+    setHasPressedDown(false);
+  };
+
+  return (
+    <CommanderDamageGrid>
+      {opponents.map((opponent, index) => {
+        return (
+          <CommanderDamageContainer>
+            <CommanderDamageButton
+              key={index}
+              onPointerDown={() => handleDownInput(index)}
+              onPointerUp={() => handleUpInput(index)}
+              onPointerLeave={handleLeaveInput}
+              onContextMenu={(
+                e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+              ) => {
+                e.preventDefault();
+              }}
+              backgroundColor={opponent.color}
+            >
+              <CommanderDamageButtonText>
+                {commanderDamage[index] > 0 ? commanderDamage[index] : ''}
+              </CommanderDamageButtonText>
+            </CommanderDamageButton>
+
+            {opponent.settings.usePartner && (
+              <>
+                <VerticalSeperator />
+                <CommanderDamageButton
+                  key={index}
+                  onPointerDown={() => handlePartnerDownInput(index)}
+                  onPointerUp={() => handlePartnerUpInput(index)}
+                  onPointerLeave={handlePartnerLeaveInput}
+                  onContextMenu={(
+                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  ) => {
+                    e.preventDefault();
+                  }}
+                  backgroundColor={opponent.color}
+                >
+                  <CommanderDamageButtonText>
+                    {partnerCommanderDamage[index] > 0
+                      ? partnerCommanderDamage[index]
+                      : ''}
+                  </CommanderDamageButtonText>
+                </CommanderDamageButton>
+              </>
+            )}
+          </CommanderDamageContainer>
+        );
+      })}
+    </CommanderDamageGrid>
+  );
 };
 
 export default CommanderDamageBar;
