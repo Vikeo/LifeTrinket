@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import * as S from './LifeCounter.style';
 import { Player } from '../../Types/Player';
 import CommanderTaxButton from '../Buttons/CommanderTaxButton';
