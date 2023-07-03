@@ -12,15 +12,20 @@ const MainWrapper = styled.div`
 `;
 
 const FullScreenButtonContainer = styled.div`
-  height: 80px;
-  width: 80vw;
-  margin: auto;
-  position: relative;
-`
+  display: none;
+
+  @media (orientation: portrait) {
+    display: block;
+      height: 80px;
+      width: 80vw;
+      margin: auto;
+      position: relative;
+  }
+`;
 
 const FullscreenButton = styled.button`
   display: none;
-  @media (orientation: portrait) {
+    @media (orientation: portrait) {
     display: block;
     height: 100%;
     width: 100%;
@@ -28,12 +33,12 @@ const FullscreenButton = styled.button`
 `;
 
 const TitleText = styled.h1`
+  display: none;
   font-size: 2rem;
   font-weight: 600;
   margin: 0;
   text-align: center;
   user-select: none;
-  display: none;
   padding: 5rem 1rem 2rem 1rem;
 
   @media (orientation: portrait) {
@@ -91,7 +96,7 @@ const players: Player[] = [
     color: "aquamarine",
     settings: {
       useCommanderDamage: true,
-      usePartner: true,
+      usePartner: false,
       useEnergy: true,
       useExperience: true,
       usePoison: true,
@@ -123,9 +128,10 @@ function App() {
         <hr/>
         Pressing the fullscreen button is also very recommended.
       </TitleText>
-            <FullScreenButtonContainer>
-                    <FullscreenButton onClick={handleFullscreen}>Toggle Fullscreen
-      </FullscreenButton>
+      <FullScreenButtonContainer>
+        <FullscreenButton onClick={handleFullscreen}>
+          Toggle Fullscreen
+        </FullscreenButton>
       </FullScreenButtonContainer>
 
       <CountersWrapper>
