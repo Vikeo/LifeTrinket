@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import './App.css';
 import Counters from './Components/Counters/Counters';
 import styled from 'styled-components';
 import { Player } from './Types/Player';
-import { useState } from 'react';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -53,10 +53,11 @@ const CountersWrapper = styled.div`
   }
 `;
 
-const players: Player[] = [
+const initialPlayers: Player[] = [
   {
+    lifeTotal: 40,
     key: 1,
-    color: 'grey',
+    color: '#808080',
     settings: {
       useCommanderDamage: true,
       usePartner: true,
@@ -67,8 +68,9 @@ const players: Player[] = [
     },
   },
   {
+    lifeTotal: 40,
     key: 2,
-    color: 'mintcream',
+    color: '#F5FFF9',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -79,8 +81,9 @@ const players: Player[] = [
     },
   },
   {
+    lifeTotal: 40,
     key: 3,
-    color: 'gold',
+    color: '#FFD601',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -91,8 +94,9 @@ const players: Player[] = [
     },
   },
   {
+    lifeTotal: 40,
     key: 4,
-    color: 'aquamarine',
+    color: '#7FFFD3',
     settings: {
       useCommanderDamage: true,
       usePartner: false,
@@ -106,6 +110,7 @@ const players: Player[] = [
 
 function App() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [players, setPlayers] = useState<Player[]>(initialPlayers);
 
   const handleFullscreen = () => {
     const element = document.documentElement;
@@ -117,6 +122,13 @@ function App() {
     }
 
     setIsFullscreen(!isFullscreen);
+  };
+
+  const handlePlayerChange = (updatedPlayer: Player) => {
+    const updatedPlayers = players.map((p) =>
+      p.key === updatedPlayer.key ? updatedPlayer : p
+    );
+    setPlayers(updatedPlayers);
   };
 
   return (
@@ -133,7 +145,7 @@ function App() {
       </FullScreenButtonContainer>
 
       <CountersWrapper>
-        <Counters players={players} />
+        <Counters players={players} onPlayerChange={handlePlayerChange} />
       </CountersWrapper>
     </MainWrapper>
   );

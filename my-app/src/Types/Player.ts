@@ -1,15 +1,15 @@
 export type Player = {
-    key: number;
-    color: string;
-    settings: PlayerSettings;
-}
+  lifeTotal: number;
+  key: number;
+  color: string;
+  settings: PlayerSettings;
+};
 
 type PlayerSettings = {
-    useCommanderDamage: boolean;
-    flipped?: boolean;
-    usePartner?: boolean;
-    usePoison?: boolean;
-    useEnergy?: boolean;
-    useExperience?: boolean;
-    
-}
+  useCommanderDamage: boolean;
+  flipped?: boolean;
+  usePartner?: boolean;
+  usePoison?: boolean;
+  useEnergy?: boolean;
+  useExperience?: boolean;
+};

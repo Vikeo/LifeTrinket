@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CountersWrapper = styled.div`
   width: 100%;
@@ -12,8 +12,8 @@ export const CountersGrid = styled.div`
   justify-content: center;
   align-items: center;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
   row-gap: 4px;
   column-gap: 4px;
 `;
@@ -34,4 +34,3 @@ export const GridItemContainerFlipped = styled.div`
   align-items: center;
   transform: rotate(180deg);
 `;
-

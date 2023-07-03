@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const LifeCounterWrapper = styled.div<{ backgroundColor?: string }>`
   position: relative;
@@ -7,11 +7,20 @@ export const LifeCounterWrapper = styled.div<{ backgroundColor?: string }>`
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: ${props => props.backgroundColor || "antiquewhite"}; 
+  background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
+`;
+
+export const LifeCounterContentContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 export const LifeCountainer = styled.div`
-  display: flex; 
+  display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
@@ -40,6 +49,3 @@ export const ExtraCountersGrid = styled.div`
   flex-grow: 1;
   width: 100%;
 `;
-
-
-
