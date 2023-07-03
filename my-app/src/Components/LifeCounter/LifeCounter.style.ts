@@ -17,6 +17,7 @@ export const LifeCounterContentContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  z-index: 1;
 `;
 
 export const LifeCountainer = styled.div`

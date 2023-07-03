@@ -1,5 +1,7 @@
+import React, { useState } from 'react';
 import * as S from './LifeCounter.style';
 import { Player } from '../../Types/Player';
+import { useSwipeable } from 'react-swipeable';
 import CommanderTaxButton from '../Buttons/CommanderTaxButton';
 import PartnerCommanderTaxButton from '../Buttons/PartnerCommanderTaxButton copy';
 import AddLifeButton from '../Buttons/AddLifeButton';
@@ -24,9 +26,19 @@ const LifeCounter = ({
     const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
     onPlayerChange(updatedPlayer);
   };
+
+  const [showPlayerMenu, setShowPlayerMenu] = useState(false);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedUp: () =>
+      player.settings.flipped ? setShowPlayerMenu(true) : null,
+    onSwipedDown: () =>
+      player.settings.flipped ? null : setShowPlayerMenu(true),
+  });
+
   return (
     <S.LifeCounterWrapper backgroundColor={backgroundColor}>
-      <S.LifeCounterContentContainer>
+      <S.LifeCounterContentContainer {...swipeHandlers}>
         <CommanderDamageBar
           lifeTotal={player.lifeTotal}
           setLifeTotal={handleLifeChange}
@@ -50,7 +62,14 @@ const LifeCounter = ({
           ) && <PartnerCommanderTaxButton />}
         </S.ExtraCountersGrid>
       </S.LifeCounterContentContainer>
-      <PlayerMenu player={player} onPlayerChange={onPlayerChange} />
+
+      {showPlayerMenu && (
+        <PlayerMenu
+          player={player}
+          onPlayerChange={onPlayerChange}
+          setShowPlayerMenu={setShowPlayerMenu}
+        />
+      )}
     </S.LifeCounterWrapper>
   );
 };

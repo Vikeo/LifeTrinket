@@ -6,11 +6,20 @@ import Settings from './Settings';
 type PlayerMenuProps = {
   player: Player;
   onPlayerChange: (updatedPlayer: Player) => void;
+  setShowPlayerMenu: (showPlayerMenu: boolean) => void;
 };
 
-const PlayerMenu = ({ player, onPlayerChange }: PlayerMenuProps) => {
+const PlayerMenu = ({
+  player,
+  onPlayerChange,
+  setShowPlayerMenu,
+}: PlayerMenuProps) => {
+  const handleOnClick = () => {
+    setShowPlayerMenu(false);
+  };
   return (
     <S.PlayerMenuWrapper>
+      <button onClick={handleOnClick}>Close</button>
       <Settings player={player} onChange={onPlayerChange} />
     </S.PlayerMenuWrapper>
   );

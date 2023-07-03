@@ -4,6 +4,9 @@
   "homepage": "https://vikeo.github.io/MtgLifeCounterWeb/",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.6",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -15,6 +18,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-swipeable": "^7.0.1",
     "styled-components": "^6.0.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"

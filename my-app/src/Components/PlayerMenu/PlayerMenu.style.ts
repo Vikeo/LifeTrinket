@@ -5,5 +5,5 @@ export const PlayerMenuWrapper = styled.div`
   width: 90%;
   height: 90%;
   background-color: grey;
-  z-index: -1;
+  z-index: 2;
 `;
