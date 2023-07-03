@@ -36,6 +36,9 @@ const CommanderDamageButtonText = styled.p`
   pointer-events: none;
   width: 2rem;
   user-select: none;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
+    1px 1px 0 #ffffff;
+  color: #000000;
 `;
 
 const VerticalSeperator = styled.div`

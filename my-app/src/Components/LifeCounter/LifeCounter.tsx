@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import * as S from './LifeCounter.style';
 import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
-import CommanderTaxButton from '../Buttons/CommanderTaxButton';
-import PartnerCommanderTaxButton from '../Buttons/PartnerCommanderTaxButton copy';
 import AddLifeButton from '../Buttons/AddLifeButton';
 import SubtractLifeButton from '../Buttons/SubtractLifeButton';
 import CommanderDamageBar from '../Buttons/CommanderDamageBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
-import PoisonButton from '../Buttons/PoisonButton';
-import EnergyButton from '../Buttons/EnergyButton';
-import ExperienceButton from '../Buttons/ExperienceButton';
+
+import ExtraCounter from '../Buttons/ExtraCounter';
+import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
+import EnergyIcon from '../../Icons/EnergyIcon';
+import ExperienceIcon from '../../Icons/ExperienceIcon';
+import PoisonIcon from '../../Icons/PoisonIcon';
 
 type LifeCounterProps = {
   player: Player;
@@ -59,13 +60,21 @@ const LifeCounter = ({
           />
         </S.LifeCountainer>
         <S.ExtraCountersGrid>
-          {player.settings.useCommanderDamage && <CommanderTaxButton />}
+          {player.settings.useCommanderDamage && (
+            <ExtraCounter Icon={<CommanderTaxIcon size="8vh" />} />
+          )}
           {Boolean(
             player.settings.useCommanderDamage && player.settings.usePartner
-          ) && <PartnerCommanderTaxButton />}
-          {player.settings.usePoison && <PoisonButton />}
-          {player.settings.useEnergy && <EnergyButton />}
-          {player.settings.useExperience && <ExperienceButton />}
+          ) && <ExtraCounter Icon={<CommanderTaxIcon size="8vh" />} />}
+          {player.settings.usePoison && (
+            <ExtraCounter Icon={<PoisonIcon size="8vh" />} />
+          )}
+          {player.settings.useEnergy && (
+            <ExtraCounter Icon={<EnergyIcon size="8vh" />} />
+          )}
+          {player.settings.useExperience && (
+            <ExtraCounter Icon={<ExperienceIcon size="8vh" />} />
+          )}
         </S.ExtraCountersGrid>
       </S.LifeCounterContentContainer>
 

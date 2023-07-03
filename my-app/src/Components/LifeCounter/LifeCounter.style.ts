@@ -42,6 +42,9 @@ export const LifeCounterText = styled.p`
   font-variant-numeric: tabular-nums;
   pointer-events: none;
   user-select: none;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
+    1px 1px 0 #ffffff;
+  color: #000000;
 `;
 
 export const ExtraCountersGrid = styled.div`

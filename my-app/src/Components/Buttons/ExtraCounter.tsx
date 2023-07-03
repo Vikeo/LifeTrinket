@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
-import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
+import { ReactNode, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-export const StyledCommanderTaxButton = styled.button`
+export const StyledExtraCounterButton = styled.button`
+  position: relative;
   flex-grow: 1;
   border: none;
   outline: none;
@@ -11,14 +11,30 @@ export const StyledCommanderTaxButton = styled.button`
   user-select: none;
 `;
 
-const PartnerCommanderTaxButton = () => {
-  const [partnerCommanderTax, setPartnerCommanderTax] = useState(0);
+export const CenteredText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5vh;
+  font-weight: bold;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
+    1px 1px 0 #ffffff;
+  color: #000000;
+`;
+
+type ExtraCounterProps = {
+  Icon: ReactNode;
+};
+
+const ExtraCounter = ({ Icon }: ExtraCounterProps) => {
+  const [count, setCount] = useState(0);
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const handlePartnerCommanderTaxChange = (increment: number) => {
-    setPartnerCommanderTax(partnerCommanderTax + increment);
+  const handleCountChange = (increment: number) => {
+    setCount(count + increment);
   };
 
   const handleDownInput = () => {
@@ -26,7 +42,7 @@ const PartnerCommanderTaxButton = () => {
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handlePartnerCommanderTaxChange(-1);
+      handleCountChange(-1);
     }, 500);
   };
 
@@ -35,7 +51,7 @@ const PartnerCommanderTaxButton = () => {
       return;
     }
     clearTimeout(timeoutRef.current);
-    handlePartnerCommanderTaxChange(1);
+    handleCountChange(1);
     setHasPressedDown(false);
   };
 
@@ -46,7 +62,7 @@ const PartnerCommanderTaxButton = () => {
   };
 
   return (
-    <StyledCommanderTaxButton
+    <StyledExtraCounterButton
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -54,13 +70,10 @@ const PartnerCommanderTaxButton = () => {
         e.preventDefault();
       }}
     >
-      <CommanderTaxIcon
-        size="8vh"
-        text={partnerCommanderTax ? partnerCommanderTax : undefined}
-      />{' '}
-      2
-    </StyledCommanderTaxButton>
+      {Icon}
+      <CenteredText>{count ? count : undefined}</CenteredText>
+    </StyledExtraCounterButton>
   );
 };
 
-export default PartnerCommanderTaxButton;
+export default ExtraCounter;
