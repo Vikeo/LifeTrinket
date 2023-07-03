@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
-import PoisonIcon from '../../Icons/PoisonIcon';
 import styled from 'styled-components';
 
 export const StyledCommanderTaxButton = styled.button`
