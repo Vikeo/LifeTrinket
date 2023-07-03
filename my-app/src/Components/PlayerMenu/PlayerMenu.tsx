@@ -19,7 +19,7 @@ const PlayerMenu = ({
   };
   return (
     <S.PlayerMenuWrapper>
-      <button onClick={handleOnClick}>Close</button>
+      <button onClick={handleOnClick}>Close X</button>
       <Settings player={player} onChange={onPlayerChange} />
     </S.PlayerMenuWrapper>
   );

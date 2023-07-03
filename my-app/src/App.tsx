@@ -57,7 +57,7 @@ const initialPlayers: Player[] = [
   {
     lifeTotal: 40,
     key: 1,
-    color: '#808080',
+    color: '#9c9a9a',
     settings: {
       useCommanderDamage: true,
       usePartner: false,

@@ -1,10 +1,23 @@
 import React from 'react';
 import { Player } from '../../Types/Player';
+import styled from 'styled-components';
 
 type SettingsProps = {
   player: Player;
   onChange: (updatedPlayer: Player) => void;
 };
+
+const SettingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  height: 70%;
+  padding: 1rem;
+  gap: 0.5rem;
+  justify-content: space-evenly;
+  align-items: center;
+`;
 
 const Settings = ({ player, onChange }: SettingsProps) => {
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +41,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
   };
 
   return (
-    <div>
+    <SettingsContainer>
       <label>
         Color:
         <input type="color" value={player.color} onChange={handleColorChange} />
@@ -42,7 +55,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         />
       </label>
       <label>
-        Use Commander Damage:
+        Commander:
         <input
           type="checkbox"
           name="useCommanderDamage"
@@ -51,7 +64,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         />
       </label>
       <label>
-        Use Partner Commander:
+        Partner:
         <input
           type="checkbox"
           name="usePartner"
@@ -60,7 +73,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         />
       </label>
       <label>
-        Show Poison Damage:
+        Poison:
         <input
           type="checkbox"
           name="usePoison"
@@ -69,7 +82,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         />
       </label>
       <label>
-        Show Energy:
+        Energy:
         <input
           type="checkbox"
           name="useEnergy"
@@ -78,16 +91,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         />
       </label>
       <label>
-        Show Energy:
-        <input
-          type="checkbox"
-          name="useEnergy"
-          checked={player.settings.useEnergy}
-          onChange={handleSettingsChange}
-        />
-      </label>
-      <label>
-        Show Experience:
+        Experience:
         <input
           type="checkbox"
           name="useExperience"
@@ -106,7 +110,7 @@ const Settings = ({ player, onChange }: SettingsProps) => {
       >
         Flip
       </button>
-    </div>
+    </SettingsContainer>
   );
 };
 
