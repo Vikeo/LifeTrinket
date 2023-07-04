@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { Player } from './Types/Player';
 
 const MainWrapper = styled.div`
-  width: 100dvw;
-  height: 100dvh;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   min-width: 254px;
 `;
@@ -115,10 +115,14 @@ function App() {
   const handleFullscreen = () => {
     const element = document.documentElement;
 
-    if (isFullscreen) {
-      document.exitFullscreen();
+    if (!isFullscreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      }
     } else {
-      element.requestFullscreen();
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
     }
 
     setIsFullscreen(!isFullscreen);

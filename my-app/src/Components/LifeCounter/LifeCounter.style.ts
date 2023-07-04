@@ -41,10 +41,15 @@ export const LifeCounterText = styled.p`
   width: 100%;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
-  user-select: none;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
   color: #000000;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 export const ExtraCountersGrid = styled.div`

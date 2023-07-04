@@ -13,6 +13,7 @@ import EnergyIcon from '../../Icons/EnergyIcon';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
+import SettingsButton from '../Buttons/SettingsButton';
 
 type LifeCounterProps = {
   player: Player;
@@ -48,6 +49,11 @@ const LifeCounter = ({
           lifeTotal={player.lifeTotal}
           setLifeTotal={handleLifeChange}
           opponents={opponents}
+        />
+        <SettingsButton
+          onClick={() => {
+            setShowPlayerMenu(!showPlayerMenu);
+          }}
         />
         <S.LifeCountainer>
           <SubtractLifeButton

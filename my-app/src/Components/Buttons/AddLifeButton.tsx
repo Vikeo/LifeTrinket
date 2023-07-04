@@ -14,6 +14,11 @@ export const StyledLifeCounterButton = styled.button<{ align?: string }>`
   padding: 0 28px;
   text-align: ${(props) => props.align || 'center'};
   user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 type AddLifeButtonProps = {
@@ -60,6 +65,18 @@ const AddLifeButton = ({ lifeTotal, setLifeTotal }: AddLifeButtonProps) => {
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
       onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+      }}
+      onTouchStart={(e: React.TouchEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+      }}
+      onTouchEnd={(e: React.TouchEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+      }}
+      onTouchMove={(e: React.TouchEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+      }}
+      onTouchCancel={(e: React.TouchEvent<HTMLButtonElement>) => {
         e.preventDefault();
       }}
       align="right"

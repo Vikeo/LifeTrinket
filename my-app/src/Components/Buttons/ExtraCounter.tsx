@@ -9,6 +9,11 @@ export const StyledExtraCounterButton = styled.button`
   cursor: pointer;
   background-color: transparent;
   user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 export const CenteredText = styled.div`
@@ -21,6 +26,12 @@ export const CenteredText = styled.div`
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
   color: #000000;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 type ExtraCounterProps = {

@@ -1,6 +1,6 @@
 import { IconProps } from '../Types/Icon';
 
-const PhyrexianIcon = ({ color, size }: IconProps) => {
+const PoisonIcon = ({ color, size }: IconProps) => {
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <svg
@@ -18,4 +18,4 @@ const PhyrexianIcon = ({ color, size }: IconProps) => {
   );
 };
 
-export default PhyrexianIcon;
+export default PoisonIcon;

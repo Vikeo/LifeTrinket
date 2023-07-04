@@ -24,6 +24,13 @@ const CommanderDamageButton = styled.button<{ backgroundColor?: string }>`
   outline: none;
   cursor: pointer;
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
+  margin: 0;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 const CommanderDamageButtonText = styled.p`
@@ -35,10 +42,15 @@ const CommanderDamageButtonText = styled.p`
   font-variant-numeric: tabular-nums;
   pointer-events: none;
   width: 2rem;
-  user-select: none;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
   color: #000000;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 `;
 
 const VerticalSeperator = styled.div`
