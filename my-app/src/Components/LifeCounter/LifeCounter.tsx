@@ -12,6 +12,7 @@ import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
 import EnergyIcon from '../../Icons/EnergyIcon';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
+import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
 
 type LifeCounterProps = {
   player: Player;
@@ -65,7 +66,7 @@ const LifeCounter = ({
           )}
           {Boolean(
             player.settings.useCommanderDamage && player.settings.usePartner
-          ) && <ExtraCounter Icon={<CommanderTaxIcon size="8vh" />} />}
+          ) && <ExtraCounter Icon={<PartnerTaxIcon size="8vh" />} />}
           {player.settings.usePoison && (
             <ExtraCounter Icon={<PoisonIcon size="8vh" />} />
           )}
