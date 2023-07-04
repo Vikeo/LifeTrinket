@@ -1,35 +1,15 @@
 import React from 'react';
 import { Player } from '../../Types/Player';
-import styled from 'styled-components';
+import * as S from './PlayerMenu.style';
 
 type SettingsProps = {
   player: Player;
   onChange: (updatedPlayer: Player) => void;
 };
 
-const SettingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  height: 70%;
-  padding: 1rem;
-  gap: 0.5rem;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
 const Settings = ({ player, onChange }: SettingsProps) => {
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
-    onChange(updatedPlayer);
-  };
-
-  const handleLifeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedPlayer = {
-      ...player,
-      lifeTotal: parseInt(event.target.value),
-    };
     onChange(updatedPlayer);
   };
 
@@ -41,65 +21,62 @@ const Settings = ({ player, onChange }: SettingsProps) => {
   };
 
   return (
-    <SettingsContainer>
-      <label>
+    <S.SettingsContainer>
+      <S.Label>
         Color:
-        <input type="color" value={player.color} onChange={handleColorChange} />
-      </label>
-      <label>
-        Life Total:
-        <input
-          type="number"
-          value={player.lifeTotal}
-          onChange={handleLifeChange}
+        <S.Input
+          type="color"
+          value={player.color}
+          onChange={handleColorChange}
         />
-      </label>
-      <label>
+      </S.Label>
+
+      <S.Label>
         Commander:
-        <input
+        <S.Input
           type="checkbox"
           name="useCommanderDamage"
           checked={player.settings.useCommanderDamage}
           onChange={handleSettingsChange}
         />
-      </label>
-      <label>
+      </S.Label>
+      <S.Label>
         Partner:
-        <input
+        <S.Input
           type="checkbox"
           name="usePartner"
           checked={player.settings.usePartner}
           onChange={handleSettingsChange}
         />
-      </label>
-      <label>
+      </S.Label>
+      <S.Label>
         Poison:
-        <input
+        <S.Input
           type="checkbox"
           name="usePoison"
           checked={player.settings.usePoison}
           onChange={handleSettingsChange}
         />
-      </label>
-      <label>
+      </S.Label>
+      <S.Label>
         Energy:
-        <input
+        <S.Input
           type="checkbox"
           name="useEnergy"
           checked={player.settings.useEnergy}
           onChange={handleSettingsChange}
         />
-      </label>
-      <label>
+      </S.Label>
+      <S.Label>
         Experience:
-        <input
+        <S.Input
           type="checkbox"
           name="useExperience"
           checked={player.settings.useExperience}
           onChange={handleSettingsChange}
         />
-      </label>
-      <button
+      </S.Label>
+      <S.Button
         onClick={() => {
           const updatedPlayer = {
             ...player,
@@ -109,8 +86,8 @@ const Settings = ({ player, onChange }: SettingsProps) => {
         }}
       >
         Flip
-      </button>
-    </SettingsContainer>
+      </S.Button>
+    </S.SettingsContainer>
   );
 };
 
