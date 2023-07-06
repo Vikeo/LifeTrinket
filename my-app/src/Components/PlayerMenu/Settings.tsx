@@ -69,6 +69,14 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
     onChange(updatedPlayer);
   };
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
+
   return (
     <S.SettingsContainer>
       <S.Label>
@@ -128,6 +136,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
       <S.Button onClick={handlePlayerReset}>Reset</S.Button>
       <S.Button onClick={handleFlip}>Flip</S.Button>
       <S.Button onClick={handleNewGame}>NEW GAME</S.Button>
+      <S.Button onClick={toggleFullscreen}>Fullscreen</S.Button>
     </S.SettingsContainer>
   );
 };
