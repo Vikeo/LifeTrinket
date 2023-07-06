@@ -1,7 +1,7 @@
 import React from 'react';
 import { Player } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
-import { initialPlayers } from '../../Data/initialPlayers';
+import { initialPlayers } from '../../Data/getInitialPlayers';
 
 type SettingsProps = {
   player: Player;
@@ -40,14 +40,15 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
     opponents.forEach((opponent) => {
       // Only reset commander damage from the player that is being reset
       opponent.commanderDamage.forEach((commanderDamage) => {
-        if (commanderDamage.source === player.key) {
-          opponent.lifeTotal =
-            opponent.lifeTotal +
-            commanderDamage.damageTotal +
-            commanderDamage.partnerDamageTotal;
-          commanderDamage.damageTotal = 0;
-          commanderDamage.partnerDamageTotal = 0;
+        if (commanderDamage.source !== player.key) {
+          return;
         }
+        opponent.lifeTotal =
+          opponent.lifeTotal +
+          commanderDamage.damageTotal +
+          commanderDamage.partnerDamageTotal;
+        commanderDamage.damageTotal = 0;
+        commanderDamage.partnerDamageTotal = 0;
       });
       onChange(opponent);
     });
@@ -56,9 +57,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
   };
 
   const handleNewGame = () => {
-    //remove local storage
     localStorage.removeItem('players');
-    //reload page
     window.location.reload();
   };
 

@@ -22,10 +22,10 @@ export const CenteredText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 5vmin;
+  font-size: 7vmin;
   font-weight: bold;
-  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
-    1px 1px 0 #ffffff;
+  -webkit-text-stroke: 2px #ffffff; /* Add a 2-pixel black stroke */
+  -webkit-text-fill-color: #000000;
   color: #000000;
   user-select: none;
   -webkit-touch-callout: none;

@@ -3,7 +3,7 @@ import './App.css';
 import Counters from './Components/Counters/Counters';
 import styled from 'styled-components';
 import { Player } from './Types/Player';
-import { initialPlayers } from './Data/initialPlayers';
+import { initialPlayers } from './Data/getInitialPlayers';
 
 const MainWrapper = styled.div`
   width: 100vmax;
