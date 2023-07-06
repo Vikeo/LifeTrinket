@@ -24,7 +24,7 @@ export const CenteredText = styled.div`
   transform: translate(-50%, -50%);
   font-size: 7vmin;
   font-weight: bold;
-  -webkit-text-stroke: 2px #ffffff; /* Add a 2-pixel black stroke */
+  -webkit-text-stroke: 0.3vmin #ffffff; /* Add a 2-pixel black stroke */
   -webkit-text-fill-color: #000000;
   color: #000000;
   user-select: none;
