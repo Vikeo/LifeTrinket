@@ -71,24 +71,7 @@ const initialPlayers: Player[] = [
 ];
 
 function App() {
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [players, setPlayers] = useState<Player[]>(initialPlayers);
-
-  const handleFullscreen = () => {
-    const element = document.documentElement;
-
-    if (!isFullscreen) {
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-
-    setIsFullscreen(!isFullscreen);
-  };
 
   const handlePlayerChange = (updatedPlayer: Player) => {
     const updatedPlayers = players.map((p) =>
