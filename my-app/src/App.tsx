@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Counters from './Components/Counters/Counters';
 import styled from 'styled-components';
 import { Player } from './Types/Player';
+import { initialPlayers } from './Data/initialPlayers';
 
 const MainWrapper = styled.div`
   width: 100vmax;
@@ -14,63 +15,17 @@ const CountersWrapper = styled.div`
   display: flex;
 `;
 
-const initialPlayers: Player[] = [
-  {
-    lifeTotal: 40,
-    key: 1,
-    color: '#9c9a9a',
-    settings: {
-      useCommanderDamage: true,
-      usePartner: false,
-      useEnergy: false,
-      useExperience: false,
-      usePoison: false,
-      flipped: true,
-    },
-  },
-  {
-    lifeTotal: 40,
-    key: 2,
-    color: '#F5FFF9',
-    settings: {
-      useCommanderDamage: true,
-      usePartner: false,
-      useEnergy: false,
-      useExperience: false,
-      usePoison: false,
-      flipped: true,
-    },
-  },
-  {
-    lifeTotal: 40,
-    key: 3,
-    color: '#FFD601',
-    settings: {
-      useCommanderDamage: true,
-      usePartner: false,
-      useEnergy: false,
-      useExperience: false,
-      usePoison: false,
-      flipped: false,
-    },
-  },
-  {
-    lifeTotal: 40,
-    key: 4,
-    color: '#7FFFD3',
-    settings: {
-      useCommanderDamage: true,
-      usePartner: false,
-      useEnergy: false,
-      useExperience: false,
-      usePoison: false,
-      flipped: false,
-    },
-  },
-];
-
 function App() {
-  const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const savedPlayers = localStorage.getItem('players');
+
+  const [players, setPlayers] = useState<Player[]>(
+    savedPlayers ? JSON.parse(savedPlayers) : initialPlayers
+  );
+
+  useEffect(() => {
+    // Save player data to local storage
+    localStorage.setItem('players', JSON.stringify(players));
+  }, [players]);
 
   const handlePlayerChange = (updatedPlayer: Player) => {
     const updatedPlayers = players.map((p) =>
