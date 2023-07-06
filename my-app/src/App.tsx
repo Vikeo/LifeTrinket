@@ -8,7 +8,6 @@ const MainWrapper = styled.div`
   width: 100vmax;
   height: 100vmin;
   overflow: hidden;
-  min-width: 254px;
 `;
 
 const CountersWrapper = styled.div`

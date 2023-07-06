@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { styled } from 'styled-components';
+
+const RootWrapper = styled.div`
+  @media (orientation: portrait) {
+    transform: rotate(90deg);
+  }
+`;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <RootWrapper>
+      <App />
+    </RootWrapper>
   </React.StrictMode>
 );
 
