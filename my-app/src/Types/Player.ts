@@ -3,6 +3,7 @@ export type Player = {
   key: number;
   color: string;
   settings: PlayerSettings;
+  commanderDamage: CommanderDamage[];
   extraCounters: ExtraCounter[];
 };
 
@@ -18,6 +19,12 @@ type PlayerSettings = {
 type ExtraCounter = {
   type: CounterType;
   value: number;
+};
+
+type CommanderDamage = {
+  source: number;
+  damageTotal: number;
+  partnerDamageTotal: number;
 };
 
 export enum CounterType {

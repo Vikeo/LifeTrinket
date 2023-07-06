@@ -51,10 +51,3 @@ export const LifeCounterText = styled.p`
   -webkit-user-select: none;
   -ms-user-select: none;
 `;
-
-export const ExtraCountersGrid = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-`;

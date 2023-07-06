@@ -14,6 +14,12 @@ export const initialPlayers: Player[] = [
       flipped: true,
     },
     extraCounters: [],
+    commanderDamage: [
+      { source: 1, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 2, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 3, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 4, damageTotal: 0, partnerDamageTotal: 0 },
+    ],
   },
   {
     lifeTotal: 40,
@@ -28,6 +34,12 @@ export const initialPlayers: Player[] = [
       flipped: true,
     },
     extraCounters: [],
+    commanderDamage: [
+      { source: 1, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 2, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 3, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 4, damageTotal: 0, partnerDamageTotal: 0 },
+    ],
   },
   {
     lifeTotal: 40,
@@ -42,6 +54,12 @@ export const initialPlayers: Player[] = [
       flipped: false,
     },
     extraCounters: [],
+    commanderDamage: [
+      { source: 1, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 2, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 3, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 4, damageTotal: 0, partnerDamageTotal: 0 },
+    ],
   },
   {
     lifeTotal: 40,
@@ -56,5 +74,11 @@ export const initialPlayers: Player[] = [
       flipped: false,
     },
     extraCounters: [],
+    commanderDamage: [
+      { source: 1, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 2, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 3, damageTotal: 0, partnerDamageTotal: 0 },
+      { source: 4, damageTotal: 0, partnerDamageTotal: 0 },
+    ],
   },
 ];

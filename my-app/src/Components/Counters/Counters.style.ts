@@ -34,3 +34,10 @@ export const GridItemContainerFlipped = styled.div`
   align-items: center;
   transform: rotate(180deg);
 `;
+
+export const ExtraCountersGrid = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 100%;
+`;

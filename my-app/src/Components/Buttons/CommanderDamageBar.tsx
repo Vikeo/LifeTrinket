@@ -60,56 +60,61 @@ const VerticalSeperator = styled.div`
 
 type CommanderDamageBarProps = {
   lifeTotal: number;
-  setLifeTotal: (lifeTotal: number) => void;
   opponents: Player[];
+  player: Player;
+  onPlayerChange: (updatedPlayer: Player) => void;
 };
 
 const CommanderDamageBar = ({
   opponents,
   lifeTotal,
-  setLifeTotal,
+  player,
+  onPlayerChange,
 }: CommanderDamageBarProps) => {
-  const [commanderDamage, setCommanderDamage] = useState<number[]>(
-    Array(opponents.length).fill(0)
-  );
-  const [partnerCommanderDamage, setPartnerCommanderDamage] = useState<
-    number[]
-  >(Array(opponents.length).fill(0));
-
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const handleCommanderDamageChange = (index: number, increment: number) => {
-    const currentCommanderDamage = commanderDamage[index];
-    if (currentCommanderDamage === 0 && increment === -1) {
-      return;
-    }
-
-    if (currentCommanderDamage === 21 && increment === 1) {
-      return;
-    }
-
-    const updatedCommanderDamage = [...commanderDamage];
-    updatedCommanderDamage[index] += increment;
-    setCommanderDamage(updatedCommanderDamage);
-    setLifeTotal(lifeTotal - increment);
+  const handleLifeChange = (updatedLifeTotal: number) => {
+    const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
+    onPlayerChange(updatedPlayer);
   };
 
-  const handlePartnerCommanderDamageChange = (
+  const handleCommanderDamageChange = (
     index: number,
-    increment: number
+    increment: number,
+    isPartner: boolean
   ) => {
-    const currentPartnerCommanderDamage = partnerCommanderDamage[index];
-    if (currentPartnerCommanderDamage === 0 && increment === -1) {
+    const currentCommanderDamage = player.commanderDamage[index];
+    if (isPartner) {
+      if (currentCommanderDamage.partnerDamageTotal === 0 && increment === -1) {
+        return;
+      }
+
+      const updatedCommanderDamage = [...player.commanderDamage];
+      updatedCommanderDamage[index].partnerDamageTotal += increment;
+
+      const updatedPlayer = {
+        ...player,
+        commanderDamage: updatedCommanderDamage,
+      };
+      onPlayerChange(updatedPlayer);
+      handleLifeChange(lifeTotal - increment);
+      return;
+    }
+    if (currentCommanderDamage.damageTotal === 0 && increment === -1) {
       return;
     }
 
-    const updatedPartnerCommanderDamage = [...partnerCommanderDamage];
-    updatedPartnerCommanderDamage[index] += increment;
+    const updatedCommanderDamage = [...player.commanderDamage];
+    updatedCommanderDamage[index].damageTotal += increment;
 
-    setPartnerCommanderDamage(updatedPartnerCommanderDamage);
-    setLifeTotal(lifeTotal - increment);
+    const updatedPlayer = {
+      ...player,
+      commanderDamage: updatedCommanderDamage,
+    };
+    onPlayerChange(updatedPlayer);
+    handleLifeChange(lifeTotal - increment);
   };
 
   const handleDownInput = (index: number) => {
@@ -117,7 +122,7 @@ const CommanderDamageBar = ({
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handleCommanderDamageChange(index, -1);
+      handleCommanderDamageChange(index, -1, false);
     }, 500);
   };
 
@@ -126,7 +131,7 @@ const CommanderDamageBar = ({
       return;
     }
     clearTimeout(timeoutRef.current);
-    handleCommanderDamageChange(index, 1);
+    handleCommanderDamageChange(index, 1, false);
     setHasPressedDown(false);
   };
 
@@ -141,7 +146,7 @@ const CommanderDamageBar = ({
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
-      handlePartnerCommanderDamageChange(index, -1);
+      handleCommanderDamageChange(index, -1, true);
     }, 500);
   };
 
@@ -150,7 +155,7 @@ const CommanderDamageBar = ({
       return;
     }
     clearTimeout(timeoutRef.current);
-    handlePartnerCommanderDamageChange(index, 1);
+    handleCommanderDamageChange(index, 1, true);
     setHasPressedDown(false);
   };
 
@@ -178,7 +183,9 @@ const CommanderDamageBar = ({
               backgroundColor={opponent.color}
             >
               <CommanderDamageButtonText>
-                {commanderDamage[index] > 0 ? commanderDamage[index] : ''}
+                {player.commanderDamage[index].damageTotal > 0
+                  ? player.commanderDamage[index].damageTotal
+                  : ''}
               </CommanderDamageButtonText>
             </CommanderDamageButton>
 
@@ -198,8 +205,8 @@ const CommanderDamageBar = ({
                   backgroundColor={opponent.color}
                 >
                   <CommanderDamageButtonText>
-                    {partnerCommanderDamage[index] > 0
-                      ? partnerCommanderDamage[index]
+                    {player.commanderDamage[index].partnerDamageTotal > 0
+                      ? player.commanderDamage[index].partnerDamageTotal
                       : ''}
                   </CommanderDamageButtonText>
                 </CommanderDamageButton>
