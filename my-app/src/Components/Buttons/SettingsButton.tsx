@@ -7,7 +7,7 @@ export const StyledExtraCounterButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  margin-bottom: -5vh;
+  margin-bottom: -5vmin;
   top: 8px;
   background-color: transparent;
   user-select: none;
@@ -25,7 +25,7 @@ type SettingsButtonProps = {
 const SettingsButton = ({ onClick }: SettingsButtonProps) => {
   return (
     <StyledExtraCounterButton onClick={onClick}>
-      <SettingsIcon size="4vh" />
+      <SettingsIcon size="4vmin" />
     </StyledExtraCounterButton>
   );
 };

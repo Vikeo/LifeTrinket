@@ -68,19 +68,19 @@ const LifeCounter = ({
         </S.LifeCountainer>
         <S.ExtraCountersGrid>
           {player.settings.useCommanderDamage && (
-            <ExtraCounter Icon={<CommanderTaxIcon size="8vh" />} />
+            <ExtraCounter Icon={<CommanderTaxIcon size="8vmin" />} />
           )}
           {Boolean(
             player.settings.useCommanderDamage && player.settings.usePartner
-          ) && <ExtraCounter Icon={<PartnerTaxIcon size="8vh" />} />}
+          ) && <ExtraCounter Icon={<PartnerTaxIcon size="8vmin" />} />}
           {player.settings.usePoison && (
-            <ExtraCounter Icon={<PoisonIcon size="8vh" />} />
+            <ExtraCounter Icon={<PoisonIcon size="8vmin" />} />
           )}
           {player.settings.useEnergy && (
-            <ExtraCounter Icon={<EnergyIcon size="8vh" />} />
+            <ExtraCounter Icon={<EnergyIcon size="8vmin" />} />
           )}
           {player.settings.useExperience && (
-            <ExtraCounter Icon={<ExperienceIcon size="8vh" />} />
+            <ExtraCounter Icon={<ExperienceIcon size="8vmin" />} />
           )}
         </S.ExtraCountersGrid>
       </S.LifeCounterContentContainer>

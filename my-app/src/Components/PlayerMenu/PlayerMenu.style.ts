@@ -26,12 +26,12 @@ export const Label = styled.label`
   justify-content: space-evenly;
   align-items: center;
   color: #ffffff;
-  font-size: 2vh;
+  font-size: 2vmin;
 `;
 
 export const Input = styled.input`
-  width: 5vh;
-  height: 5vh;
+  width: 5vmin;
+  height: 5vmin;
   border: none;
   outline: none;
   cursor: pointer;

@@ -6,7 +6,7 @@ const PartnerTaxIcon = ({ size, color }: IconProps) => {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 325 325"
-        width={'12vh'}
+        width={'12vmin'}
         height={`calc(${size} - 0px)`}
         fill={color || 'black'}
         fillOpacity="0.5"

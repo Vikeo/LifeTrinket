@@ -20,7 +20,7 @@ const CommanderDamageButton = styled.button<{ backgroundColor?: string }>`
   display: flex;
   flex-grow: 1;
   border: none;
-  height: 10vh;
+  height: 10vmin;
   outline: none;
   cursor: pointer;
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};

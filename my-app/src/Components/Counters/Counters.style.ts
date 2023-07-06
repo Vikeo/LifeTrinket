@@ -20,16 +20,16 @@ export const CountersGrid = styled.div`
 
 export const GridItemContainer = styled.div`
   display: flex;
-  width: calc(50vw - 2px);
-  height: calc(50vh - 2px);
+  width: calc(50vmax - 2px);
+  height: calc(50vmin - 2px);
   justify-content: center;
   align-items: center;
 `;
 
 export const GridItemContainerFlipped = styled.div`
   display: flex;
-  width: calc(50vw - 2px);
-  height: calc(50vh - 2px);
+  width: calc(50vmax - 2px);
+  height: calc(50vmin - 2px);
   justify-content: center;
   align-items: center;
   transform: rotate(180deg);

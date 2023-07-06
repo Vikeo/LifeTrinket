@@ -33,7 +33,7 @@ export const LifeCounterText = styled.p`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 30vh;
+  font-size: 30vmin;
   text-align: center;
   text-size-adjust: auto;
   margin: 0;
