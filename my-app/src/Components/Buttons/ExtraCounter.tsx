@@ -1,5 +1,6 @@
 import { ReactNode, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { CounterType } from '../../Types/Player';
 
 export const StyledExtraCounterButton = styled.button`
   position: relative;
@@ -36,16 +37,27 @@ export const CenteredText = styled.div`
 
 type ExtraCounterProps = {
   Icon: ReactNode;
+  counterTotal?: number;
+  type: CounterType;
+  setCounterTotal: (updatedCounterTotal: number, type: CounterType) => void;
 };
 
-const ExtraCounter = ({ Icon }: ExtraCounterProps) => {
-  const [count, setCount] = useState(0);
+const ExtraCounter = ({
+  Icon,
+  counterTotal,
+  setCounterTotal,
+  type,
+}: ExtraCounterProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
   const handleCountChange = (increment: number) => {
-    setCount(count + increment);
+    if (!counterTotal) {
+      setCounterTotal(increment, type);
+      return;
+    }
+    setCounterTotal(counterTotal + increment, type);
   };
 
   const handleDownInput = () => {
@@ -82,7 +94,7 @@ const ExtraCounter = ({ Icon }: ExtraCounterProps) => {
       }}
     >
       {Icon}
-      <CenteredText>{count ? count : undefined}</CenteredText>
+      <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
     </StyledExtraCounterButton>
   );
 };

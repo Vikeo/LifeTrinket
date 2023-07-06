@@ -13,6 +13,7 @@ export const initialPlayers: Player[] = [
       usePoison: false,
       flipped: true,
     },
+    extraCounters: [],
   },
   {
     lifeTotal: 40,
@@ -26,6 +27,7 @@ export const initialPlayers: Player[] = [
       usePoison: false,
       flipped: true,
     },
+    extraCounters: [],
   },
   {
     lifeTotal: 40,
@@ -39,6 +41,7 @@ export const initialPlayers: Player[] = [
       usePoison: false,
       flipped: false,
     },
+    extraCounters: [],
   },
   {
     lifeTotal: 40,
@@ -52,5 +55,6 @@ export const initialPlayers: Player[] = [
       usePoison: false,
       flipped: false,
     },
+    extraCounters: [],
   },
 ];

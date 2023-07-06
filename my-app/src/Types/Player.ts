@@ -3,7 +3,7 @@ export type Player = {
   key: number;
   color: string;
   settings: PlayerSettings;
-  extraCounters?: ExtraCounters;
+  extraCounters: ExtraCounter[];
 };
 
 type PlayerSettings = {
@@ -15,10 +15,15 @@ type PlayerSettings = {
   useExperience?: boolean;
 };
 
-type ExtraCounters = {
-  commanderDamage?: number;
-  partnerDamage?: number;
-  poison?: number;
-  energy?: number;
-  experience?: number;
+type ExtraCounter = {
+  type: CounterType;
+  value: number;
 };
+
+export enum CounterType {
+  CommanderTax = 'commanderTax',
+  PartnerTax = 'partnerTax',
+  Poison = 'poison',
+  Energy = 'energy',
+  Experience = 'experience',
+}
