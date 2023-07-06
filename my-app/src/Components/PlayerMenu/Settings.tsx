@@ -1,13 +1,15 @@
 import React from 'react';
 import { Player } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
+import { initialPlayers } from '../../Data/initialPlayers';
 
 type SettingsProps = {
   player: Player;
+  opponents: Player[];
   onChange: (updatedPlayer: Player) => void;
 };
 
-const Settings = ({ player, onChange }: SettingsProps) => {
+const Settings = ({ player, opponents, onChange }: SettingsProps) => {
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
     onChange(updatedPlayer);
@@ -17,6 +19,54 @@ const Settings = ({ player, onChange }: SettingsProps) => {
     const { name, checked } = event.target;
     const updatedSettings = { ...player.settings, [name]: checked };
     const updatedPlayer = { ...player, settings: updatedSettings };
+    onChange(updatedPlayer);
+  };
+
+  const handlePlayerReset = () => {
+    // Commander damage doesn't reset when player is reset
+    player?.commanderDamage.forEach((commanderDamage) => {
+      commanderDamage.damageTotal = 0;
+      commanderDamage.partnerDamageTotal = 0;
+    });
+
+    const resetPlayer = initialPlayers.find((initialPlayer) => {
+      return initialPlayer.key === player.key;
+    });
+
+    if (!resetPlayer) {
+      return;
+    }
+
+    opponents.forEach((opponent) => {
+      // Only reset commander damage from the player that is being reset
+      opponent.commanderDamage.forEach((commanderDamage) => {
+        if (commanderDamage.source === player.key) {
+          opponent.lifeTotal =
+            opponent.lifeTotal +
+            commanderDamage.damageTotal +
+            commanderDamage.partnerDamageTotal;
+          commanderDamage.damageTotal = 0;
+          commanderDamage.partnerDamageTotal = 0;
+        }
+      });
+      onChange(opponent);
+    });
+
+    onChange(resetPlayer);
+  };
+
+  const handleNewGame = () => {
+    //remove local storage
+    localStorage.removeItem('players');
+    //reload page
+    window.location.reload();
+  };
+
+  const handleFlip = () => {
+    const updatedPlayer = {
+      ...player,
+      settings: { ...player.settings, flipped: !player.settings.flipped },
+    };
     onChange(updatedPlayer);
   };
 
@@ -76,17 +126,9 @@ const Settings = ({ player, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Button
-        onClick={() => {
-          const updatedPlayer = {
-            ...player,
-            settings: { ...player.settings, flipped: !player.settings.flipped },
-          };
-          onChange(updatedPlayer);
-        }}
-      >
-        Flip
-      </S.Button>
+      <S.Button onClick={handlePlayerReset}>Reset</S.Button>
+      <S.Button onClick={handleFlip}>Flip</S.Button>
+      <S.Button onClick={handleNewGame}>NEW GAME</S.Button>
     </S.SettingsContainer>
   );
 };

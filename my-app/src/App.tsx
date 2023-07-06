@@ -23,13 +23,12 @@ function App() {
   );
 
   useEffect(() => {
-    // Save player data to local storage
     localStorage.setItem('players', JSON.stringify(players));
   }, [players]);
 
   const handlePlayerChange = (updatedPlayer: Player) => {
-    const updatedPlayers = players.map((p) =>
-      p.key === updatedPlayer.key ? updatedPlayer : p
+    const updatedPlayers = players.map((player) =>
+      player.key === updatedPlayer.key ? updatedPlayer : player
     );
     setPlayers(updatedPlayers);
   };

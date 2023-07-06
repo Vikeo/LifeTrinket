@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as S from './LifeCounter.style';
-import { CounterType, Player } from '../../Types/Player';
+import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
 import AddLifeButton from '../Buttons/AddLifeButton';
 import SubtractLifeButton from '../Buttons/SubtractLifeButton';
@@ -66,6 +66,7 @@ const LifeCounter = ({
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
+          opponents={opponents}
           onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
         />
