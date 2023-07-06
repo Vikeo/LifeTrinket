@@ -63,6 +63,7 @@ type CommanderDamageBarProps = {
   opponents: Player[];
   player: Player;
   onPlayerChange: (updatedPlayer: Player) => void;
+  setLifeTotal: (lifeTotal: number) => void;
 };
 
 const CommanderDamageBar = ({
@@ -70,15 +71,11 @@ const CommanderDamageBar = ({
   lifeTotal,
   player,
   onPlayerChange,
+  setLifeTotal,
 }: CommanderDamageBarProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
-
-  const handleLifeChange = (updatedLifeTotal: number) => {
-    const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
-    onPlayerChange(updatedPlayer);
-  };
 
   const handleCommanderDamageChange = (
     index: number,
@@ -99,7 +96,7 @@ const CommanderDamageBar = ({
         commanderDamage: updatedCommanderDamage,
       };
       onPlayerChange(updatedPlayer);
-      handleLifeChange(lifeTotal - increment);
+      setLifeTotal(lifeTotal - increment);
       return;
     }
     if (currentCommanderDamage.damageTotal === 0 && increment === -1) {
@@ -114,7 +111,7 @@ const CommanderDamageBar = ({
       commanderDamage: updatedCommanderDamage,
     };
     onPlayerChange(updatedPlayer);
-    handleLifeChange(lifeTotal - increment);
+    setLifeTotal(lifeTotal - increment);
   };
 
   const handleDownInput = (index: number) => {

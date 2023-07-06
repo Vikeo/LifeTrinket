@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as S from './LifeCounter.style';
 import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
@@ -23,11 +23,24 @@ const LifeCounter = ({
   onPlayerChange,
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
+    const difference = updatedLifeTotal - player.lifeTotal;
     const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
+    setRecentDifference(recentDifference + difference);
     onPlayerChange(updatedPlayer);
+    setKey(Date.now());
   };
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
+  const [recentDifference, setRecentDifference] = useState(0);
+  const [key, setKey] = useState(Date.now());
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRecentDifference(0);
+    }, 3000); // Adjust the duration as needed (3000ms = 3 seconds)
+
+    return () => clearTimeout(timer);
+  }, [recentDifference]);
 
   const swipeHandlers = useSwipeable({
     onSwipedUp: () =>
@@ -44,6 +57,7 @@ const LifeCounter = ({
           opponents={opponents}
           player={player}
           onPlayerChange={onPlayerChange}
+          setLifeTotal={handleLifeChange}
         />
         <SettingsButton
           onClick={() => {
@@ -55,7 +69,15 @@ const LifeCounter = ({
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}
           />
-          <S.LifeCounterText>{player.lifeTotal}</S.LifeCounterText>
+          <S.LifeCounterText>
+            {player.lifeTotal}
+            {recentDifference !== 0 && (
+              <S.RecentDifference key={key}>
+                {recentDifference > 0 ? '+' : ''}
+                {recentDifference}
+              </S.RecentDifference>
+            )}
+          </S.LifeCounterText>
           <AddLifeButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}

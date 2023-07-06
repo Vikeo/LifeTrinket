@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const LifeCounterWrapper = styled.div<{ backgroundColor?: string }>`
   position: relative;
@@ -50,4 +50,30 @@ export const LifeCounterText = styled.p`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+  }
+  33% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+export const RecentDifference = styled.span`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-shadow: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 5vmin;
+  color: #333333;
+  animation: ${fadeOut} 3s 1s ease-out forwards;
 `;
