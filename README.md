@@ -1,2 +1,2 @@
-# MtgLifeCounterWeb
-A simple life counter for MTG written in React JS.
+# Life Trinket
+A simple life counter for Magic the Gathering written in React JS.
