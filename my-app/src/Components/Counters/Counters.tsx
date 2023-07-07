@@ -14,7 +14,7 @@ const Counters = ({ players, onPlayerChange }: CountersProps) => {
         {players.map((player) => {
           if (player.settings.flipped) {
             return (
-              <S.GridItemContainerFlipped>
+              <S.GridItemContainerFlipped key={player.key}>
                 <LifeCounter
                   backgroundColor={player.color}
                   player={player}
@@ -27,7 +27,7 @@ const Counters = ({ players, onPlayerChange }: CountersProps) => {
             );
           }
           return (
-            <S.GridItemContainer>
+            <S.GridItemContainer key={player.key}>
               <LifeCounter
                 backgroundColor={player.color}
                 player={player}

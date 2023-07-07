@@ -67,18 +67,6 @@ const AddLifeButton = ({ lifeTotal, setLifeTotal }: AddLifeButtonProps) => {
       onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
       }}
-      onTouchStart={(e: React.TouchEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-      }}
-      onTouchEnd={(e: React.TouchEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-      }}
-      onTouchMove={(e: React.TouchEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-      }}
-      onTouchCancel={(e: React.TouchEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-      }}
       align="right"
     >
       &#43;

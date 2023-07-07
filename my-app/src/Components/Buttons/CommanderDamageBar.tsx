@@ -166,7 +166,7 @@ const CommanderDamageBar = ({
     <CommanderDamageGrid>
       {opponents.map((opponent, index) => {
         return (
-          <CommanderDamageContainer>
+          <CommanderDamageContainer key={opponent.key}>
             <CommanderDamageButton
               key={index}
               onPointerDown={() => handleDownInput(index)}
