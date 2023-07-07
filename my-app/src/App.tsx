@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import Counters from './Components/Counters/Counters';
-import styled from 'styled-components';
 import { Player } from './Types/Player';
 import { initialPlayers } from './Data/getInitialPlayers';
+import Play from './Components/Views/Play';
 
-const MainWrapper = styled.div`
-  width: 100vmax;
-  height: 100vmin;
-  overflow: hidden;
-`;
-
-const CountersWrapper = styled.div`
-  display: flex;
-`;
-
-function App() {
+const App = () => {
   const savedPlayers = localStorage.getItem('players');
 
   const [players, setPlayers] = useState<Player[]>(
@@ -33,13 +22,7 @@ function App() {
     setPlayers(updatedPlayers);
   };
 
-  return (
-    <MainWrapper>
-      <CountersWrapper>
-        <Counters players={players} onPlayerChange={handlePlayerChange} />
-      </CountersWrapper>
-    </MainWrapper>
-  );
-}
+  return <Play players={players} onPlayerChange={handlePlayerChange} />;
+};
 
 export default App;
