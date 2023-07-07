@@ -43,10 +43,12 @@ const LifeCounter = ({
   }, [recentDifference]);
 
   const swipeHandlers = useSwipeable({
-    onSwipedUp: () =>
-      player.settings.flipped ? setShowPlayerMenu(true) : null,
-    onSwipedDown: () =>
-      player.settings.flipped ? null : setShowPlayerMenu(true),
+    onSwipedUp: () => {
+      // player.settings.flipped ? setShowPlayerMenu(true) : null;
+    },
+    onSwipedDown: () => {
+      // player.settings.flipped ? null : setShowPlayerMenu(true);
+    },
   });
 
   return (
