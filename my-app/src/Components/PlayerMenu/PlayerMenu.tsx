@@ -1,4 +1,3 @@
-import React from 'react';
 import * as S from './PlayerMenu.style';
 import { Player } from '../../Types/Player';
 import Settings from './Settings';

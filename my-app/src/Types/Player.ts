@@ -8,7 +8,7 @@ export type Player = {
 };
 
 type PlayerSettings = {
-  flipped?: boolean;
+  rotation: Rotation;
   useCommanderDamage: boolean;
   usePartner?: boolean;
   usePoison?: boolean;
@@ -33,4 +33,11 @@ export enum CounterType {
   Poison = 'poison',
   Energy = 'energy',
   Experience = 'experience',
+}
+
+export enum Rotation {
+  Normal = 0,
+  Side = 90,
+  Flipped = 180,
+  SideFlipped = 270,
 }

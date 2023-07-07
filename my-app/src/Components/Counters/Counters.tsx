@@ -12,22 +12,10 @@ const Counters = ({ players, onPlayerChange }: CountersProps) => {
     <S.CountersWrapper>
       <S.CountersGrid>
         {players.map((player) => {
-          if (player.settings.flipped) {
-            return (
-              <S.GridItemContainerFlipped key={player.key}>
-                <LifeCounter
-                  backgroundColor={player.color}
-                  player={player}
-                  opponents={players.filter(
-                    (opponent) => opponent.key !== player.key
-                  )}
-                  onPlayerChange={onPlayerChange}
-                />
-              </S.GridItemContainerFlipped>
-            );
-          }
+          const rotation = player.settings.rotation;
+
           return (
-            <S.GridItemContainer key={player.key}>
+            <S.GridItemContainer key={player.key} rotation={rotation}>
               <LifeCounter
                 backgroundColor={player.color}
                 player={player}

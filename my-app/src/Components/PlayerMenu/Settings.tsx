@@ -1,5 +1,4 @@
-import React from 'react';
-import { Player } from '../../Types/Player';
+import { Player, Rotation } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
 import { initialPlayers } from '../../Data/getInitialPlayers';
 
@@ -64,7 +63,10 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
   const handleFlip = () => {
     const updatedPlayer = {
       ...player,
-      settings: { ...player.settings, flipped: !player.settings.flipped },
+      settings: {
+        ...player.settings,
+        rotation: Rotation.Flipped ? Rotation.Normal : Rotation.Flipped,
+      },
     };
     onChange(updatedPlayer);
   };

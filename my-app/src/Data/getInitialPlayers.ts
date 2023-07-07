@@ -1,4 +1,4 @@
-import { Player } from '../Types/Player';
+import { Player, Rotation } from '../Types/Player';
 
 type InitialSettings = {
   startingLifeTotal: number;
@@ -43,7 +43,7 @@ export const createInitialPlayers = ({
         useEnergy: false,
         useExperience: false,
         usePoison: false,
-        flipped: i === 1 || i === 2,
+        rotation: i === 1 || i === 2 ? Rotation.Flipped : Rotation.Normal,
       },
       extraCounters: [],
       commanderDamage: [
