@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { Rotation } from '../../Types/Player';
 
 export const CountersWrapper = styled.div`
   width: 100%;
@@ -22,14 +23,27 @@ export const GridItemContainer = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  /* width: 100%; */
+  /* height: 100%; */
   grid-area: ${(props) => props.gridArea};
 `;
 
-export const ExtraCountersGrid = styled.div`
+export const ExtraCountersGrid = styled.div<{ rotation: number }>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column-reverse;
+        height: 100%;
+        width: auto;
+      `;
+    }
+  }}
 `;

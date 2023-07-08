@@ -1,7 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import SettingsIcon from '../../Icons/SettingsIcon';
+import { Rotation } from '../../Types/Player';
 
-export const StyledExtraCounterButton = styled.button`
+export const StyledExtraCounterButton = styled.button<{ rotation: number }>`
   position: relative;
   flex-grow: 1;
   border: none;
@@ -16,15 +17,28 @@ export const StyledExtraCounterButton = styled.button`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.Side ||
+      props.rotation === Rotation.SideFlipped
+    ) {
+      return css`
+        margin-bottom: 0;
+        top: 0
+        margin-right: -5vmin;
+      `;
+    }
+  }}
 `;
 
 type SettingsButtonProps = {
   onClick: () => void;
+  rotation: number;
 };
 
-const SettingsButton = ({ onClick }: SettingsButtonProps) => {
+const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
-    <StyledExtraCounterButton onClick={onClick}>
+    <StyledExtraCounterButton onClick={onClick} rotation={rotation}>
       <SettingsIcon size="4vmin" />
     </StyledExtraCounterButton>
   );

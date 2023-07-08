@@ -1,6 +1,6 @@
 import { ReactNode, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { CounterType } from '../../Types/Player';
+import styled, { css } from 'styled-components';
+import { CounterType, Rotation } from '../../Types/Player';
 
 export const StyledExtraCounterButton = styled.button`
   position: relative;
@@ -35,11 +35,27 @@ export const CenteredText = styled.div`
   -ms-user-select: none;
 `;
 
+const IconContainer = styled.div<{
+  rotation: number;
+}>`
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: -90deg;
+      `;
+    }
+  }}
+`;
+
 type ExtraCounterProps = {
   Icon: ReactNode;
   counterTotal?: number;
   type: CounterType;
   setCounterTotal: (updatedCounterTotal: number, type: CounterType) => void;
+  rotation: number;
 };
 
 const ExtraCounter = ({
@@ -47,6 +63,7 @@ const ExtraCounter = ({
   counterTotal,
   setCounterTotal,
   type,
+  rotation,
 }: ExtraCounterProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
@@ -93,8 +110,10 @@ const ExtraCounter = ({
         e.preventDefault();
       }}
     >
-      {Icon}
-      <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
+      <IconContainer rotation={rotation}>
+        {Icon}
+        <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
+      </IconContainer>
     </StyledExtraCounterButton>
   );
 };

@@ -47,9 +47,10 @@ const ExtraCountersBar = ({
   };
 
   return (
-    <S.ExtraCountersGrid>
+    <S.ExtraCountersGrid rotation={player.settings.rotation}>
       {player.settings.useCommanderDamage && (
         <ExtraCounter
+          rotation={player.settings.rotation}
           Icon={<CommanderTaxIcon size="8vmin" />}
           type={CounterType.CommanderTax}
           counterTotal={
@@ -64,6 +65,7 @@ const ExtraCountersBar = ({
         player.settings.useCommanderDamage && player.settings.usePartner
       ) && (
         <ExtraCounter
+          rotation={player.settings.rotation}
           Icon={<PartnerTaxIcon size="8vmin" />}
           type={CounterType.PartnerTax}
           counterTotal={
@@ -76,6 +78,7 @@ const ExtraCountersBar = ({
       )}
       {player.settings.usePoison && (
         <ExtraCounter
+          rotation={player.settings.rotation}
           Icon={<PoisonIcon size="8vmin" />}
           type={CounterType.Poison}
           counterTotal={
@@ -87,6 +90,7 @@ const ExtraCountersBar = ({
       )}
       {player.settings.useEnergy && (
         <ExtraCounter
+          rotation={player.settings.rotation}
           Icon={<EnergyIcon size="8vmin" />}
           type={CounterType.Energy}
           counterTotal={
@@ -98,6 +102,7 @@ const ExtraCountersBar = ({
       )}
       {player.settings.useExperience && (
         <ExtraCounter
+          rotation={player.settings.rotation}
           Icon={<ExperienceIcon size="8vmin" />}
           type={CounterType.Experience}
           counterTotal={

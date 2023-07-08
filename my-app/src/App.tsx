@@ -15,16 +15,13 @@ export const initialPlayerOptions = {
 const App = () => {
   const savedPlayers = localStorage.getItem('players');
 
-  // const [players, setPlayers] = useState<Player[]>(
-  //   savedPlayers
-  //     ? JSON.parse(savedPlayers)
-  //     : createInitialPlayers(initialPlayerOptions)
-  // );
-  const [gridAreas, setGridAreas] = useState(initialPlayerOptions.gridAreas);
-
   const [players, setPlayers] = useState<Player[]>(
-    createInitialPlayers(initialPlayerOptions)
+    savedPlayers
+      ? JSON.parse(savedPlayers)
+      : createInitialPlayers(initialPlayerOptions)
   );
+
+  const [gridAreas, setGridAreas] = useState(initialPlayerOptions.gridAreas);
 
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));

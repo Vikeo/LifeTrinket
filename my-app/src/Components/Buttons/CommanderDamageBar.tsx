@@ -1,22 +1,51 @@
 import { useRef, useState } from 'react';
-import { Player } from '../../Types/Player';
-import styled from 'styled-components';
+import { Player, Rotation } from '../../Types/Player';
+import styled, { css } from 'styled-components';
 
-const CommanderDamageGrid = styled.div`
+const CommanderDamageGrid = styled.div<{ rotation: number }>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column;
+        height: 100%;
+        width: auto;
+      `;
+    }
+  }}
 `;
 
-const CommanderDamageContainer = styled.div`
+const CommanderDamageContainer = styled.div<{
+  rotation: number;
+}>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column;
+      `;
+    }
+  }}
 `;
 
-const CommanderDamageButton = styled.button<{ backgroundColor?: string }>`
+const CommanderDamageButton = styled.button<{
+  backgroundColor?: string;
+  rotation: number;
+}>`
   display: flex;
   flex-grow: 1;
   border: none;
@@ -31,13 +60,26 @@ const CommanderDamageButton = styled.button<{ backgroundColor?: string }>`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  padding: 0;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        width: 10vmin;
+        height: auto;
+      `;
+    }
+  }}
 `;
 
-const CommanderDamageButtonText = styled.p`
+const CommanderDamageButtonText = styled.p<{
+  rotation: number;
+}>`
   position: relative;
   margin: auto;
   font-size: 1.5rem;
-  text-align: center;
   text-size-adjust: auto;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
@@ -51,11 +93,40 @@ const CommanderDamageButtonText = styled.p`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: 180deg;
+        text-orientation: sideways;
+        writing-mode: vertical-lr;
+        height: 1rem;
+        width: auto;
+      `;
+    }
+  }}
 `;
 
-const VerticalSeperator = styled.div`
+const PartnerDamageSeperator = styled.div<{
+  rotation: number;
+}>`
   width: 1px;
   background-color: rgba(0, 0, 0, 1);
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        width: auto;
+        height: 1px;
+      `;
+    }
+  }}
 `;
 
 type CommanderDamageBarProps = {
@@ -163,15 +234,19 @@ const CommanderDamageBar = ({
   };
 
   return (
-    <CommanderDamageGrid>
+    <CommanderDamageGrid rotation={player.settings.rotation}>
       {opponents.map((opponent, index) => {
         if (!opponent.settings.useCommanderDamage) {
           return null;
         }
         return (
-          <CommanderDamageContainer key={index}>
+          <CommanderDamageContainer
+            key={index}
+            rotation={player.settings.rotation}
+          >
             <CommanderDamageButton
               key={index}
+              rotation={player.settings.rotation}
               onPointerDown={() => handleDownInput(index)}
               onPointerUp={() => handleUpInput(index)}
               onPointerLeave={handleLeaveInput}
@@ -182,7 +257,7 @@ const CommanderDamageBar = ({
               }}
               backgroundColor={opponent.color}
             >
-              <CommanderDamageButtonText>
+              <CommanderDamageButtonText rotation={player.settings.rotation}>
                 {player.commanderDamage[index].damageTotal > 0
                   ? player.commanderDamage[index].damageTotal
                   : ''}
@@ -191,9 +266,10 @@ const CommanderDamageBar = ({
 
             {opponent.settings.usePartner && (
               <>
-                <VerticalSeperator />
+                <PartnerDamageSeperator rotation={player.settings.rotation} />
                 <CommanderDamageButton
                   key={index}
+                  rotation={player.settings.rotation}
                   onPointerDown={() => handlePartnerDownInput(index)}
                   onPointerUp={() => handlePartnerUpInput(index)}
                   onPointerLeave={handlePartnerLeaveInput}
@@ -204,7 +280,9 @@ const CommanderDamageBar = ({
                   }}
                   backgroundColor={opponent.color}
                 >
-                  <CommanderDamageButtonText>
+                  <CommanderDamageButtonText
+                    rotation={player.settings.rotation}
+                  >
                     {player.commanderDamage[index].partnerDamageTotal > 0
                       ? player.commanderDamage[index].partnerDamageTotal
                       : ''}

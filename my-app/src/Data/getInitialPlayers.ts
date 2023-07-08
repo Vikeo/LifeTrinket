@@ -28,6 +28,17 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
     return Rotation.Side;
   }
 
+  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeVertical) {
+    switch (index) {
+      case 1:
+        return Rotation.SideFlipped;
+      case 2:
+        return Rotation.Side;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
   if (gridAreas === GridTemplateAreas.TwoPlayersOppositeHorizontal) {
     switch (index) {
       case 1:
@@ -68,7 +79,7 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
       case 1:
         return Rotation.Flipped;
       case 2:
-        return Rotation.SideFlipped;
+        return Rotation.Side;
       case 3:
         return Rotation.Normal;
       default:
@@ -83,6 +94,95 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
       case 2:
         return Rotation.Flipped;
       case 3:
+        return Rotation.Normal;
+      case 4:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.FourPlayersSide) {
+    switch (index) {
+      case 1:
+        return Rotation.SideFlipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Normal;
+      case 4:
+        return Rotation.Side;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.FivePlayers) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Normal;
+      case 4:
+        return Rotation.Normal;
+      case 5:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.FivePlayersSide) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Side;
+      case 4:
+        return Rotation.Normal;
+      case 5:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.SixPlayers) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Flipped;
+      case 4:
+        return Rotation.Normal;
+      case 5:
+        return Rotation.Normal;
+      case 6:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.SixPlayersSide) {
+    switch (index) {
+      case 1:
+        return Rotation.SideFlipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Flipped;
+      case 4:
+        return Rotation.Side;
+      case 5:
+        return Rotation.Normal;
+      case 6:
         return Rotation.Normal;
       default:
         return Rotation.Normal;

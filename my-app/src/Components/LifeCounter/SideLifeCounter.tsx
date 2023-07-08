@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import * as S from './LifeCounter.style';
+import * as S from './SideLifeCounter.style';
 import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
 import AddLifeButton from '../Buttons/AddLifeButton';
@@ -9,19 +9,19 @@ import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import SettingsButton from '../Buttons/SettingsButton';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 
-type LifeCounterProps = {
+type SideLifeCounterProps = {
   player: Player;
   backgroundColor: string;
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
 };
 
-const LifeCounter = ({
+const SideLifeCounter = ({
   backgroundColor,
   player,
   opponents,
   onPlayerChange,
-}: LifeCounterProps) => {
+}: SideLifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updatedLifeTotal - player.lifeTotal;
     const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
@@ -52,8 +52,8 @@ const LifeCounter = ({
   });
 
   return (
-    <S.LifeCounterWrapper backgroundColor={backgroundColor}>
-      <S.LifeCounterContentContainer
+    <S.SideLifeCounterWrapper backgroundColor={backgroundColor}>
+      <S.SideLifeCounterContentContainer
         {...swipeHandlers}
         rotation={player.settings.rotation}
       >
@@ -70,29 +70,31 @@ const LifeCounter = ({
           }}
           rotation={player.settings.rotation}
         />
-        <S.LifeCountainer>
-          <SubtractLifeButton
-            lifeTotal={player.lifeTotal}
-            setLifeTotal={handleLifeChange}
-            rotation={player.settings.rotation}
-          />
-          <S.LifeCounterText>
-            {player.lifeTotal}
-            {recentDifference !== 0 && (
-              <S.RecentDifference key={key}>
-                {recentDifference > 0 ? '+' : ''}
-                {recentDifference}
-              </S.RecentDifference>
-            )}
-          </S.LifeCounterText>
+
+        <S.SideLifeCountainer>
           <AddLifeButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}
             rotation={player.settings.rotation}
           />
-        </S.LifeCountainer>
+          <S.SideLifeCounterText>
+            {player.lifeTotal}
+            {recentDifference !== 0 && (
+              <S.SideRecentDifference key={key}>
+                {recentDifference > 0 ? '+' : ''}
+                {recentDifference}
+              </S.SideRecentDifference>
+            )}
+          </S.SideLifeCounterText>
+
+          <SubtractLifeButton
+            lifeTotal={player.lifeTotal}
+            setLifeTotal={handleLifeChange}
+            rotation={player.settings.rotation}
+          />
+        </S.SideLifeCountainer>
         <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
-      </S.LifeCounterContentContainer>
+      </S.SideLifeCounterContentContainer>
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
@@ -101,8 +103,8 @@ const LifeCounter = ({
           setShowPlayerMenu={setShowPlayerMenu}
         />
       )}
-    </S.LifeCounterWrapper>
+    </S.SideLifeCounterWrapper>
   );
 };
 
-export default LifeCounter;
+export default SideLifeCounter;
