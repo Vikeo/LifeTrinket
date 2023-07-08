@@ -1,7 +1,7 @@
 import { Player, Rotation } from '../Types/Player';
 import { GridTemplateAreas } from './getGridTemplateAreas';
 
-type InitialSettings = {
+export type InitialSettings = {
   startingLifeTotal: number;
   useCommanderDamage: boolean;
   numberOfPlayers: number;

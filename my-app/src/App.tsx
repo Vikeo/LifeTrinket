@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { Player } from './Types/Player';
-import { createInitialPlayers } from './Data/getInitialPlayers';
 import Play from './Components/Views/Play';
+import StartMenu from './Components/Views/StartMenu';
+import { InitialSettings } from './Data/getInitialPlayers';
 import { GridTemplateAreas } from './Data/getGridTemplateAreas';
 
 export const initialPlayerOptions = {
@@ -15,13 +16,12 @@ export const initialPlayerOptions = {
 const App = () => {
   const savedPlayers = localStorage.getItem('players');
 
-  const [players, setPlayers] = useState<Player[]>(
-    savedPlayers
-      ? JSON.parse(savedPlayers)
-      : createInitialPlayers(initialPlayerOptions)
-  );
+  const [initialPlayerOptions, setInitialPlayerOptions] =
+    useState<InitialSettings | null>(null);
 
-  const [gridAreas, setGridAreas] = useState(initialPlayerOptions.gridAreas);
+  const [players, setPlayers] = useState<Player[]>(
+    savedPlayers ? JSON.parse(savedPlayers) : []
+  );
 
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));
@@ -34,21 +34,20 @@ const App = () => {
     setPlayers(updatedPlayers);
   };
 
-  if (players) {
+  if (players && initialPlayerOptions) {
     return (
       <Play
         players={players}
         onPlayerChange={handlePlayerChange}
-        gridAreas={gridAreas}
+        gridAreas={initialPlayerOptions?.gridAreas}
       />
     );
   }
 
   return (
-    <Play
-      players={players}
-      onPlayerChange={handlePlayerChange}
-      gridAreas={gridAreas}
+    <StartMenu
+      setInitialPlayerOptions={setInitialPlayerOptions}
+      setPlayers={setPlayers}
     />
   );
 };
