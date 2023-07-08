@@ -8,21 +8,20 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `;
 
-const CountersWrapper = styled.div`
-  display: flex;
-`;
-
 type PlayProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
+  gridAreas: string;
 };
 
-const Play = ({ players, onPlayerChange }: PlayProps) => {
+const Play = ({ players, onPlayerChange, gridAreas }: PlayProps) => {
   return (
     <MainWrapper>
-      <CountersWrapper>
-        <Counters players={players} onPlayerChange={onPlayerChange} />
-      </CountersWrapper>
+      <Counters
+        players={players}
+        onPlayerChange={onPlayerChange}
+        gridAreas={gridAreas}
+      />
     </MainWrapper>
   );
 };

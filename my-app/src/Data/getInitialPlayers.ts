@@ -1,30 +1,92 @@
 import { Player, Rotation } from '../Types/Player';
+import { GridTemplateAreas } from './getGridTemplateAreas';
 
 type InitialSettings = {
   startingLifeTotal: number;
-  flipped?: boolean;
   useCommanderDamage: boolean;
   numberOfPlayers: number;
+  gridAreas: GridTemplateAreas;
+};
+
+const presetColors = [
+  '#F06292', // Light Pink
+  '#4DB6AC', // Teal
+  '#FFA726', // Orange
+  '#7986CB', // Indigo
+  '#FFCC80', // Peach
+  '#90CAF9', // Pastel Blue
+  '#CE93D8', // Lilac
+  '#FF8A80', // Coral
+];
+
+const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
+  if (gridAreas === GridTemplateAreas.OnePlayerHorizontal && index === 1) {
+    return Rotation.Normal;
+  }
+
+  if (gridAreas === GridTemplateAreas.OnePlayerVertical && index === 1) {
+    return Rotation.Side;
+  }
+
+  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeHorizontal) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.TwoPlayersSameSide) {
+    switch (index) {
+      case 1:
+        return Rotation.Normal;
+      case 2:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.ThreePlayers) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Normal;
+      case 3:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  if (gridAreas === GridTemplateAreas.ThreePlayersSide) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.SideFlipped;
+      case 3:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
+  return Rotation.Normal;
 };
 
 export const createInitialPlayers = ({
   numberOfPlayers,
   startingLifeTotal,
   useCommanderDamage,
+  gridAreas,
 }: InitialSettings): Player[] => {
-  const colors = [
-    '#F06292', // Light Pink
-    '#4DB6AC', // Teal
-    '#FFA726', // Orange
-    '#7986CB', // Indigo
-    '#FFCC80', // Peach
-    '#90CAF9', // Pastel Blue
-    '#CE93D8', // Lilac
-    '#FF8A80', // Coral
-  ];
-
   const players: Player[] = [];
-  const availableColors = [...colors]; // Create a copy of the colors array
+  const availableColors = [...presetColors]; // Create a copy of the colors array
 
   for (let i = 1; i <= numberOfPlayers; i++) {
     const colorIndex = Math.floor(Math.random() * availableColors.length);
@@ -32,6 +94,17 @@ export const createInitialPlayers = ({
 
     // Remove the assigned color from the availableColors array
     availableColors.splice(colorIndex, 1);
+
+    const commanderDamage = [];
+    for (let j = 1; j <= numberOfPlayers; j++) {
+      commanderDamage.push({
+        source: j,
+        damageTotal: 0,
+        partnerDamageTotal: 0,
+      });
+    }
+    const rotation = getRotation(i, gridAreas);
+    console.log(rotation);
 
     const player: Player = {
       lifeTotal: startingLifeTotal,
@@ -43,15 +116,11 @@ export const createInitialPlayers = ({
         useEnergy: false,
         useExperience: false,
         usePoison: false,
-        rotation: i === 1 || i === 2 ? Rotation.Flipped : Rotation.Normal,
+        rotation,
       },
+
       extraCounters: [],
-      commanderDamage: [
-        { source: 1, damageTotal: 0, partnerDamageTotal: 0 },
-        { source: 2, damageTotal: 0, partnerDamageTotal: 0 },
-        { source: 3, damageTotal: 0, partnerDamageTotal: 0 },
-        { source: 4, damageTotal: 0, partnerDamageTotal: 0 },
-      ],
+      commanderDamage,
     };
 
     players.push(player);
@@ -59,9 +128,3 @@ export const createInitialPlayers = ({
 
   return players;
 };
-
-export const initialPlayers: Player[] = createInitialPlayers({
-  numberOfPlayers: 4,
-  startingLifeTotal: 40,
-  useCommanderDamage: true,
-});

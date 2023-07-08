@@ -41,7 +41,7 @@ const CommanderDamageButtonText = styled.p`
   text-size-adjust: auto;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
-  width: 2rem;
+  width: 1rem;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
   color: #000000;
@@ -165,8 +165,11 @@ const CommanderDamageBar = ({
   return (
     <CommanderDamageGrid>
       {opponents.map((opponent, index) => {
+        if (!opponent.settings.useCommanderDamage) {
+          return null;
+        }
         return (
-          <CommanderDamageContainer key={opponent.key}>
+          <CommanderDamageContainer key={index}>
             <CommanderDamageButton
               key={index}
               onPointerDown={() => handleDownInput(index)}

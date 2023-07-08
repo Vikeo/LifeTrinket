@@ -5,17 +5,19 @@ import * as S from './Counters.style';
 type CountersProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
+  gridAreas: string;
 };
 
-const Counters = ({ players, onPlayerChange }: CountersProps) => {
+const Counters = ({ players, onPlayerChange, gridAreas }: CountersProps) => {
   return (
     <S.CountersWrapper>
-      <S.CountersGrid>
+      <S.CountersGrid gridTemplateAreas={gridAreas}>
         {players.map((player) => {
-          const rotation = player.settings.rotation;
-
           return (
-            <S.GridItemContainer key={player.key} rotation={rotation}>
+            <S.GridItemContainer
+              key={player.key}
+              gridArea={`player${player.key}`}
+            >
               <LifeCounter
                 backgroundColor={player.color}
                 player={player}

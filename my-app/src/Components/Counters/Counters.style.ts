@@ -1,44 +1,30 @@
-import styled, { css } from 'styled-components';
-import { Rotation } from '../../Types/Player';
+import styled from 'styled-components';
 
 export const CountersWrapper = styled.div`
   width: 100%;
-  max-height: 100%;
+  height: 100%;
   background-color: black;
 `;
 
-export const CountersGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box; /* Firefox, other Gecko */
-  box-sizing: border-box; /* Opera/IE 8+ */
-  row-gap: 4px;
-  column-gap: 4px;
+export const CountersGrid = styled.div<{ gridTemplateAreas: string }>`
+  display: grid;
+  gap: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  grid-template-areas: ${({ gridTemplateAreas }) => gridTemplateAreas};
 `;
 
-export const GridItemContainer = styled.div<{ rotation: Rotation }>`
+export const GridItemContainer = styled.div<{
+  gridArea: string;
+}>`
   display: flex;
-  width: calc(50vmax - 2px);
-  height: calc(50vmin - 2px);
   justify-content: center;
   align-items: center;
-
-  ${(props) =>
-    css`
-      transform: rotate(${props.rotation}deg);
-    `};
-`;
-
-export const GridItemContainerFlipped = styled.div`
-  display: flex;
-  width: calc(50vmax - 2px);
-  height: calc(50vmin - 2px);
-  justify-content: center;
-  align-items: center;
-  transform: rotate(180deg);
+  width: 100%;
+  height: 100%;
+  grid-area: ${(props) => props.gridArea};
 `;
 
 export const ExtraCountersGrid = styled.div`

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as S from './LifeCounter.style';
 import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
@@ -37,7 +37,7 @@ const LifeCounter = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setRecentDifference(0);
-    }, 3000); // Adjust the duration as needed (3000ms = 3 seconds)
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [recentDifference]);
@@ -53,7 +53,10 @@ const LifeCounter = ({
 
   return (
     <S.LifeCounterWrapper backgroundColor={backgroundColor}>
-      <S.LifeCounterContentContainer {...swipeHandlers}>
+      <S.LifeCounterContentContainer
+        {...swipeHandlers}
+        rotation={player.settings.rotation}
+      >
         <CommanderDamageBar
           lifeTotal={player.lifeTotal}
           opponents={opponents}
@@ -66,6 +69,7 @@ const LifeCounter = ({
             setShowPlayerMenu(!showPlayerMenu);
           }}
         />
+        <div>{player.key}</div>
         <S.LifeCountainer>
           <SubtractLifeButton
             lifeTotal={player.lifeTotal}

@@ -1,6 +1,7 @@
+import { initialPlayerOptions } from '../../App';
+import { createInitialPlayers } from '../../Data/getInitialPlayers';
 import { Player, Rotation } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
-import { initialPlayers } from '../../Data/getInitialPlayers';
 
 type SettingsProps = {
   player: Player;
@@ -27,6 +28,8 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
       commanderDamage.damageTotal = 0;
       commanderDamage.partnerDamageTotal = 0;
     });
+
+    const initialPlayers = createInitialPlayers(initialPlayerOptions);
 
     const resetPlayer = initialPlayers.find((initialPlayer) => {
       return initialPlayer.key === player.key;

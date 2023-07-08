@@ -1,23 +1,35 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { Rotation } from '../../Types/Player';
 
-export const LifeCounterWrapper = styled.div<{ backgroundColor?: string }>`
+export const LifeCounterWrapper = styled.div<{
+  backgroundColor: string;
+}>`
   position: relative;
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   height: 100%;
+  width: 100%;
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
 `;
 
-export const LifeCounterContentContainer = styled.div`
+export const LifeCounterContentContainer = styled.div<{
+  rotation: Rotation;
+}>`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
+
   z-index: 1;
+
+  ${(props) =>
+    css`
+      rotate: ${props.rotation}deg;
+    `};
 `;
 
 export const LifeCountainer = styled.div`
