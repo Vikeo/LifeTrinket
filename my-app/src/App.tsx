@@ -18,9 +18,12 @@ export const initialPlayerOptions = {
 
 const App = () => {
   const savedPlayers = localStorage.getItem('players');
+  const savedGameSettings = localStorage.getItem('initialGameSettings');
 
-  const [initialPlayerOptions, setInitialPlayerOptions] =
-    useState<InitialSettings | null>(null);
+  const [initialGameSettings, setInitialGameSettings] =
+    useState<InitialSettings | null>(
+      savedGameSettings ? JSON.parse(savedGameSettings) : null
+    );
 
   const [players, setPlayers] = useState<Player[]>(
     savedPlayers ? JSON.parse(savedPlayers) : []
@@ -28,7 +31,11 @@ const App = () => {
 
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));
-  }, [players]);
+    localStorage.setItem(
+      'initialGameSettings',
+      JSON.stringify(initialGameSettings)
+    );
+  }, [initialGameSettings, players]);
 
   const handlePlayerChange = (updatedPlayer: Player) => {
     const updatedPlayers = players.map((player) =>
@@ -37,20 +44,20 @@ const App = () => {
     setPlayers(updatedPlayers);
   };
 
-  if (players && initialPlayerOptions) {
+  if (players.length > 0 && initialGameSettings) {
     return (
       <Play
         players={players}
         onPlayerChange={handlePlayerChange}
-        gridAreas={initialPlayerOptions?.gridAreas}
+        gridAreas={initialGameSettings?.gridAreas}
       />
     );
   }
 
   return (
     <StartMenu
-      initialPlayerOptions={initialPlayerOptions}
-      setInitialPlayerOptions={setInitialPlayerOptions}
+      initialGameSettings={initialGameSettings}
+      setInitialGameSettings={setInitialGameSettings}
       setPlayers={setPlayers}
     />
   );

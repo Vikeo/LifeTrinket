@@ -7,7 +7,7 @@ import { styled } from 'styled-components';
 
 const RootWrapper = styled.div`
   @media (orientation: portrait) {
-    transform: rotate(90deg);
+    rotate: 90deg;
   }
 `;
 

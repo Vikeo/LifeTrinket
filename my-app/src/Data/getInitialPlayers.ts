@@ -79,9 +79,9 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
       case 1:
         return Rotation.Flipped;
       case 2:
-        return Rotation.Side;
-      case 3:
         return Rotation.Normal;
+      case 3:
+        return Rotation.Side;
       default:
         return Rotation.Normal;
     }

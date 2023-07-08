@@ -60,6 +60,8 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
 
   const handleNewGame = () => {
     localStorage.removeItem('players');
+    localStorage.removeItem('initialGameSettings');
+
     window.location.reload();
   };
 
