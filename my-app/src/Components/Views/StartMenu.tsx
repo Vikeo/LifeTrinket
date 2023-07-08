@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { GridTemplateAreas } from '../../Data/getGridTemplateAreas';
-import { InitialSettings } from '../../Data/getInitialPlayers';
+import {
+  createInitialPlayers,
+  InitialSettings,
+} from '../../Data/getInitialPlayers';
 import { Player } from '../../Types/Player';
 
 const MainWrapper = styled.div`
@@ -13,6 +16,7 @@ const MainWrapper = styled.div`
 type StartProps = {
   setInitialPlayerOptions: (options: InitialSettings) => void;
   setPlayers: (updatedPlayer: Player[]) => void;
+  initialPlayerOptions: InitialSettings | null;
 };
 
 const Start = ({ setInitialPlayerOptions, setPlayers }: StartProps) => {
@@ -24,6 +28,7 @@ const Start = ({ setInitialPlayerOptions, setPlayers }: StartProps) => {
   });
   const handleFourPlayersSet = () => {
     setInitialPlayerOptions(playerOptions);
+    setPlayers(createInitialPlayers(playerOptions));
   };
 
   return (

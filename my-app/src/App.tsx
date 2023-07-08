@@ -3,7 +3,10 @@ import './App.css';
 import { Player } from './Types/Player';
 import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu';
-import { InitialSettings } from './Data/getInitialPlayers';
+import {
+  createInitialPlayers,
+  InitialSettings,
+} from './Data/getInitialPlayers';
 import { GridTemplateAreas } from './Data/getGridTemplateAreas';
 
 export const initialPlayerOptions = {
@@ -46,6 +49,7 @@ const App = () => {
 
   return (
     <StartMenu
+      initialPlayerOptions={initialPlayerOptions}
       setInitialPlayerOptions={setInitialPlayerOptions}
       setPlayers={setPlayers}
     />
