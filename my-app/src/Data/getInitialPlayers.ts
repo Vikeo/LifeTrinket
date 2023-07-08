@@ -76,6 +76,19 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
     }
   }
 
+  if (gridAreas === GridTemplateAreas.FourPlayers) {
+    switch (index) {
+      case 1:
+        return Rotation.Flipped;
+      case 2:
+        return Rotation.Flipped;
+      case 3:
+        return Rotation.Normal;
+      default:
+        return Rotation.Normal;
+    }
+  }
+
   return Rotation.Normal;
 };
 

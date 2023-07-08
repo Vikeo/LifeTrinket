@@ -6,10 +6,10 @@ import Play from './Components/Views/Play';
 import { GridTemplateAreas } from './Data/getGridTemplateAreas';
 
 export const initialPlayerOptions = {
-  numberOfPlayers: 3,
+  numberOfPlayers: 4,
   startingLifeTotal: 40,
   useCommanderDamage: true,
-  gridAreas: GridTemplateAreas.ThreePlayersSide,
+  gridAreas: GridTemplateAreas.FourPlayers,
 };
 
 const App = () => {
