@@ -20,15 +20,15 @@ const presetColors = [
 ];
 
 const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
-  if (gridAreas === GridTemplateAreas.OnePlayerHorizontal && index === 1) {
+  if (gridAreas === GridTemplateAreas.OnePlayerLandscape && index === 1) {
     return Rotation.Normal;
   }
 
-  if (gridAreas === GridTemplateAreas.OnePlayerVertical && index === 1) {
+  if (gridAreas === GridTemplateAreas.OnePlayerPortrait && index === 1) {
     return Rotation.Side;
   }
 
-  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeVertical) {
+  if (gridAreas === GridTemplateAreas.TwoPlayersOppositePortrait) {
     switch (index) {
       case 1:
         return Rotation.SideFlipped;
@@ -39,7 +39,7 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
     }
   }
 
-  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeHorizontal) {
+  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeLandscape) {
     switch (index) {
       case 1:
         return Rotation.Flipped;
