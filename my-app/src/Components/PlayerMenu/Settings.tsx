@@ -85,8 +85,8 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
   };
 
   return (
-    <S.SettingsContainer>
-      <S.Label>
+    <S.SettingsContainer rotation={player.settings.rotation}>
+      <S.Label rotation={player.settings.rotation}>
         Color:
         <S.Input
           type="color"
@@ -95,7 +95,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
         />
       </S.Label>
 
-      <S.Label>
+      <S.Label rotation={player.settings.rotation}>
         Commander:
         <S.Input
           type="checkbox"
@@ -104,7 +104,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Label>
+      <S.Label rotation={player.settings.rotation}>
         Partner:
         <S.Input
           type="checkbox"
@@ -113,7 +113,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Label>
+      <S.Label rotation={player.settings.rotation}>
         Poison:
         <S.Input
           type="checkbox"
@@ -122,7 +122,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Label>
+      <S.Label rotation={player.settings.rotation}>
         Energy:
         <S.Input
           type="checkbox"
@@ -131,7 +131,7 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Label>
+      <S.Label rotation={player.settings.rotation}>
         Experience:
         <S.Input
           type="checkbox"
@@ -140,10 +140,18 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleSettingsChange}
         />
       </S.Label>
-      <S.Button onClick={handlePlayerReset}>Reset</S.Button>
-      <S.Button onClick={handleFlip}>Flip</S.Button>
-      <S.Button onClick={handleNewGame}>NEW GAME</S.Button>
-      <S.Button onClick={toggleFullscreen}>Fullscreen</S.Button>
+      <S.Button rotation={player.settings.rotation} onClick={handlePlayerReset}>
+        Reset
+      </S.Button>
+      <S.Button rotation={player.settings.rotation} onClick={handleFlip}>
+        Flip
+      </S.Button>
+      <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
+        NEW GAME
+      </S.Button>
+      <S.Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
+        Fullscreen
+      </S.Button>
     </S.SettingsContainer>
   );
 };
