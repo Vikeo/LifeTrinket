@@ -5,22 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { styled } from 'styled-components';
 
-const RootWrapper = styled.div`
-  max-width: fit-content;
-  max-height: fit-content;
-  @media (orientation: portrait) {
-    rotate: 90deg;
-  }
-`;
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RootWrapper>
-      <App />
-    </RootWrapper>
+    <App />
   </React.StrictMode>
 );
 

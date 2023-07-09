@@ -35,11 +35,11 @@ const MainWrapper = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  rotate: -90deg;
-  width: 100%;
-  height: 100%;
-  padding: 5rem;
-  min-width: max-content;
+  max-width: 100vmin;
+  max-height: 100vmax;
+  @media (orientation: landscape) {
+    rotate: -90deg;
+  }
 `;
 
 const LayoutWrapper = styled.div`
@@ -47,8 +47,6 @@ const LayoutWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
-  min-width: max-content;
 `;
 
 const playerMarks = [
