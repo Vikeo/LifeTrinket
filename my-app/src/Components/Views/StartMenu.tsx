@@ -30,27 +30,19 @@ import SixPlayers from '../../Icons/Layouts/SixPlayers';
 import SixPlayersSide from '../../Icons/Layouts/SixPlayersSide';
 
 export const Wrapper = styled.div`
-  width: 100vmin;
-  height: 100vmax;
-  background-color: #edbcbc9e;
-  @media (orientation: landscape) {
-    width: 100vmax;
-    height: 100vmin;
-  }
+  width: 100vw;
+  height: 100vh;
 `;
 
 const MainWrapper = styled.div`
+  padding-top: 58px;
+  padding-bottom: 58px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
-  padding: 4px;
-
-  background-color: #695d5d4f;
-  @media (orientation: landscape) {
-    rotate: -90deg;
-  }
+  height: fit-content;
 `;
 
 const LayoutWrapper = styled.div`
@@ -146,7 +138,7 @@ const Start = ({
   return (
     <Wrapper>
       <MainWrapper>
-        <FormControl style={{ width: '80vmin' }}>
+        <FormControl style={{ width: '80vw' }}>
           <FormLabel>Number of Players</FormLabel>
           <Slider
             title="Number of Players"
@@ -212,9 +204,11 @@ const Start = ({
                     value={GridTemplateAreas.OnePlayerLandscape}
                     control={
                       <Radio
-                        icon={<OnePlayerLandscape size="18vh" color="black" />}
+                        icon={
+                          <OnePlayerLandscape size="20vmax" color="black" />
+                        }
                         checkedIcon={
-                          <OnePlayerLandscape size="18vh" color="blue" />
+                          <OnePlayerLandscape size="20vmax" color="blue" />
                         }
                         TouchRippleProps={{ style: { display: 'none' } }}
                       />
@@ -225,9 +219,9 @@ const Start = ({
                     value={GridTemplateAreas.OnePlayerPortrait}
                     control={
                       <Radio
-                        icon={<OnePlayerPortrait size="18vh" color="black" />}
+                        icon={<OnePlayerPortrait size="20vmax" color="black" />}
                         checkedIcon={
-                          <OnePlayerPortrait size="18vh" color="blue" />
+                          <OnePlayerPortrait size="20vmax" color="blue" />
                         }
                         TouchRippleProps={{ style: { display: 'none' } }}
                       />
@@ -244,13 +238,13 @@ const Start = ({
                       <Radio
                         icon={
                           <TwoPlayersOppositeLandscape
-                            size="18vh"
+                            size="20vmax"
                             color="black"
                           />
                         }
                         checkedIcon={
                           <TwoPlayersOppositeLandscape
-                            size="18vh"
+                            size="20vmax"
                             color="blue"
                           />
                         }
@@ -265,13 +259,13 @@ const Start = ({
                       <Radio
                         icon={
                           <TwoPlayersOppositePortrait
-                            size="18vh"
+                            size="20vmax"
                             color="black"
                           />
                         }
                         checkedIcon={
                           <TwoPlayersOppositePortrait
-                            size="18vh"
+                            size="20vmax"
                             color="blue"
                           />
                         }
@@ -284,9 +278,11 @@ const Start = ({
                     value={GridTemplateAreas.TwoPlayersSameSide}
                     control={
                       <Radio
-                        icon={<TwoPlayersSameSide size="18vh" color="black" />}
+                        icon={
+                          <TwoPlayersSameSide size="20vmax" color="black" />
+                        }
                         checkedIcon={
-                          <TwoPlayersSameSide size="18vh" color="blue" />
+                          <TwoPlayersSameSide size="20vmax" color="blue" />
                         }
                         TouchRippleProps={{ style: { display: 'none' } }}
                       />
@@ -301,8 +297,10 @@ const Start = ({
                     value={GridTemplateAreas.ThreePlayers}
                     control={
                       <Radio
-                        icon={<ThreePlayers size="18vh" color="black" />}
-                        checkedIcon={<ThreePlayers size="18vh" color="blue" />}
+                        icon={<ThreePlayers size="20vmax" color="black" />}
+                        checkedIcon={
+                          <ThreePlayers size="20vmax" color="blue" />
+                        }
                         TouchRippleProps={{ style: { display: 'none' } }}
                       />
                     }
@@ -312,9 +310,9 @@ const Start = ({
                     value={GridTemplateAreas.ThreePlayersSide}
                     control={
                       <Radio
-                        icon={<ThreePlayersSide size="18vh" color="black" />}
+                        icon={<ThreePlayersSide size="20vmax" color="black" />}
                         checkedIcon={
-                          <ThreePlayersSide size="18vh" color="blue" />
+                          <ThreePlayersSide size="20vmax" color="blue" />
                         }
                         TouchRippleProps={{ style: { display: 'none' } }}
                       />
@@ -329,8 +327,8 @@ const Start = ({
                     value={GridTemplateAreas.FourPlayers}
                     control={
                       <Radio
-                        icon={<FourPlayers size="18vh" color="black" />}
-                        checkedIcon={<FourPlayers size="18vh" color="blue" />}
+                        icon={<FourPlayers size="20vmax" color="black" />}
+                        checkedIcon={<FourPlayers size="20vmax" color="blue" />}
                       />
                     }
                     label=""
@@ -339,9 +337,9 @@ const Start = ({
                     value={GridTemplateAreas.FourPlayersSide}
                     control={
                       <Radio
-                        icon={<FourPlayersSide size="18vh" color="black" />}
+                        icon={<FourPlayersSide size="20vmax" color="black" />}
                         checkedIcon={
-                          <FourPlayersSide size="18vh" color="blue" />
+                          <FourPlayersSide size="20vmax" color="blue" />
                         }
                       />
                     }
@@ -355,8 +353,8 @@ const Start = ({
                     value={GridTemplateAreas.FivePlayers}
                     control={
                       <Radio
-                        icon={<FivePlayers size="18vh" color="black" />}
-                        checkedIcon={<FivePlayers size="18vh" color="blue" />}
+                        icon={<FivePlayers size="20vmax" color="black" />}
+                        checkedIcon={<FivePlayers size="20vmax" color="blue" />}
                       />
                     }
                     label=""
@@ -365,9 +363,9 @@ const Start = ({
                     value={GridTemplateAreas.FivePlayersSide}
                     control={
                       <Radio
-                        icon={<FivePlayersSide size="18vh" color="black" />}
+                        icon={<FivePlayersSide size="20vmax" color="black" />}
                         checkedIcon={
-                          <FivePlayersSide size="18vh" color="blue" />
+                          <FivePlayersSide size="20vmax" color="blue" />
                         }
                       />
                     }
@@ -381,8 +379,8 @@ const Start = ({
                     value={GridTemplateAreas.SixPlayers}
                     control={
                       <Radio
-                        icon={<SixPlayers size="18vh" color="black" />}
-                        checkedIcon={<FivePlayers size="18vh" color="blue" />}
+                        icon={<SixPlayers size="20vmax" color="black" />}
+                        checkedIcon={<FivePlayers size="20vmax" color="blue" />}
                       />
                     }
                     label=""
@@ -391,9 +389,9 @@ const Start = ({
                     value={GridTemplateAreas.SixPlayersSide}
                     control={
                       <Radio
-                        icon={<SixPlayersSide size="18vh" color="black" />}
+                        icon={<SixPlayersSide size="20vmax" color="black" />}
                         checkedIcon={
-                          <SixPlayersSide size="18vh" color="blue" />
+                          <SixPlayersSide size="20vmax" color="blue" />
                         }
                       />
                     }
