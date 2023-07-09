@@ -19,6 +19,10 @@ export const StyledLifeCounterButton = styled.button`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  @media (orientation: landscape) {
+    max-width: 50vmin;
+    max-height: 50vmax;
+  }
 `;
 
 const TextContainer = styled.div<{

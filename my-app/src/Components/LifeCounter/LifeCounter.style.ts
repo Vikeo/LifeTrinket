@@ -12,6 +12,10 @@ export const LifeCounterWrapper = styled.div<{
   height: 100%;
   width: 100%;
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
+  @media (orientation: landscape) {
+    max-width: 100vmax;
+    max-height: 100min;
+  }
 `;
 
 export const LifeCounterContentContainer = styled.div<{
