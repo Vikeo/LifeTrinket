@@ -1,6 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
 import { Rotation } from '../../Types/Player';
-import PlayerMenu from '../PlayerMenu/PlayerMenu';
 
 export const LifeCounterWrapper = styled.div<{
   backgroundColor: string;
