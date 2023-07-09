@@ -29,24 +29,33 @@ import FivePlayersSide from '../../Icons/Layouts/FivePlayersSide';
 import SixPlayers from '../../Icons/Layouts/SixPlayers';
 import SixPlayersSide from '../../Icons/Layouts/SixPlayersSide';
 
+export const Wrapper = styled.div`
+  width: 100vmin;
+  height: 100vmax;
+  background-color: #edbcbc9e;
+  @media (orientation: landscape) {
+    width: 100vmax;
+    height: 100vmin;
+  }
+`;
+
 const MainWrapper = styled.div`
   overflow: hidden;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
-  max-width: 100vmin;
-  max-height: 100vmax;
+  padding: 4px;
+
+  background-color: #695d5d4f;
   @media (orientation: landscape) {
     rotate: -90deg;
   }
 `;
 
 const LayoutWrapper = styled.div`
-  display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  display: flex;
 `;
 
 const playerMarks = [
@@ -135,266 +144,272 @@ const Start = ({
   };
 
   return (
-    <MainWrapper>
-      <FormControl style={{ minWidth: '80%' }}>
-        <FormLabel>Number of Players</FormLabel>
-        <Slider
-          title="Number of Players"
-          max={6}
-          min={1}
-          aria-label="Custom marks"
-          defaultValue={4}
-          getAriaValueText={valuetext}
-          step={null}
-          valueLabelDisplay="auto"
-          marks={playerMarks}
-          onChange={(e, value) => {
-            setPlayerOptions({
-              ...playerOptions,
-              numberOfPlayers: value as number,
-            });
-          }}
-        />
-        <FormLabel>Starting Health</FormLabel>
-        <Slider
-          title="Starting Health"
-          max={60}
-          min={20}
-          aria-label="Custom marks"
-          defaultValue={40}
-          getAriaValueText={valuetext}
-          step={10}
-          valueLabelDisplay="auto"
-          marks={healthMarks}
-          onChange={(e, value) =>
-            setPlayerOptions({
-              ...playerOptions,
-              startingLifeTotal: value as number,
-            })
-          }
-        />
-        <FormLabel>Commander</FormLabel>
-        <Switch
-          checked={playerOptions.useCommanderDamage}
-          defaultChecked
-          onChange={(e, value) =>
-            setPlayerOptions({
-              ...playerOptions,
-              useCommanderDamage: value,
-            })
-          }
-        />
-
-        <FormLabel>Layout</FormLabel>
-        <LayoutWrapper>
-          <RadioGroup
-            row
+    <Wrapper>
+      <MainWrapper>
+        <FormControl style={{ width: '80vmin' }}>
+          <FormLabel>Number of Players</FormLabel>
+          <Slider
+            title="Number of Players"
+            max={6}
+            min={1}
+            aria-label="Custom marks"
+            defaultValue={4}
+            getAriaValueText={valuetext}
+            step={null}
+            valueLabelDisplay="auto"
+            marks={playerMarks}
+            onChange={(e, value) => {
+              setPlayerOptions({
+                ...playerOptions,
+                numberOfPlayers: value as number,
+              });
+            }}
+          />
+          <FormLabel>Starting Health</FormLabel>
+          <Slider
+            title="Starting Health"
+            max={60}
+            min={20}
+            aria-label="Custom marks"
+            defaultValue={40}
+            getAriaValueText={valuetext}
+            step={10}
+            valueLabelDisplay="auto"
+            marks={healthMarks}
             onChange={(e, value) =>
               setPlayerOptions({
                 ...playerOptions,
-                gridAreas: value as GridTemplateAreas,
+                startingLifeTotal: value as number,
               })
             }
-          >
-            {playerOptions.numberOfPlayers === 1 && (
-              <>
-                <FormControlLabel
-                  style={{ margin: '0', padding: '0', width: '10%' }}
-                  value={GridTemplateAreas.OnePlayerLandscape}
-                  control={
-                    <Radio
-                      icon={<OnePlayerLandscape size="248px" color="black" />}
-                      checkedIcon={
-                        <OnePlayerLandscape size="248px" color="blue" />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.OnePlayerPortrait}
-                  control={
-                    <Radio
-                      icon={<OnePlayerPortrait size="248px" color="black" />}
-                      checkedIcon={
-                        <OnePlayerPortrait size="248px" color="blue" />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-            {playerOptions.numberOfPlayers === 2 && (
-              <>
-                <FormControlLabel
-                  value={GridTemplateAreas.TwoPlayersOppositeLandscape}
-                  control={
-                    <Radio
-                      icon={
-                        <TwoPlayersOppositeLandscape
-                          size="248px"
-                          color="black"
-                        />
-                      }
-                      checkedIcon={
-                        <TwoPlayersOppositeLandscape
-                          size="248px"
-                          color="blue"
-                        />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.TwoPlayersOppositePortrait}
-                  control={
-                    <Radio
-                      icon={
-                        <TwoPlayersOppositePortrait
-                          size="248px"
-                          color="black"
-                        />
-                      }
-                      checkedIcon={
-                        <TwoPlayersOppositePortrait size="248px" color="blue" />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.TwoPlayersSameSide}
-                  control={
-                    <Radio
-                      icon={<TwoPlayersSameSide size="248px" color="black" />}
-                      checkedIcon={
-                        <TwoPlayersSameSide size="248px" color="blue" />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-            {playerOptions.numberOfPlayers === 3 && (
-              <>
-                <FormControlLabel
-                  value={GridTemplateAreas.ThreePlayers}
-                  control={
-                    <Radio
-                      icon={<ThreePlayers size="248px" color="black" />}
-                      checkedIcon={<ThreePlayers size="248px" color="blue" />}
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.ThreePlayersSide}
-                  control={
-                    <Radio
-                      icon={<ThreePlayersSide size="248px" color="black" />}
-                      checkedIcon={
-                        <ThreePlayersSide size="248px" color="blue" />
-                      }
-                      TouchRippleProps={{ style: { display: 'none' } }}
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-            {playerOptions.numberOfPlayers === 4 && (
-              <>
-                <FormControlLabel
-                  value={GridTemplateAreas.FourPlayers}
-                  control={
-                    <Radio
-                      icon={<FourPlayers size="248px" color="black" />}
-                      checkedIcon={<FourPlayers size="248px" color="blue" />}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.FourPlayersSide}
-                  control={
-                    <Radio
-                      icon={<FourPlayersSide size="248px" color="black" />}
-                      checkedIcon={
-                        <FourPlayersSide size="248px" color="blue" />
-                      }
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-            {playerOptions.numberOfPlayers === 5 && (
-              <>
-                <FormControlLabel
-                  value={GridTemplateAreas.FivePlayers}
-                  control={
-                    <Radio
-                      icon={<FivePlayers size="248px" color="black" />}
-                      checkedIcon={<FivePlayers size="248px" color="blue" />}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.FivePlayersSide}
-                  control={
-                    <Radio
-                      icon={<FivePlayersSide size="248px" color="black" />}
-                      checkedIcon={
-                        <FivePlayersSide size="248px" color="blue" />
-                      }
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-            {playerOptions.numberOfPlayers === 6 && (
-              <>
-                <FormControlLabel
-                  value={GridTemplateAreas.SixPlayers}
-                  control={
-                    <Radio
-                      icon={<SixPlayers size="248px" color="black" />}
-                      checkedIcon={<FivePlayers size="248px" color="blue" />}
-                    />
-                  }
-                  label=""
-                />
-                <FormControlLabel
-                  value={GridTemplateAreas.SixPlayersSide}
-                  control={
-                    <Radio
-                      icon={<SixPlayersSide size="248px" color="black" />}
-                      checkedIcon={<SixPlayersSide size="248px" color="blue" />}
-                    />
-                  }
-                  label=""
-                />
-              </>
-            )}
-          </RadioGroup>
-        </LayoutWrapper>
-        <hr />
-        <hr />
-        <hr />
-        <button onClick={doStartGame}>Start Game</button>
-      </FormControl>
-    </MainWrapper>
+          />
+          <FormLabel>Commander</FormLabel>
+          <Switch
+            checked={playerOptions.useCommanderDamage}
+            defaultChecked
+            onChange={(e, value) =>
+              setPlayerOptions({
+                ...playerOptions,
+                useCommanderDamage: value,
+              })
+            }
+          />
+
+          <FormLabel>Layout</FormLabel>
+          <LayoutWrapper>
+            <RadioGroup
+              row
+              onChange={(e, value) =>
+                setPlayerOptions({
+                  ...playerOptions,
+                  gridAreas: value as GridTemplateAreas,
+                })
+              }
+            >
+              {playerOptions.numberOfPlayers === 1 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.OnePlayerLandscape}
+                    control={
+                      <Radio
+                        icon={<OnePlayerLandscape size="18vh" color="black" />}
+                        checkedIcon={
+                          <OnePlayerLandscape size="18vh" color="blue" />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.OnePlayerPortrait}
+                    control={
+                      <Radio
+                        icon={<OnePlayerPortrait size="18vh" color="black" />}
+                        checkedIcon={
+                          <OnePlayerPortrait size="18vh" color="blue" />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+              {playerOptions.numberOfPlayers === 2 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.TwoPlayersOppositeLandscape}
+                    control={
+                      <Radio
+                        icon={
+                          <TwoPlayersOppositeLandscape
+                            size="18vh"
+                            color="black"
+                          />
+                        }
+                        checkedIcon={
+                          <TwoPlayersOppositeLandscape
+                            size="18vh"
+                            color="blue"
+                          />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.TwoPlayersOppositePortrait}
+                    control={
+                      <Radio
+                        icon={
+                          <TwoPlayersOppositePortrait
+                            size="18vh"
+                            color="black"
+                          />
+                        }
+                        checkedIcon={
+                          <TwoPlayersOppositePortrait
+                            size="18vh"
+                            color="blue"
+                          />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.TwoPlayersSameSide}
+                    control={
+                      <Radio
+                        icon={<TwoPlayersSameSide size="18vh" color="black" />}
+                        checkedIcon={
+                          <TwoPlayersSameSide size="18vh" color="blue" />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+              {playerOptions.numberOfPlayers === 3 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.ThreePlayers}
+                    control={
+                      <Radio
+                        icon={<ThreePlayers size="18vh" color="black" />}
+                        checkedIcon={<ThreePlayers size="18vh" color="blue" />}
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.ThreePlayersSide}
+                    control={
+                      <Radio
+                        icon={<ThreePlayersSide size="18vh" color="black" />}
+                        checkedIcon={
+                          <ThreePlayersSide size="18vh" color="blue" />
+                        }
+                        TouchRippleProps={{ style: { display: 'none' } }}
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+              {playerOptions.numberOfPlayers === 4 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.FourPlayers}
+                    control={
+                      <Radio
+                        icon={<FourPlayers size="18vh" color="black" />}
+                        checkedIcon={<FourPlayers size="18vh" color="blue" />}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.FourPlayersSide}
+                    control={
+                      <Radio
+                        icon={<FourPlayersSide size="18vh" color="black" />}
+                        checkedIcon={
+                          <FourPlayersSide size="18vh" color="blue" />
+                        }
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+              {playerOptions.numberOfPlayers === 5 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.FivePlayers}
+                    control={
+                      <Radio
+                        icon={<FivePlayers size="18vh" color="black" />}
+                        checkedIcon={<FivePlayers size="18vh" color="blue" />}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.FivePlayersSide}
+                    control={
+                      <Radio
+                        icon={<FivePlayersSide size="18vh" color="black" />}
+                        checkedIcon={
+                          <FivePlayersSide size="18vh" color="blue" />
+                        }
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+              {playerOptions.numberOfPlayers === 6 && (
+                <>
+                  <FormControlLabel
+                    value={GridTemplateAreas.SixPlayers}
+                    control={
+                      <Radio
+                        icon={<SixPlayers size="18vh" color="black" />}
+                        checkedIcon={<FivePlayers size="18vh" color="blue" />}
+                      />
+                    }
+                    label=""
+                  />
+                  <FormControlLabel
+                    value={GridTemplateAreas.SixPlayersSide}
+                    control={
+                      <Radio
+                        icon={<SixPlayersSide size="18vh" color="black" />}
+                        checkedIcon={
+                          <SixPlayersSide size="18vh" color="blue" />
+                        }
+                      />
+                    }
+                    label=""
+                  />
+                </>
+              )}
+            </RadioGroup>
+          </LayoutWrapper>
+          <hr />
+          <hr />
+          <hr />
+          <button onClick={doStartGame}>Start Game</button>
+        </FormControl>
+      </MainWrapper>
+    </Wrapper>
   );
 };
 
