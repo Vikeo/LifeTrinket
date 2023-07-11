@@ -26,13 +26,10 @@ export const SettingsContainer = styled.div<{
   rotation: Rotation;
 }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  height: 70%;
-  padding: 1rem;
-  gap: 2rem;
   justify-content: space-evenly;
-  align-items: center;
+  gap: 0.5rem;
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||

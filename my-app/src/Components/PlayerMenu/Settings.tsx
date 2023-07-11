@@ -1,7 +1,13 @@
+import { Checkbox, ToggleButton } from '@mui/material';
 import { initialPlayerOptions } from '../../App';
 import { createInitialPlayers } from '../../Data/getInitialPlayers';
 import { Player, Rotation } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
+import ExperienceIcon from '../../Icons/ExperienceIcon';
+import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
+import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
+import EnergyIcon from '../../Icons/EnergyIcon';
+import PoisonIcon from '../../Icons/PoisonIcon';
 
 type SettingsProps = {
   player: Player;
@@ -94,58 +100,34 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
           onChange={handleColorChange}
         />
       </S.Label>
-
-      <S.Label rotation={player.settings.rotation}>
-        Commander:
-        <S.Input
-          type="checkbox"
-          name="useCommanderDamage"
-          checked={player.settings.useCommanderDamage}
-          onChange={handleSettingsChange}
-        />
-      </S.Label>
-      <S.Label rotation={player.settings.rotation}>
-        Partner:
-        <S.Input
-          type="checkbox"
-          name="usePartner"
-          checked={player.settings.usePartner}
-          onChange={handleSettingsChange}
-        />
-      </S.Label>
-      <S.Label rotation={player.settings.rotation}>
-        Poison:
-        <S.Input
-          type="checkbox"
-          name="usePoison"
-          checked={player.settings.usePoison}
-          onChange={handleSettingsChange}
-        />
-      </S.Label>
-      <S.Label rotation={player.settings.rotation}>
-        Energy:
-        <S.Input
-          type="checkbox"
-          name="useEnergy"
-          checked={player.settings.useEnergy}
-          onChange={handleSettingsChange}
-        />
-      </S.Label>
-      <S.Label rotation={player.settings.rotation}>
-        Experience:
-        <S.Input
-          type="checkbox"
-          name="useExperience"
-          checked={player.settings.useExperience}
-          onChange={handleSettingsChange}
-        />
-      </S.Label>
-      <S.Button rotation={player.settings.rotation} onClick={handlePlayerReset}>
-        Reset
-      </S.Button>
-      <S.Button rotation={player.settings.rotation} onClick={handleFlip}>
-        Flip
-      </S.Button>
+      <Checkbox
+        name="usePartner"
+        checked={player.settings.usePartner}
+        icon={<PartnerTaxIcon size="32px" color="black" />}
+        checkedIcon={<PartnerTaxIcon size="32px" color={player.color} />}
+        onChange={handleSettingsChange}
+      />
+      <Checkbox
+        name="usePoison"
+        checked={player.settings.usePoison}
+        icon={<PoisonIcon size="32px" color="black" />}
+        checkedIcon={<PoisonIcon size="32px" color={player.color} />}
+        onChange={handleSettingsChange}
+      />
+      <Checkbox
+        name="useEnergy"
+        checked={player.settings.useEnergy}
+        icon={<EnergyIcon size="32px" color="black" />}
+        checkedIcon={<EnergyIcon size="32px" color={player.color} />}
+        onChange={handleSettingsChange}
+      />
+      <Checkbox
+        name="useExperience"
+        checked={player.settings.useExperience}
+        icon={<ExperienceIcon size="32px" color="black" />}
+        checkedIcon={<ExperienceIcon size="32px" color={player.color} />}
+        onChange={handleSettingsChange}
+      />
       <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
         NEW GAME
       </S.Button>

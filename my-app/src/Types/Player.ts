@@ -7,7 +7,7 @@ export type Player = {
   extraCounters: ExtraCounter[];
 };
 
-type PlayerSettings = {
+export type PlayerSettings = {
   rotation: Rotation;
   useCommanderDamage: boolean;
   usePartner?: boolean;
