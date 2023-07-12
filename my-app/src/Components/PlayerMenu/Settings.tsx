@@ -40,11 +40,11 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
 
     const initialPlayers = createInitialPlayers(initialPlayerOptions);
 
-    const resetPlayer = initialPlayers.find((initialPlayer) => {
+    const newMe = initialPlayers.find((initialPlayer) => {
       return initialPlayer.key === player.key;
     });
 
-    if (!resetPlayer) {
+    if (!newMe) {
       return;
     }
 
@@ -64,7 +64,11 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
       onChange(opponent);
     });
 
-    onChange(resetPlayer);
+    onChange({
+      ...newMe,
+      color: player.color,
+      settings: { ...player.settings },
+    });
   };
 
   const handleNewGame = () => {
@@ -131,6 +135,10 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
         checkedIcon={<ExperienceIcon size="32px" color={player.color} />}
         onChange={handleSettingsChange}
       />
+      <S.Button rotation={player.settings.rotation} onClick={handlePlayerReset}>
+        Reset
+      </S.Button>
+
       <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
         NEW GAME
       </S.Button>
