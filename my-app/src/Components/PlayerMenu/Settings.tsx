@@ -1,13 +1,13 @@
-import { Checkbox, ToggleButton } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import { initialPlayerOptions } from '../../App';
 import { createInitialPlayers } from '../../Data/getInitialPlayers';
 import { Player, Rotation } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
-import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
 import EnergyIcon from '../../Icons/EnergyIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
+import { useWakeLock } from 'react-screen-wake-lock';
 
 type SettingsProps = {
   player: Player;
@@ -16,6 +16,9 @@ type SettingsProps = {
 };
 
 const Settings = ({ player, opponents, onChange }: SettingsProps) => {
+  const { isSupported, released, request, release } = useWakeLock();
+  const handleWakeLock = () => (released === false ? release() : request());
+
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
     onChange(updatedPlayer);
@@ -133,6 +136,10 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
       </S.Button>
       <S.Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
         Fullscreen
+      </S.Button>
+
+      <S.Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        {released === false ? 'Release' : 'Request'} nosleep
       </S.Button>
     </S.SettingsContainer>
   );

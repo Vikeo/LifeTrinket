@@ -5,7 +5,7 @@ import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu';
 import { InitialSettings } from './Data/getInitialPlayers';
 import { GridTemplateAreas } from './Data/getGridTemplateAreas';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const initialPlayerOptions = {
   numberOfPlayers: 4,
@@ -13,6 +13,14 @@ export const initialPlayerOptions = {
   useCommanderDamage: true,
   gridAreas: GridTemplateAreas.FourPlayers,
 };
+
+const GlobalStyles = createGlobalStyle`
+  html,
+  body,
+  #root {
+    touch-action: manipulation;
+  }
+`;
 
 const RootWrapper2 = styled.div`
   max-width: fit-content;
@@ -57,24 +65,30 @@ const App = () => {
 
   if (players.length > 0 && initialGameSettings) {
     return (
-      <RootWrapper>
-        <Play
-          players={players}
-          onPlayerChange={handlePlayerChange}
-          gridAreas={initialGameSettings?.gridAreas}
-        />
-      </RootWrapper>
+      <>
+        <GlobalStyles />
+        <RootWrapper>
+          <Play
+            players={players}
+            onPlayerChange={handlePlayerChange}
+            gridAreas={initialGameSettings?.gridAreas}
+          />
+        </RootWrapper>
+      </>
     );
   }
 
   return (
-    <RootWrapper2>
-      <StartMenu
-        initialGameSettings={initialGameSettings}
-        setInitialGameSettings={setInitialGameSettings}
-        setPlayers={setPlayers}
-      />
-    </RootWrapper2>
+    <>
+      <GlobalStyles />
+      <RootWrapper2>
+        <StartMenu
+          initialGameSettings={initialGameSettings}
+          setInitialGameSettings={setInitialGameSettings}
+          setPlayers={setPlayers}
+        />
+      </RootWrapper2>
+    </>
   );
 };
 
