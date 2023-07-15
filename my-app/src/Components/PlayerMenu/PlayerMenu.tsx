@@ -7,6 +7,7 @@ type PlayerMenuProps = {
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
+  resetCurrentGame: () => void;
 };
 
 const PlayerMenu = ({
@@ -14,6 +15,7 @@ const PlayerMenu = ({
   opponents,
   onPlayerChange,
   setShowPlayerMenu,
+  resetCurrentGame,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
     setShowPlayerMenu(false);
@@ -28,6 +30,7 @@ const PlayerMenu = ({
         player={player}
         onChange={onPlayerChange}
         opponents={opponents}
+        resetCurrentGame={resetCurrentGame}
       />
     </S.PlayerMenuWrapper>
   );

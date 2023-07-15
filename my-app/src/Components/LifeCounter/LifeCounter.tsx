@@ -14,6 +14,7 @@ type LifeCounterProps = {
   backgroundColor: string;
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
+  resetCurrentGame: () => void;
 };
 
 const LifeCounter = ({
@@ -21,6 +22,7 @@ const LifeCounter = ({
   player,
   opponents,
   onPlayerChange,
+  resetCurrentGame,
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updatedLifeTotal - player.lifeTotal;
@@ -99,6 +101,7 @@ const LifeCounter = ({
           opponents={opponents}
           onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
+          resetCurrentGame={resetCurrentGame}
         />
       )}
     </S.LifeCounterWrapper>

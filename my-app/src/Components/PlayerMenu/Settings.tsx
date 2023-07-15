@@ -1,7 +1,5 @@
 import { Checkbox } from '@mui/material';
-import { initialPlayerOptions } from '../../App';
-import { createInitialPlayers } from '../../Data/getInitialPlayers';
-import { Player, Rotation } from '../../Types/Player';
+import { Player } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
@@ -13,10 +11,16 @@ type SettingsProps = {
   player: Player;
   opponents: Player[];
   onChange: (updatedPlayer: Player) => void;
+  resetCurrentGame: () => void;
 };
 
-const Settings = ({ player, opponents, onChange }: SettingsProps) => {
-  const { isSupported, released, request, release } = useWakeLock();
+const Settings = ({
+  player,
+  opponents,
+  onChange,
+  resetCurrentGame,
+}: SettingsProps) => {
+  const { released, request, release } = useWakeLock();
   const handleWakeLock = () => (released === false ? release() : request());
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,44 +35,8 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
     onChange(updatedPlayer);
   };
 
-  const handlePlayerReset = () => {
-    // Commander damage doesn't reset when player is reset
-    player?.commanderDamage.forEach((commanderDamage) => {
-      commanderDamage.damageTotal = 0;
-      commanderDamage.partnerDamageTotal = 0;
-    });
-
-    const initialPlayers = createInitialPlayers(initialPlayerOptions);
-
-    const newMe = initialPlayers.find((initialPlayer) => {
-      return initialPlayer.key === player.key;
-    });
-
-    if (!newMe) {
-      return;
-    }
-
-    opponents.forEach((opponent) => {
-      // Only reset commander damage from the player that is being reset
-      opponent.commanderDamage.forEach((commanderDamage) => {
-        if (commanderDamage.source !== player.key) {
-          return;
-        }
-        opponent.lifeTotal =
-          opponent.lifeTotal +
-          commanderDamage.damageTotal +
-          commanderDamage.partnerDamageTotal;
-        commanderDamage.damageTotal = 0;
-        commanderDamage.partnerDamageTotal = 0;
-      });
-      onChange(opponent);
-    });
-
-    onChange({
-      ...newMe,
-      color: player.color,
-      settings: { ...player.settings },
-    });
+  const handleResetGame = () => {
+    resetCurrentGame();
   };
 
   const handleNewGame = () => {
@@ -76,17 +44,6 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
     localStorage.removeItem('initialGameSettings');
 
     window.location.reload();
-  };
-
-  const handleFlip = () => {
-    const updatedPlayer = {
-      ...player,
-      settings: {
-        ...player.settings,
-        rotation: Rotation.Flipped ? Rotation.Normal : Rotation.Flipped,
-      },
-    };
-    onChange(updatedPlayer);
   };
 
   const toggleFullscreen = () => {
@@ -135,12 +92,12 @@ const Settings = ({ player, opponents, onChange }: SettingsProps) => {
         checkedIcon={<ExperienceIcon size="32px" color={player.color} />}
         onChange={handleSettingsChange}
       />
-      <S.Button rotation={player.settings.rotation} onClick={handlePlayerReset}>
-        Reset
+      <S.Button rotation={player.settings.rotation} onClick={handleResetGame}>
+        Reset All
       </S.Button>
 
       <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
-        NEW GAME
+        Back to Start
       </S.Button>
       <S.Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
         Fullscreen

@@ -7,9 +7,15 @@ type CountersProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
+  resetCurrentGame: () => void;
 };
 
-const Counters = ({ players, onPlayerChange, gridAreas }: CountersProps) => {
+const Counters = ({
+  players,
+  onPlayerChange,
+  gridAreas,
+  resetCurrentGame,
+}: CountersProps) => {
   return (
     <S.CountersWrapper>
       <S.CountersGrid gridTemplateAreas={gridAreas}>
@@ -30,6 +36,7 @@ const Counters = ({ players, onPlayerChange, gridAreas }: CountersProps) => {
                     (opponent) => opponent.key !== player.key
                   )}
                   onPlayerChange={onPlayerChange}
+                  resetCurrentGame={resetCurrentGame}
                 />
               </S.GridItemContainer>
             );
@@ -46,6 +53,7 @@ const Counters = ({ players, onPlayerChange, gridAreas }: CountersProps) => {
                   (opponent) => opponent.key !== player.key
                 )}
                 onPlayerChange={onPlayerChange}
+                resetCurrentGame={resetCurrentGame}
               />
             </S.GridItemContainer>
           );

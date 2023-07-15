@@ -7,13 +7,6 @@ import { InitialSettings } from './Data/getInitialPlayers';
 import { GridTemplateAreas } from './Data/getGridTemplateAreas';
 import styled, { createGlobalStyle } from 'styled-components';
 
-export const initialPlayerOptions = {
-  numberOfPlayers: 4,
-  startingLifeTotal: 40,
-  useCommanderDamage: true,
-  gridAreas: GridTemplateAreas.FourPlayers,
-};
-
 const GlobalStyles = createGlobalStyle`
   html,
   body,
@@ -63,6 +56,24 @@ const App = () => {
     setPlayers(updatedPlayers);
   };
 
+  const resetCurrentGame = () => {
+    // loop over all players and reset them
+    players.forEach((player) => {
+      player.commanderDamage.forEach((commanderDamage) => {
+        commanderDamage.damageTotal = 0;
+        commanderDamage.partnerDamageTotal = 0;
+      });
+      player.lifeTotal = 40;
+      player.extraCounters.forEach((counter) => {
+        counter.value = 0;
+      });
+
+      handlePlayerChange(player);
+    });
+
+    setPlayers([...players]); // ensure to trigger a re-render
+  };
+
   if (players.length > 0 && initialGameSettings) {
     return (
       <>
@@ -72,6 +83,7 @@ const App = () => {
             players={players}
             onPlayerChange={handlePlayerChange}
             gridAreas={initialGameSettings?.gridAreas}
+            resetCurrentGame={resetCurrentGame}
           />
         </RootWrapper>
       </>

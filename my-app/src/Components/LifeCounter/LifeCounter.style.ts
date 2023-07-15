@@ -91,7 +91,7 @@ export const RecentDifference = styled.span`
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   padding: 5px 10px;
-  font-size: 5vmin;
+  font-size: 8vmin;
   color: #333333;
   animation: ${fadeOut} 3s 1s ease-out forwards;
 `;

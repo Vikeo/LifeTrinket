@@ -12,15 +12,22 @@ type PlayProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
+  resetCurrentGame: () => void;
 };
 
-const Play = ({ players, onPlayerChange, gridAreas }: PlayProps) => {
+const Play = ({
+  players,
+  onPlayerChange,
+  gridAreas,
+  resetCurrentGame,
+}: PlayProps) => {
   return (
     <MainWrapper>
       <Counters
         players={players}
         onPlayerChange={onPlayerChange}
         gridAreas={gridAreas}
+        resetCurrentGame={resetCurrentGame}
       />
     </MainWrapper>
   );
