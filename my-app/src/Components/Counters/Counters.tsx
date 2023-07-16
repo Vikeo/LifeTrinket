@@ -60,9 +60,9 @@ const Counters = ({
           );
         })}
       </S.CountersGrid>
-      <S.SettingsButtonContainer>
+      {/* <S.SettingsButtonContainer>
         <SettingsButton onClick={() => {}} rotation={0} />
-      </S.SettingsButtonContainer>
+      </S.SettingsButtonContainer> */}
     </S.CountersWrapper>
   );
 };
