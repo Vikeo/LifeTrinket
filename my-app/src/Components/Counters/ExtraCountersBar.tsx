@@ -1,4 +1,4 @@
-import * as S from './Counters.style';
+import * as S from './ExtraCounterBar.style';
 import { CounterType, Player } from '../../Types/Player';
 import ExtraCounter from '../Buttons/ExtraCounter';
 import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';

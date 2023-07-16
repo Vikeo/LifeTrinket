@@ -4,10 +4,12 @@ import { Rotation } from '../../Types/Player';
 export const PlayerMenuWrapper = styled.div<{
   rotation: Rotation;
 }>`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(40, 40, 40, 0.9);
+  background-color: rgba(20, 20, 20, 0.9);
   z-index: 2;
   ${(props) => {
     if (
@@ -19,17 +21,18 @@ export const PlayerMenuWrapper = styled.div<{
     return css`
       rotate: ${props.rotation}deg;
     `;
-  }}
+  }};
 `;
 
 export const SettingsContainer = styled.div<{
   rotation: Rotation;
 }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 2vmin;
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
@@ -42,16 +45,36 @@ export const SettingsContainer = styled.div<{
   }}
 `;
 
-export const Label = styled.label<{
+export const SettingsSection = styled.div<{}>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
+export const Input = styled.input`
+  min-height: 10vmax;
+  min-width: 10vmax;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  user-select: none;
+  color: #ffffff;
+`;
+
+export const CloseButton = styled.button<{
   rotation: Rotation;
 }>`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  justify-content: space-evenly;
-  align-items: center;
+  align-self: flex-end;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  user-select: none;
   color: #ffffff;
-  font-size: 2vmin;
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
@@ -64,26 +87,13 @@ export const Label = styled.label<{
   }}
 `;
 
-export const Input = styled.input`
-  width: 5vmin;
-  height: 5vmin;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-  user-select: none;
-  color: #ffffff;
-`;
-
 export const Button = styled.button<{
   rotation: Rotation;
 }>`
-  border: none;
-  outline: none;
   cursor: pointer;
-  background-color: transparent;
   user-select: none;
-  color: #ffffff;
+  color: #000000;
+
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||

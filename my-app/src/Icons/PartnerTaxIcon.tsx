@@ -1,20 +1,20 @@
 import { IconProps } from '../Types/Icon';
 
-const PartnerTaxIcon = ({ size, color }: IconProps) => {
+const PartnerTaxIcon = ({ size, color, opacity, showStroke }: IconProps) => {
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 325 325"
-        width={'12vmin'}
-        height={`calc(${size} - 0px)`}
+        viewBox="0 -50 380 390"
+        width={size}
+        height={size}
         fill={color || 'black'}
-        fillOpacity="0.5"
+        fillOpacity={opacity || '0.5'}
+        stroke={showStroke ? 'white' : 'none'}
+        stroke-width={showStroke ? '100' : 'none'}
+        paint-order={showStroke ? 'stroke fill markers' : ''}
       >
-        <g
-          transform="translate(0.000000, 330.000000) scale(0.100000,-0.100000)"
-          stroke="none"
-        >
+        <g transform="translate(0.000000, 330.000000) scale(0.100000,-0.100000)">
           <path
             d="M1445 3114 c-11 -3 -47 -9 -80 -15 -33 -6 -100 -31 -150 -55 -196
 -95 -342 -274 -395 -480 -27 -105 -27 -263 0 -368 63 -246 259 -450 505 -525

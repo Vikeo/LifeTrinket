@@ -1,6 +1,6 @@
 import { IconProps } from '../Types/Icon';
 
-const CommanderTaxIcon = ({ size, color }: IconProps) => {
+const CommanderTaxIcon = ({ size, color, opacity, showStroke }: IconProps) => {
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <svg
@@ -10,7 +10,10 @@ const CommanderTaxIcon = ({ size, color }: IconProps) => {
         width={size || 'auto'}
         height={size || 'auto'}
         fill={color || 'black'}
-        fillOpacity="0.5"
+        fillOpacity={opacity || '0.5'}
+        stroke={showStroke ? 'white' : 'none'}
+        stroke-width={showStroke ? '5' : 'none'}
+        paint-order={showStroke ? 'stroke fill markers' : ''}
       >
         <title>CommanderTaxIcon</title>
         <path

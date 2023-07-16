@@ -1,6 +1,6 @@
 import { IconProps } from '../Types/Icon';
 
-const SettingsIcon = ({ color, size }: IconProps) => {
+const SettingsIcon = ({ color, size, opacity, showStroke }: IconProps) => {
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <svg
@@ -10,7 +10,10 @@ const SettingsIcon = ({ color, size }: IconProps) => {
         width={size}
         height={size}
         fill={color || 'black'}
-        fillOpacity="0.3"
+        fillOpacity={opacity || '0.3'}
+        stroke={showStroke ? 'white' : 'none'}
+        stroke-width={showStroke ? '5' : 'none'}
+        paint-order={showStroke ? 'stroke fill markers' : ''}
       >
         <g transform="translate(0.000000,182.000000) scale(0.100000,-0.100000)">
           <path

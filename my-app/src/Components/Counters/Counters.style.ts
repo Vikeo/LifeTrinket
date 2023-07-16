@@ -26,22 +26,10 @@ export const GridItemContainer = styled.div<{
   grid-area: ${(props) => props.gridArea};
 `;
 
-export const ExtraCountersGrid = styled.div<{ rotation: number }>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-
-  ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column-reverse;
-        height: 100%;
-        width: auto;
-      `;
-    }
-  }}
+export const SettingsButtonContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
 `;

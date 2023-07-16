@@ -14,12 +14,7 @@ type SettingsProps = {
   resetCurrentGame: () => void;
 };
 
-const Settings = ({
-  player,
-  opponents,
-  onChange,
-  resetCurrentGame,
-}: SettingsProps) => {
+const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
   const { released, request, release } = useWakeLock();
   const handleWakeLock = () => (released === false ? release() : request());
 
@@ -56,56 +51,90 @@ const Settings = ({
 
   return (
     <S.SettingsContainer rotation={player.settings.rotation}>
-      <S.Label rotation={player.settings.rotation}>
-        Color:
-        <S.Input
-          type="color"
-          value={player.color}
-          onChange={handleColorChange}
+      <S.Input type="color" value={player.color} onChange={handleColorChange} />
+      <S.SettingsSection>
+        <Checkbox
+          name="usePartner"
+          checked={player.settings.usePartner}
+          icon={
+            <PartnerTaxIcon size="4vmax" color="black" opacity={1} showStroke />
+          }
+          checkedIcon={
+            <PartnerTaxIcon
+              size="4vmax"
+              color={player.color}
+              opacity={1}
+              showStroke
+            />
+          }
+          onChange={handleSettingsChange}
         />
-      </S.Label>
-      <Checkbox
-        name="usePartner"
-        checked={player.settings.usePartner}
-        icon={<PartnerTaxIcon size="32px" color="black" />}
-        checkedIcon={<PartnerTaxIcon size="32px" color={player.color} />}
-        onChange={handleSettingsChange}
-      />
-      <Checkbox
-        name="usePoison"
-        checked={player.settings.usePoison}
-        icon={<PoisonIcon size="32px" color="black" />}
-        checkedIcon={<PoisonIcon size="32px" color={player.color} />}
-        onChange={handleSettingsChange}
-      />
-      <Checkbox
-        name="useEnergy"
-        checked={player.settings.useEnergy}
-        icon={<EnergyIcon size="32px" color="black" />}
-        checkedIcon={<EnergyIcon size="32px" color={player.color} />}
-        onChange={handleSettingsChange}
-      />
-      <Checkbox
-        name="useExperience"
-        checked={player.settings.useExperience}
-        icon={<ExperienceIcon size="32px" color="black" />}
-        checkedIcon={<ExperienceIcon size="32px" color={player.color} />}
-        onChange={handleSettingsChange}
-      />
-      <S.Button rotation={player.settings.rotation} onClick={handleResetGame}>
-        Reset All
-      </S.Button>
-
-      <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
-        Back to Start
-      </S.Button>
-      <S.Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
-        Fullscreen
-      </S.Button>
-
-      <S.Button rotation={player.settings.rotation} onClick={handleWakeLock}>
-        {released === false ? 'Release' : 'Request'} nosleep
-      </S.Button>
+        <Checkbox
+          name="usePoison"
+          checked={player.settings.usePoison}
+          icon={
+            <PoisonIcon size="4vmax" color="black" opacity={1} showStroke />
+          }
+          checkedIcon={
+            <PoisonIcon
+              size="4vmax"
+              color={player.color}
+              opacity={1}
+              showStroke
+            />
+          }
+          onChange={handleSettingsChange}
+        />
+        <Checkbox
+          name="useEnergy"
+          checked={player.settings.useEnergy}
+          icon={
+            <EnergyIcon size="4vmax" color="black" opacity={1} showStroke />
+          }
+          checkedIcon={
+            <EnergyIcon
+              size="4vmax"
+              color={player.color}
+              opacity={1}
+              showStroke
+            />
+          }
+          onChange={handleSettingsChange}
+        />
+        <Checkbox
+          name="useExperience"
+          checked={player.settings.useExperience}
+          icon={
+            <ExperienceIcon size="4vmax" color="black" opacity={1} showStroke />
+          }
+          checkedIcon={
+            <ExperienceIcon
+              size="4vmax"
+              color={player.color}
+              opacity={1}
+              showStroke
+            />
+          }
+          onChange={handleSettingsChange}
+        />
+      </S.SettingsSection>
+      <S.SettingsSection>
+        <S.Button rotation={player.settings.rotation} onClick={handleResetGame}>
+          Reset All
+        </S.Button>
+        <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
+          Back to Start
+        </S.Button>
+        <S.Button
+          rotation={player.settings.rotation}
+          onClick={toggleFullscreen}
+        >
+          Fullscreen
+        </S.Button>
+        <S.Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+          {released === false ? 'Release' : 'Request'} nosleep
+        </S.Button>
+      </S.SettingsSection>
     </S.SettingsContainer>
   );
 };

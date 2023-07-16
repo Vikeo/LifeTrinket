@@ -1,4 +1,5 @@
 import { Player } from '../../Types/Player';
+import SettingsButton from '../Buttons/SettingsButton';
 import LifeCounter from '../LifeCounter/LifeCounter';
 import SideLifeCounter from '../LifeCounter/SideLifeCounter';
 import * as S from './Counters.style';
@@ -59,6 +60,9 @@ const Counters = ({
           );
         })}
       </S.CountersGrid>
+      <S.SettingsButtonContainer>
+        <SettingsButton onClick={() => {}} rotation={0} />
+      </S.SettingsButtonContainer>
     </S.CountersWrapper>
   );
 };
