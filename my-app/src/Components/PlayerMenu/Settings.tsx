@@ -51,7 +51,11 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
 
   return (
     <S.SettingsContainer rotation={player.settings.rotation}>
-      <S.Input type="color" value={player.color} onChange={handleColorChange} />
+      <S.ColorPicker
+        type="color"
+        value={player.color}
+        onChange={handleColorChange}
+      />
       <S.SettingsSection>
         <Checkbox
           name="usePartner"

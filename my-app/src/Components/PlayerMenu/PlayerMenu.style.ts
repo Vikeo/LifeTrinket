@@ -53,9 +53,9 @@ export const SettingsSection = styled.div<{}>`
   gap: 0.5rem;
 `;
 
-export const Input = styled.input`
-  min-height: 10vmax;
-  min-width: 10vmax;
+export const ColorPicker = styled.input`
+  min-height: 6vmax;
+  min-width: 6vmax;
 
   border: none;
   outline: none;
