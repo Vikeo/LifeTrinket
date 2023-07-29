@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components';
-import { Rotation } from '../../Types/Player';
+import styled from 'styled-components';
 
 export const CountersWrapper = styled.div`
   width: 100%;

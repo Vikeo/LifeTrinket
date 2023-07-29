@@ -2,6 +2,12 @@ import { ReactNode, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { CounterType, Rotation } from '../../Types/Player';
 
+const ExtraCounterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const StyledExtraCounterButton = styled.button`
   position: relative;
   flex-grow: 1;
@@ -38,6 +44,8 @@ export const CenteredText = styled.div`
 const IconContainer = styled.div<{
   rotation: number;
 }>`
+  width: auto;
+
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
@@ -102,19 +110,21 @@ const ExtraCounter = ({
   };
 
   return (
-    <StyledExtraCounterButton
-      onPointerDown={handleDownInput}
-      onPointerUp={handleUpInput}
-      onPointerLeave={handleLeaveInput}
-      onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-      }}
-    >
-      <IconContainer rotation={rotation}>
-        {Icon}
-        <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
-      </IconContainer>
-    </StyledExtraCounterButton>
+    <ExtraCounterContainer>
+      <StyledExtraCounterButton
+        onPointerDown={handleDownInput}
+        onPointerUp={handleUpInput}
+        onPointerLeave={handleLeaveInput}
+        onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+          e.preventDefault();
+        }}
+      >
+        <IconContainer rotation={rotation}>
+          {Icon}
+          <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
+        </IconContainer>
+      </StyledExtraCounterButton>
+    </ExtraCounterContainer>
   );
 };
 
