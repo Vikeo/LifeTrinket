@@ -33,6 +33,8 @@ export const SettingsContainer = styled.div<{
   justify-content: space-evenly;
   align-items: center;
   gap: 2vmin;
+  height: 100%;
+  width: 100%;
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
@@ -86,14 +88,18 @@ export const ColorPicker = styled.input<{
   color: #ffffff;
 
   ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
+    if (props.rotation === Rotation.Side) {
       return css`
         rotate: ${props.rotation - 180}deg;
         bottom: 5%;
         top: auto;
+      `;
+    } else if (props.rotation === Rotation.SideFlipped) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
+        top: 5%;
+        left: auto;
+        right: 5%;
       `;
     }
   }}
@@ -109,15 +115,20 @@ export const CloseButton = styled.button<{
   user-select: none;
   color: black;
   ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
+    if (props.rotation === Rotation.Side) {
       return css`
         rotate: ${props.rotation - 180}deg;
         top: 5%;
         right: auto;
         left: 5%;
+      `;
+    } else if (props.rotation === Rotation.SideFlipped) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
+        top: auto;
+        left: auto;
+        bottom: 5%;
+        right: 5%;
       `;
     }
   }}
