@@ -1,11 +1,12 @@
 import { Checkbox } from '@mui/material';
-import { Player } from '../../Types/Player';
+import { Player, Rotation } from '../../Types/Player';
 import * as S from './PlayerMenu.style';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
 import EnergyIcon from '../../Icons/EnergyIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import { useWakeLock } from 'react-screen-wake-lock';
+import styled, { css } from 'styled-components';
 
 type SettingsProps = {
   player: Player;
@@ -13,6 +14,19 @@ type SettingsProps = {
   onChange: (updatedPlayer: Player) => void;
   resetCurrentGame: () => void;
 };
+
+const CheckboxContainer = styled.div<{ rotation: Rotation }>`
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
+      `;
+    }
+  }}
+`;
 
 const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
   const { released, request, release } = useWakeLock();
@@ -52,77 +66,100 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
   return (
     <S.SettingsContainer rotation={player.settings.rotation}>
       <S.ColorPicker
+        rotation={player.settings.rotation}
         type="color"
         value={player.color}
         onChange={handleColorChange}
       />
-      <S.SettingsSection>
-        <Checkbox
-          name="usePartner"
-          checked={player.settings.usePartner}
-          icon={
-            <PartnerTaxIcon size="4vmax" color="black" opacity={1} showStroke />
-          }
-          checkedIcon={
-            <PartnerTaxIcon
-              size="4vmax"
-              color={player.color}
-              opacity={1}
-              showStroke
-            />
-          }
-          onChange={handleSettingsChange}
-        />
-        <Checkbox
-          name="usePoison"
-          checked={player.settings.usePoison}
-          icon={
-            <PoisonIcon size="4vmax" color="black" opacity={1} showStroke />
-          }
-          checkedIcon={
-            <PoisonIcon
-              size="4vmax"
-              color={player.color}
-              opacity={1}
-              showStroke
-            />
-          }
-          onChange={handleSettingsChange}
-        />
-        <Checkbox
-          name="useEnergy"
-          checked={player.settings.useEnergy}
-          icon={
-            <EnergyIcon size="4vmax" color="black" opacity={1} showStroke />
-          }
-          checkedIcon={
-            <EnergyIcon
-              size="4vmax"
-              color={player.color}
-              opacity={1}
-              showStroke
-            />
-          }
-          onChange={handleSettingsChange}
-        />
-        <Checkbox
-          name="useExperience"
-          checked={player.settings.useExperience}
-          icon={
-            <ExperienceIcon size="4vmax" color="black" opacity={1} showStroke />
-          }
-          checkedIcon={
-            <ExperienceIcon
-              size="4vmax"
-              color={player.color}
-              opacity={1}
-              showStroke
-            />
-          }
-          onChange={handleSettingsChange}
-        />
+      <S.SettingsSection rotation={player.settings.rotation}>
+        <CheckboxContainer rotation={player.settings.rotation}>
+          <Checkbox
+            name="usePartner"
+            checked={player.settings.usePartner}
+            icon={
+              <PartnerTaxIcon
+                size="4vmax"
+                color="black"
+                opacity={1}
+                showStroke
+              />
+            }
+            checkedIcon={
+              <PartnerTaxIcon
+                size="4vmax"
+                color={player.color}
+                opacity={1}
+                showStroke
+              />
+            }
+            onChange={handleSettingsChange}
+          />
+        </CheckboxContainer>
+
+        <CheckboxContainer rotation={player.settings.rotation}>
+          <Checkbox
+            name="usePoison"
+            checked={player.settings.usePoison}
+            icon={
+              <PoisonIcon size="4vmax" color="black" opacity={1} showStroke />
+            }
+            checkedIcon={
+              <PoisonIcon
+                size="4vmax"
+                color={player.color}
+                opacity={1}
+                showStroke
+              />
+            }
+            onChange={handleSettingsChange}
+          />
+        </CheckboxContainer>
+
+        <CheckboxContainer rotation={player.settings.rotation}>
+          <Checkbox
+            name="useEnergy"
+            checked={player.settings.useEnergy}
+            icon={
+              <EnergyIcon size="4vmax" color="black" opacity={1} showStroke />
+            }
+            checkedIcon={
+              <EnergyIcon
+                size="4vmax"
+                color={player.color}
+                opacity={1}
+                showStroke
+              />
+            }
+            onChange={handleSettingsChange}
+          />
+        </CheckboxContainer>
+
+        <CheckboxContainer rotation={player.settings.rotation}>
+          <Checkbox
+            name="useExperience"
+            checked={player.settings.useExperience}
+            icon={
+              <ExperienceIcon
+                size="4vmax"
+                color="black"
+                opacity={1}
+                showStroke
+              />
+            }
+            checkedIcon={
+              <ExperienceIcon
+                size="4vmax"
+                color={player.color}
+                opacity={1}
+                showStroke
+              />
+            }
+            onChange={handleSettingsChange}
+          />
+        </CheckboxContainer>
       </S.SettingsSection>
-      <S.SettingsSection>
+
+      <S.SettingsSection rotation={player.settings.rotation}>
         <S.Button rotation={player.settings.rotation} onClick={handleResetGame}>
           Reset All
         </S.Button>

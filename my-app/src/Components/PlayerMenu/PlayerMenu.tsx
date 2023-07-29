@@ -23,8 +23,11 @@ const PlayerMenu = ({
 
   return (
     <S.PlayerMenuWrapper rotation={player.settings.rotation}>
-      <S.CloseButton rotation={0} onClick={handleOnClick}>
-        Close (X)
+      <S.CloseButton
+        rotation={player.settings.rotation}
+        onClick={handleOnClick}
+      >
+        X
       </S.CloseButton>
       <Settings
         player={player}
