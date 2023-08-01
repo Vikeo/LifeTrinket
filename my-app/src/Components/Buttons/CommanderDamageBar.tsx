@@ -50,6 +50,7 @@ const CommanderDamageButton = styled.button<{
   flex-grow: 1;
   border: none;
   height: 10vmin;
+  width: 50%;
   outline: none;
   cursor: pointer;
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
@@ -77,13 +78,11 @@ const CommanderDamageButton = styled.button<{
 const CommanderDamageButtonText = styled.p<{
   rotation: number;
 }>`
-  position: relative;
   margin: auto;
-  font-size: 1.5rem;
+  font-size: 5vmin;
   text-size-adjust: auto;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
-  width: 1rem;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
     1px 1px 0 #ffffff;
   color: #000000;
