@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Player } from '../../Types/Player';
 import { useSwipeable } from 'react-swipeable';
-import AddLifeButton from '../Buttons/AddLifeButton';
-import SubtractLifeButton from '../Buttons/SubtractLifeButton';
 import CommanderDamageBar from '../Buttons/CommanderDamageBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import SettingsButton from '../Buttons/SettingsButton';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import styled, { css, keyframes } from 'styled-components';
 import { Rotation } from '../../Types/Player';
+import LifeCounterButton from '../Buttons/LifeCounterButton';
 
 export const SideLifeCounterWrapper = styled.div<{
   backgroundColor: string;
@@ -169,11 +168,14 @@ const SideLifeCounter = ({
         />
 
         <SideLifeCountainer>
-          <AddLifeButton
+          <LifeCounterButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}
             rotation={player.settings.rotation}
+            operation="add"
+            increment={1}
           />
+
           <SideLifeCounterText>
             {player.lifeTotal}
             {recentDifference !== 0 && (
@@ -184,10 +186,12 @@ const SideLifeCounter = ({
             )}
           </SideLifeCounterText>
 
-          <SubtractLifeButton
+          <LifeCounterButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}
             rotation={player.settings.rotation}
+            operation="subtract"
+            increment={-1}
           />
         </SideLifeCountainer>
         <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />

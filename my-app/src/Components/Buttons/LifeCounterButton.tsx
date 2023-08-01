@@ -45,20 +45,26 @@ const TextContainer = styled.div<{
   }}
 `;
 
-type SubtractLifeButtonProps = {
+type LifeCounterButtonProps = {
   lifeTotal: number;
   setLifeTotal: (lifeTotal: number) => void;
   rotation: number;
+  operation: 'add' | 'subtract';
+  increment: number;
 };
 
-const SubtractLifeButton = ({
+const LifeCounterButton = ({
   lifeTotal,
   setLifeTotal,
   rotation,
-}: SubtractLifeButtonProps) => {
+  operation,
+  increment,
+}: LifeCounterButtonProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
+
+  const longPressMultiplier = 10;
 
   const handleLifeChange = (increment: number) => {
     setLifeTotal(lifeTotal + increment);
@@ -68,7 +74,7 @@ const SubtractLifeButton = ({
     setTimeoutFinished(false);
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
-      handleLifeChange(-10);
+      handleLifeChange(increment * longPressMultiplier);
       setTimeoutFinished(true);
     }, 500);
   };
@@ -78,7 +84,7 @@ const SubtractLifeButton = ({
       return;
     }
     clearTimeout(timeoutRef.current);
-    handleLifeChange(-1);
+    handleLifeChange(operation === 'add' ? 1 : -1);
     setHasPressedDown(false);
   };
 
@@ -97,11 +103,14 @@ const SubtractLifeButton = ({
         e.preventDefault();
       }}
     >
-      <TextContainer align="left" rotation={rotation}>
-        &#8722;
+      <TextContainer
+        rotation={rotation}
+        align={operation === 'add' ? 'right' : 'left'}
+      >
+        {operation === 'add' ? '\u002B' : '\u2212'}
       </TextContainer>
     </StyledLifeCounterButton>
   );
 };
 
-export default SubtractLifeButton;
+export default LifeCounterButton;

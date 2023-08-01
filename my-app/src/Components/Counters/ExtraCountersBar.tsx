@@ -17,6 +17,7 @@ const ExtraCountersGrid = styled.div<{ rotation: number }>`
   position: absolute;
   bottom: 0;
   width: 100%;
+  pointer-events: none;
 
   ${(props) => {
     if (
