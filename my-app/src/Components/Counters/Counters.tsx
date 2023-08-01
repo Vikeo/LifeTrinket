@@ -1,6 +1,5 @@
 import { Player } from '../../Types/Player';
 import LifeCounter from '../LifeCounter/LifeCounter';
-import SideLifeCounter from '../LifeCounter/SideLifeCounter';
 import styled from 'styled-components';
 
 export const CountersWrapper = styled.div`
@@ -62,7 +61,7 @@ const Counters = ({
                 key={player.key}
                 gridArea={`player${player.key}`}
               >
-                <SideLifeCounter
+                <LifeCounter
                   backgroundColor={player.color}
                   player={player}
                   opponents={players.filter(

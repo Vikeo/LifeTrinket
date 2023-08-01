@@ -22,7 +22,7 @@ export const LifeCounterWrapper = styled.div<{
   background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
   @media (orientation: landscape) {
     max-width: 100vmax;
-    max-height: 100min;
+    max-height: 100vmin;
   }
 `;
 
@@ -38,13 +38,27 @@ export const LifeCounterContentContainer = styled.div<{
 
   z-index: 1;
 
-  ${(props) =>
-    css`
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: row;
+        rotate: ${props.rotation - 90}deg;
+      `;
+    }
+
+    return css`
+      flex-direction: column;
       rotate: ${props.rotation}deg;
-    `};
+    `;
+  }}
 `;
 
-export const LifeCountainer = styled.div`
+export const LifeCountainer = styled.div<{
+  rotation: Rotation;
+}>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -52,19 +66,31 @@ export const LifeCountainer = styled.div`
   height: 100%;
   justify-content: space-between;
   align-items: center;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column-reverse;
+      `;
+    }
+  }}
 `;
 
-export const LifeCounterText = styled.p`
+export const LifeCounterText = styled.p<{
+  rotation: Rotation;
+}>`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
   font-size: 30vmin;
   text-align: center;
   text-size-adjust: auto;
   margin: 0;
   padding: 0;
-  width: 100%;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
   text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
@@ -76,6 +102,16 @@ export const LifeCounterText = styled.p`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: 270deg;
+      `;
+    }
+  }}
 `;
 
 const fadeOut = keyframes`
@@ -104,13 +140,13 @@ export const RecentDifference = styled.span`
   animation: ${fadeOut} 3s 1s ease-out forwards;
 `;
 
-type LifeCounterProps = {
-  player: Player;
+interface LifeCounterProps {
   backgroundColor: string;
+  player: Player;
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   resetCurrentGame: () => void;
-};
+}
 
 const LifeCounter = ({
   backgroundColor,
@@ -167,7 +203,7 @@ const LifeCounter = ({
           }}
           rotation={player.settings.rotation}
         />
-        <LifeCountainer>
+        <LifeCountainer rotation={player.settings.rotation}>
           <LifeCounterButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}
@@ -175,7 +211,7 @@ const LifeCounter = ({
             operation="subtract"
             increment={-1}
           />
-          <LifeCounterText>
+          <LifeCounterText rotation={player.settings.rotation}>
             {player.lifeTotal}
             {recentDifference !== 0 && (
               <RecentDifference key={key}>
