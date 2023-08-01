@@ -158,7 +158,6 @@ const Start = ({
             defaultValue={4}
             getAriaValueText={valuetext}
             step={null}
-            valueLabelDisplay="auto"
             marks={playerMarks}
             onChange={(e, value) => {
               setPlayerOptions({
@@ -176,7 +175,6 @@ const Start = ({
             defaultValue={40}
             getAriaValueText={valuetext}
             step={10}
-            valueLabelDisplay="auto"
             marks={healthMarks}
             onChange={(e, value) =>
               setPlayerOptions({
