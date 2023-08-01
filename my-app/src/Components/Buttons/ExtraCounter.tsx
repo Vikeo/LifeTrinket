@@ -6,6 +6,7 @@ const ExtraCounterContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: all;
 `;
 
 export const StyledExtraCounterButton = styled.button`
