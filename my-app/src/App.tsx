@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { Player } from './Types/Player';
 import Play from './Components/Views/Play';
-import StartMenu from './Components/Views/StartMenu';
+import StartMenu from './Components/Views/StartMenu/StartMenu';
 import { InitialSettings } from './Data/getInitialPlayers';
-import { GridTemplateAreas } from './Data/getGridTemplateAreas';
 import styled, { createGlobalStyle } from 'styled-components';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './Data/theme';
 
 const GlobalStyles = createGlobalStyle`
   html,
-  body,
+  body {
+    background-color: ${theme.palette.background.default};
+  }
   #root {
     touch-action: manipulation;
   }
@@ -76,7 +79,7 @@ const App = () => {
 
   if (players.length > 0 && initialGameSettings) {
     return (
-      <>
+      <ThemeProvider theme={theme}>
         <GlobalStyles />
         <RootWrapper>
           <Play
@@ -86,12 +89,12 @@ const App = () => {
             resetCurrentGame={resetCurrentGame}
           />
         </RootWrapper>
-      </>
+      </ThemeProvider>
     );
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
       <RootWrapper2>
         <StartMenu
@@ -100,7 +103,7 @@ const App = () => {
           setPlayers={setPlayers}
         />
       </RootWrapper2>
-    </>
+    </ThemeProvider>
   );
 };
 
