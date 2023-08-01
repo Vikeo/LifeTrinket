@@ -1,4 +1,3 @@
-import * as S from './ExtraCounterBar.style';
 import { CounterType, Player } from '../../Types/Player';
 import ExtraCounter from '../Buttons/ExtraCounter';
 import CommanderTaxIcon from '../../Icons/CommanderTaxIcon';
@@ -6,6 +5,34 @@ import EnergyIcon from '../../Icons/EnergyIcon';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
+import styled, { css } from 'styled-components';
+import { Rotation } from '../../Types/Player';
+
+const ExtraCountersGrid = styled.div<{ rotation: number }>`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  width: 100%;
+  justify-content: space-evenly;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column-reverse;
+        height: 100%;
+        width: auto;
+        bottom: auto;
+        right: 0;
+      `;
+    }
+  }}
+`;
 
 type ExtraCountersBarProps = {
   player: Player;
@@ -47,7 +74,7 @@ const ExtraCountersBar = ({
   };
 
   return (
-    <S.ExtraCountersGrid rotation={player.settings.rotation}>
+    <ExtraCountersGrid rotation={player.settings.rotation}>
       {player.settings.useCommanderDamage && (
         <ExtraCounter
           rotation={player.settings.rotation}
@@ -113,7 +140,7 @@ const ExtraCountersBar = ({
           setCounterTotal={handleCounterChange}
         />
       )}
-    </S.ExtraCountersGrid>
+    </ExtraCountersGrid>
   );
 };
 

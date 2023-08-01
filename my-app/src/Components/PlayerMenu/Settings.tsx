@@ -1,6 +1,5 @@
 import { Checkbox } from '@mui/material';
 import { Player, Rotation } from '../../Types/Player';
-import * as S from './PlayerMenu.style';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
 import EnergyIcon from '../../Icons/EnergyIcon';
@@ -14,6 +13,109 @@ type SettingsProps = {
   onChange: (updatedPlayer: Player) => void;
   resetCurrentGame: () => void;
 };
+
+const SettingsContainer = styled.div<{
+  rotation: Rotation;
+}>`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 2vmin;
+  height: 100%;
+  width: 100%;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: row;
+        padding-top: 36px;
+      `;
+    } else {
+      return css`
+        padding-top: 36px;
+      `;
+    }
+  }}
+`;
+
+const SettingsSection = styled.div<{ rotation: Rotation }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column-reverse;
+      `;
+    }
+  }}
+`;
+
+const ColorPicker = styled.input<{
+  rotation: Rotation;
+}>`
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  height: 8vmax;
+  width: 8vmax;
+
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+  user-select: none;
+  color: #ffffff;
+
+  ${(props) => {
+    if (props.rotation === Rotation.Side) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
+        bottom: 5%;
+        top: auto;
+      `;
+    } else if (props.rotation === Rotation.SideFlipped) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
+        top: 5%;
+        left: auto;
+        right: 5%;
+      `;
+    }
+  }}
+`;
+
+const Button = styled.button<{
+  rotation: Rotation;
+}>`
+  cursor: pointer;
+  user-select: none;
+  color: #000000;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: ${props.rotation + 90}deg;
+        -webkit-writing-mode: vertical-rl;
+        writing-mode: vertical-rl;
+        text-orientation: sideways;
+      `;
+    }
+  }}
+`;
 
 const CheckboxContainer = styled.div<{ rotation: Rotation }>`
   ${(props) => {
@@ -64,14 +166,14 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
   };
 
   return (
-    <S.SettingsContainer rotation={player.settings.rotation}>
-      <S.ColorPicker
+    <SettingsContainer rotation={player.settings.rotation}>
+      <ColorPicker
         rotation={player.settings.rotation}
         type="color"
         value={player.color}
         onChange={handleColorChange}
       />
-      <S.SettingsSection rotation={player.settings.rotation}>
+      <SettingsSection rotation={player.settings.rotation}>
         <CheckboxContainer rotation={player.settings.rotation}>
           <Checkbox
             name="usePartner"
@@ -157,26 +259,23 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             onChange={handleSettingsChange}
           />
         </CheckboxContainer>
-      </S.SettingsSection>
+      </SettingsSection>
 
-      <S.SettingsSection rotation={player.settings.rotation}>
-        <S.Button rotation={player.settings.rotation} onClick={handleResetGame}>
+      <SettingsSection rotation={player.settings.rotation}>
+        <Button rotation={player.settings.rotation} onClick={handleResetGame}>
           Reset All
-        </S.Button>
-        <S.Button rotation={player.settings.rotation} onClick={handleNewGame}>
+        </Button>
+        <Button rotation={player.settings.rotation} onClick={handleNewGame}>
           Back to Start
-        </S.Button>
-        <S.Button
-          rotation={player.settings.rotation}
-          onClick={toggleFullscreen}
-        >
+        </Button>
+        <Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
           Fullscreen
-        </S.Button>
-        <S.Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        </Button>
+        <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
           {released === false ? 'Release' : 'Request'} nosleep
-        </S.Button>
-      </S.SettingsSection>
-    </S.SettingsContainer>
+        </Button>
+      </SettingsSection>
+    </SettingsContainer>
   );
 };
 
