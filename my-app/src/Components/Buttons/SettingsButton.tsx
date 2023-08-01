@@ -8,8 +8,8 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
   border: none;
   outline: none;
   cursor: pointer;
-  top: 68px;
-  right: 16px;
+  top: 12vmin;
+  right: 1vmax;
   background-color: transparent;
   user-select: none;
   -webkit-touch-callout: none;
@@ -24,8 +24,8 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
     ) {
       return css`
         right: auto;
-        top: 16px;
-        left: 68px;
+        top: 1vmax;
+        left: 12vmin;
       `;
     }
   }}
@@ -39,7 +39,7 @@ type SettingsButtonProps = {
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
     <StyledSettingsButton onClick={onClick} rotation={rotation}>
-      <SettingsIcon size="4vmin" />
+      <SettingsIcon size="5vmin" />
     </StyledSettingsButton>
   );
 };
