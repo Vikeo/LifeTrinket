@@ -43,13 +43,6 @@ export const CenteredText = styled.div`
   -ms-user-select: none;
 `;
 
-const CenteredTextOutline = styled.span`
-  position: absolute;
-  left: 0;
-  -webkit-text-stroke: 0;
-  pointer-events: none;
-`;
-
 const IconContainer = styled.div<{
   rotation: number;
 }>`

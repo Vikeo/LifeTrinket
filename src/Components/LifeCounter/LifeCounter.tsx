@@ -90,6 +90,7 @@ export const LifeCounterTextContainer = styled.p<{
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;

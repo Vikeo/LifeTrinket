@@ -1,7 +1,16 @@
 import styled from 'styled-components';
-import { theme } from '../../Data/theme';
+// import { theme } from '../../Data/theme';
 
-export const CenteredText = styled.div<{
+const theme = {
+  palette: {
+    common: {
+      white: '#ffffff',
+      black: '#000000',
+    },
+  },
+};
+
+const CenteredText = styled.div<{
   strokeWidth?: string;
   strokeColor?: string;
   fillColor?: string;
@@ -14,7 +23,6 @@ export const CenteredText = styled.div<{
   transform: translate(-50%, -50%);
   font-weight: ${(props) => props.fontWeight || ''};
   font-variant-numeric: tabular-nums;
-  color: #b5b2b2;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -22,9 +30,9 @@ export const CenteredText = styled.div<{
   -webkit-user-select: none;
   -ms-user-select: none;
 
+  color: ${(props) => props.fillColor || theme.palette.common.black};
   font-size: ${(props) => props.fontSize || '6vmin'};
-  -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'}
-    ${(props) => props.strokeColor || theme.palette.common.white};
+  -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'} ${(props) => props.strokeColor || theme.palette.common.white};
   -webkit-text-fill-color: ${(props) =>
     props.fillColor || theme.palette.common.black};
 `;
