@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Player } from '../../Types/Player';
-import { useSwipeable } from 'react-swipeable';
-import CommanderDamageBar from '../Buttons/CommanderDamageBar';
-import PlayerMenu from '../PlayerMenu/PlayerMenu';
-import SettingsButton from '../Buttons/SettingsButton';
-import ExtraCountersBar from '../Counters/ExtraCountersBar';
+import { useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { Rotation } from '../../Types/Player';
+import { Player, Rotation } from '../../Types/Player';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
+import SettingsButton from '../Buttons/SettingsButton';
+import CommanderDamageBar from '../Counters/CommanderDamageBar';
+import ExtraCountersBar from '../Counters/ExtraCountersBar';
+import PlayerMenu from '../PlayerMenu/PlayerMenu';
+import { OutlinedText } from '../Text/OutlinedText';
 
 export const LifeCounterWrapper = styled.div<{
   backgroundColor: string;
@@ -79,24 +78,16 @@ export const LifeCountainer = styled.div<{
   }}
 `;
 
-export const LifeCounterText = styled.p<{
+export const LifeCounterTextContainer = styled.p<{
   rotation: Rotation;
 }>`
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  font-size: 30vmin;
-  text-align: center;
-  text-size-adjust: auto;
   margin: 0;
   padding: 0;
-  font-variant-numeric: tabular-nums;
   pointer-events: none;
-  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff,
-    1px 1px 0 #ffffff;
-  color: #000000;
-  user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   -moz-user-select: -moz-none;
@@ -133,6 +124,7 @@ export const RecentDifference = styled.span`
   transform: translate(-50%, -50%);
   text-shadow: none;
   background-color: rgba(255, 255, 255, 0.6);
+  font-variant-numeric: tabular-nums;
   border-radius: 50%;
   padding: 5px 10px;
   font-size: 8vmin;
@@ -175,23 +167,10 @@ const LifeCounter = ({
     return () => clearTimeout(timer);
   }, [recentDifference]);
 
-  const swipeHandlers = useSwipeable({
-    onSwipedUp: () => {
-      // player.settings.flipped ? setShowPlayerMenu(true) : null;
-    },
-    onSwipedDown: () => {
-      // player.settings.flipped ? null : setShowPlayerMenu(true);
-    },
-  });
-
   return (
     <LifeCounterWrapper backgroundColor={backgroundColor}>
-      <LifeCounterContentContainer
-        {...swipeHandlers}
-        rotation={player.settings.rotation}
-      >
+      <LifeCounterContentContainer rotation={player.settings.rotation}>
         <CommanderDamageBar
-          lifeTotal={player.lifeTotal}
           opponents={opponents}
           player={player}
           onPlayerChange={onPlayerChange}
@@ -211,15 +190,17 @@ const LifeCounter = ({
             operation="subtract"
             increment={-1}
           />
-          <LifeCounterText rotation={player.settings.rotation}>
-            {player.lifeTotal}
+          <LifeCounterTextContainer rotation={player.settings.rotation}>
+            <OutlinedText fontSize="30vmin" strokeWidth="1.5vmin">
+              {player.lifeTotal}
+            </OutlinedText>
             {recentDifference !== 0 && (
               <RecentDifference key={key}>
                 {recentDifference > 0 ? '+' : ''}
                 {recentDifference}
               </RecentDifference>
             )}
-          </LifeCounterText>
+          </LifeCounterTextContainer>
           <LifeCounterButton
             lifeTotal={player.lifeTotal}
             setLifeTotal={handleLifeChange}

@@ -58,14 +58,14 @@ const Counters = ({
           ) {
             return (
               <GridItemContainer
-                key={player.key}
-                gridArea={`player${player.key}`}
+                key={player.index}
+                gridArea={`player${player.index}`}
               >
                 <LifeCounter
                   backgroundColor={player.color}
                   player={player}
                   opponents={players.filter(
-                    (opponent) => opponent.key !== player.key
+                    (opponent) => opponent.index !== player.index
                   )}
                   onPlayerChange={onPlayerChange}
                   resetCurrentGame={resetCurrentGame}
@@ -75,14 +75,14 @@ const Counters = ({
           }
           return (
             <GridItemContainer
-              key={player.key}
-              gridArea={`player${player.key}`}
+              key={player.index}
+              gridArea={`player${player.index}`}
             >
               <LifeCounter
                 backgroundColor={player.color}
                 player={player}
                 opponents={players.filter(
-                  (opponent) => opponent.key !== player.key
+                  (opponent) => opponent.index !== player.index
                 )}
                 onPlayerChange={onPlayerChange}
                 resetCurrentGame={resetCurrentGame}

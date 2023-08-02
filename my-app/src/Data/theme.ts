@@ -19,7 +19,7 @@ export const theme = createTheme({
       disabled: '#5E714C',
     },
     common: {
-      white: '#ffffff',
+      white: '#F9FFE3',
       black: '#000000',
     },
   },

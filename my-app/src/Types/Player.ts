@@ -1,6 +1,6 @@
 export type Player = {
   lifeTotal: number;
-  key: number;
+  index: number;
   color: string;
   settings: PlayerSettings;
   commanderDamage: CommanderDamage[];

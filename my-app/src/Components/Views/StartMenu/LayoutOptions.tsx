@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { GridTemplateAreas } from '../../../Data/getGridTemplateAreas';
+import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import OnePlayerLandscape from '../../../Icons/Layouts/OnePlayerLandscape';
 import OnePlayerPortrait from '../../../Icons/Layouts/OnePlayerPortrait';

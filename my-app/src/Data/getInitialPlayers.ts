@@ -1,5 +1,5 @@
 import { Player, Rotation } from '../Types/Player';
-import { GridTemplateAreas } from './getGridTemplateAreas';
+import { GridTemplateAreas } from './GridTemplateAreas';
 
 export type InitialSettings = {
   startingLifeTotal: number;
@@ -30,9 +30,9 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.TwoPlayersOppositePortrait) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.SideFlipped;
-      case 2:
+      case 1:
         return Rotation.Side;
       default:
         return Rotation.Normal;
@@ -41,9 +41,9 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.TwoPlayersOppositeLandscape) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.Flipped;
-      case 2:
+      case 1:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -52,9 +52,9 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.TwoPlayersSameSide) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.Normal;
-      case 2:
+      case 1:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -63,11 +63,11 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.ThreePlayers) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.Flipped;
-      case 2:
+      case 1:
         return Rotation.Normal;
-      case 3:
+      case 2:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -76,11 +76,11 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.ThreePlayersSide) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.Flipped;
-      case 2:
+      case 1:
         return Rotation.Normal;
-      case 3:
+      case 2:
         return Rotation.Side;
       default:
         return Rotation.Normal;
@@ -89,13 +89,13 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.FourPlayers) {
     switch (index) {
+      case 0:
+        return Rotation.Flipped;
       case 1:
         return Rotation.Flipped;
       case 2:
-        return Rotation.Flipped;
-      case 3:
         return Rotation.Normal;
-      case 4:
+      case 3:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -104,13 +104,13 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.FourPlayersSide) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.SideFlipped;
-      case 2:
+      case 1:
         return Rotation.Flipped;
-      case 3:
+      case 2:
         return Rotation.Normal;
-      case 4:
+      case 3:
         return Rotation.Side;
       default:
         return Rotation.Normal;
@@ -119,15 +119,15 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.FivePlayers) {
     switch (index) {
+      case 0:
+        return Rotation.Flipped;
       case 1:
         return Rotation.Flipped;
       case 2:
-        return Rotation.Flipped;
+        return Rotation.Normal;
       case 3:
         return Rotation.Normal;
       case 4:
-        return Rotation.Normal;
-      case 5:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -136,15 +136,15 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.FivePlayersSide) {
     switch (index) {
+      case 0:
+        return Rotation.Flipped;
       case 1:
         return Rotation.Flipped;
       case 2:
-        return Rotation.Flipped;
-      case 3:
         return Rotation.Side;
-      case 4:
+      case 3:
         return Rotation.Normal;
-      case 5:
+      case 4:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -153,17 +153,17 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.SixPlayers) {
     switch (index) {
+      case 0:
+        return Rotation.Flipped;
       case 1:
         return Rotation.Flipped;
       case 2:
         return Rotation.Flipped;
       case 3:
-        return Rotation.Flipped;
+        return Rotation.Normal;
       case 4:
         return Rotation.Normal;
       case 5:
-        return Rotation.Normal;
-      case 6:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -172,17 +172,17 @@ const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
 
   if (gridAreas === GridTemplateAreas.SixPlayersSide) {
     switch (index) {
-      case 1:
+      case 0:
         return Rotation.SideFlipped;
+      case 1:
+        return Rotation.Flipped;
       case 2:
         return Rotation.Flipped;
       case 3:
-        return Rotation.Flipped;
-      case 4:
         return Rotation.Side;
-      case 5:
+      case 4:
         return Rotation.Normal;
-      case 6:
+      case 5:
         return Rotation.Normal;
       default:
         return Rotation.Normal;
@@ -201,7 +201,7 @@ export const createInitialPlayers = ({
   const players: Player[] = [];
   const availableColors = [...presetColors]; // Create a copy of the colors array
 
-  for (let i = 1; i <= numberOfPlayers; i++) {
+  for (let i = 0; i <= numberOfPlayers - 1; i++) {
     const colorIndex = Math.floor(Math.random() * availableColors.length);
     const color = availableColors[colorIndex];
 
@@ -209,19 +209,19 @@ export const createInitialPlayers = ({
     availableColors.splice(colorIndex, 1);
 
     const commanderDamage = [];
-    for (let j = 1; j <= numberOfPlayers; j++) {
+    for (let j = 0; j <= numberOfPlayers - 1; j++) {
       commanderDamage.push({
         source: j,
         damageTotal: 0,
         partnerDamageTotal: 0,
       });
     }
+
     const rotation = getRotation(i, gridAreas);
-    console.log(rotation);
 
     const player: Player = {
       lifeTotal: startingLifeTotal,
-      key: i,
+      index: i,
       color,
       settings: {
         useCommanderDamage,

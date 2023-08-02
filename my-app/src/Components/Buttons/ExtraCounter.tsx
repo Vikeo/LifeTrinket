@@ -1,6 +1,7 @@
 import { ReactNode, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { CounterType, Rotation } from '../../Types/Player';
+import { OutlinedText } from '../Text/OutlinedText';
 
 const ExtraCounterContainer = styled.div`
   display: flex;
@@ -29,17 +30,24 @@ export const CenteredText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 7vmin;
+  font-size: 6vmin;
   font-weight: bold;
-  -webkit-text-stroke: 0.3vmin #ffffff; /* Add a 2-pixel black stroke */
+  -webkit-text-stroke: 0.4vmin #ffffff;
   -webkit-text-fill-color: #000000;
-  color: #000000;
+  color: #b5b2b2;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+`;
+
+const CenteredTextOutline = styled.span`
+  position: absolute;
+  left: 0;
+  -webkit-text-stroke: 0;
+  pointer-events: none;
 `;
 
 const IconContainer = styled.div<{
@@ -122,7 +130,13 @@ const ExtraCounter = ({
       >
         <IconContainer rotation={rotation}>
           {Icon}
-          <CenteredText>{counterTotal ? counterTotal : undefined}</CenteredText>
+          <OutlinedText
+            fontSize="6vmin"
+            fontWeight="bold"
+            strokeWidth="0.6vmin"
+          >
+            {counterTotal ? counterTotal : undefined}
+          </OutlinedText>
         </IconContainer>
       </StyledExtraCounterButton>
     </ExtraCounterContainer>

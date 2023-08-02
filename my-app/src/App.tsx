@@ -54,7 +54,7 @@ const App = () => {
 
   const handlePlayerChange = (updatedPlayer: Player) => {
     const updatedPlayers = players.map((player) =>
-      player.key === updatedPlayer.key ? updatedPlayer : player
+      player.index === updatedPlayer.index ? updatedPlayer : player
     );
     setPlayers(updatedPlayers);
   };
