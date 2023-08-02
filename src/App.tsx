@@ -77,7 +77,19 @@ const App = () => {
     setPlayers([...players]); // ensure to trigger a re-render
   };
 
+  const newGame = () => {
+    localStorage.removeItem('players');
+    localStorage.removeItem('initialGameSettings');
+
+    window.location.reload();
+  };
+
   if (players.length > 0 && initialGameSettings) {
+    // If the user has a key, we need to restart since key is deprecated
+    // FIXME: Remove this after a few months
+    if (players[0].key) {
+      newGame();
+    }
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyles />

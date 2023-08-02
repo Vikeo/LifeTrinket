@@ -7,10 +7,6 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.6",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -20,7 +16,6 @@
     "react-dom": "^18.2.0",
     "react-screen-wake-lock": "^3.0.1",
     "react-scripts": "5.0.1",
-    "react-swipeable": "^7.0.1",
     "styled-components": "^6.0.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
