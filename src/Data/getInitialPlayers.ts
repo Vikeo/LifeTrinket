@@ -20,11 +20,11 @@ const presetColors = [
 ];
 
 const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
-  if (gridAreas === GridTemplateAreas.OnePlayerLandscape && index === 1) {
+  if (gridAreas === GridTemplateAreas.OnePlayerLandscape && index === 0) {
     return Rotation.Normal;
   }
 
-  if (gridAreas === GridTemplateAreas.OnePlayerPortrait && index === 1) {
+  if (gridAreas === GridTemplateAreas.OnePlayerPortrait && index === 0) {
     return Rotation.Side;
   }
 

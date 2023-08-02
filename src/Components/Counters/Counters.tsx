@@ -52,27 +52,6 @@ const Counters = ({
     <CountersWrapper>
       <CountersGrid gridTemplateAreas={gridAreas}>
         {players.map((player) => {
-          if (
-            player.settings.rotation === 90 ||
-            player.settings.rotation === 270
-          ) {
-            return (
-              <GridItemContainer
-                key={player.index}
-                gridArea={`player${player.index}`}
-              >
-                <LifeCounter
-                  backgroundColor={player.color}
-                  player={player}
-                  opponents={players.filter(
-                    (opponent) => opponent.index !== player.index
-                  )}
-                  onPlayerChange={onPlayerChange}
-                  resetCurrentGame={resetCurrentGame}
-                />
-              </GridItemContainer>
-            );
-          }
           return (
             <GridItemContainer
               key={player.index}
@@ -91,9 +70,6 @@ const Counters = ({
           );
         })}
       </CountersGrid>
-      {/* <S.SettingsButtonContainer>
-        <SettingsButton onClick={() => {}} rotation={0} />
-      </S.SettingsButtonContainer> */}
     </CountersWrapper>
   );
 };

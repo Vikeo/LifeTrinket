@@ -56,11 +56,11 @@ const CommanderDamageButton = styled.button<{
   }}
 `;
 
-const CommanderDamageTextContainer = styled.p<{
+const CommanderDamageTextContainer = styled.div<{
   rotation: number;
 }>`
   position: relative;
-  top: 25%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-variant-numeric: tabular-nums;
@@ -78,11 +78,7 @@ const CommanderDamageTextContainer = styled.p<{
       props.rotation === Rotation.Side
     ) {
       return css`
-        rotate: 180deg;
-        text-orientation: sideways;
-        writing-mode: vertical-lr;
-        height: 1rem;
-        width: auto;
+        rotate: 270deg;
       `;
     }
   }}
