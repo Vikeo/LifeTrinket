@@ -12,7 +12,9 @@ export const StyledLifeCounterButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 0 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -29,19 +31,33 @@ const TextContainer = styled.div<{
   align?: string;
   rotation: number;
 }>`
-  text-align: ${(props) => props.align || 'center'};
+  position: relative;
+
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
       props.rotation === Rotation.Side
     ) {
+      if (props.align === 'right') {
+        return css`
+          rotate: -90deg;
+          bottom: 25%;
+        `;
+      }
       return css`
         rotate: -90deg;
-        width: auto;
-        padding: 28px 0;
-        justify-content: space-between;
+        top: 25%;
       `;
     }
+
+    if (props.align === 'right') {
+      return css`
+        left: 25%;
+      `;
+    }
+    return css`
+      right: 25%;
+    `;
   }}
 `;
 
