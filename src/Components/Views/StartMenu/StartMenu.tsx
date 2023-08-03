@@ -142,6 +142,7 @@ const Start = ({
       ...playerOptions,
       gridAreas: defaultLayout,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerOptions.numberOfPlayers]);
 
   return (
