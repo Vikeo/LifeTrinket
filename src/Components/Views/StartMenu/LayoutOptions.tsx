@@ -270,7 +270,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               }
               label=""
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               value={GridTemplateAreas.FivePlayersSide}
               control={
                 <Radio
@@ -290,7 +290,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 />
               }
               label=""
-            />
+            /> */}
           </>
         );
 
@@ -318,7 +318,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               }
               label=""
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               value={GridTemplateAreas.SixPlayersSide}
               control={
                 <Radio
@@ -338,7 +338,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 />
               }
               label=""
-            />
+            /> */}
           </>
         );
 
