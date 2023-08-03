@@ -12,9 +12,7 @@ import FourPlayers from '../../../Icons/Layouts/FourPlayers';
 import FourPlayersSide from '../../../Icons/Layouts/FourPlayersSide';
 import ThreePlayers from '../../../Icons/Layouts/ThreePlayers';
 import ThreePlayersSide from '../../../Icons/Layouts/ThreePlayersSide';
-import FivePlayersSide from '../../../Icons/Layouts/FivePlayersSide';
 import SixPlayers from '../../../Icons/Layouts/SixPlayers';
-import SixPlayersSide from '../../../Icons/Layouts/SixPlayersSide';
 import { theme } from '../../../Data/theme';
 
 const LayoutWrapper = styled.div`
