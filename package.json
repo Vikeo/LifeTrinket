@@ -6,24 +6,23 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.3",
-    "@types/node": "^20.4.6",
-    "@types/react": "^18.2.18",
+    "@mui/material": "^5.13.6",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "firebase-tools": "^12.4.7",
     "gh-pages": "^5.0.0",
-    "material-ui": "^0.20.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-screen-wake-lock": "^3.0.1",
     "react-scripts": "5.0.1",
-    "styled-components": "^6.0.7",
-    "typescript": "^5.1.6",
-    "web-vitals": "^3.4.0"
+    "styled-components": "^6.0.1",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
   },
   "scripts": {
     "predeploy": "yarn run build",
-    "deploy": "yarn firebase deploy",
+    "deploy": "gh-pages -d build",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -49,6 +48,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "prettier": "3.0.1"
+    "prettier": "2.8.8"
   }
 }
