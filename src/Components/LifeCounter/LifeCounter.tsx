@@ -81,12 +81,8 @@ const LifeCountainer = styled.div<{
 const LifeCounterTextContainer = styled.p<{
   rotation: Rotation;
 }>`
-  /* top: 50%;
-  left: 50%;
-  translate: -50% -50%;
   margin: 0;
-  padding: 0; */
-
+  padding: 0;
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -101,6 +97,7 @@ const LifeCounterTextContainer = styled.p<{
     ) {
       return css`
         rotate: 270deg;
+        margin-right: 25%;
       `;
     }
   }}
@@ -168,9 +165,9 @@ const LifeCounter = ({
     return () => clearTimeout(timer);
   }, [recentDifference]);
 
-  const size = 20;
-  const fontSize = `${size}vmax`;
-  const strokeWidth = `${size / 20}vmax`;
+  const size = 30;
+  const fontSize = `${size}vmin`;
+  const strokeWidth = `${size / 20}vmin`;
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>

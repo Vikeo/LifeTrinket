@@ -174,29 +174,31 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
         onChange={handleColorChange}
       />
       <SettingsSection rotation={player.settings.rotation}>
-        <CheckboxContainer rotation={player.settings.rotation}>
-          <Checkbox
-            name="usePartner"
-            checked={player.settings.usePartner}
-            icon={
-              <PartnerTaxIcon
-                size="4vmax"
-                color="black"
-                opacity={1}
-                showStroke
-              />
-            }
-            checkedIcon={
-              <PartnerTaxIcon
-                size="4vmax"
-                color={player.color}
-                opacity={1}
-                showStroke
-              />
-            }
-            onChange={handleSettingsChange}
-          />
-        </CheckboxContainer>
+        {player.settings.useCommanderDamage && (
+          <CheckboxContainer rotation={player.settings.rotation}>
+            <Checkbox
+              name="usePartner"
+              checked={player.settings.usePartner}
+              icon={
+                <PartnerTaxIcon
+                  size="4vmax"
+                  color="black"
+                  opacity={1}
+                  showStroke
+                />
+              }
+              checkedIcon={
+                <PartnerTaxIcon
+                  size="4vmax"
+                  color={player.color}
+                  opacity={1}
+                  showStroke
+                />
+              }
+              onChange={handleSettingsChange}
+            />
+          </CheckboxContainer>
+        )}
 
         <CheckboxContainer rotation={player.settings.rotation}>
           <Checkbox
