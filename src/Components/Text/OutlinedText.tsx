@@ -1,14 +1,5 @@
 import styled from 'styled-components';
-// import { theme } from '../../Data/theme';
-
-const theme = {
-  palette: {
-    common: {
-      white: '#ffffff',
-      black: '#000000',
-    },
-  },
-};
+import { theme } from '../../Data/theme';
 
 const CenteredText = styled.div<{
   strokeWidth?: string;

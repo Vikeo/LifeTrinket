@@ -74,12 +74,14 @@ const ExtraCountersBar = ({
     onPlayerChange(updatedPlayer);
   };
 
+  const iconSize = '8vmin';
+
   return (
     <ExtraCountersGrid rotation={player.settings.rotation}>
       {player.settings.useCommanderDamage && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<CommanderTaxIcon size="8vmin" />}
+          Icon={<CommanderTaxIcon size={iconSize} />}
           type={CounterType.CommanderTax}
           counterTotal={
             player.extraCounters?.find(
@@ -94,7 +96,7 @@ const ExtraCountersBar = ({
       ) && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<PartnerTaxIcon size="8vmin" />}
+          Icon={<PartnerTaxIcon size={iconSize} />}
           type={CounterType.PartnerTax}
           counterTotal={
             player.extraCounters?.find(
@@ -107,7 +109,7 @@ const ExtraCountersBar = ({
       {player.settings.usePoison && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<PoisonIcon size="8vmin" />}
+          Icon={<PoisonIcon size={iconSize} />}
           type={CounterType.Poison}
           counterTotal={
             player.extraCounters?.find((counter) => counter.type === 'poison')
@@ -119,7 +121,7 @@ const ExtraCountersBar = ({
       {player.settings.useEnergy && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<EnergyIcon size="8vmin" />}
+          Icon={<EnergyIcon size={iconSize} />}
           type={CounterType.Energy}
           counterTotal={
             player.extraCounters?.find((counter) => counter.type === 'energy')
@@ -131,7 +133,7 @@ const ExtraCountersBar = ({
       {player.settings.useExperience && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<ExperienceIcon size="8vmin" />}
+          Icon={<ExperienceIcon size={iconSize} />}
           type={CounterType.Experience}
           counterTotal={
             player.extraCounters?.find(

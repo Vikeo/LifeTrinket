@@ -8,7 +8,7 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import { OutlinedText } from '../Text/OutlinedText';
 
-export const LifeCounterWrapper = styled.div<{
+const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
   position: relative;
@@ -25,7 +25,7 @@ export const LifeCounterWrapper = styled.div<{
   }
 `;
 
-export const LifeCounterContentContainer = styled.div<{
+const LifeCounterWrapper = styled.div<{
   rotation: Rotation;
 }>`
   position: relative;
@@ -55,7 +55,7 @@ export const LifeCounterContentContainer = styled.div<{
   }}
 `;
 
-export const LifeCountainer = styled.div<{
+const LifeCountainer = styled.div<{
   rotation: Rotation;
 }>`
   display: flex;
@@ -78,15 +78,15 @@ export const LifeCountainer = styled.div<{
   }}
 `;
 
-export const LifeCounterTextContainer = styled.p<{
+const LifeCounterTextContainer = styled.p<{
   rotation: Rotation;
 }>`
-  position: absolute;
-  top: 50%;
+  /* top: 50%;
   left: 50%;
   translate: -50% -50%;
   margin: 0;
-  padding: 0;
+  padding: 0; */
+
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -168,9 +168,13 @@ const LifeCounter = ({
     return () => clearTimeout(timer);
   }, [recentDifference]);
 
+  const size = 20;
+  const fontSize = `${size}vmax`;
+  const strokeWidth = `${size / 20}vmax`;
+
   return (
-    <LifeCounterWrapper backgroundColor={backgroundColor}>
-      <LifeCounterContentContainer rotation={player.settings.rotation}>
+    <LifeCounterContentWrapper backgroundColor={backgroundColor}>
+      <LifeCounterWrapper rotation={player.settings.rotation}>
         <CommanderDamageBar
           opponents={opponents}
           player={player}
@@ -192,7 +196,7 @@ const LifeCounter = ({
             increment={-1}
           />
           <LifeCounterTextContainer rotation={player.settings.rotation}>
-            <OutlinedText fontSize="30vmin" strokeWidth="1.5vmin">
+            <OutlinedText fontSize={fontSize} strokeWidth={strokeWidth}>
               {player.lifeTotal}
             </OutlinedText>
             {recentDifference !== 0 && (
@@ -211,7 +215,7 @@ const LifeCounter = ({
           />
         </LifeCountainer>
         <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
-      </LifeCounterContentContainer>
+      </LifeCounterWrapper>
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
@@ -221,7 +225,7 @@ const LifeCounter = ({
           resetCurrentGame={resetCurrentGame}
         />
       )}
-    </LifeCounterWrapper>
+    </LifeCounterContentWrapper>
   );
 };
 
