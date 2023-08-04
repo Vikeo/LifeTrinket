@@ -1,7 +1,7 @@
 import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import {
   InitialSettings,

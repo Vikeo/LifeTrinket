@@ -5,7 +5,7 @@ import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
 import EnergyIcon from '../../Icons/EnergyIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import { useWakeLock } from 'react-screen-wake-lock';
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components/macro';
 
 type SettingsProps = {
   player: Player;

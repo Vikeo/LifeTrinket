@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components/macro';
 import { Player, Rotation } from '../../Types/Player';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import SettingsButton from '../Buttons/SettingsButton';

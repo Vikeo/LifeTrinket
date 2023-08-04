@@ -1,5 +1,5 @@
 import { ReactNode, useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components/macro';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Text/OutlinedText';
 

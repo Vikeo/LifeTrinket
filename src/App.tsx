@@ -4,7 +4,7 @@ import { Player } from './Types/Player';
 import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu/StartMenu';
 import { InitialSettings } from './Data/getInitialPlayers';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components/macro';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './Data/theme';
 

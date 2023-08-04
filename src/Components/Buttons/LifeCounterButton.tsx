@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components/macro';
 import { Rotation } from '../../Types/Player';
 
 export const StyledLifeCounterButton = styled.button`

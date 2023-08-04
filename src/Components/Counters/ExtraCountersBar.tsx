@@ -5,7 +5,7 @@ import EnergyIcon from '../../Icons/EnergyIcon';
 import ExperienceIcon from '../../Icons/ExperienceIcon';
 import PoisonIcon from '../../Icons/PoisonIcon';
 import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components/macro';
 import { Rotation } from '../../Types/Player';
 
 const ExtraCountersGrid = styled.div<{ rotation: number }>`

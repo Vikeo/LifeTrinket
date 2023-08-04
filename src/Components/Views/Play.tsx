@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Counters from '../Counters/Counters';
 import { Player } from '../../Types/Player';
 
