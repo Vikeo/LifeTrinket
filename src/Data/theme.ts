@@ -27,10 +27,10 @@ export const theme = createTheme({
     MuiSlider: {
       styleOverrides: {
         root: {
-          marginBottom: '4em',
+          marginBottom: '2.5em',
         },
         markLabel: {
-          fontSize: '1.5em',
+          fontSize: '1.2em',
           color: '#F5F5F5',
         },
         valueLabel: {
@@ -45,16 +45,27 @@ export const theme = createTheme({
           height: '1em',
         },
         mark: {
-          markerStart: 'none',
-          markerEnd: 'none',
           width: '0.5em',
           height: '0.5em',
           borderRadius: '50%',
+          display: 'none',
         },
         thumb: {
           width: '1.7em',
           height: '1.7em',
         },
+      },
+    },
+    MuiFormControlLabel: {
+      styleOverrides: {
+        root: {
+          margin: '0',
+        },
+      },
+    },
+    MuiFormGroup: {
+      styleOverrides: {
+        root: {},
       },
     },
   },

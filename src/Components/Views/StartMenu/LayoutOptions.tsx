@@ -18,6 +18,7 @@ import { theme } from '../../../Data/theme';
 const LayoutWrapper = styled.div`
   flex-direction: row;
   display: flex;
+  justify-content: space-evenly;
 `;
 
 type LayoutOptionsProps = {
@@ -31,6 +32,8 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
   gridAreas,
   onChange,
 }) => {
+  const iconSize = '33vmin';
+
   const renderLayoutOptions = () => {
     switch (numberOfPlayers) {
       case 1:
@@ -42,13 +45,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <OnePlayerLandscape
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <OnePlayerLandscape
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -63,13 +66,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <OnePlayerPortrait
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <OnePlayerPortrait
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -89,13 +92,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <TwoPlayersOppositeLandscape
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <TwoPlayersOppositeLandscape
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -110,13 +113,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <TwoPlayersOppositePortrait
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <TwoPlayersOppositePortrait
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -131,13 +134,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <TwoPlayersSameSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <TwoPlayersSameSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -157,13 +160,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <ThreePlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <ThreePlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -178,13 +181,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <ThreePlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <ThreePlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -205,13 +208,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <FourPlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <FourPlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -226,13 +229,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <FourPlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <FourPlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -253,13 +256,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <FivePlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <FivePlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -274,13 +277,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <FivePlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <FivePlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -301,13 +304,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <SixPlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <SixPlayers
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -322,13 +325,13 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 <Radio
                   icon={
                     <SixPlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <SixPlayersSide
-                      size="20vmax"
+                      size={iconSize}
                       color={theme.palette.primary.main}
                     />
                   }
@@ -353,6 +356,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
           onChange(value as GridTemplateAreas);
         }}
         value={gridAreas}
+        style={{ justifyContent: 'center' }}
       >
         {renderLayoutOptions()}
       </RadioGroup>

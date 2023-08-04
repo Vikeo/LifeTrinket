@@ -15,13 +15,9 @@ const H2 = styled.h2`
   color: ${theme.palette.text.primary};
 `;
 
-export const Wrapper = styled.div`
+const MainWrapper = styled.div`
   width: 100vw;
   height: 100vh;
-`;
-
-const MainWrapper = styled.div`
-  padding-top: 58px;
   padding-bottom: 58px;
   overflow: hidden;
   align-items: center;
@@ -146,76 +142,74 @@ const Start = ({
   }, [playerOptions.numberOfPlayers]);
 
   return (
-    <Wrapper>
-      <MainWrapper>
-        <H2>Game Setup</H2>
-        <FormControl focused={false} style={{ width: '80vw' }}>
-          <FormLabel>Number of Players</FormLabel>
-          <Slider
-            title="Number of Players"
-            max={6}
-            min={1}
-            aria-label="Custom marks"
-            defaultValue={4}
-            getAriaValueText={valuetext}
-            step={null}
-            marks={playerMarks}
-            onChange={(e, value) => {
-              setPlayerOptions({
-                ...playerOptions,
-                numberOfPlayers: value as number,
-              });
-            }}
-          />
-          <FormLabel>Starting Health</FormLabel>
-          <Slider
-            title="Starting Health"
-            max={60}
-            min={20}
-            aria-label="Custom marks"
-            defaultValue={40}
-            getAriaValueText={valuetext}
-            step={10}
-            marks={healthMarks}
-            onChange={(e, value) =>
-              setPlayerOptions({
-                ...playerOptions,
-                startingLifeTotal: value as number,
-              })
-            }
-          />
-          <FormLabel>Commander</FormLabel>
-          <Switch
-            checked={playerOptions.useCommanderDamage}
-            defaultChecked
-            onChange={(e, value) =>
-              setPlayerOptions({
-                ...playerOptions,
-                useCommanderDamage: value,
-              })
-            }
-          />
+    <MainWrapper>
+      <H2>Game Setup</H2>
+      <FormControl focused={false} style={{ width: '80vw' }}>
+        <FormLabel>Number of Players</FormLabel>
+        <Slider
+          title="Number of Players"
+          max={6}
+          min={1}
+          aria-label="Custom marks"
+          defaultValue={4}
+          getAriaValueText={valuetext}
+          step={null}
+          marks={playerMarks}
+          onChange={(e, value) => {
+            setPlayerOptions({
+              ...playerOptions,
+              numberOfPlayers: value as number,
+            });
+          }}
+        />
+        <FormLabel>Starting Health</FormLabel>
+        <Slider
+          title="Starting Health"
+          max={60}
+          min={20}
+          aria-label="Custom marks"
+          defaultValue={40}
+          getAriaValueText={valuetext}
+          step={10}
+          marks={healthMarks}
+          onChange={(e, value) =>
+            setPlayerOptions({
+              ...playerOptions,
+              startingLifeTotal: value as number,
+            })
+          }
+        />
+        <FormLabel>Commander</FormLabel>
+        <Switch
+          checked={playerOptions.useCommanderDamage}
+          defaultChecked
+          onChange={(e, value) =>
+            setPlayerOptions({
+              ...playerOptions,
+              useCommanderDamage: value,
+            })
+          }
+        />
 
-          <FormLabel>Layout</FormLabel>
+        <FormLabel>Layout</FormLabel>
 
-          <LayoutOptions
-            numberOfPlayers={playerOptions.numberOfPlayers}
-            gridAreas={playerOptions.gridAreas}
-            onChange={(gridAreas) =>
-              setPlayerOptions({ ...playerOptions, gridAreas })
-            }
-          />
-          <Button
-            style={{ marginTop: '24px' }}
-            size="large"
-            variant="contained"
-            onClick={doStartGame}
-          >
-            Start Game
-          </Button>
-        </FormControl>
-      </MainWrapper>
-    </Wrapper>
+        <LayoutOptions
+          numberOfPlayers={playerOptions.numberOfPlayers}
+          gridAreas={playerOptions.gridAreas}
+          onChange={(gridAreas) =>
+            setPlayerOptions({ ...playerOptions, gridAreas })
+          }
+        />
+        <Button
+          style={{ marginTop: '24px' }}
+          size="large"
+          variant="contained"
+          onClick={doStartGame}
+        >
+          Start Game
+        </Button>
+      </FormControl>
+    </MainWrapper>
   );
 };
 
