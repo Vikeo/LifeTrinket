@@ -78,6 +78,37 @@ const LifeCountainer = styled.div<{
   }}
 `;
 
+const StartingPlayer = styled.div<{
+  rotation: Rotation;
+}>`
+  z-index: 1;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 8vmin;
+  background: turquoise;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        flex-direction: column-reverse;
+      `;
+    }
+  }}
+`;
+
 const LifeCounterTextContainer = styled.p<{
   rotation: Rotation;
 }>`
@@ -155,15 +186,29 @@ const LifeCounter = ({
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
+  const [showStartingPlayer, setShowStartingPlayer] = useState(
+    localStorage.getItem('playing') === 'true'
+  );
   const [key, setKey] = useState(Date.now());
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setRecentDifference(0);
-    }, 3000);
+    }, 3_000);
 
     return () => clearTimeout(timer);
   }, [recentDifference]);
+
+  useEffect(() => {
+    if (!showStartingPlayer) {
+      const playingTimer = setTimeout(() => {
+        localStorage.setItem('playing', 'true');
+        setShowStartingPlayer(localStorage.getItem('playing') === 'true');
+      }, 3_000);
+
+      return () => clearTimeout(playingTimer);
+    }
+  }, [showStartingPlayer]);
 
   const size = 30;
   const fontSize = `${size}vmin`;
@@ -172,6 +217,12 @@ const LifeCounter = ({
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>
       <LifeCounterWrapper rotation={player.settings.rotation}>
+        {player.isStartingPlayer && !showStartingPlayer && (
+          <StartingPlayer rotation={player.settings.rotation}>
+            You start!
+          </StartingPlayer>
+        )}
+
         <CommanderDamageBar
           opponents={opponents}
           player={player}

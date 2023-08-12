@@ -152,6 +152,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
 
   const handleNewGame = () => {
     localStorage.removeItem('players');
+    localStorage.removeItem('playing');
     localStorage.removeItem('initialGameSettings');
 
     window.location.reload();

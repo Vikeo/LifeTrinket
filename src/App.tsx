@@ -79,6 +79,7 @@ const App = () => {
 
   const newGame = () => {
     localStorage.removeItem('players');
+    localStorage.removeItem('playing');
     localStorage.removeItem('initialGameSettings');
 
     window.location.reload();

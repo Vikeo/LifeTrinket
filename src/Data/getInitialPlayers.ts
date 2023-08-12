@@ -200,8 +200,10 @@ export const createInitialPlayers = ({
 }: InitialSettings): Player[] => {
   const players: Player[] = [];
   const availableColors = [...presetColors]; // Create a copy of the colors array
+  const firstPlayerIndex = Math.floor(Math.random() * numberOfPlayers);
 
   for (let i = 0; i <= numberOfPlayers - 1; i++) {
+    const isStartingPlayer = i === firstPlayerIndex;
     const colorIndex = Math.floor(Math.random() * availableColors.length);
     const color = availableColors[colorIndex];
 
@@ -231,7 +233,7 @@ export const createInitialPlayers = ({
         usePoison: false,
         rotation,
       },
-
+      isStartingPlayer: isStartingPlayer,
       extraCounters: [],
       commanderDamage,
     };
