@@ -6,7 +6,7 @@ import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
-import { OutlinedText } from '../Text/OutlinedText';
+import { OutlinedText } from '../Misc/OutlinedText';
 
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;

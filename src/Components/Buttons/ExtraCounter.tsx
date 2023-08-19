@@ -1,7 +1,7 @@
 import { ReactNode, useRef, useState } from 'react';
 import styled, { css } from 'styled-components/macro';
 import { CounterType, Rotation } from '../../Types/Player';
-import { OutlinedText } from '../Text/OutlinedText';
+import { OutlinedText } from '../Misc/OutlinedText';
 
 const ExtraCounterContainer = styled.div`
   display: flex;

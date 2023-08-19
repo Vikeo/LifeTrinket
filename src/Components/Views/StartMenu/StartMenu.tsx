@@ -206,7 +206,7 @@ const Start = ({
           Start Game
         </Button>
       </FormControl>
-      {/* <SupportMe /> */}
+      <SupportMe />
     </MainWrapper>
   );
 };

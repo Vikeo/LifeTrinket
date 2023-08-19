@@ -6,7 +6,7 @@ interface SVGRProps {
   titleId?: string;
   size?: string;
 }
-const BmcLogo = ({
+const BuyMeCoffee = ({
   title,
   titleId,
   ...props
@@ -17,6 +17,7 @@ const BmcLogo = ({
       width={props.size || 16}
       height={props.size || 16}
       fill="none"
+      viewBox="0 0 884 1279"
       aria-labelledby={titleId}
       {...props}
     >
@@ -44,7 +45,7 @@ const BmcLogo = ({
     </svg>
   );
 };
-BmcLogo.propTypes = {
+BuyMeCoffee.propTypes = {
   title: PropTypes.string,
 };
-export default BmcLogo;
+export default BuyMeCoffee;

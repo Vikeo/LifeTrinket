@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/macro';
 import { Player, Rotation } from '../../Types/Player';
 import { useRef, useState } from 'react';
-import { OutlinedText } from '../Text/OutlinedText';
+import { OutlinedText } from '../Misc/OutlinedText';
 
 const CommanderDamageContainer = styled.div<{
   rotation: number;
