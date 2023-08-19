@@ -1,11 +1,8 @@
 import { Checkbox } from '@mui/material';
 import { Player, Rotation } from '../../Types/Player';
-import ExperienceIcon from '../../Icons/ExperienceIcon';
-import PartnerTaxIcon from '../../Icons/PartnerTaxIcon';
-import EnergyIcon from '../../Icons/EnergyIcon';
-import PoisonIcon from '../../Icons/PoisonIcon';
 import { useWakeLock } from 'react-screen-wake-lock';
 import styled, { css } from 'styled-components/macro';
+import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 
 type SettingsProps = {
   player: Player;
@@ -181,19 +178,19 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
               name="usePartner"
               checked={player.settings.usePartner}
               icon={
-                <PartnerTaxIcon
+                <PartnerTax
                   size="4vmax"
                   color="black"
-                  opacity={1}
-                  showStroke
+                  stroke="white"
+                  stroke-width="10"
                 />
               }
               checkedIcon={
-                <PartnerTaxIcon
+                <PartnerTax
                   size="4vmax"
                   color={player.color}
-                  opacity={1}
-                  showStroke
+                  stroke="white"
+                  stroke-width="10"
                 />
               }
               onChange={handleSettingsChange}
@@ -206,14 +203,19 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             name="usePoison"
             checked={player.settings.usePoison}
             icon={
-              <PoisonIcon size="4vmax" color="black" opacity={1} showStroke />
+              <Poison
+                size="4vmax"
+                color="black"
+                stroke="white"
+                stroke-width="7"
+              />
             }
             checkedIcon={
-              <PoisonIcon
+              <Poison
                 size="4vmax"
                 color={player.color}
-                opacity={1}
-                showStroke
+                stroke="white"
+                stroke-width="7"
               />
             }
             onChange={handleSettingsChange}
@@ -225,14 +227,19 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             name="useEnergy"
             checked={player.settings.useEnergy}
             icon={
-              <EnergyIcon size="4vmax" color="black" opacity={1} showStroke />
+              <Energy
+                size="4vmax"
+                color="black"
+                stroke="white"
+                stroke-width="15"
+              />
             }
             checkedIcon={
-              <EnergyIcon
+              <Energy
                 size="4vmax"
                 color={player.color}
-                opacity={1}
-                showStroke
+                stroke="white"
+                stroke-width="15"
               />
             }
             onChange={handleSettingsChange}
@@ -244,19 +251,19 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             name="useExperience"
             checked={player.settings.useExperience}
             icon={
-              <ExperienceIcon
+              <Experience
                 size="4vmax"
                 color="black"
-                opacity={1}
-                showStroke
+                stroke="white"
+                stroke-width="30"
               />
             }
             checkedIcon={
-              <ExperienceIcon
+              <Experience
                 size="4vmax"
                 color={player.color}
-                opacity={1}
-                showStroke
+                stroke="white"
+                stroke-width="30"
               />
             }
             onChange={handleSettingsChange}

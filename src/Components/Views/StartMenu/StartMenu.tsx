@@ -9,11 +9,8 @@ import {
 } from '../../../Data/getInitialPlayers';
 import { Player } from '../../../Types/Player';
 import LayoutOptions from './LayoutOptions';
-import { theme } from '../../../Data/theme';
-
-const H2 = styled.h2`
-  color: ${theme.palette.text.primary};
-`;
+import { SupportMe } from '../../Misc/SupportMe';
+import { H2 } from '../../Misc/TextComponents';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -209,6 +206,7 @@ const Start = ({
           Start Game
         </Button>
       </FormControl>
+      {/* <SupportMe /> */}
     </MainWrapper>
   );
 };

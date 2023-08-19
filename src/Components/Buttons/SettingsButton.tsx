@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/macro';
-import SettingsIcon from '../../Icons/SettingsIcon';
 import { Rotation } from '../../Types/Player';
+import { Cog } from '../../Icons/generated';
 
 export const StyledSettingsButton = styled.button<{ rotation: number }>`
   position: absolute;
@@ -39,7 +39,7 @@ type SettingsButtonProps = {
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
     <StyledSettingsButton onClick={onClick} rotation={rotation}>
-      <SettingsIcon size="5vmin" />
+      <Cog size="5vmin" color="black" opacity="0.3" />
     </StyledSettingsButton>
   );
 };

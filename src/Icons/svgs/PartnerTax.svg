@@ -1,18 +1,8 @@
-import { IconProps } from '../Types/Icon';
-
-const PartnerTaxIcon = ({ size, color, opacity, showStroke }: IconProps) => {
-  return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <svg
+<svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 -50 380 390"
-        width={size}
-        height={size}
-        fill={color || 'black'}
-        fillOpacity={opacity || '0.5'}
-        stroke={showStroke ? 'white' : 'none'}
-        stroke-width={showStroke ? '100' : 'none'}
-        paint-order={showStroke ? 'stroke fill markers' : ''}
+        fill='currentColor'
+        paint-order='stroke fill markers'
       >
         <g transform="translate(0.000000, 330.000000) scale(0.100000,-0.100000)">
           <path
@@ -42,8 +32,3 @@ const PartnerTaxIcon = ({ size, color, opacity, showStroke }: IconProps) => {
           />
         </g>
       </svg>
-    </div>
-  );
-};
-
-export default PartnerTaxIcon;

@@ -1,0 +1,13 @@
+export { default as FivePlayers } from './FivePlayers';
+export { default as FivePlayersSide } from './FivePlayersSide';
+export { default as FourPlayers } from './FourPlayers';
+export { default as FourPlayersSide } from './FourPlayersSide';
+export { default as OnePlayerLandscape } from './OnePlayerLandscape';
+export { default as OnePlayerPortrait } from './OnePlayerPortrait';
+export { default as SixPlayers } from './SixPlayers';
+export { default as SixPlayersSide } from './SixPlayersSide';
+export { default as ThreePlayers } from './ThreePlayers';
+export { default as ThreePlayersSide } from './ThreePlayersSide';
+export { default as TwoPlayersOppositeLandscape } from './TwoPlayersOppositeLandscape';
+export { default as TwoPlayersOppositePortrait } from './TwoPlayersOppositePortrait';
+export { default as TwoPlayersSameSide } from './TwoPlayersSameSide';
