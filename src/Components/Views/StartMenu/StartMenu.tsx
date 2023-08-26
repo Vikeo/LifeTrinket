@@ -103,6 +103,7 @@ const Start = ({
     if (!initialGameSettings) {
       return;
     }
+
     document.documentElement.requestFullscreen();
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
