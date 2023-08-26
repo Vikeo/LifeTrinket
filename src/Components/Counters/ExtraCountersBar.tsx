@@ -84,7 +84,7 @@ const ExtraCountersBar = ({
       {player.settings.useCommanderDamage && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<CommanderTax size={iconSize} opacity="0.5" />}
+          Icon={<CommanderTax size={iconSize} opacity="0.5" color="black" />}
           type={CounterType.CommanderTax}
           counterTotal={
             player.extraCounters?.find(
@@ -99,7 +99,7 @@ const ExtraCountersBar = ({
       ) && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<PartnerTax size={iconSize} opacity="0.5" />}
+          Icon={<PartnerTax size={iconSize} opacity="0.5" color="black" />}
           type={CounterType.PartnerTax}
           counterTotal={
             player.extraCounters?.find(
@@ -112,7 +112,7 @@ const ExtraCountersBar = ({
       {player.settings.usePoison && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<Poison size={iconSize} opacity="0.5" />}
+          Icon={<Poison size={iconSize} opacity="0.5" color="black" />}
           type={CounterType.Poison}
           counterTotal={
             player.extraCounters?.find((counter) => counter.type === 'poison')
@@ -124,7 +124,7 @@ const ExtraCountersBar = ({
       {player.settings.useEnergy && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<Energy size={iconSize} opacity="0.5" />}
+          Icon={<Energy size={iconSize} opacity="0.5" color="black" />}
           type={CounterType.Energy}
           counterTotal={
             player.extraCounters?.find((counter) => counter.type === 'energy')
@@ -136,7 +136,7 @@ const ExtraCountersBar = ({
       {player.settings.useExperience && (
         <ExtraCounter
           rotation={player.settings.rotation}
-          Icon={<Experience size={iconSize} opacity="0.5" />}
+          Icon={<Experience size={iconSize} opacity="0.5" color="black" />}
           type={CounterType.Experience}
           counterTotal={
             player.extraCounters?.find(
