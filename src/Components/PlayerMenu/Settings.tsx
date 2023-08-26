@@ -1,8 +1,9 @@
 import { Checkbox } from '@mui/material';
-import { Player, Rotation } from '../../Types/Player';
-import { useWakeLock } from 'react-screen-wake-lock';
-import styled, { css } from 'styled-components/macro';
+// import { useWakeLock } from 'react-screen-wake-lock';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
+import { Player, Rotation } from '../../Types/Player';
 
 type SettingsProps = {
   player: Player;
@@ -28,18 +29,18 @@ const SettingsContainer = styled.div<{
       props.rotation === Rotation.Side
     ) {
       return css`
-        flex-direction: row;
-        padding-top: 36px;
+        flex-direction: column-reverse;
+        /* padding-top: 36px; */
       `;
     } else {
       return css`
-        padding-top: 36px;
+        /* padding-top: 36px; */
       `;
     }
   }}
 `;
 
-const SettingsSection = styled.div<{ rotation: Rotation }>`
+const TogglesSection = styled.div<{ rotation: Rotation }>`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -52,6 +53,26 @@ const SettingsSection = styled.div<{ rotation: Rotation }>`
       props.rotation === Rotation.Side
     ) {
       return css`
+        flex-direction: column-reverse;
+      `;
+    }
+  }}
+`;
+
+const ButtonsSections = styled.div<{ rotation: Rotation }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: ${props.rotation}deg;
         flex-direction: column-reverse;
       `;
     }
@@ -128,8 +149,8 @@ const CheckboxContainer = styled.div<{ rotation: Rotation }>`
 `;
 
 const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
-  const { released, request, release } = useWakeLock();
-  const handleWakeLock = () => (released === false ? release() : request());
+  // const { released, request, release } = useWakeLock();
+  // const handleWakeLock = () => (released === false ? release() : request());
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
@@ -171,7 +192,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
         value={player.color}
         onChange={handleColorChange}
       />
-      <SettingsSection rotation={player.settings.rotation}>
+      <TogglesSection rotation={player.settings.rotation}>
         {player.settings.useCommanderDamage && (
           <CheckboxContainer rotation={player.settings.rotation}>
             <Checkbox
@@ -269,9 +290,9 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             onChange={handleSettingsChange}
           />
         </CheckboxContainer>
-      </SettingsSection>
+      </TogglesSection>
 
-      <SettingsSection rotation={player.settings.rotation}>
+      <ButtonsSections rotation={player.settings.rotation}>
         <Button rotation={player.settings.rotation} onClick={handleResetGame}>
           Reset All
         </Button>
@@ -281,10 +302,10 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
         <Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
           Fullscreen
         </Button>
-        <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        {/* <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
           {released === false ? 'Release' : 'Request'} nosleep
-        </Button>
-      </SettingsSection>
+        </Button> */}
+      </ButtonsSections>
     </SettingsContainer>
   );
 };

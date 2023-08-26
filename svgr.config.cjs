@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable-next-line no-undef */
 module.exports = {
   template: require('./template'),
   titleProp: true,
@@ -25,3 +27,5 @@ module.exports = {
   typescript: true,
   outDir: './src/Icons/generated',
 };
+
+

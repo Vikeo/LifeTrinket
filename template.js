@@ -1,5 +1,5 @@
 const propTypesTemplate = (
-  { imports, interfaces, componentName, props, jsx, exports },
+  { interfaces, componentName, props, jsx },
   { tpl }
 ) => {
   const title = componentName.split('Svg')[1];
@@ -17,20 +17,24 @@ const propTypesTemplate = (
     optional: true,
   });
 
-  return tpl`${imports}
+  return tpl`
+  import PropTypes from 'prop-types';
+  import { SVGProps } from "react";
+  
+  ${interfaces}
 
-import PropTypes from 'prop-types';
-${interfaces}
+  const ${title} = (${props}) => {
+    return ${jsx};
+  }
 
-const ${title} = (${props}) => {
-  return ${jsx};
-}
+  ${title}.propTypes = {
+    title: PropTypes.string,
+  };
 
-${title}.propTypes = {
-  title: PropTypes.string,
+  export default ${title}`;
 };
 
-export default ${title}`;
-};
 
+// eslint-disable-next-line no-undef
 module.exports = propTypesTemplate;
+

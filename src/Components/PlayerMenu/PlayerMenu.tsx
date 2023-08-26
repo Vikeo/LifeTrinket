@@ -1,6 +1,7 @@
 import { Player } from '../../Types/Player';
 import Settings from './Settings';
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
 
 const PlayerMenuWrapper = styled.div<{

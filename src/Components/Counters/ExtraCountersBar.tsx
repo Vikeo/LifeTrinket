@@ -1,6 +1,7 @@
 import { CounterType, Player } from '../../Types/Player';
 import ExtraCounter from '../Buttons/ExtraCounter';
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
 import {
   CommanderTax,

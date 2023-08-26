@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { theme } from '../../../Data/theme';
@@ -34,7 +34,6 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
   gridAreas,
   onChange,
 }) => {
-  const iconSize = '33vmin';
   const iconHeight = '33vmin';
   const iconWidth = '20vmin';
 
@@ -382,7 +381,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
     <LayoutWrapper>
       <RadioGroup
         row
-        onChange={(e, value) => {
+        onChange={(_e, value) => {
           onChange(value as GridTemplateAreas);
         }}
         value={gridAreas}

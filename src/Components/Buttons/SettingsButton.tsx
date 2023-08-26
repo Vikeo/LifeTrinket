@@ -1,4 +1,5 @@
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
 import { Cog } from '../../Icons/generated';
 

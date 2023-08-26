@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Paragraph } from './TextComponents';
 import { BuyMeCoffee, KoFi } from '../../Icons/generated/Support';
 import { theme } from '../../Data/theme';
-import { ButtonBase } from '@mui/material';
+// import { ButtonBase } from '@mui/material';
 
 const SupportContainer = styled.div`
   display: flex;

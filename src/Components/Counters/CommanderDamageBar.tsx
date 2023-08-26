@@ -1,5 +1,6 @@
 import { Player, Rotation } from '../../Types/Player';
-import styled, { css } from 'styled-components/macro';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 import { CommanderDamage } from '../Buttons/CommanderDamage';
 
 const CommanderDamageGrid = styled.div<{ rotation: number }>`

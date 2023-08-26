@@ -1,8 +1,8 @@
 import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components/macro';
-import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
+import styled from 'styled-components';
+import  { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import {
   InitialSettings,
   createInitialPlayers,
@@ -152,7 +152,7 @@ const Start = ({
           getAriaValueText={valuetext}
           step={null}
           marks={playerMarks}
-          onChange={(e, value) => {
+          onChange={(_e, value) => {
             setPlayerOptions({
               ...playerOptions,
               numberOfPlayers: value as number,
@@ -169,7 +169,7 @@ const Start = ({
           getAriaValueText={valuetext}
           step={10}
           marks={healthMarks}
-          onChange={(e, value) =>
+          onChange={(_e, value) =>
             setPlayerOptions({
               ...playerOptions,
               startingLifeTotal: value as number,
@@ -180,7 +180,7 @@ const Start = ({
         <Switch
           checked={playerOptions.useCommanderDamage}
           defaultChecked
-          onChange={(e, value) =>
+          onChange={(_e, value) =>
             setPlayerOptions({
               ...playerOptions,
               useCommanderDamage: value,

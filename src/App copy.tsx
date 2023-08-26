@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import './App.css';
 import { Player } from './Types/Player';
 import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu/StartMenu';

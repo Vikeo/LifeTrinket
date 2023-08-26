@@ -1,6 +1,6 @@
 import { Player } from '../../Types/Player';
 import LifeCounter from '../LifeCounter/LifeCounter';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const CountersWrapper = styled.div`
   width: 100%;
