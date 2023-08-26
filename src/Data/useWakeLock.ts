@@ -48,8 +48,8 @@ export const useWakeLock = ({
 
         onRequest && onRequest();
         setReleased((wakeLock.current && wakeLock.current.released) || false);
-      } catch (error: any) {
-        onError && onError(error);
+      } catch (error: unknown) {
+        onError && onError(error as Error);
       }
     },
     [isSupported, onRequest, onError, onRelease]
