@@ -188,7 +188,7 @@ export const CommanderDamage = ({
   };
 
   const opponentIndex = opponent.index;
-  const fontSize = '5vmin';
+  const fontSize = '6vmin';
   const fontWeight = 'bold';
   const strokeWidth = '0.5vmin';
 

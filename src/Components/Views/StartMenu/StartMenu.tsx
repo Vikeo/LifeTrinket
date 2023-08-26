@@ -2,15 +2,15 @@ import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import  { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
+import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import {
   InitialSettings,
   createInitialPlayers,
 } from '../../../Data/getInitialPlayers';
 import { Player } from '../../../Types/Player';
-import LayoutOptions from './LayoutOptions';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2 } from '../../Misc/TextComponents';
+import LayoutOptions from './LayoutOptions';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -22,6 +22,12 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: fit-content;
+`;
+
+const StartButtonFooter = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  translate: -50%, -50%;
 `;
 
 const playerMarks = [
@@ -106,7 +112,15 @@ const Start = ({
   }, [playerOptions, setInitialGameSettings]);
 
   const valuetext = (value: number) => {
-    return `${value}°C`;
+    return `${value}`;
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
   };
 
   const getDefaultLayout = (numberOfPlayers: number) => {
@@ -140,7 +154,9 @@ const Start = ({
 
   return (
     <MainWrapper>
-      <H2>Game Setup</H2>
+      <SupportMe />
+
+      <H2>Life Trinket</H2>
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -198,15 +214,28 @@ const Start = ({
           }
         />
         <Button
-          style={{ marginTop: '24px' }}
+          style={{
+            marginTop: '0.5rem',
+            marginRight: 'auto',
+            marginLeft: 'auto',
+          }}
+          size="small"
+          variant="contained"
+          onClick={toggleFullscreen}
+        >
+          Toggle fullscreen
+        </Button>
+      </FormControl>
+      <StartButtonFooter>
+        <Button
           size="large"
           variant="contained"
           onClick={doStartGame}
+          style={{ width: '90dvw' }}
         >
-          Start Game
+          START GAME
         </Button>
-      </FormControl>
-      <SupportMe />
+      </StartButtonFooter>
     </MainWrapper>
   );
 };
