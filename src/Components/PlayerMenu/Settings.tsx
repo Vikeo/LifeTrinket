@@ -1,9 +1,8 @@
 import { Checkbox } from '@mui/material';
-import styled from 'styled-components';
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
+import { useWakeLock } from '../../Data/useWakeLock';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
-import { useWakeLock } from '../../Data/useWakeLock';
 
 type SettingsProps = {
   player: Player;
