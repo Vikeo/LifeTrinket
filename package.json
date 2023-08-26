@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@mui/material": "^5.13.6",
+    "firebase": "^10.3.0",
+    "ga-4-react": "^0.1.281",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^6.0.7"
