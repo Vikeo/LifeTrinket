@@ -9,6 +9,7 @@ const ExtraCounterContainer = styled.div`
   justify-content: center;
   align-items: center;
   pointer-events: all;
+  flex-grow: 1;
 `;
 
 export const StyledExtraCounterButton = styled.button`
@@ -24,6 +25,7 @@ export const StyledExtraCounterButton = styled.button`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  height: 100%;
 `;
 
 export const CenteredText = styled.div`

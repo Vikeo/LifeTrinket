@@ -13,11 +13,11 @@ import {
 
 const ExtraCountersGrid = styled.div<{ rotation: number }>`
   display: flex;
+  position: absolute;
   flex-direction: row;
   flex-grow: 1;
   width: 100%;
   justify-content: space-evenly;
-  position: absolute;
   bottom: 0;
   width: 100%;
   pointer-events: none;

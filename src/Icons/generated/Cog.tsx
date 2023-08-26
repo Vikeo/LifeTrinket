@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import { SVGProps } from "react";
+import PropTypes from 'prop-types';
+import { SVGProps } from 'react';
 interface SVGRProps {
   title?: string;
   titleId?: string;
