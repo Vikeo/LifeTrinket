@@ -103,6 +103,7 @@ const Start = ({
     if (!initialGameSettings) {
       return;
     }
+    document.documentElement.requestFullscreen();
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
   };
@@ -113,14 +114,6 @@ const Start = ({
 
   const valuetext = (value: number) => {
     return `${value}`;
-  };
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
   };
 
   const getDefaultLayout = (numberOfPlayers: number) => {
@@ -213,18 +206,6 @@ const Start = ({
             setPlayerOptions({ ...playerOptions, gridAreas })
           }
         />
-        <Button
-          style={{
-            marginTop: '0.5rem',
-            marginRight: 'auto',
-            marginLeft: 'auto',
-          }}
-          size="small"
-          variant="contained"
-          onClick={toggleFullscreen}
-        >
-          Toggle fullscreen
-        </Button>
       </FormControl>
       <StartButtonFooter>
         <Button
