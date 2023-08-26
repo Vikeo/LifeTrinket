@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { css, keyframes  } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { Player, Rotation } from '../../Types/Player';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
-import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import { OutlinedText } from '../Misc/OutlinedText';
+import PlayerMenu from '../PlayerMenu/PlayerMenu';
 
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;

@@ -11,6 +11,7 @@ import { Player } from '../../../Types/Player';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2 } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
+import { useAnalytics } from '../../../Data/useAnalytics';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -91,6 +92,7 @@ const Start = ({
   setPlayers,
   setInitialGameSettings,
 }: StartProps) => {
+  const analytics = useAnalytics();
   const [playerOptions, setPlayerOptions] = useState<InitialSettings>(
     initialGameSettings || {
       numberOfPlayers: 4,
@@ -103,6 +105,8 @@ const Start = ({
     if (!initialGameSettings) {
       return;
     }
+
+    analytics.trackEvent('game_started', { ...initialGameSettings });
 
     document.documentElement.requestFullscreen();
     setInitialGameSettings(initialGameSettings);

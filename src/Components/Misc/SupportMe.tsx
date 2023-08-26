@@ -5,6 +5,7 @@ import { theme } from '../../Data/theme';
 import { BuyMeCoffee, KoFi } from '../../Icons/generated/Support';
 import { Paragraph } from './TextComponents';
 import LittleGuy from '../../Icons/generated/LittleGuy';
+import { useAnalytics } from '../../Data/useAnalytics';
 
 // import { ButtonBase } from '@mui/material';
 
@@ -39,13 +40,16 @@ const SupportButton = styled.button`
 `;
 
 export const SupportMe = () => {
+  const analytics = useAnalytics();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleOpenBuyMeCoffee = () => {
+    analytics.trackEvent('click_bmc');
     window.open('https://www.buymeacoffee.com/vikeo');
   };
 
   const handleOpenKoFi = () => {
+    analytics.trackEvent('click_kofi');
     window.open('https://ko-fi.com/vikeo');
   };
 
