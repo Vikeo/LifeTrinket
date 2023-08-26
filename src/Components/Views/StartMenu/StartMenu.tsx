@@ -9,7 +9,7 @@ import {
 } from '../../../Data/getInitialPlayers';
 import { Player } from '../../../Types/Player';
 import { SupportMe } from '../../Misc/SupportMe';
-import { H2 } from '../../Misc/TextComponents';
+import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
 import { useAnalytics } from '../../../Data/useAnalytics';
 
@@ -108,7 +108,11 @@ const Start = ({
 
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
-    document.documentElement.requestFullscreen();
+    try {
+      document.documentElement.requestFullscreen();
+    } catch (error) {
+      console.error(error);
+    }
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
   };
@@ -212,6 +216,11 @@ const Start = ({
           }
         />
       </FormControl>
+
+      <Paragraph style={{ textAlign: 'center', maxWidth: '75%' }}>
+        If you're on iOS, this page works better if you{' '}
+        <strong>hide the toolbar</strong>
+      </Paragraph>
       <StartButtonFooter>
         <Button
           size="large"
