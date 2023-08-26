@@ -168,6 +168,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
   };
 
   const handleNewGame = () => {
+    handleResetGame();
     localStorage.removeItem('players');
     localStorage.removeItem('playing');
     localStorage.removeItem('initialGameSettings');
@@ -292,9 +293,6 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
       </TogglesSection>
 
       <ButtonsSections rotation={player.settings.rotation}>
-        <Button rotation={player.settings.rotation} onClick={handleResetGame}>
-          Reset All
-        </Button>
         <Button rotation={player.settings.rotation} onClick={handleNewGame}>
           Back to Start
         </Button>

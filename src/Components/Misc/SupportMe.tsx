@@ -55,6 +55,8 @@ export const SupportMe = () => {
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      analytics.trackEvent('toggle_support_drawer');
+
       if (
         event.type === 'keydown' &&
         ((event as React.KeyboardEvent).key === 'Tab' ||
