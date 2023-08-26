@@ -1,7 +1,7 @@
 {
   "name": "life-trinket",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "commonjs",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,6 @@
     "@mui/material": "^5.13.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-screen-wake-lock": "^3.0.1",
     "styled-components": "^6.0.7"
   },
   "devDependencies": {
@@ -31,8 +30,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "firebase-tools": "^12.5.2",
+    "prettier": "2.8.8",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "prettier": "2.8.8"
+    "vite": "^4.4.5"
   }
 }

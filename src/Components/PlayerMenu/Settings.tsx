@@ -1,7 +1,6 @@
 import { Checkbox } from '@mui/material';
-// import { useWakeLock } from 'react-screen-wake-lock';
-import styled from 'styled-components';
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
+import { useWakeLock } from '../../Data/useWakeLock';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 
@@ -149,8 +148,8 @@ const CheckboxContainer = styled.div<{ rotation: Rotation }>`
 `;
 
 const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
-  // const { released, request, release } = useWakeLock();
-  // const handleWakeLock = () => (released === false ? release() : request());
+  const { released, request, release } = useWakeLock();
+  const handleWakeLock = () => (released === false ? release() : request());
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
@@ -302,9 +301,9 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
         <Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
           Fullscreen
         </Button>
-        {/* <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
           {released === false ? 'Release' : 'Request'} nosleep
-        </Button> */}
+        </Button>
       </ButtonsSections>
     </SettingsContainer>
   );
