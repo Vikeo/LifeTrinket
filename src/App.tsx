@@ -62,20 +62,18 @@ const App = () => {
 
   const resetCurrentGame = () => {
     // loop over all players and reset them
-    players.forEach((player) => {
-      player.commanderDamage.forEach((commanderDamage) => {
-        commanderDamage.damageTotal = 0;
-        commanderDamage.partnerDamageTotal = 0;
-      });
-      player.lifeTotal = 40;
-      player.extraCounters.forEach((counter) => {
-        counter.value = 0;
-      });
-
-      handlePlayerChange(player);
-    });
-
-    setPlayers([...players]); // ensure to trigger a re-render
+    // players.forEach((player) => {
+    //   player.commanderDamage.forEach((commanderDamage) => {
+    //     commanderDamage.damageTotal = 0;
+    //     commanderDamage.partnerDamageTotal = 0;
+    //   });
+    //   player.lifeTotal = 40;
+    //   player.extraCounters.forEach((counter) => {
+    //     counter.value = 0;
+    //   });
+    //   handlePlayerChange(player);
+    // });
+    // setPlayers([...players]); // ensure to trigger a re-render
   };
 
   return (
