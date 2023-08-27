@@ -72,7 +72,6 @@ const ButtonsSections = styled.div<{ rotation: Rotation }>`
     ) {
       return css`
         rotate: ${props.rotation - 180}deg;
-        flex-direction: column-reverse;
       `;
     }
   }}
@@ -112,26 +111,10 @@ const ColorPicker = styled.input<{
   }}
 `;
 
-const Button = styled.button<{
-  rotation: Rotation;
-}>`
+const Button = styled.button`
   cursor: pointer;
   user-select: none;
   color: #000000;
-
-  ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: ${props.rotation + 90}deg;
-        -webkit-writing-mode: vertical-rl;
-        writing-mode: vertical-rl;
-        text-orientation: sideways;
-      `;
-    }
-  }}
 `;
 
 const CheckboxContainer = styled.div<{ rotation: Rotation }>`
