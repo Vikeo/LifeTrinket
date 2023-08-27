@@ -169,11 +169,6 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
 
   const handleNewGame = () => {
     handleResetGame();
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('initialGameSettings');
-
-    window.location.reload();
   };
 
   const toggleFullscreen = () => {
