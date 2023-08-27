@@ -51,6 +51,10 @@ const ExtraCountersBar = ({
     updatedCounterTotal: number,
     type: CounterType
   ) => {
+    if (updatedCounterTotal < 0) {
+      return;
+    }
+
     const existingCounter = player.extraCounters.find(
       (counter) => counter.type === type
     );
