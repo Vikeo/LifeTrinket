@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Player } from './Types/Player';
+import styled, { createGlobalStyle } from 'styled-components';
 import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu/StartMenu';
 import { InitialSettings } from './Data/getInitialPlayers';
-import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components';
+import { Player } from './Types/Player';
 
 import { ThemeProvider } from '@mui/material';
 import { theme } from './Data/theme';
+import { useAnalytics } from './Data/useAnalytics';
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -33,6 +33,7 @@ const RootWrapper = styled.div`
 `;
 
 const App = () => {
+  const analytics = useAnalytics();
   const savedPlayers = localStorage.getItem('players');
   const savedGameSettings = localStorage.getItem('initialGameSettings');
 
@@ -61,19 +62,17 @@ const App = () => {
   };
 
   const resetCurrentGame = () => {
-    // loop over all players and reset them
-    // players.forEach((player) => {
-    //   player.commanderDamage.forEach((commanderDamage) => {
-    //     commanderDamage.damageTotal = 0;
-    //     commanderDamage.partnerDamageTotal = 0;
-    //   });
-    //   player.lifeTotal = 40;
-    //   player.extraCounters.forEach((counter) => {
-    //     counter.value = 0;
-    //   });
-    //   handlePlayerChange(player);
-    // });
-    // setPlayers([...players]); // ensure to trigger a re-render
+    const currentPlayers = localStorage.getItem('players');
+    if (currentPlayers) {
+      analytics.trackEvent('go_to_start', {
+        playersBeforeReset: currentPlayers,
+      });
+    }
+
+    setPlayers([]);
+    localStorage.removeItem('players');
+    localStorage.removeItem('playing');
+    localStorage.removeItem('initialGameSettings');
   };
 
   return (

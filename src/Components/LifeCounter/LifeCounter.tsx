@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { theme } from '../../Data/theme';
 import { Player, Rotation } from '../../Types/Player';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import SettingsButton from '../Buttons/SettingsButton';
@@ -7,7 +8,6 @@ import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
-
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
@@ -88,8 +88,7 @@ const StartingPlayer = styled.div<{
   height: 100%;
   justify-content: center;
   align-items: center;
-  font-size: 8vmin;
-  background: turquoise;
+  background: ${theme.palette.primary.main};
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -97,13 +96,28 @@ const StartingPlayer = styled.div<{
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
       props.rotation === Rotation.Side
     ) {
       return css`
-        flex-direction: column-reverse;
+        rotate: ${props.rotation - 90}deg;
+      `;
+    }
+  }}
+`;
+
+const StartingPlayerText = styled.div<{ rotation: Rotation }>`
+  font-size: 8vmin;
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: ${props.rotation - 180}deg;
       `;
     }
   }}
@@ -236,10 +250,11 @@ const LifeCounter = ({
       <LifeCounterWrapper rotation={player.settings.rotation}>
         {player.isStartingPlayer && !showStartingPlayer && (
           <StartingPlayer rotation={player.settings.rotation}>
-            You start!
+            <StartingPlayerText rotation={player.settings.rotation}>
+              You start!
+            </StartingPlayerText>
           </StartingPlayer>
         )}
-
         <CommanderDamageBar
           opponents={opponents}
           player={player}

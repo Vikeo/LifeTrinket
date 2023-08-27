@@ -71,8 +71,7 @@ const ButtonsSections = styled.div<{ rotation: Rotation }>`
       props.rotation === Rotation.Side
     ) {
       return css`
-        rotate: ${props.rotation}deg;
-        flex-direction: column-reverse;
+        rotate: ${props.rotation - 180}deg;
       `;
     }
   }}
@@ -112,26 +111,10 @@ const ColorPicker = styled.input<{
   }}
 `;
 
-const Button = styled.button<{
-  rotation: Rotation;
-}>`
+const Button = styled.button`
   cursor: pointer;
   user-select: none;
   color: #000000;
-
-  ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: ${props.rotation + 90}deg;
-        -webkit-writing-mode: vertical-rl;
-        writing-mode: vertical-rl;
-        text-orientation: sideways;
-      `;
-    }
-  }}
 `;
 
 const CheckboxContainer = styled.div<{ rotation: Rotation }>`
@@ -169,11 +152,6 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
 
   const handleNewGame = () => {
     handleResetGame();
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('initialGameSettings');
-
-    window.location.reload();
   };
 
   const toggleFullscreen = () => {
@@ -293,13 +271,9 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
       </TogglesSection>
 
       <ButtonsSections rotation={player.settings.rotation}>
-        <Button rotation={player.settings.rotation} onClick={handleNewGame}>
-          Back to Start
-        </Button>
-        <Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
-          Fullscreen
-        </Button>
-        <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        <Button onClick={handleNewGame}>Back to Start</Button>
+        <Button onClick={toggleFullscreen}>Fullscreen</Button>
+        <Button onClick={handleWakeLock}>
           {released === false ? 'Release' : 'Request'} nosleep
         </Button>
       </ButtonsSections>
