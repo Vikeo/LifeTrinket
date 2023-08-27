@@ -71,7 +71,7 @@ const ButtonsSections = styled.div<{ rotation: Rotation }>`
       props.rotation === Rotation.Side
     ) {
       return css`
-        rotate: ${props.rotation}deg;
+        rotate: ${props.rotation - 180}deg;
         flex-direction: column-reverse;
       `;
     }
@@ -293,13 +293,9 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
       </TogglesSection>
 
       <ButtonsSections rotation={player.settings.rotation}>
-        <Button rotation={player.settings.rotation} onClick={handleNewGame}>
-          Back to Start
-        </Button>
-        <Button rotation={player.settings.rotation} onClick={toggleFullscreen}>
-          Fullscreen
-        </Button>
-        <Button rotation={player.settings.rotation} onClick={handleWakeLock}>
+        <Button onClick={handleNewGame}>Back to Start</Button>
+        <Button onClick={toggleFullscreen}>Fullscreen</Button>
+        <Button onClick={handleWakeLock}>
           {released === false ? 'Release' : 'Request'} nosleep
         </Button>
       </ButtonsSections>
