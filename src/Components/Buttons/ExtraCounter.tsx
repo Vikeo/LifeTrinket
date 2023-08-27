@@ -1,6 +1,7 @@
 import { ReactNode, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
+import { decrementTimeoutMs } from '../../Data/constants';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
 
@@ -96,7 +97,7 @@ const ExtraCounter = ({
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
       handleCountChange(-1);
-    }, 500);
+    }, decrementTimeoutMs);
   };
 
   const handleUpInput = () => {

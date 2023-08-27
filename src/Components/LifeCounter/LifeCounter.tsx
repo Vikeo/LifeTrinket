@@ -210,9 +210,26 @@ const LifeCounter = ({
     }
   }, [showStartingPlayer]);
 
-  const size = 30;
-  const fontSize = `${size}vmin`;
-  const strokeWidth = `${size / 20}vmin`;
+  player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side;
+
+  const size =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? 15
+      : 30;
+
+  const fontSize =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? `${size}vmax`
+      : `${size}vmin`;
+
+  const strokeWidth =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? `${size / 20}vmax`
+      : `${size / 20}vmin`;
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>

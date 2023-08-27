@@ -16,12 +16,10 @@ const SettingsContainer = styled.div<{
 }>`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
-  gap: 2vmin;
   height: 100%;
-  width: 100%;
+  width: 80%;
   ${(props) => {
     if (
       props.rotation === Rotation.SideFlipped ||
@@ -29,6 +27,8 @@ const SettingsContainer = styled.div<{
     ) {
       return css`
         flex-direction: column-reverse;
+        height: 100%;
+        width: 100%;
         /* padding-top: 36px; */
       `;
     } else {
@@ -200,18 +200,18 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
               checked={player.settings.usePartner}
               icon={
                 <PartnerTax
-                  size="4vmax"
+                  size="6vmax"
                   color="black"
                   stroke="white"
-                  stroke-width="10"
+                  stroke-width="30"
                 />
               }
               checkedIcon={
                 <PartnerTax
-                  size="4vmax"
+                  size="6vmax"
                   color={player.color}
                   stroke="white"
-                  stroke-width="10"
+                  stroke-width="30"
                 />
               }
               onChange={handleSettingsChange}
@@ -225,18 +225,18 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             checked={player.settings.usePoison}
             icon={
               <Poison
-                size="4vmax"
+                size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="7"
+                stroke-width="30"
               />
             }
             checkedIcon={
               <Poison
-                size="4vmax"
+                size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="7"
+                stroke-width="30"
               />
             }
             onChange={handleSettingsChange}
@@ -249,18 +249,18 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             checked={player.settings.useEnergy}
             icon={
               <Energy
-                size="4vmax"
+                size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="15"
+                stroke-width="30"
               />
             }
             checkedIcon={
               <Energy
-                size="4vmax"
+                size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="15"
+                stroke-width="30"
               />
             }
             onChange={handleSettingsChange}
@@ -273,18 +273,18 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
             checked={player.settings.useExperience}
             icon={
               <Experience
-                size="4vmax"
+                size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="30"
+                stroke-width="50"
               />
             }
             checkedIcon={
               <Experience
-                size="4vmax"
+                size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="30"
+                stroke-width="50"
               />
             }
             onChange={handleSettingsChange}

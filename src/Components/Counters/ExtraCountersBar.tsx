@@ -32,7 +32,7 @@ const ExtraCountersGrid = styled.div<{ rotation: number }>`
         height: 100%;
         width: auto;
         bottom: auto;
-        right: 0;
+        right: -6px;
       `;
     }
   }}
@@ -51,6 +51,10 @@ const ExtraCountersBar = ({
     updatedCounterTotal: number,
     type: CounterType
   ) => {
+    if (updatedCounterTotal < 0) {
+      return;
+    }
+
     const existingCounter = player.extraCounters.find(
       (counter) => counter.type === type
     );
