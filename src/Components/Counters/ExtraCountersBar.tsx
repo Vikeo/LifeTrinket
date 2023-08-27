@@ -32,7 +32,7 @@ const ExtraCountersGrid = styled.div<{ rotation: number }>`
         height: 100%;
         width: auto;
         bottom: auto;
-        right: 0;
+        right: -6px;
       `;
     }
   }}
