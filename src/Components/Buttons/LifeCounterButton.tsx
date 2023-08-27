@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
+import { lifeLongPressMultiplier } from '../../Data/constants';
 
 import { Rotation } from '../../Types/Player';
 
@@ -82,8 +83,6 @@ const LifeCounterButton = ({
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const longPressMultiplier = 10;
-
   const handleLifeChange = (increment: number) => {
     setLifeTotal(lifeTotal + increment);
   };
@@ -92,7 +91,7 @@ const LifeCounterButton = ({
     setTimeoutFinished(false);
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
-      handleLifeChange(increment * longPressMultiplier);
+      handleLifeChange(increment * lifeLongPressMultiplier);
       setTimeoutFinished(true);
     }, 500);
   };

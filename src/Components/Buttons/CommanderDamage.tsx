@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 import { Player, Rotation } from '../../Types/Player';
 import { useRef, useState } from 'react';
 import { OutlinedText } from '../Misc/OutlinedText';
+import { decrementTimeoutMs } from '../../Data/constants';
 
 const CommanderDamageContainer = styled.div<{
   rotation: number;
@@ -169,7 +170,7 @@ export const CommanderDamage = ({
     timeoutRef.current = setTimeout(() => {
       setTimeoutFinished(true);
       handleCommanderDamageChange(opponentIndex, -1, isPartner);
-    }, 500);
+    }, decrementTimeoutMs);
   };
 
   const handleUpInput = ({ opponentIndex, isPartner }: InputProps) => {
