@@ -9,6 +9,7 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import { Skull } from '../../Icons/generated';
+
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
@@ -24,6 +25,9 @@ const LifeCounterContentWrapper = styled.div<{
     max-width: 100vmax;
     max-height: 100vmin;
   }
+
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const LifeCounterWrapper = styled.div<{
@@ -187,6 +191,12 @@ export const LoseGameButton = styled.button<{ rotation: Rotation }>`
   right: 6vmax;
   background-color: #43434380;
   border-radius: 15px;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 
   ${(props) => {
     if (props.rotation === Rotation.SideFlipped) {
@@ -246,8 +256,8 @@ const LifeCounter = ({
     setKey(Date.now());
   };
 
-  const setGameLost = () => {
-    const updatedPlayer = { ...player, hasLost: true };
+  const toggleGameLost = () => {
+    const updatedPlayer = { ...player, hasLost: !player.hasLost };
     onPlayerChange(updatedPlayer);
   };
 
@@ -333,7 +343,7 @@ const LifeCounter = ({
         {(player.lifeTotal < 1 || hasCommanderDamageReached21(player)) && (
           <LoseGameButton
             rotation={player.settings.rotation}
-            onClick={setGameLost}
+            onClick={toggleGameLost}
           >
             <Skull size="5vmin" color="black" opacity={0.5} />
           </LoseGameButton>
