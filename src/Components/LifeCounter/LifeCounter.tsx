@@ -190,7 +190,7 @@ export const LoseGameButton = styled.button<{ rotation: Rotation }>`
   top: 12vmin;
   right: 6vmax;
   background-color: #43434380;
-  border-radius: 15px;
+  border-radius: 8px;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
@@ -299,14 +299,14 @@ const LifeCounter = ({
   const fontSize =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `${size}vmax`
-      : `${size}vmin`;
+      ? `clamp(6rem, ${size}vmax, 10rem)`
+      : `clamp(6rem, ${size}vmin, 10rem)`;
 
   const strokeWidth =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `${size / 20}vmax`
-      : `${size / 20}vmin`;
+      ? `clamp(0.4rem, ${size / 20}vmax, 12rem)`
+      : `clamp(0.4rem, ${size / 20}vmin, 12rem)`;
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>

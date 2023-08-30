@@ -1,4 +1,4 @@
-import { Checkbox } from '@mui/material';
+import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
@@ -15,6 +15,7 @@ const SettingsContainer = styled.div<{
   rotation: Rotation;
 }>`
   display: flex;
+  position: relative;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
@@ -29,11 +30,6 @@ const SettingsContainer = styled.div<{
         flex-direction: column-reverse;
         height: 100%;
         width: 100%;
-        /* padding-top: 36px; */
-      `;
-    } else {
-      return css`
-        /* padding-top: 36px; */
       `;
     }
   }}
@@ -41,9 +37,9 @@ const SettingsContainer = styled.div<{
 
 const TogglesSection = styled.div<{ rotation: Rotation }>`
   display: flex;
+  position: absolute;
   flex-direction: row;
   justify-content: space-evenly;
-  flex-wrap: wrap;
   gap: 0.5rem;
 
   ${(props) => {
@@ -59,18 +55,22 @@ const TogglesSection = styled.div<{ rotation: Rotation }>`
 `;
 
 const ButtonsSections = styled.div<{ rotation: Rotation }>`
+  position: absolute;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
   gap: 1rem;
+  bottom: 16px;
 
   ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
+    if (props.rotation === Rotation.Side) {
       return css`
+        bottom: auto;
+        right: -6rem;
+        rotate: ${props.rotation - 180}deg;
+      `;
+    } else if (props.rotation === Rotation.SideFlipped) {
+      return css`
+        bottom: auto;
+        left: -6rem;
         rotate: ${props.rotation - 180}deg;
       `;
     }
@@ -109,12 +109,6 @@ const ColorPicker = styled.input<{
       `;
     }
   }}
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  user-select: none;
-  color: #000000;
 `;
 
 const CheckboxContainer = styled.div<{ rotation: Rotation }>`
@@ -269,11 +263,41 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           />
         </CheckboxContainer>
       </TogglesSection>
-
       <ButtonsSections rotation={player.settings.rotation}>
-        <Button onClick={handleNewGame}>Back to Start</Button>
-        <Button onClick={toggleFullscreen}>Fullscreen</Button>
-        <Button onClick={handleWakeLock}>
+        <Button
+          variant="outlined"
+          style={{
+            cursor: 'pointer',
+            userSelect: 'none',
+            fontSize: '0.6rem',
+            padding: '0 4px 0 4px',
+          }}
+          onClick={handleNewGame}
+        >
+          Back to Start
+        </Button>
+        <Button
+          variant="outlined"
+          style={{
+            cursor: 'pointer',
+            userSelect: 'none',
+            fontSize: '0.6rem',
+            padding: '0 4px 0 4px',
+          }}
+          onClick={toggleFullscreen}
+        >
+          Fullscreen
+        </Button>
+        <Button
+          variant="outlined"
+          style={{
+            cursor: 'pointer',
+            userSelect: 'none',
+            fontSize: '0.6rem',
+            padding: '0 4px 0 4px',
+          }}
+          onClick={handleWakeLock}
+        >
           {released === false ? 'Release' : 'Request'} nosleep
         </Button>
       </ButtonsSections>
