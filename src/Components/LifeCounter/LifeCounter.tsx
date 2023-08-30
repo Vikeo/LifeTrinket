@@ -9,6 +9,7 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import { Skull } from '../../Icons/generated';
+
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
@@ -24,6 +25,9 @@ const LifeCounterContentWrapper = styled.div<{
     max-width: 100vmax;
     max-height: 100vmin;
   }
+
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const LifeCounterWrapper = styled.div<{
@@ -186,7 +190,13 @@ export const LoseGameButton = styled.button<{ rotation: Rotation }>`
   top: 12vmin;
   right: 6vmax;
   background-color: #43434380;
-  border-radius: 15px;
+  border-radius: 8px;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 
   ${(props) => {
     if (props.rotation === Rotation.SideFlipped) {
@@ -246,8 +256,8 @@ const LifeCounter = ({
     setKey(Date.now());
   };
 
-  const setGameLost = () => {
-    const updatedPlayer = { ...player, hasLost: true };
+  const toggleGameLost = () => {
+    const updatedPlayer = { ...player, hasLost: !player.hasLost };
     onPlayerChange(updatedPlayer);
   };
 
@@ -289,14 +299,14 @@ const LifeCounter = ({
   const fontSize =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `${size}vmax`
-      : `${size}vmin`;
+      ? `clamp(6rem, ${size}vmax, 10rem)`
+      : `clamp(6rem, ${size}vmin, 10rem)`;
 
   const strokeWidth =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `${size / 20}vmax`
-      : `${size / 20}vmin`;
+      ? `clamp(0.4rem, ${size / 20}vmax, 12rem)`
+      : `clamp(0.4rem, ${size / 20}vmin, 12rem)`;
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>
@@ -333,7 +343,7 @@ const LifeCounter = ({
         {(player.lifeTotal < 1 || hasCommanderDamageReached21(player)) && (
           <LoseGameButton
             rotation={player.settings.rotation}
-            onClick={setGameLost}
+            onClick={toggleGameLost}
           >
             <Skull size="5vmin" color="black" opacity={0.5} />
           </LoseGameButton>

@@ -3,6 +3,7 @@ import Settings from './Settings';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
+import { Button } from '@mui/material';
 
 const PlayerMenuWrapper = styled.div<{
   rotation: Rotation;
@@ -29,15 +30,17 @@ const PlayerMenuWrapper = styled.div<{
   }};
 `;
 
-const CloseButton = styled.button<{
+const CloseButton = styled.div<{
   rotation: Rotation;
 }>`
   position: absolute;
   top: 5%;
   right: 5%;
+  border: none;
+  outline: none;
   cursor: pointer;
-  user-select: none;
-  color: black;
+  background-color: transparent;
+
   ${(props) => {
     if (props.rotation === Rotation.Side) {
       return css`
@@ -79,8 +82,17 @@ const PlayerMenu = ({
 
   return (
     <PlayerMenuWrapper rotation={player.settings.rotation}>
-      <CloseButton rotation={player.settings.rotation} onClick={handleOnClick}>
-        X
+      <CloseButton rotation={player.settings.rotation}>
+        <Button
+          style={{
+            padding: '0 8px',
+            minWidth: '0',
+          }}
+          variant="outlined"
+          onClick={handleOnClick}
+        >
+          X
+        </Button>
       </CloseButton>
       <Settings
         player={player}
