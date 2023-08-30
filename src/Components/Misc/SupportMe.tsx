@@ -5,7 +5,7 @@ import { theme } from '../../Data/theme';
 import { BuyMeCoffee, KoFi } from '../../Icons/generated/Support';
 import { Paragraph } from './TextComponents';
 import LittleGuy from '../../Icons/generated/LittleGuy';
-import { useAnalytics } from '../../Data/useAnalytics';
+import { useAnalytics } from '../../Hooks/useAnalytics';
 
 // import { ButtonBase } from '@mui/material';
 
