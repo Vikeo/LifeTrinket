@@ -7,7 +7,7 @@ import { Player } from './Types/Player';
 
 import { ThemeProvider } from '@mui/material';
 import { theme } from './Data/theme';
-import { useAnalytics } from './Data/useAnalytics';
+import { useAnalytics } from './Hooks/useAnalytics';
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -19,18 +19,24 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const RootWrapper2 = styled.div`
+const StartWrapper = styled.div`
   max-width: fit-content;
   max-height: fit-content;
 `;
 
-const RootWrapper = styled.div`
+const PlayWrapper = styled.div`
   max-width: fit-content;
   max-height: fit-content;
   @media (orientation: portrait) {
     rotate: 90deg;
   }
 `;
+
+const removeLocalStorage = async () => {
+  localStorage.removeItem('initialGameSettings');
+  localStorage.removeItem('players');
+  localStorage.removeItem('playing');
+};
 
 const App = () => {
   const analytics = useAnalytics();
@@ -61,18 +67,16 @@ const App = () => {
     setPlayers(updatedPlayers);
   };
 
-  const resetCurrentGame = () => {
+  const resetCurrentGame = async () => {
     const currentPlayers = localStorage.getItem('players');
     if (currentPlayers) {
       analytics.trackEvent('go_to_start', {
         playersBeforeReset: currentPlayers,
       });
     }
+    await removeLocalStorage();
 
     setPlayers([]);
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('initialGameSettings');
   };
 
   return (
@@ -80,22 +84,22 @@ const App = () => {
       <GlobalStyles />
 
       {players.length > 0 && initialGameSettings ? (
-        <RootWrapper>
+        <PlayWrapper>
           <Play
             players={players}
             onPlayerChange={handlePlayerChange}
             gridAreas={initialGameSettings?.gridAreas}
             resetCurrentGame={resetCurrentGame}
           />
-        </RootWrapper>
+        </PlayWrapper>
       ) : (
-        <RootWrapper2>
+        <StartWrapper>
           <StartMenu
             initialGameSettings={initialGameSettings}
             setInitialGameSettings={setInitialGameSettings}
             setPlayers={setPlayers}
           />
-        </RootWrapper2>
+        </StartWrapper>
       )}
     </ThemeProvider>
   );

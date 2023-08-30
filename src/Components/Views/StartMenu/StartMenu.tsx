@@ -11,7 +11,7 @@ import { Player } from '../../../Types/Player';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
-import { useAnalytics } from '../../../Data/useAnalytics';
+import { useAnalytics } from '../../../Hooks/useAnalytics';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -101,6 +101,7 @@ const Start = ({
       gridAreas: GridTemplateAreas.FourPlayers,
     }
   );
+
   const doStartGame = () => {
     if (!initialGameSettings) {
       return;
@@ -166,7 +167,7 @@ const Start = ({
           max={6}
           min={1}
           aria-label="Custom marks"
-          defaultValue={4}
+          defaultValue={initialGameSettings?.numberOfPlayers ?? 4}
           getAriaValueText={valuetext}
           step={null}
           marks={playerMarks}
@@ -183,7 +184,7 @@ const Start = ({
           max={60}
           min={20}
           aria-label="Custom marks"
-          defaultValue={40}
+          defaultValue={initialGameSettings?.startingLifeTotal ?? 40}
           getAriaValueText={valuetext}
           step={10}
           marks={healthMarks}
@@ -197,7 +198,7 @@ const Start = ({
         <FormLabel>Commander</FormLabel>
         <Switch
           checked={playerOptions.useCommanderDamage}
-          defaultChecked
+          defaultChecked={initialGameSettings?.useCommanderDamage ?? true}
           onChange={(_e, value) =>
             setPlayerOptions({
               ...playerOptions,
