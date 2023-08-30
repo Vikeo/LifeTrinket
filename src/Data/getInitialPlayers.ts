@@ -236,6 +236,7 @@ export const createInitialPlayers = ({
       isStartingPlayer: isStartingPlayer,
       extraCounters: [],
       commanderDamage,
+      hasLost: false,
     };
 
     players.push(player);

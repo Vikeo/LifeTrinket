@@ -7,6 +7,7 @@ export type Player = {
   commanderDamage: CommanderDamage[];
   extraCounters: ExtraCounter[];
   isStartingPlayer: boolean;
+  hasLost: boolean;
 };
 
 export type PlayerSettings = {

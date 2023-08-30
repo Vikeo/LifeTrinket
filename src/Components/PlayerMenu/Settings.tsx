@@ -1,8 +1,8 @@
 import { Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
-import { useWakeLock } from '../../Data/useWakeLock';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
+import { useWakeLock } from 'react-screen-wake-lock';
 
 type SettingsProps = {
   player: Player;
