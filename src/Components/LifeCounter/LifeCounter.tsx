@@ -8,6 +8,7 @@ import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
+import { Skull } from '../../Icons/generated';
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
@@ -78,8 +79,9 @@ const LifeCountainer = styled.div<{
   }}
 `;
 
-const StartingPlayer = styled.div<{
+const PlayerNoticeWrapper = styled.div<{
   rotation: Rotation;
+  backgroundColor: string;
 }>`
   z-index: 1;
   display: flex;
@@ -88,7 +90,7 @@ const StartingPlayer = styled.div<{
   height: 100%;
   justify-content: center;
   align-items: center;
-  background: ${theme.palette.primary.main};
+  background: ${(props) => props.backgroundColor};
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -109,7 +111,7 @@ const StartingPlayer = styled.div<{
   }}
 `;
 
-const StartingPlayerText = styled.div<{ rotation: Rotation }>`
+const DynamicText = styled.div<{ rotation: Rotation }>`
   font-size: 8vmin;
   ${(props) => {
     if (
@@ -175,6 +177,36 @@ export const RecentDifference = styled.span`
   animation: ${fadeOut} 3s 1s ease-out forwards;
 `;
 
+export const LoseGameButton = styled.button<{ rotation: Rotation }>`
+  position: absolute;
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  top: 12vmin;
+  right: 6vmax;
+  background-color: #43434380;
+  border-radius: 15px;
+
+  ${(props) => {
+    if (props.rotation === Rotation.SideFlipped) {
+      return css`
+        right: auto;
+        top: 6vmax;
+        left: 12vmin;
+        rotate: ${props.rotation}deg;
+      `;
+    } else if (props.rotation === Rotation.Side) {
+      return css`
+        right: auto;
+        top: 6vmax;
+        left: 12vmin;
+        rotate: ${props.rotation - 180}deg;
+      `;
+    }
+  }}
+`;
+
 interface LifeCounterProps {
   backgroundColor: string;
   player: Player;
@@ -182,6 +214,18 @@ interface LifeCounterProps {
   onPlayerChange: (updatedPlayer: Player) => void;
   resetCurrentGame: () => void;
 }
+
+const hasCommanderDamageReached21 = (player: Player) => {
+  const commanderDamageTotal = player.commanderDamage.reduce(
+    (totalDamage, commander) => totalDamage + commander.damageTotal,
+    0
+  );
+  const partnerDamageTotal = player.commanderDamage.reduce(
+    (totalDamage, commander) => totalDamage + commander.partnerDamageTotal,
+    0
+  );
+  return commanderDamageTotal >= 21 || partnerDamageTotal >= 21;
+};
 
 const LifeCounter = ({
   backgroundColor,
@@ -192,10 +236,19 @@ const LifeCounter = ({
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updatedLifeTotal - player.lifeTotal;
-    const updatedPlayer = { ...player, lifeTotal: updatedLifeTotal };
+    const updatedPlayer = {
+      ...player,
+      lifeTotal: updatedLifeTotal,
+      hasLost: false,
+    };
     setRecentDifference(recentDifference + difference);
     onPlayerChange(updatedPlayer);
     setKey(Date.now());
+  };
+
+  const setGameLost = () => {
+    const updatedPlayer = { ...player, hasLost: true };
+    onPlayerChange(updatedPlayer);
   };
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
@@ -249,11 +302,21 @@ const LifeCounter = ({
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>
       <LifeCounterWrapper rotation={player.settings.rotation}>
         {player.isStartingPlayer && !showStartingPlayer && (
-          <StartingPlayer rotation={player.settings.rotation}>
-            <StartingPlayerText rotation={player.settings.rotation}>
+          <PlayerNoticeWrapper
+            rotation={player.settings.rotation}
+            backgroundColor={theme.palette.primary.main}
+          >
+            <DynamicText rotation={player.settings.rotation}>
               You start!
-            </StartingPlayerText>
-          </StartingPlayer>
+            </DynamicText>
+          </PlayerNoticeWrapper>
+        )}
+
+        {player.hasLost && (
+          <PlayerNoticeWrapper
+            rotation={player.settings.rotation}
+            backgroundColor={'#00000070'}
+          />
         )}
         <CommanderDamageBar
           opponents={opponents}
@@ -267,6 +330,14 @@ const LifeCounter = ({
           }}
           rotation={player.settings.rotation}
         />
+        {(player.lifeTotal < 1 || hasCommanderDamageReached21(player)) && (
+          <LoseGameButton
+            rotation={player.settings.rotation}
+            onClick={setGameLost}
+          >
+            <Skull size="5vmin" color="black" opacity={0.5} />
+          </LoseGameButton>
+        )}
         <LifeCountainer rotation={player.settings.rotation}>
           <LifeCounterButton
             lifeTotal={player.lifeTotal}
@@ -296,6 +367,7 @@ const LifeCounter = ({
         </LifeCountainer>
         <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
       </LifeCounterWrapper>
+
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
