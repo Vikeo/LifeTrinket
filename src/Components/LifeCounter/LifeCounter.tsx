@@ -237,6 +237,18 @@ const hasCommanderDamageReached21 = (player: Player) => {
   return commanderDamageTotal >= 21 || partnerDamageTotal >= 21;
 };
 
+const playerCanLose = (player: Player) => {
+  const poisonCounter = player.extraCounters.find(
+    (counter) => counter.type === 'poison'
+  );
+
+  return (
+    player.lifeTotal < 1 ||
+    hasCommanderDamageReached21(player) ||
+    (poisonCounter && poisonCounter.value >= 10)
+  );
+};
+
 const LifeCounter = ({
   backgroundColor,
   player,
@@ -340,7 +352,7 @@ const LifeCounter = ({
           }}
           rotation={player.settings.rotation}
         />
-        {(player.lifeTotal < 1 || hasCommanderDamageReached21(player)) && (
+        {playerCanLose(player) && (
           <LoseGameButton
             rotation={player.settings.rotation}
             onClick={toggleGameLost}
