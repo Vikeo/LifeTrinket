@@ -224,7 +224,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="30"
+                stroke-width="15"
               />
             }
             checkedIcon={
@@ -232,7 +232,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="30"
+                stroke-width="15"
               />
             }
             onChange={handleSettingsChange}
@@ -248,7 +248,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="50"
+                stroke-width="15"
               />
             }
             checkedIcon={
@@ -256,7 +256,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="50"
+                stroke-width="15"
               />
             }
             onChange={handleSettingsChange}
