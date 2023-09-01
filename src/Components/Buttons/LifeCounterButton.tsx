@@ -116,8 +116,8 @@ const LifeCounterButton = ({
 
   const fontSize =
     rotation === Rotation.SideFlipped || rotation === Rotation.Side
-      ? '10vmax'
-      : '20vmin';
+      ? '8vmax'
+      : '16vmin';
 
   return (
     <StyledLifeCounterButton

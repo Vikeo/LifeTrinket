@@ -26,7 +26,6 @@ const LifeCounterContentWrapper = styled.div<{
     max-height: 100vmin;
   }
 
-  border-radius: 8px;
   overflow: hidden;
 `;
 
