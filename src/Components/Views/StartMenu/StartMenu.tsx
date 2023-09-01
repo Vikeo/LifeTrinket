@@ -7,11 +7,14 @@ import {
   InitialSettings,
   createInitialPlayers,
 } from '../../../Data/getInitialPlayers';
+import { theme } from '../../../Data/theme';
+import { useAnalytics } from '../../../Hooks/useAnalytics';
+import { Info } from '../../../Icons/generated';
 import { Player } from '../../../Types/Player';
+import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
-import { useAnalytics } from '../../../Hooks/useAnalytics';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -93,6 +96,7 @@ const Start = ({
   setInitialGameSettings,
 }: StartProps) => {
   const analytics = useAnalytics();
+  const [openModal, setOpenModal] = useState(false);
   const [playerOptions, setPlayerOptions] = useState<InitialSettings>(
     initialGameSettings || {
       numberOfPlayers: 4,
@@ -157,6 +161,23 @@ const Start = ({
 
   return (
     <MainWrapper>
+      <Info
+        color={theme.palette.primary.light}
+        size="2rem"
+        style={{ position: 'absolute', top: '1rem', left: '1rem' }}
+        onClick={() => {
+          console.log('lmao');
+          setOpenModal(!openModal);
+        }}
+      />
+
+      <InfoModal
+        closeModal={() => {
+          setOpenModal(false);
+        }}
+        isOpen={openModal}
+      />
+
       <SupportMe />
 
       <H2>Life Trinket</H2>

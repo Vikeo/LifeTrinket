@@ -34,8 +34,9 @@ const CloseButton = styled.div<{
   rotation: Rotation;
 }>`
   position: absolute;
-  top: 5%;
+  top: 15%;
   right: 5%;
+  z-index: 9999;
   border: none;
   outline: none;
   cursor: pointer;
@@ -77,6 +78,7 @@ const PlayerMenu = ({
   resetCurrentGame,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
+    console.log('hej');
     setShowPlayerMenu(false);
   };
 

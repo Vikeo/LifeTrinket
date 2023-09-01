@@ -156,6 +156,12 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
     }
   };
 
+  const buttonFontSize =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? '1.3vmax'
+      : '2.5vmin';
+
   return (
     <SettingsContainer rotation={player.settings.rotation}>
       <ColorPicker
@@ -269,7 +275,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           style={{
             cursor: 'pointer',
             userSelect: 'none',
-            fontSize: '0.6rem',
+            fontSize: buttonFontSize,
             padding: '0 4px 0 4px',
           }}
           onClick={handleNewGame}
@@ -281,7 +287,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           style={{
             cursor: 'pointer',
             userSelect: 'none',
-            fontSize: '0.6rem',
+            fontSize: buttonFontSize,
             padding: '0 4px 0 4px',
           }}
           onClick={toggleFullscreen}
@@ -293,7 +299,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           style={{
             cursor: 'pointer',
             userSelect: 'none',
-            fontSize: '0.6rem',
+            fontSize: buttonFontSize,
             padding: '0 4px 0 4px',
           }}
           onClick={handleWakeLock}
