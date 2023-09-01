@@ -3,12 +3,12 @@ import styled, { css, keyframes } from 'styled-components';
 import { theme } from '../../Data/theme';
 import { Player, Rotation } from '../../Types/Player';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
+import { LoseGameButton } from '../Buttons/LoseButton';
 import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
-import { Skull } from '../../Icons/generated';
 
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
@@ -181,42 +181,6 @@ export const RecentDifference = styled.span`
   animation: ${fadeOut} 3s 1s ease-out forwards;
 `;
 
-export const LoseGameButton = styled.button<{ rotation: Rotation }>`
-  position: absolute;
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  top: 25%;
-  right: 15%;
-  background-color: #43434380;
-  border-radius: 8px;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-
-  ${(props) => {
-    if (props.rotation === Rotation.SideFlipped) {
-      return css`
-        right: auto;
-        top: 15%;
-        left: 27%;
-        rotate: ${props.rotation}deg;
-      `;
-    } else if (props.rotation === Rotation.Side) {
-      return css`
-        right: auto;
-        top: 15%;
-        left: 27%;
-        rotate: ${props.rotation - 180}deg;
-      `;
-    }
-  }}
-`;
-
 interface LifeCounterProps {
   backgroundColor: string;
   player: Player;
@@ -359,9 +323,7 @@ const LifeCounter = ({
           <LoseGameButton
             rotation={player.settings.rotation}
             onClick={toggleGameLost}
-          >
-            <Skull size="5vmin" color="black" opacity={0.5} />
-          </LoseGameButton>
+          />
         )}
         <LifeCountainer rotation={player.settings.rotation}>
           <LifeCounterButton

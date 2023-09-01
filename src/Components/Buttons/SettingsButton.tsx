@@ -18,6 +18,7 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  z-index: 1;
   ${(props) => {
     if (
       props.rotation === Rotation.Side ||
