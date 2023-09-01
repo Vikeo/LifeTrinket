@@ -187,8 +187,8 @@ export const LoseGameButton = styled.button<{ rotation: Rotation }>`
   border: none;
   outline: none;
   cursor: pointer;
-  top: 12vmin;
-  right: 6vmax;
+  top: 25%;
+  right: 15%;
   background-color: #43434380;
   border-radius: 8px;
   -webkit-touch-callout: none;
@@ -202,15 +202,15 @@ export const LoseGameButton = styled.button<{ rotation: Rotation }>`
     if (props.rotation === Rotation.SideFlipped) {
       return css`
         right: auto;
-        top: 6vmax;
-        left: 12vmin;
+        top: 15%;
+        left: 27%;
         rotate: ${props.rotation}deg;
       `;
     } else if (props.rotation === Rotation.Side) {
       return css`
         right: auto;
-        top: 6vmax;
-        left: 12vmin;
+        top: 15%;
+        left: 27%;
         rotate: ${props.rotation - 180}deg;
       `;
     }

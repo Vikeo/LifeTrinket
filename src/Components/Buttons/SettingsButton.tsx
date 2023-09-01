@@ -9,7 +9,7 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
   border: none;
   outline: none;
   cursor: pointer;
-  top: 12vmin;
+  top: 25%;
   right: 1vmax;
   background-color: transparent;
   user-select: none;
@@ -26,7 +26,7 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
       return css`
         right: auto;
         top: 1vmax;
-        left: 12vmin;
+        left: 27%;
       `;
     }
   }}
