@@ -9,7 +9,6 @@ export const StyledLifeCounterButton = styled.button`
   width: 100%;
   height: 100%;
   color: rgba(0, 0, 0, 0.4);
-  font-size: 4rem;
   font-weight: 600;
   background-color: transparent;
   border: none;
@@ -35,6 +34,7 @@ const TextContainer = styled.div<{
   rotation: number;
 }>`
   position: relative;
+  top: -10%;
 
   ${(props) => {
     if (
@@ -45,10 +45,13 @@ const TextContainer = styled.div<{
         return css`
           rotate: -90deg;
           bottom: 25%;
+          left: -10%;
+          top: auto;
         `;
       }
       return css`
         rotate: -90deg;
+        left: -10%;
         top: 25%;
       `;
     }
@@ -111,6 +114,11 @@ const LifeCounterButton = ({
     setHasPressedDown(false);
   };
 
+  const fontSize =
+    rotation === Rotation.SideFlipped || rotation === Rotation.Side
+      ? '10vmax'
+      : '20vmin';
+
   return (
     <StyledLifeCounterButton
       onPointerDown={handleDownInput}
@@ -119,6 +127,7 @@ const LifeCounterButton = ({
       onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
       }}
+      style={{ fontSize }}
     >
       <TextContainer
         rotation={rotation}

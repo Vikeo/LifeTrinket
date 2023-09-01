@@ -311,14 +311,14 @@ const LifeCounter = ({
   const fontSize =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `clamp(6rem, ${size}vmax, 10rem)`
-      : `clamp(6rem, ${size}vmin, 10rem)`;
+      ? `${size}vmax`
+      : `${size}vmin`;
 
   const strokeWidth =
     player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side
-      ? `clamp(0.4rem, ${size / 20}vmax, 12rem)`
-      : `clamp(0.4rem, ${size / 20}vmin, 12rem)`;
+      ? `${size / 20}vmax`
+      : `${size / 20}vmin`;
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>

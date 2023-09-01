@@ -51,7 +51,7 @@ const CommanderDamageButton = styled.button<{
       props.rotation === Rotation.Side
     ) {
       return css`
-        width: 10vmin;
+        width: 6vmax;
         height: auto;
       `;
     }
