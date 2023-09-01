@@ -78,7 +78,6 @@ const PlayerMenu = ({
   resetCurrentGame,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
-    console.log('hej');
     setShowPlayerMenu(false);
   };
 
