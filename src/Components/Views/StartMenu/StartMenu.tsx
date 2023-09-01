@@ -166,7 +166,6 @@ const Start = ({
         size="2rem"
         style={{ position: 'absolute', top: '1rem', left: '1rem' }}
         onClick={() => {
-          console.log('lmao');
           setOpenModal(!openModal);
         }}
       />

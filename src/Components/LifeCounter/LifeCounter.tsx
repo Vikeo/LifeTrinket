@@ -226,15 +226,18 @@ interface LifeCounterProps {
 }
 
 const hasCommanderDamageReached21 = (player: Player) => {
-  const commanderDamageTotal = player.commanderDamage.reduce(
-    (totalDamage, commander) => totalDamage + commander.damageTotal,
-    0
+  const commanderDamageTotals = player.commanderDamage.map(
+    (commanderDamage) => commanderDamage.damageTotal
   );
-  const partnerDamageTotal = player.commanderDamage.reduce(
-    (totalDamage, commander) => totalDamage + commander.partnerDamageTotal,
-    0
+
+  const partnerDamageTotals = player.commanderDamage.map(
+    (commanderDamage) => commanderDamage.partnerDamageTotal
   );
-  return commanderDamageTotal >= 21 || partnerDamageTotal >= 21;
+
+  return (
+    commanderDamageTotals.some((damageTotal) => damageTotal >= 21) ||
+    partnerDamageTotals.some((partnerDamageTotal) => partnerDamageTotal >= 21)
+  );
 };
 
 const playerCanLose = (player: Player) => {
