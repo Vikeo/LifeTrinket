@@ -240,7 +240,8 @@ const Start = ({
 
       <Paragraph style={{ textAlign: 'center', maxWidth: '75%' }}>
         If you're on iOS, this page works better if you{' '}
-        <strong>hide the toolbar</strong>
+        <strong>hide the toolbar</strong> or{' '}
+        <strong>add the app to your home screen</strong>.
       </Paragraph>
       <StartButtonFooter>
         <Button
