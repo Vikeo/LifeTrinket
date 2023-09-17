@@ -1,5 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { theme } from '../../Data/theme';
+import { Rotation } from '../../Types/Player';
+
+const Container = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
 
 const CenteredText = styled.div<{
   strokeWidth?: string;
@@ -7,11 +17,9 @@ const CenteredText = styled.div<{
   fillColor?: string;
   fontSize?: string;
   fontWeight?: string;
+  rotation?: Rotation;
 }>`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-weight: ${(props) => props.fontWeight || ''};
   font-variant-numeric: tabular-nums;
   user-select: none;
@@ -26,6 +34,17 @@ const CenteredText = styled.div<{
   -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'} ${(props) => props.strokeColor || theme.palette.common.white};
   -webkit-text-fill-color: ${(props) =>
     props.fillColor || theme.palette.common.black};
+
+  ${(props) => {
+    if (
+      props.rotation === Rotation.SideFlipped ||
+      props.rotation === Rotation.Side
+    ) {
+      return css`
+        rotate: 270deg;
+      `;
+    }
+  }}
 `;
 
 const CenteredTextOutline = styled.span`
@@ -42,6 +61,7 @@ type OutlinedTextProps = {
   strokeWidth?: string;
   strokeColor?: string;
   fillColor?: string;
+  rotation?: Rotation;
 };
 
 export const OutlinedText: React.FC<OutlinedTextProps> = ({
@@ -51,17 +71,21 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
   strokeWidth,
   strokeColor,
   fillColor,
+  rotation,
 }) => {
   return (
-    <CenteredText
-      fontSize={fontSize}
-      fontWeight={fontWeight}
-      strokeWidth={strokeWidth}
-      strokeColor={strokeColor}
-      fillColor={fillColor}
-    >
-      {children}
-      <CenteredTextOutline aria-hidden>{children}</CenteredTextOutline>
-    </CenteredText>
+    <Container>
+      <CenteredText
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        strokeWidth={strokeWidth}
+        strokeColor={strokeColor}
+        fillColor={fillColor}
+        rotation={rotation}
+      >
+        {children}
+        <CenteredTextOutline aria-hidden>{children}</CenteredTextOutline>
+      </CenteredText>
+    </Container>
   );
 };

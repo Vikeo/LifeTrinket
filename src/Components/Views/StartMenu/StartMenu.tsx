@@ -11,10 +11,12 @@ import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
 import { Player } from '../../../Types/Player';
+import { WakeLock } from '../../../Types/WakeLock';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
+import { useFullscreen } from '../../../Hooks/useFullscreen';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -88,12 +90,14 @@ type StartProps = {
   setInitialGameSettings: (options: InitialSettings) => void;
   setPlayers: (updatedPlayer: Player[]) => void;
   initialGameSettings: InitialSettings | null;
+  wakeLock: WakeLock;
 };
 
 const Start = ({
   initialGameSettings,
   setPlayers,
   setInitialGameSettings,
+  wakeLock,
 }: StartProps) => {
   const analytics = useAnalytics();
   const [openModal, setOpenModal] = useState(false);
@@ -106,6 +110,16 @@ const Start = ({
     }
   );
 
+  const { enableFullscreen } = useFullscreen();
+
+  const toggleWakeLock = ({ active }: { active: boolean }) => {
+    if (active) {
+      wakeLock.release();
+    } else {
+      wakeLock.request();
+    }
+  };
+
   const doStartGame = () => {
     if (!initialGameSettings) {
       return;
@@ -114,10 +128,11 @@ const Start = ({
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
     try {
-      document.documentElement.requestFullscreen();
+      enableFullscreen();
     } catch (error) {
       console.error(error);
     }
+
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
   };
@@ -180,6 +195,7 @@ const Start = ({
       <SupportMe />
 
       <H2>Life Trinket</H2>
+
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -225,6 +241,12 @@ const Start = ({
               useCommanderDamage: value,
             })
           }
+        />
+        <FormLabel>Keep Awake</FormLabel>
+        <Switch
+          checked={wakeLock.active}
+          defaultChecked={wakeLock.active}
+          onChange={() => toggleWakeLock({ active: wakeLock.active })}
         />
 
         <FormLabel>Layout</FormLabel>

@@ -3,13 +3,17 @@
   "private": true,
   "version": "0.2.0",
   "type": "commonjs",
+  "engines": {
+    "node": ">=18",
+    "npm": "please use bun or yarn :) "
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate-icons": "npx @svgr/cli src/Icons/svgs",
-    "deploy": "yarn build && firebase deploy --only hosting"
+    "deploy": "bun build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@mui/material": "^5.13.6",

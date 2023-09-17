@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { theme } from '../../Data/theme';
 import { Player, Rotation } from '../../Types/Player';
-import LifeCounterButton from '../Buttons/LifeCounterButton';
 import { LoseGameButton } from '../Buttons/LoseButton';
 import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
-import { OutlinedText } from '../Misc/OutlinedText';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
+import Health from './Health';
+import { WakeLock } from '../../Types/WakeLock';
+
+const Lmao = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
 
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
@@ -59,29 +65,6 @@ const LifeCounterWrapper = styled.div<{
   }}
 `;
 
-const LifeCountainer = styled.div<{
-  rotation: Rotation;
-}>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
-  align-items: center;
-
-  ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column-reverse;
-      `;
-    }
-  }}
-`;
-
 const PlayerNoticeWrapper = styled.div<{
   rotation: Rotation;
   backgroundColor: string;
@@ -128,31 +111,6 @@ const DynamicText = styled.div<{ rotation: Rotation }>`
   }}
 `;
 
-const LifeCounterTextContainer = styled.p<{
-  rotation: Rotation;
-}>`
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  ${(props) => {
-    if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: 270deg;
-        margin-right: 25%;
-      `;
-    }
-  }}
-`;
-
 const fadeOut = keyframes`
   0% {
     opacity: 1;
@@ -179,14 +137,6 @@ export const RecentDifference = styled.span`
   color: #333333;
   animation: ${fadeOut} 3s 1s ease-out forwards;
 `;
-
-interface LifeCounterProps {
-  backgroundColor: string;
-  player: Player;
-  opponents: Player[];
-  onPlayerChange: (updatedPlayer: Player) => void;
-  resetCurrentGame: () => void;
-}
 
 const hasCommanderDamageReached21 = (player: Player) => {
   const commanderDamageTotals = player.commanderDamage.map(
@@ -215,12 +165,22 @@ const playerCanLose = (player: Player) => {
   );
 };
 
+type LifeCounterProps = {
+  backgroundColor: string;
+  player: Player;
+  opponents: Player[];
+  onPlayerChange: (updatedPlayer: Player) => void;
+  resetCurrentGame: () => void;
+  wakeLock: WakeLock;
+};
+
 const LifeCounter = ({
   backgroundColor,
   player,
   opponents,
   onPlayerChange,
   resetCurrentGame,
+  wakeLock,
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updatedLifeTotal - player.lifeTotal;
@@ -231,7 +191,7 @@ const LifeCounter = ({
     };
     setRecentDifference(recentDifference + difference);
     onPlayerChange(updatedPlayer);
-    setKey(Date.now());
+    setDifferenceKey(Date.now());
   };
 
   const toggleGameLost = () => {
@@ -244,7 +204,7 @@ const LifeCounter = ({
   const [showStartingPlayer, setShowStartingPlayer] = useState(
     localStorage.getItem('playing') === 'true'
   );
-  const [key, setKey] = useState(Date.now());
+  const [differenceKey, setDifferenceKey] = useState(Date.now());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -268,92 +228,55 @@ const LifeCounter = ({
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
 
-  const size =
-    player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side
-      ? 15
-      : 30;
-
-  const fontSize =
-    player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side
-      ? `${size}vmax`
-      : `${size}vmin`;
-
-  const strokeWidth =
-    player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side
-      ? `${size / 20}vmax`
-      : `${size / 20}vmin`;
-
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>
-      <LifeCounterWrapper rotation={player.settings.rotation}>
-        {player.isStartingPlayer && !showStartingPlayer && (
-          <PlayerNoticeWrapper
-            rotation={player.settings.rotation}
-            backgroundColor={theme.palette.primary.main}
-          >
-            <DynamicText rotation={player.settings.rotation}>
-              You start!
-            </DynamicText>
-          </PlayerNoticeWrapper>
-        )}
+      <Lmao>
+        <LifeCounterWrapper rotation={player.settings.rotation}>
+          {player.isStartingPlayer && !showStartingPlayer && (
+            <PlayerNoticeWrapper
+              rotation={player.settings.rotation}
+              backgroundColor={theme.palette.primary.main}
+            >
+              <DynamicText rotation={player.settings.rotation}>
+                You start!
+              </DynamicText>
+            </PlayerNoticeWrapper>
+          )}
 
-        {player.hasLost && (
-          <PlayerNoticeWrapper
-            rotation={player.settings.rotation}
-            backgroundColor={'#00000070'}
-          />
-        )}
-        <CommanderDamageBar
-          opponents={opponents}
-          player={player}
-          onPlayerChange={onPlayerChange}
-          setLifeTotal={handleLifeChange}
-        />
-        <SettingsButton
-          onClick={() => {
-            setShowPlayerMenu(!showPlayerMenu);
-          }}
-          rotation={player.settings.rotation}
-        />
-        {playerCanLose(player) && (
-          <LoseGameButton
-            rotation={player.settings.rotation}
-            onClick={toggleGameLost}
-          />
-        )}
-        <LifeCountainer rotation={player.settings.rotation}>
-          <LifeCounterButton
-            lifeTotal={player.lifeTotal}
+          {player.hasLost && (
+            <PlayerNoticeWrapper
+              rotation={player.settings.rotation}
+              backgroundColor={'#00000070'}
+            />
+          )}
+          <CommanderDamageBar
+            opponents={opponents}
+            player={player}
+            onPlayerChange={onPlayerChange}
             setLifeTotal={handleLifeChange}
-            rotation={player.settings.rotation}
-            operation="subtract"
-            increment={-1}
           />
-          <LifeCounterTextContainer rotation={player.settings.rotation}>
-            <OutlinedText fontSize={fontSize} strokeWidth={strokeWidth}>
-              {player.lifeTotal}
-            </OutlinedText>
-            {recentDifference !== 0 && (
-              <RecentDifference key={key}>
-                {recentDifference > 0 ? '+' : ''}
-                {recentDifference}
-              </RecentDifference>
-            )}
-          </LifeCounterTextContainer>
-          <LifeCounterButton
-            lifeTotal={player.lifeTotal}
-            setLifeTotal={handleLifeChange}
+          <SettingsButton
+            onClick={() => {
+              setShowPlayerMenu(!showPlayerMenu);
+            }}
             rotation={player.settings.rotation}
-            operation="add"
-            increment={1}
           />
-        </LifeCountainer>
-        <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
-      </LifeCounterWrapper>
-
+          {playerCanLose(player) && (
+            <LoseGameButton
+              rotation={player.settings.rotation}
+              onClick={toggleGameLost}
+            />
+          )}
+          <Health
+            player={player}
+            onPlayerChange={onPlayerChange}
+            differenceKey={differenceKey}
+            setDifferenceKey={setDifferenceKey}
+            rotation={player.settings.rotation}
+          />
+          <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
+        </LifeCounterWrapper>
+      </Lmao>
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
@@ -361,6 +284,7 @@ const LifeCounter = ({
           onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
           resetCurrentGame={resetCurrentGame}
+          wakeLock={wakeLock}
         />
       )}
     </LifeCounterContentWrapper>

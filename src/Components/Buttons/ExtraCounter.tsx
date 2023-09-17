@@ -29,24 +29,6 @@ export const StyledExtraCounterButton = styled.button`
   height: 100%;
 `;
 
-export const CenteredText = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 6vmin;
-  font-weight: bold;
-  -webkit-text-stroke: 0.4vmin #ffffff;
-  -webkit-text-fill-color: #000000;
-  color: #b5b2b2;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-`;
-
 const IconContainer = styled.div<{
   rotation: number;
 }>`
@@ -62,6 +44,13 @@ const IconContainer = styled.div<{
       `;
     }
   }}
+`;
+
+const TextContainer = styled.div`
+  position: absolute;
+  translate: -50%;
+  top: 50%;
+  left: 50%;
 `;
 
 type ExtraCounterProps = {
@@ -82,6 +71,9 @@ const ExtraCounter = ({
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
+
+  const isSide =
+    rotation === Rotation.Side || rotation === Rotation.SideFlipped;
 
   const handleCountChange = (increment: number) => {
     if (!counterTotal) {
@@ -115,6 +107,10 @@ const ExtraCounter = ({
     setHasPressedDown(false);
   };
 
+  const fontSize = isSide ? '4vmax' : '7vmin';
+  const fontWeight = 'bold';
+  const strokeWidth = isSide ? '0.4vmax' : '0.7vmin';
+
   return (
     <ExtraCounterContainer>
       <StyledExtraCounterButton
@@ -127,13 +123,15 @@ const ExtraCounter = ({
       >
         <IconContainer rotation={rotation}>
           {Icon}
-          <OutlinedText
-            fontSize="6vmin"
-            fontWeight="bold"
-            strokeWidth="0.6vmin"
-          >
-            {counterTotal ? counterTotal : undefined}
-          </OutlinedText>
+          <TextContainer>
+            <OutlinedText
+              fontSize={fontSize}
+              fontWeight={fontWeight}
+              strokeWidth={strokeWidth}
+            >
+              {counterTotal ? counterTotal : undefined}
+            </OutlinedText>
+          </TextContainer>
         </IconContainer>
       </StyledExtraCounterButton>
     </ExtraCounterContainer>

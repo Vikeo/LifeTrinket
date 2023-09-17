@@ -1,4 +1,5 @@
 import { Player } from '../../Types/Player';
+import { WakeLock } from '../../Types/WakeLock';
 import LifeCounter from '../LifeCounter/LifeCounter';
 import styled from 'styled-components';
 
@@ -40,6 +41,7 @@ type CountersProps = {
   onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
   resetCurrentGame: () => void;
+  wakeLock: WakeLock;
 };
 
 const Counters = ({
@@ -47,6 +49,7 @@ const Counters = ({
   onPlayerChange,
   gridAreas,
   resetCurrentGame,
+  wakeLock,
 }: CountersProps) => {
   return (
     <CountersWrapper>
@@ -65,6 +68,7 @@ const Counters = ({
                 )}
                 onPlayerChange={onPlayerChange}
                 resetCurrentGame={resetCurrentGame}
+                wakeLock={wakeLock}
               />
             </GridItemContainer>
           );
