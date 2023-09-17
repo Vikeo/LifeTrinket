@@ -2,13 +2,14 @@ import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
-import { useWakeLock } from 'react-screen-wake-lock';
+import { WakeLock } from '../../Types/WakeLock';
 
 type SettingsProps = {
   player: Player;
   opponents: Player[];
   onChange: (updatedPlayer: Player) => void;
   resetCurrentGame: () => void;
+  wakeLock: WakeLock;
 };
 
 const SettingsContainer = styled.div<{
@@ -124,9 +125,24 @@ const CheckboxContainer = styled.div<{ rotation: Rotation }>`
   }}
 `;
 
-const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
-  const { released, request, release } = useWakeLock();
-  const handleWakeLock = () => (released === false ? release() : request());
+const Settings = ({
+  player,
+  onChange,
+  resetCurrentGame,
+  wakeLock,
+}: SettingsProps) => {
+  const isSide =
+    player.settings.rotation === Rotation.Side ||
+    player.settings.rotation === Rotation.SideFlipped;
+
+  const handleWakeLock = () => {
+    if (!wakeLock.active) {
+      wakeLock.request();
+      return;
+    }
+
+    wakeLock.release();
+  };
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
@@ -156,11 +172,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
     }
   };
 
-  const buttonFontSize =
-    player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side
-      ? '1.3vmax'
-      : '2.5vmin';
+  const buttonFontSize = isSide ? '2vmax' : '4vmin';
 
   return (
     <SettingsContainer rotation={player.settings.rotation}>
@@ -271,7 +283,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
       </TogglesSection>
       <ButtonsSections rotation={player.settings.rotation}>
         <Button
-          variant="outlined"
+          variant="contained"
           style={{
             cursor: 'pointer',
             userSelect: 'none',
@@ -283,7 +295,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           Back to Start
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
           style={{
             cursor: 'pointer',
             userSelect: 'none',
@@ -295,7 +307,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           Fullscreen
         </Button>
         <Button
-          variant="outlined"
+          variant="contained"
           style={{
             cursor: 'pointer',
             userSelect: 'none',
@@ -304,7 +316,7 @@ const Settings = ({ player, onChange, resetCurrentGame }: SettingsProps) => {
           }}
           onClick={handleWakeLock}
         >
-          {released === false ? 'Release' : 'Request'} nosleep
+          Wake Lock is&nbsp;{wakeLock.active ? 'on' : 'off'}
         </Button>
       </ButtonsSections>
     </SettingsContainer>

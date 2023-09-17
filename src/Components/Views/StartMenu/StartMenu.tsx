@@ -11,6 +11,7 @@ import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
 import { Player } from '../../../Types/Player';
+import { WakeLock } from '../../../Types/WakeLock';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
@@ -88,12 +89,14 @@ type StartProps = {
   setInitialGameSettings: (options: InitialSettings) => void;
   setPlayers: (updatedPlayer: Player[]) => void;
   initialGameSettings: InitialSettings | null;
+  wakeLock: WakeLock;
 };
 
 const Start = ({
   initialGameSettings,
   setPlayers,
   setInitialGameSettings,
+  wakeLock,
 }: StartProps) => {
   const analytics = useAnalytics();
   const [openModal, setOpenModal] = useState(false);
@@ -105,6 +108,13 @@ const Start = ({
       gridAreas: GridTemplateAreas.FourPlayers,
     }
   );
+
+  const handleWakeLock = () => {
+    if (wakeLock.active) {
+      return;
+    }
+    wakeLock.request();
+  };
 
   const doStartGame = () => {
     if (!initialGameSettings) {
@@ -118,6 +128,8 @@ const Start = ({
     } catch (error) {
       console.error(error);
     }
+
+    handleWakeLock();
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
   };
@@ -180,6 +192,7 @@ const Start = ({
       <SupportMe />
 
       <H2>Life Trinket</H2>
+      {wakeLock.active ? 'hej' : 'noo'}
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
 import { Button } from '@mui/material';
+import { WakeLock } from '../../Types/WakeLock';
 
 const PlayerMenuWrapper = styled.div<{
   rotation: Rotation;
@@ -68,6 +69,7 @@ type PlayerMenuProps = {
   onPlayerChange: (updatedPlayer: Player) => void;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
   resetCurrentGame: () => void;
+  wakeLock: WakeLock;
 };
 
 const PlayerMenu = ({
@@ -76,9 +78,9 @@ const PlayerMenu = ({
   onPlayerChange,
   setShowPlayerMenu,
   resetCurrentGame,
+  wakeLock,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
-    console.log('hej');
     setShowPlayerMenu(false);
   };
 
@@ -101,6 +103,7 @@ const PlayerMenu = ({
         onChange={onPlayerChange}
         opponents={opponents}
         resetCurrentGame={resetCurrentGame}
+        wakeLock={wakeLock}
       />
     </PlayerMenuWrapper>
   );

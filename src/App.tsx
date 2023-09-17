@@ -8,6 +8,7 @@ import { Player } from './Types/Player';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './Data/theme';
 import { useAnalytics } from './Hooks/useAnalytics';
+import { useWakeLock } from 'react-screen-wake-lock';
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -42,6 +43,17 @@ const App = () => {
   const analytics = useAnalytics();
   const savedPlayers = localStorage.getItem('players');
   const savedGameSettings = localStorage.getItem('initialGameSettings');
+  const { isSupported, release, released, request, type } = useWakeLock();
+
+  const isActive = released === undefined ? false : !released;
+
+  const wakeLock = {
+    isSupported,
+    release,
+    active: isActive,
+    request,
+    type,
+  };
 
   const [initialGameSettings, setInitialGameSettings] =
     useState<InitialSettings | null>(
@@ -90,6 +102,7 @@ const App = () => {
             onPlayerChange={handlePlayerChange}
             gridAreas={initialGameSettings?.gridAreas}
             resetCurrentGame={resetCurrentGame}
+            wakeLock={wakeLock}
           />
         </PlayWrapper>
       ) : (
@@ -98,6 +111,7 @@ const App = () => {
             initialGameSettings={initialGameSettings}
             setInitialGameSettings={setInitialGameSettings}
             setPlayers={setPlayers}
+            wakeLock={wakeLock}
           />
         </StartWrapper>
       )}
