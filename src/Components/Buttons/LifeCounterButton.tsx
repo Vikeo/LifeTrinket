@@ -23,10 +23,6 @@ export const StyledLifeCounterButton = styled.button`
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  @media (orientation: landscape) {
-    max-width: 50vmin;
-    max-height: 50vmax;
-  }
 `;
 
 const TextContainer = styled.div<{
@@ -34,7 +30,6 @@ const TextContainer = styled.div<{
   rotation: number;
 }>`
   position: relative;
-  top: -10%;
 
   ${(props) => {
     if (
@@ -45,13 +40,11 @@ const TextContainer = styled.div<{
         return css`
           rotate: -90deg;
           bottom: 25%;
-          left: -10%;
           top: auto;
         `;
       }
       return css`
         rotate: -90deg;
-        left: -10%;
         top: 25%;
       `;
     }
@@ -117,7 +110,7 @@ const LifeCounterButton = ({
   const fontSize =
     rotation === Rotation.SideFlipped || rotation === Rotation.Side
       ? '8vmax'
-      : '16vmin';
+      : '12vmin';
 
   return (
     <StyledLifeCounterButton
