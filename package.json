@@ -5,8 +5,7 @@
   "type": "commonjs",
   "engines": {
     "node": ">=18",
-    "yarn": "please use bun :)",
-    "npm": "please use bun :) "
+    "npm": "please use bun or yarn :) "
   },
   "scripts": {
     "dev": "vite",
