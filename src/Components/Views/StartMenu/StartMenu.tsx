@@ -16,6 +16,7 @@ import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
+import { useFullscreen } from '../../../Hooks/useFullscreen';
 
 const MainWrapper = styled.div`
   width: 100vw;
@@ -109,11 +110,14 @@ const Start = ({
     }
   );
 
-  const handleWakeLock = () => {
-    if (wakeLock.active) {
-      return;
+  const { enableFullscreen } = useFullscreen();
+
+  const toggleWakeLock = ({ active }: { active: boolean }) => {
+    if (active) {
+      wakeLock.release();
+    } else {
+      wakeLock.request();
     }
-    wakeLock.request();
   };
 
   const doStartGame = () => {
@@ -124,12 +128,11 @@ const Start = ({
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
     try {
-      document.documentElement.requestFullscreen();
+      enableFullscreen();
     } catch (error) {
       console.error(error);
     }
 
-    handleWakeLock();
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
   };
@@ -192,7 +195,7 @@ const Start = ({
       <SupportMe />
 
       <H2>Life Trinket</H2>
-      {wakeLock.active ? 'hej' : 'noo'}
+
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -238,6 +241,12 @@ const Start = ({
               useCommanderDamage: value,
             })
           }
+        />
+        <FormLabel>Keep Awake</FormLabel>
+        <Switch
+          checked={wakeLock.active}
+          defaultChecked={wakeLock.active}
+          onChange={() => toggleWakeLock({ active: wakeLock.active })}
         />
 
         <FormLabel>Layout</FormLabel>

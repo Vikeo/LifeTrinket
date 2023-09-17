@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
+import { useFullscreen } from '../../Hooks/useFullscreen';
 
 type SettingsProps = {
   player: Player;
@@ -131,6 +132,7 @@ const Settings = ({
   resetCurrentGame,
   wakeLock,
 }: SettingsProps) => {
+  const { disableFullscreen, enableFullscreen, isFullscreen } = useFullscreen();
   const isSide =
     player.settings.rotation === Rotation.Side ||
     player.settings.rotation === Rotation.SideFlipped;
@@ -165,10 +167,10 @@ const Settings = ({
   };
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
+    if (!isFullscreen) {
+      enableFullscreen();
+    } else {
+      disableFullscreen();
     }
   };
 
@@ -295,7 +297,7 @@ const Settings = ({
           Back to Start
         </Button>
         <Button
-          variant="contained"
+          variant={document.fullscreenElement ? 'contained' : 'outlined'}
           style={{
             cursor: 'pointer',
             userSelect: 'none',
@@ -307,7 +309,7 @@ const Settings = ({
           Fullscreen
         </Button>
         <Button
-          variant="contained"
+          variant={wakeLock.active ? 'contained' : 'outlined'}
           style={{
             cursor: 'pointer',
             userSelect: 'none',
@@ -316,7 +318,7 @@ const Settings = ({
           }}
           onClick={handleWakeLock}
         >
-          Wake Lock is&nbsp;{wakeLock.active ? 'on' : 'off'}
+          Keep Awake
         </Button>
       </ButtonsSections>
     </SettingsContainer>

@@ -4,8 +4,8 @@ import { Player } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
 
 const MainWrapper = styled.div`
-  width: 100vmax;
-  height: 100vmin;
+  width: 100dvmax;
+  height: 100dvmin;
   overflow: hidden;
 `;
 
