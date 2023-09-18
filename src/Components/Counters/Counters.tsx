@@ -28,14 +28,6 @@ export const GridItemContainer = styled.div<{
   grid-area: ${(props) => props.$gridArea};
 `;
 
-export const SettingsButtonContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9;
-`;
-
 type CountersProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
