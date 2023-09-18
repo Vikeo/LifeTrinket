@@ -42,10 +42,13 @@ const removeLocalStorage = async () => {
 };
 
 const EmergencyResetButton = styled.button`
+  width: 100vmax;
+  height: 100vmin;
+  font-size: 4vmax;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  top: 0;
   z-index: -1;
+  background-color: #4e6815;
 `;
 
 const App = () => {
@@ -115,7 +118,10 @@ const App = () => {
             wakeLock={wakeLock}
           />
           <EmergencyResetButton onClick={goToStart}>
-            Go To Start
+            <p>If you can see this, something is wrong.</p>
+            <p>Press screen to go to start.</p>
+            <br />
+            <p>If the issue persists, please inform me.</p>
           </EmergencyResetButton>
         </PlayWrapper>
       ) : (
