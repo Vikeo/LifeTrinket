@@ -34,7 +34,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
   gridAreas,
   onChange,
 }) => {
-  const iconHeight = '33vmin';
+  const iconHeight = '30vmin';
   const iconWidth = '20vmin';
 
   const renderLayoutOptions = () => {
@@ -94,18 +94,18 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.TwoPlayersOppositeLandscape}
+              value={GridTemplateAreas.TwoPlayersSameSide}
               control={
                 <Radio
                   icon={
-                    <TwoPlayersOppositeLandscape
+                    <TwoPlayersSameSide
                       height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
-                    <TwoPlayersOppositeLandscape
+                    <TwoPlayersSameSide
                       height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.primary.main}
@@ -140,18 +140,18 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.TwoPlayersSameSide}
+              value={GridTemplateAreas.TwoPlayersOppositeLandscape}
               control={
                 <Radio
                   icon={
-                    <TwoPlayersSameSide
+                    <TwoPlayersOppositeLandscape
                       height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
-                    <TwoPlayersSameSide
+                    <TwoPlayersOppositeLandscape
                       height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.primary.main}

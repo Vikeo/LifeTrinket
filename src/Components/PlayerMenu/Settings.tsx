@@ -195,7 +195,7 @@ const Settings = ({
                   size="6vmax"
                   color="black"
                   stroke="white"
-                  stroke-width="30"
+                  strokeWidth="30"
                 />
               }
               checkedIcon={
@@ -203,7 +203,7 @@ const Settings = ({
                   size="6vmax"
                   color={player.color}
                   stroke="white"
-                  stroke-width="30"
+                  strokeWidth="30"
                 />
               }
               onChange={handleSettingsChange}
@@ -220,7 +220,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="30"
+                strokeWidth="30"
               />
             }
             checkedIcon={
@@ -228,7 +228,7 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="30"
+                strokeWidth="30"
               />
             }
             onChange={handleSettingsChange}
@@ -244,7 +244,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             checkedIcon={
@@ -252,7 +252,7 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             onChange={handleSettingsChange}
@@ -268,7 +268,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             checkedIcon={
@@ -276,7 +276,7 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             onChange={handleSettingsChange}

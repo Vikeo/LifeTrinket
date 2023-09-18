@@ -37,7 +37,7 @@ const CommanderDamageBar = ({
   setLifeTotal,
 }: CommanderDamageBarProps) => {
   return (
-    <CommanderDamageGrid rotation={player.settings.rotation}>
+    <CommanderDamageGrid rotation={player.settings.rotation} key={player.key}>
       {opponents.map((opponent) => {
         if (!opponent.settings.useCommanderDamage) {
           return null;
@@ -48,6 +48,7 @@ const CommanderDamageBar = ({
             opponent={opponent}
             setLifeTotal={setLifeTotal}
             onPlayerChange={onPlayerChange}
+            key={opponent.key}
           />
         );
       })}

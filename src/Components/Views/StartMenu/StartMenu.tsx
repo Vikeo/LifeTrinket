@@ -17,23 +17,34 @@ import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
 import { useFullscreen } from '../../../Hooks/useFullscreen';
+import { Spacer } from '../../Misc/Spacer';
 
 const MainWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: fit-content;
   padding-bottom: 58px;
   overflow: hidden;
   align-items: center;
-  justify-content: center;
   display: flex;
   flex-direction: column;
-  height: fit-content;
 `;
 
 const StartButtonFooter = styled.div`
   position: fixed;
   bottom: 1rem;
   translate: -50%, -50%;
+`;
+
+const ToggleButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
+const ToggleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const playerMarks = [
@@ -109,15 +120,25 @@ const Start = ({
       gridAreas: GridTemplateAreas.FourPlayers,
     }
   );
+  const [wakeLockActive, setWakeLockActive] = useState(true);
 
   const { enableFullscreen } = useFullscreen();
 
-  const toggleWakeLock = ({ active }: { active: boolean }) => {
-    if (active) {
+  const toggleWakeLock = () => {
+    console.log(wakeLock.active, wakeLockActive);
+    if (wakeLock.active && wakeLockActive) {
       wakeLock.release();
-    } else {
-      wakeLock.request();
+      setWakeLockActive(false);
+      return;
     }
+
+    if (!wakeLock.active && !wakeLockActive) {
+      wakeLock.request();
+      setWakeLockActive(true);
+      return;
+    }
+
+    setWakeLockActive(wakeLock.active);
   };
 
   const doStartGame = () => {
@@ -126,6 +147,11 @@ const Start = ({
     }
 
     analytics.trackEvent('game_started', { ...initialGameSettings });
+
+    if (!wakeLock.active && wakeLockActive) {
+      console.log('yo');
+      wakeLock.request();
+    }
 
     try {
       enableFullscreen();
@@ -150,7 +176,7 @@ const Start = ({
       case 1:
         return GridTemplateAreas.OnePlayerLandscape;
       case 2:
-        return GridTemplateAreas.TwoPlayersOppositeLandscape;
+        return GridTemplateAreas.TwoPlayersSameSide;
       case 3:
         return GridTemplateAreas.ThreePlayers;
       case 4:
@@ -203,7 +229,7 @@ const Start = ({
           max={6}
           min={1}
           aria-label="Custom marks"
-          defaultValue={initialGameSettings?.numberOfPlayers ?? 4}
+          value={playerOptions?.numberOfPlayers ?? 4}
           getAriaValueText={valuetext}
           step={null}
           marks={playerMarks}
@@ -220,7 +246,7 @@ const Start = ({
           max={60}
           min={20}
           aria-label="Custom marks"
-          defaultValue={initialGameSettings?.startingLifeTotal ?? 40}
+          value={playerOptions?.startingLifeTotal ?? 40}
           getAriaValueText={valuetext}
           step={10}
           marks={healthMarks}
@@ -231,26 +257,46 @@ const Start = ({
             })
           }
         />
-        <FormLabel>Commander</FormLabel>
-        <Switch
-          checked={playerOptions.useCommanderDamage}
-          defaultChecked={initialGameSettings?.useCommanderDamage ?? true}
-          onChange={(_e, value) =>
-            setPlayerOptions({
-              ...playerOptions,
-              useCommanderDamage: value,
-            })
-          }
-        />
-        <FormLabel>Keep Awake</FormLabel>
-        <Switch
-          checked={wakeLock.active}
-          defaultChecked={wakeLock.active}
-          onChange={() => toggleWakeLock({ active: wakeLock.active })}
-        />
+
+        <ToggleButtonsWrapper>
+          <ToggleContainer>
+            <FormLabel>Commander</FormLabel>
+            <Switch
+              checked={
+                playerOptions.useCommanderDamage ??
+                initialGameSettings?.useCommanderDamage ??
+                true
+              }
+              onChange={(_e, value) => {
+                if (value) {
+                  setPlayerOptions({
+                    ...playerOptions,
+                    useCommanderDamage: value,
+                    numberOfPlayers: 4,
+                    startingLifeTotal: 40,
+                  });
+                  return;
+                }
+                setPlayerOptions({
+                  ...playerOptions,
+                  useCommanderDamage: value,
+                  numberOfPlayers: 2,
+                  startingLifeTotal: 20,
+                });
+              }}
+            />
+          </ToggleContainer>
+          <Spacer width="2rem" />
+          <ToggleContainer>
+            <FormLabel>Keep Awake</FormLabel>
+            <Switch
+              checked={wakeLockActive}
+              onChange={() => toggleWakeLock()}
+            />
+          </ToggleContainer>
+        </ToggleButtonsWrapper>
 
         <FormLabel>Layout</FormLabel>
-
         <LayoutOptions
           numberOfPlayers={playerOptions.numberOfPlayers}
           gridAreas={playerOptions.gridAreas}

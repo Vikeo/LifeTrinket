@@ -10,12 +10,6 @@ import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import Health from './Health';
 import { WakeLock } from '../../Types/WakeLock';
 
-const Lmao = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
 const LifeCounterContentWrapper = styled.div<{
   backgroundColor: string;
 }>`
@@ -230,53 +224,52 @@ const LifeCounter = ({
 
   return (
     <LifeCounterContentWrapper backgroundColor={backgroundColor}>
-      <Lmao>
-        <LifeCounterWrapper rotation={player.settings.rotation}>
-          {player.isStartingPlayer && !showStartingPlayer && (
-            <PlayerNoticeWrapper
-              rotation={player.settings.rotation}
-              backgroundColor={theme.palette.primary.main}
-            >
-              <DynamicText rotation={player.settings.rotation}>
-                You start!
-              </DynamicText>
-            </PlayerNoticeWrapper>
-          )}
+      <LifeCounterWrapper rotation={player.settings.rotation}>
+        {player.isStartingPlayer && !showStartingPlayer && (
+          <PlayerNoticeWrapper
+            rotation={player.settings.rotation}
+            backgroundColor={theme.palette.primary.main}
+          >
+            <DynamicText rotation={player.settings.rotation}>
+              You start!
+            </DynamicText>
+          </PlayerNoticeWrapper>
+        )}
 
-          {player.hasLost && (
-            <PlayerNoticeWrapper
-              rotation={player.settings.rotation}
-              backgroundColor={'#00000070'}
-            />
-          )}
-          <CommanderDamageBar
-            opponents={opponents}
-            player={player}
-            onPlayerChange={onPlayerChange}
-            setLifeTotal={handleLifeChange}
-          />
-          <SettingsButton
-            onClick={() => {
-              setShowPlayerMenu(!showPlayerMenu);
-            }}
+        {player.hasLost && (
+          <PlayerNoticeWrapper
             rotation={player.settings.rotation}
+            backgroundColor={'#00000070'}
           />
-          {playerCanLose(player) && (
-            <LoseGameButton
-              rotation={player.settings.rotation}
-              onClick={toggleGameLost}
-            />
-          )}
-          <Health
-            player={player}
-            onPlayerChange={onPlayerChange}
-            differenceKey={differenceKey}
-            setDifferenceKey={setDifferenceKey}
+        )}
+        <CommanderDamageBar
+          opponents={opponents}
+          player={player}
+          onPlayerChange={onPlayerChange}
+          setLifeTotal={handleLifeChange}
+        />
+        <SettingsButton
+          onClick={() => {
+            setShowPlayerMenu(!showPlayerMenu);
+          }}
+          rotation={player.settings.rotation}
+        />
+        {playerCanLose(player) && (
+          <LoseGameButton
             rotation={player.settings.rotation}
+            onClick={toggleGameLost}
           />
-          <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
-        </LifeCounterWrapper>
-      </Lmao>
+        )}
+        <Health
+          player={player}
+          onPlayerChange={onPlayerChange}
+          differenceKey={differenceKey}
+          setDifferenceKey={setDifferenceKey}
+          rotation={player.settings.rotation}
+        />
+        <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
+      </LifeCounterWrapper>
+
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
