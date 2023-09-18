@@ -26,6 +26,8 @@ const StartWrapper = styled.div`
 `;
 
 const PlayWrapper = styled.div`
+  position: relative;
+  z-index: 0;
   max-width: fit-content;
   max-height: fit-content;
   @media (orientation: portrait) {
@@ -38,6 +40,13 @@ const removeLocalStorage = async () => {
   localStorage.removeItem('players');
   localStorage.removeItem('playing');
 };
+
+const EmergencyResetButton = styled.button`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+`;
 
 const App = () => {
   const analytics = useAnalytics();
@@ -105,6 +114,9 @@ const App = () => {
             goToStart={goToStart}
             wakeLock={wakeLock}
           />
+          <EmergencyResetButton onClick={goToStart}>
+            Go To Start
+          </EmergencyResetButton>
         </PlayWrapper>
       ) : (
         <StartWrapper>
