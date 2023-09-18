@@ -22,11 +22,14 @@ jobs:
         with:
           node-version: 18
 
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v1
+
       - name: Install dependencies
-        run: yarn install
+        run: bun install
 
       - name: Run lint
-        run: yarn lint
+        run: bun run lint
 
       - name: Build project
-        run: yarn build
+        run: bun run build

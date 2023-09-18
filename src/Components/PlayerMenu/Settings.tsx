@@ -1,9 +1,18 @@
 import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
-import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
+import {
+  Energy,
+  Exit,
+  Experience,
+  FullscreenOff,
+  FullscreenOn,
+  PartnerTax,
+  Poison,
+} from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
 import { useFullscreen } from '../../Hooks/useFullscreen';
+import { theme } from '../../Data/theme';
 
 type SettingsProps = {
   player: Player;
@@ -14,7 +23,7 @@ type SettingsProps = {
 };
 
 const SettingsContainer = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   display: flex;
   position: relative;
@@ -25,8 +34,8 @@ const SettingsContainer = styled.div<{
   width: 80%;
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column-reverse;
@@ -37,7 +46,7 @@ const SettingsContainer = styled.div<{
   }}
 `;
 
-const TogglesSection = styled.div<{ rotation: Rotation }>`
+const TogglesSection = styled.div<{ $rotation: Rotation }>`
   display: flex;
   position: absolute;
   flex-direction: row;
@@ -46,8 +55,8 @@ const TogglesSection = styled.div<{ rotation: Rotation }>`
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column-reverse;
@@ -56,31 +65,31 @@ const TogglesSection = styled.div<{ rotation: Rotation }>`
   }}
 `;
 
-const ButtonsSections = styled.div<{ rotation: Rotation }>`
+const ButtonsSections = styled.div<{ $rotation: Rotation }>`
   position: absolute;
   display: flex;
   gap: 1rem;
   bottom: 16px;
 
   ${(props) => {
-    if (props.rotation === Rotation.Side) {
+    if (props.$rotation === Rotation.Side) {
       return css`
         bottom: auto;
         right: -6rem;
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
       `;
-    } else if (props.rotation === Rotation.SideFlipped) {
+    } else if (props.$rotation === Rotation.SideFlipped) {
       return css`
         bottom: auto;
         left: -6rem;
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
       `;
     }
   }}
 `;
 
 const ColorPicker = styled.input<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   position: absolute;
   top: 5%;
@@ -96,15 +105,15 @@ const ColorPicker = styled.input<{
   color: #ffffff;
 
   ${(props) => {
-    if (props.rotation === Rotation.Side) {
+    if (props.$rotation === Rotation.Side) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
         bottom: 5%;
         top: auto;
       `;
-    } else if (props.rotation === Rotation.SideFlipped) {
+    } else if (props.$rotation === Rotation.SideFlipped) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
         top: 5%;
         left: auto;
         right: 5%;
@@ -113,14 +122,14 @@ const ColorPicker = styled.input<{
   }}
 `;
 
-const CheckboxContainer = styled.div<{ rotation: Rotation }>`
+const CheckboxContainer = styled.div<{ $rotation: Rotation }>`
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
       `;
     }
   }}
@@ -177,16 +186,18 @@ const Settings = ({
   const buttonFontSize = isSide ? '2vmax' : '4vmin';
 
   return (
-    <SettingsContainer rotation={player.settings.rotation}>
+    <SettingsContainer $rotation={player.settings.rotation}>
       <ColorPicker
-        rotation={player.settings.rotation}
+        $rotation={player.settings.rotation}
         type="color"
         value={player.color}
         onChange={handleColorChange}
+        role="button"
+        aria-label="Color picker"
       />
-      <TogglesSection rotation={player.settings.rotation}>
+      <TogglesSection $rotation={player.settings.rotation}>
         {player.settings.useCommanderDamage && (
-          <CheckboxContainer rotation={player.settings.rotation}>
+          <CheckboxContainer $rotation={player.settings.rotation}>
             <Checkbox
               name="usePartner"
               checked={player.settings.usePartner}
@@ -195,7 +206,7 @@ const Settings = ({
                   size="6vmax"
                   color="black"
                   stroke="white"
-                  stroke-width="30"
+                  strokeWidth="30"
                 />
               }
               checkedIcon={
@@ -203,15 +214,18 @@ const Settings = ({
                   size="6vmax"
                   color={player.color}
                   stroke="white"
-                  stroke-width="30"
+                  strokeWidth="30"
                 />
               }
               onChange={handleSettingsChange}
+              role="checkbox"
+              aria-checked={player.settings.usePartner}
+              aria-label="Partner"
             />
           </CheckboxContainer>
         )}
 
-        <CheckboxContainer rotation={player.settings.rotation}>
+        <CheckboxContainer $rotation={player.settings.rotation}>
           <Checkbox
             name="usePoison"
             checked={player.settings.usePoison}
@@ -220,7 +234,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="30"
+                strokeWidth="30"
               />
             }
             checkedIcon={
@@ -228,14 +242,17 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="30"
+                strokeWidth="30"
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.usePoison}
+            aria-label="Poison"
           />
         </CheckboxContainer>
 
-        <CheckboxContainer rotation={player.settings.rotation}>
+        <CheckboxContainer $rotation={player.settings.rotation}>
           <Checkbox
             name="useEnergy"
             checked={player.settings.useEnergy}
@@ -244,7 +261,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             checkedIcon={
@@ -252,14 +269,17 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.useEnergy}
+            aria-label="Energy"
           />
         </CheckboxContainer>
 
-        <CheckboxContainer rotation={player.settings.rotation}>
+        <CheckboxContainer $rotation={player.settings.rotation}>
           <Checkbox
             name="useExperience"
             checked={player.settings.useExperience}
@@ -268,7 +288,7 @@ const Settings = ({
                 size="6vmax"
                 color="black"
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             checkedIcon={
@@ -276,38 +296,43 @@ const Settings = ({
                 size="6vmax"
                 color={player.color}
                 stroke="white"
-                stroke-width="15"
+                strokeWidth="15"
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.useExperience}
+            aria-label="Experience"
           />
         </CheckboxContainer>
       </TogglesSection>
-      <ButtonsSections rotation={player.settings.rotation}>
+      <ButtonsSections $rotation={player.settings.rotation}>
         <Button
-          variant="contained"
+          variant="text"
           style={{
             cursor: 'pointer',
             userSelect: 'none',
-            fontSize: buttonFontSize,
-            padding: '0 4px 0 4px',
           }}
           onClick={handleNewGame}
+          aria-label="Back to start"
         >
-          Back to Start
+          <Exit size="4vmax" style={{ rotate: '180deg' }} />
         </Button>
-        <Button
-          variant={document.fullscreenElement ? 'contained' : 'outlined'}
-          style={{
-            cursor: 'pointer',
-            userSelect: 'none',
-            fontSize: buttonFontSize,
-            padding: '0 4px 0 4px',
-          }}
-          onClick={toggleFullscreen}
-        >
-          Fullscreen
-        </Button>
+        <CheckboxContainer $rotation={player.settings.rotation}>
+          <Checkbox
+            name="fullscreen"
+            checked={document.fullscreenElement ? true : false}
+            icon={
+              <FullscreenOff size="4vmax" color={theme.palette.primary.main} />
+            }
+            checkedIcon={<FullscreenOn size="4vmax" />}
+            onChange={toggleFullscreen}
+            role="checkbox"
+            aria-checked={document.fullscreenElement ? true : false}
+            aria-label="Fullscreen"
+          />
+        </CheckboxContainer>
+
         <Button
           variant={wakeLock.active ? 'contained' : 'outlined'}
           style={{
@@ -317,6 +342,9 @@ const Settings = ({
             padding: '0 4px 0 4px',
           }}
           onClick={handleWakeLock}
+          role="checkbox"
+          aria-checked={wakeLock.active}
+          aria-label="Keep awake"
         >
           Keep Awake
         </Button>

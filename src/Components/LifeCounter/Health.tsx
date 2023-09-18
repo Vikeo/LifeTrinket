@@ -5,7 +5,7 @@ import LifeCounterButton from '../Buttons/LifeCounterButton';
 import { OutlinedText } from '../Misc/OutlinedText';
 
 const LifeCountainer = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   position: relative;
   display: flex;
@@ -18,8 +18,8 @@ const LifeCountainer = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column-reverse;
@@ -29,7 +29,7 @@ const LifeCountainer = styled.div<{
 `;
 
 const LifeCounterTextContainer = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   position: absolute;
   width: 60%;
@@ -46,8 +46,8 @@ const LifeCounterTextContainer = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         width: 100%;
@@ -192,7 +192,7 @@ const Health = ({
   };
 
   return (
-    <LifeCountainer rotation={player.settings.rotation}>
+    <LifeCountainer $rotation={player.settings.rotation}>
       <LifeCounterButton
         lifeTotal={player.lifeTotal}
         setLifeTotal={handleLifeChange}
@@ -202,7 +202,7 @@ const Health = ({
       />
       <TextWrapper>
         <LifeCounterTextContainer
-          rotation={player.settings.rotation}
+          $rotation={player.settings.rotation}
           ref={textContainerRef}
         >
           <OutlinedText

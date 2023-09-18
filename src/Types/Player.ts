@@ -1,6 +1,5 @@
 export type Player = {
   lifeTotal: number;
-  key?: number; // Deprecated, use index instead
   index: number;
   color: string;
   settings: PlayerSettings;

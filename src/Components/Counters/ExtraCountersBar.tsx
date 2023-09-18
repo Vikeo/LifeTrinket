@@ -11,15 +11,15 @@ import {
   Poison,
 } from '../../Icons/generated';
 
-const Container = styled.div<{ rotation: number }>`
+const Container = styled.div<{ $rotation: Rotation }>`
   width: 100%;
   height: 20vmin;
   display: flex;
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         height: 100%;
@@ -29,7 +29,7 @@ const Container = styled.div<{ rotation: number }>`
   }}
 `;
 
-const ExtraCountersGrid = styled.div<{ rotation: number }>`
+const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
   display: flex;
   position: absolute;
   width: 100%;
@@ -40,8 +40,8 @@ const ExtraCountersGrid = styled.div<{ rotation: number }>`
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column-reverse;
@@ -119,8 +119,8 @@ const ExtraCountersBar = ({
   }
 
   return (
-    <Container rotation={player.settings.rotation}>
-      <ExtraCountersGrid rotation={player.settings.rotation}>
+    <Container $rotation={player.settings.rotation}>
+      <ExtraCountersGrid $rotation={player.settings.rotation}>
         {useCommanderDamage && (
           <ExtraCounter
             rotation={player.settings.rotation}
@@ -132,6 +132,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {Boolean(useCommanderDamage && usePartner) && (
@@ -145,6 +146,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {usePoison && (
@@ -157,6 +159,7 @@ const ExtraCountersBar = ({
                 ?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {useEnergy && (
@@ -169,6 +172,7 @@ const ExtraCountersBar = ({
                 ?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {useExperience && (
@@ -182,6 +186,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
       </ExtraCountersGrid>

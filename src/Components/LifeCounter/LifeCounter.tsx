@@ -10,14 +10,8 @@ import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import Health from './Health';
 import { WakeLock } from '../../Types/WakeLock';
 
-const Lmao = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
 const LifeCounterContentWrapper = styled.div<{
-  backgroundColor: string;
+  $backgroundColor: string;
 }>`
   position: relative;
   display: flex;
@@ -26,7 +20,7 @@ const LifeCounterContentWrapper = styled.div<{
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
+  background-color: ${(props) => props.$backgroundColor || 'antiquewhite'};
   @media (orientation: landscape) {
     max-width: 100vmax;
     max-height: 100vmin;
@@ -36,7 +30,7 @@ const LifeCounterContentWrapper = styled.div<{
 `;
 
 const LifeCounterWrapper = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   position: relative;
   display: flex;
@@ -49,25 +43,25 @@ const LifeCounterWrapper = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: row;
-        rotate: ${props.rotation - 90}deg;
+        rotate: ${props.$rotation - 90}deg;
       `;
     }
 
     return css`
       flex-direction: column;
-      rotate: ${props.rotation}deg;
+      rotate: ${props.$rotation}deg;
     `;
   }}
 `;
 
 const PlayerNoticeWrapper = styled.div<{
-  rotation: Rotation;
-  backgroundColor: string;
+  $rotation: Rotation;
+  $backgroundColor: string;
 }>`
   z-index: 1;
   display: flex;
@@ -76,7 +70,7 @@ const PlayerNoticeWrapper = styled.div<{
   height: 100%;
   justify-content: center;
   align-items: center;
-  background: ${(props) => props.backgroundColor};
+  background: ${(props) => props.$backgroundColor};
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
@@ -87,25 +81,25 @@ const PlayerNoticeWrapper = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
-        rotate: ${props.rotation - 90}deg;
+        rotate: ${props.$rotation - 90}deg;
       `;
     }
   }}
 `;
 
-const DynamicText = styled.div<{ rotation: Rotation }>`
+const DynamicText = styled.div<{ $rotation: Rotation }>`
   font-size: 8vmin;
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
       `;
     }
   }}
@@ -229,54 +223,54 @@ const LifeCounter = ({
     player.settings.rotation === Rotation.Side;
 
   return (
-    <LifeCounterContentWrapper backgroundColor={backgroundColor}>
-      <Lmao>
-        <LifeCounterWrapper rotation={player.settings.rotation}>
-          {player.isStartingPlayer && !showStartingPlayer && (
-            <PlayerNoticeWrapper
-              rotation={player.settings.rotation}
-              backgroundColor={theme.palette.primary.main}
-            >
-              <DynamicText rotation={player.settings.rotation}>
-                You start!
-              </DynamicText>
-            </PlayerNoticeWrapper>
-          )}
+    <LifeCounterContentWrapper $backgroundColor={backgroundColor}>
+      <LifeCounterWrapper $rotation={player.settings.rotation}>
+        {player.isStartingPlayer && !showStartingPlayer && (
+          <PlayerNoticeWrapper
+            $rotation={player.settings.rotation}
+            $backgroundColor={theme.palette.primary.main}
+          >
+            <DynamicText $rotation={player.settings.rotation}>
+              You start!
+            </DynamicText>
+          </PlayerNoticeWrapper>
+        )}
 
-          {player.hasLost && (
-            <PlayerNoticeWrapper
-              rotation={player.settings.rotation}
-              backgroundColor={'#00000070'}
-            />
-          )}
-          <CommanderDamageBar
-            opponents={opponents}
-            player={player}
-            onPlayerChange={onPlayerChange}
-            setLifeTotal={handleLifeChange}
+        {player.hasLost && (
+          <PlayerNoticeWrapper
+            $rotation={player.settings.rotation}
+            $backgroundColor={'#00000070'}
           />
-          <SettingsButton
-            onClick={() => {
-              setShowPlayerMenu(!showPlayerMenu);
-            }}
+        )}
+        <CommanderDamageBar
+          opponents={opponents}
+          player={player}
+          onPlayerChange={onPlayerChange}
+          setLifeTotal={handleLifeChange}
+          key={player.index}
+        />
+        <SettingsButton
+          onClick={() => {
+            setShowPlayerMenu(!showPlayerMenu);
+          }}
+          rotation={player.settings.rotation}
+        />
+        {playerCanLose(player) && (
+          <LoseGameButton
             rotation={player.settings.rotation}
+            onClick={toggleGameLost}
           />
-          {playerCanLose(player) && (
-            <LoseGameButton
-              rotation={player.settings.rotation}
-              onClick={toggleGameLost}
-            />
-          )}
-          <Health
-            player={player}
-            onPlayerChange={onPlayerChange}
-            differenceKey={differenceKey}
-            setDifferenceKey={setDifferenceKey}
-            rotation={player.settings.rotation}
-          />
-          <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
-        </LifeCounterWrapper>
-      </Lmao>
+        )}
+        <Health
+          player={player}
+          onPlayerChange={onPlayerChange}
+          differenceKey={differenceKey}
+          setDifferenceKey={setDifferenceKey}
+          rotation={player.settings.rotation}
+        />
+        <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
+      </LifeCounterWrapper>
+
       {showPlayerMenu && (
         <PlayerMenu
           player={player}

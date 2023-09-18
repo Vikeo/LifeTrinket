@@ -26,17 +26,17 @@ export const StyledLifeCounterButton = styled.button`
 `;
 
 const TextContainer = styled.div<{
-  align?: string;
-  rotation: number;
+  $align?: string;
+  $rotation: number;
 }>`
   position: relative;
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
-      if (props.align === 'right') {
+      if (props.$align === 'right') {
         return css`
           rotate: -90deg;
           bottom: 25%;
@@ -49,7 +49,7 @@ const TextContainer = styled.div<{
       `;
     }
 
-    if (props.align === 'right') {
+    if (props.$align === 'right') {
       return css`
         left: 25%;
       `;
@@ -121,10 +121,11 @@ const LifeCounterButton = ({
         e.preventDefault();
       }}
       style={{ fontSize }}
+      aria-label={`${operation === 'add' ? 'Add' : 'Subtract'} life`}
     >
       <TextContainer
-        rotation={rotation}
-        align={operation === 'add' ? 'right' : 'left'}
+        $rotation={rotation}
+        $align={operation === 'add' ? 'right' : 'left'}
       >
         {operation === 'add' ? '\u002B' : '\u2212'}
       </TextContainer>

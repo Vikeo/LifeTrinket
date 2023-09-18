@@ -6,7 +6,7 @@ import { OutlinedText } from '../Misc/OutlinedText';
 import { decrementTimeoutMs } from '../../Data/constants';
 
 const CommanderDamageContainer = styled.div<{
-  rotation: number;
+  $rotation: number;
 }>`
   display: flex;
   flex-direction: row;
@@ -15,8 +15,8 @@ const CommanderDamageContainer = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column;
@@ -26,8 +26,8 @@ const CommanderDamageContainer = styled.div<{
 `;
 
 const CommanderDamageButton = styled.button<{
-  backgroundColor?: string;
-  rotation: number;
+  $backgroundColor?: string;
+  $rotation: number;
 }>`
   display: flex;
   flex-grow: 1;
@@ -36,7 +36,7 @@ const CommanderDamageButton = styled.button<{
   width: 50%;
   outline: none;
   cursor: pointer;
-  background-color: ${(props) => props.backgroundColor || 'antiquewhite'};
+  background-color: ${(props) => props.$backgroundColor || 'antiquewhite'};
   margin: 0;
   user-select: none;
   -webkit-touch-callout: none;
@@ -47,8 +47,8 @@ const CommanderDamageButton = styled.button<{
   padding: 0;
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         width: 6vmax;
@@ -59,7 +59,7 @@ const CommanderDamageButton = styled.button<{
 `;
 
 const CommanderDamageTextContainer = styled.div<{
-  rotation: number;
+  $rotation: number;
 }>`
   position: relative;
   top: 50%;
@@ -76,8 +76,8 @@ const CommanderDamageTextContainer = styled.div<{
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         rotate: 270deg;
@@ -87,15 +87,15 @@ const CommanderDamageTextContainer = styled.div<{
 `;
 
 const PartnerDamageSeperator = styled.div<{
-  rotation: number;
+  $rotation: number;
 }>`
   width: 1px;
   background-color: rgba(0, 0, 0, 1);
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         width: auto;
@@ -200,11 +200,12 @@ export const CommanderDamage = ({
   return (
     <CommanderDamageContainer
       key={opponentIndex}
-      rotation={player.settings.rotation}
+      $rotation={player.settings.rotation}
+      aria-label={`Commander damage bar ${player.index}`}
     >
       <CommanderDamageButton
         key={opponentIndex}
-        rotation={player.settings.rotation}
+        $rotation={player.settings.rotation}
         onPointerDown={() =>
           handleDownInput({ opponentIndex, isPartner: false })
         }
@@ -213,9 +214,10 @@ export const CommanderDamage = ({
         onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           e.preventDefault();
         }}
-        backgroundColor={opponent.color}
+        $backgroundColor={opponent.color}
+        aria-label={`Commander damage. Player ${player.index}, opponent ${opponent.index}`}
       >
-        <CommanderDamageTextContainer rotation={player.settings.rotation}>
+        <CommanderDamageTextContainer $rotation={player.settings.rotation}>
           <OutlinedText
             fontSize={fontSize}
             fontWeight={fontWeight}
@@ -230,10 +232,10 @@ export const CommanderDamage = ({
 
       {opponent.settings.usePartner && (
         <>
-          <PartnerDamageSeperator rotation={player.settings.rotation} />
+          <PartnerDamageSeperator $rotation={player.settings.rotation} />
           <CommanderDamageButton
             key={opponentIndex}
-            rotation={player.settings.rotation}
+            $rotation={player.settings.rotation}
             onPointerDown={() =>
               handleDownInput({ opponentIndex, isPartner: true })
             }
@@ -246,9 +248,10 @@ export const CommanderDamage = ({
             ) => {
               e.preventDefault();
             }}
-            backgroundColor={opponent.color}
+            $backgroundColor={opponent.color}
+            aria-label={`Partner Commander damage. Player ${player.index}, opponent ${opponent.index}`}
           >
-            <CommanderDamageTextContainer rotation={player.settings.rotation}>
+            <CommanderDamageTextContainer $rotation={player.settings.rotation}>
               <OutlinedText
                 fontSize={fontSize}
                 fontWeight={fontWeight}

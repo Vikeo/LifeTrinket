@@ -3,7 +3,7 @@ import { css } from 'styled-components';
 import { Rotation } from '../../Types/Player';
 import { Cog } from '../../Icons/generated';
 
-export const StyledSettingsButton = styled.button<{ rotation: number }>`
+export const StyledSettingsButton = styled.button<{ $rotation: Rotation }>`
   position: absolute;
   flex-grow: 1;
   border: none;
@@ -21,8 +21,8 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
   z-index: 1;
   ${(props) => {
     if (
-      props.rotation === Rotation.Side ||
-      props.rotation === Rotation.SideFlipped
+      props.$rotation === Rotation.Side ||
+      props.$rotation === Rotation.SideFlipped
     ) {
       return css`
         right: auto;
@@ -35,12 +35,16 @@ export const StyledSettingsButton = styled.button<{ rotation: number }>`
 
 type SettingsButtonProps = {
   onClick: () => void;
-  rotation: number;
+  rotation: Rotation;
 };
 
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
-    <StyledSettingsButton onClick={onClick} rotation={rotation}>
+    <StyledSettingsButton
+      onClick={onClick}
+      $rotation={rotation}
+      aria-label={`Settings`}
+    >
       <Cog size="5vmin" color="black" opacity="0.3" />
     </StyledSettingsButton>
   );

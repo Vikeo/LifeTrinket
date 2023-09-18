@@ -9,23 +9,23 @@ export const CountersWrapper = styled.div`
   background-color: black;
 `;
 
-export const CountersGrid = styled.div<{ gridTemplateAreas: string }>`
+export const CountersGrid = styled.div<{ $gridTemplateAreas: string }>`
   display: grid;
   gap: 4px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   height: 100%;
-  grid-template-areas: ${({ gridTemplateAreas }) => gridTemplateAreas};
+  grid-template-areas: ${({ $gridTemplateAreas }) => $gridTemplateAreas};
 `;
 
 export const GridItemContainer = styled.div<{
-  gridArea: string;
+  $gridArea: string;
 }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: ${(props) => props.gridArea};
+  grid-area: ${(props) => props.$gridArea};
 `;
 
 export const SettingsButtonContainer = styled.div`
@@ -53,12 +53,12 @@ const Counters = ({
 }: CountersProps) => {
   return (
     <CountersWrapper>
-      <CountersGrid gridTemplateAreas={gridAreas}>
+      <CountersGrid $gridTemplateAreas={gridAreas}>
         {players.map((player) => {
           return (
             <GridItemContainer
               key={player.index}
-              gridArea={`player${player.index}`}
+              $gridArea={`player${player.index}`}
             >
               <LifeCounter
                 backgroundColor={player.color}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { css } from 'styled-components';
 import { CommanderDamage } from '../Buttons/CommanderDamage';
 
-const CommanderDamageGrid = styled.div<{ rotation: number }>`
+const CommanderDamageGrid = styled.div<{ $rotation: number }>`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
@@ -11,8 +11,8 @@ const CommanderDamageGrid = styled.div<{ rotation: number }>`
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         flex-direction: column;
@@ -37,7 +37,10 @@ const CommanderDamageBar = ({
   setLifeTotal,
 }: CommanderDamageBarProps) => {
   return (
-    <CommanderDamageGrid rotation={player.settings.rotation}>
+    <CommanderDamageGrid
+      $rotation={player.settings.rotation}
+      key={player.index}
+    >
       {opponents.map((opponent) => {
         if (!opponent.settings.useCommanderDamage) {
           return null;
@@ -48,6 +51,7 @@ const CommanderDamageBar = ({
             opponent={opponent}
             setLifeTotal={setLifeTotal}
             onPlayerChange={onPlayerChange}
+            key={opponent.index}
           />
         );
       })}
