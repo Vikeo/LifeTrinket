@@ -201,6 +201,7 @@ export const CommanderDamage = ({
     <CommanderDamageContainer
       key={opponentIndex}
       $rotation={player.settings.rotation}
+      aria-label={`Commander damage bar ${player.index}`}
     >
       <CommanderDamageButton
         key={opponentIndex}
@@ -214,6 +215,7 @@ export const CommanderDamage = ({
           e.preventDefault();
         }}
         $backgroundColor={opponent.color}
+        aria-label={`Commander damage. Player ${player.index}, opponent ${opponent.index}`}
       >
         <CommanderDamageTextContainer $rotation={player.settings.rotation}>
           <OutlinedText
@@ -247,6 +249,7 @@ export const CommanderDamage = ({
               e.preventDefault();
             }}
             $backgroundColor={opponent.color}
+            aria-label={`Partner Commander damage. Player ${player.index}, opponent ${opponent.index}`}
           >
             <CommanderDamageTextContainer $rotation={player.settings.rotation}>
               <OutlinedText

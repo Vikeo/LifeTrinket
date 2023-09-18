@@ -183,6 +183,8 @@ const Settings = ({
         type="color"
         value={player.color}
         onChange={handleColorChange}
+        role="button"
+        aria-label="Color picker"
       />
       <TogglesSection $rotation={player.settings.rotation}>
         {player.settings.useCommanderDamage && (
@@ -207,6 +209,9 @@ const Settings = ({
                 />
               }
               onChange={handleSettingsChange}
+              role="checkbox"
+              aria-checked={player.settings.usePartner}
+              aria-label="Partner"
             />
           </CheckboxContainer>
         )}
@@ -232,6 +237,9 @@ const Settings = ({
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.usePoison}
+            aria-label="Poison"
           />
         </CheckboxContainer>
 
@@ -256,6 +264,9 @@ const Settings = ({
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.useEnergy}
+            aria-label="Energy"
           />
         </CheckboxContainer>
 
@@ -280,6 +291,9 @@ const Settings = ({
               />
             }
             onChange={handleSettingsChange}
+            role="checkbox"
+            aria-checked={player.settings.useExperience}
+            aria-label="Experience"
           />
         </CheckboxContainer>
       </TogglesSection>
@@ -293,6 +307,7 @@ const Settings = ({
             padding: '0 4px 0 4px',
           }}
           onClick={handleNewGame}
+          aria-label="Back to start"
         >
           Back to Start
         </Button>
@@ -305,6 +320,9 @@ const Settings = ({
             padding: '0 4px 0 4px',
           }}
           onClick={toggleFullscreen}
+          role="checkbox"
+          aria-checked={document.fullscreenElement ? true : false}
+          aria-label="Fullscreen toggle"
         >
           Fullscreen
         </Button>
@@ -317,6 +335,9 @@ const Settings = ({
             padding: '0 4px 0 4px',
           }}
           onClick={handleWakeLock}
+          role="checkbox"
+          aria-checked={wakeLock.active}
+          aria-label="Keep awake"
         >
           Keep Awake
         </Button>

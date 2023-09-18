@@ -40,7 +40,11 @@ type SettingsButtonProps = {
 
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
-    <StyledSettingsButton onClick={onClick} $rotation={rotation}>
+    <StyledSettingsButton
+      onClick={onClick}
+      $rotation={rotation}
+      aria-label={`Settings`}
+    >
       <Cog size="5vmin" color="black" opacity="0.3" />
     </StyledSettingsButton>
   );

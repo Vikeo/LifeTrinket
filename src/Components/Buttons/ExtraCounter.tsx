@@ -59,6 +59,7 @@ type ExtraCounterProps = {
   type: CounterType;
   setCounterTotal: (updatedCounterTotal: number, type: CounterType) => void;
   rotation: number;
+  playerIndex: number;
 };
 
 const ExtraCounter = ({
@@ -67,6 +68,7 @@ const ExtraCounter = ({
   setCounterTotal,
   type,
   rotation,
+  playerIndex,
 }: ExtraCounterProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
@@ -120,6 +122,7 @@ const ExtraCounter = ({
         onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           e.preventDefault();
         }}
+        aria-label={`Player ${playerIndex} extra counter: ${type}`}
       >
         <IconContainer $rotation={rotation}>
           {Icon}

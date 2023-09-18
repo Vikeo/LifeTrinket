@@ -132,6 +132,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {Boolean(useCommanderDamage && usePartner) && (
@@ -145,6 +146,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {usePoison && (
@@ -157,6 +159,7 @@ const ExtraCountersBar = ({
                 ?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {useEnergy && (
@@ -169,6 +172,7 @@ const ExtraCountersBar = ({
                 ?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
         {useExperience && (
@@ -182,6 +186,7 @@ const ExtraCountersBar = ({
               )?.value
             }
             setCounterTotal={handleCounterChange}
+            playerIndex={player.index}
           />
         )}
       </ExtraCountersGrid>

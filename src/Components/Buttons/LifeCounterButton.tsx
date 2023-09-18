@@ -121,6 +121,7 @@ const LifeCounterButton = ({
         e.preventDefault();
       }}
       style={{ fontSize }}
+      aria-label={`${operation === 'add' ? 'Add' : 'Subtract'} life`}
     >
       <TextContainer
         $rotation={rotation}

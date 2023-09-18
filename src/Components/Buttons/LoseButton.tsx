@@ -46,7 +46,7 @@ type LoseButtonProps = {
 
 export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
   return (
-    <LoseButton $rotation={rotation} onClick={onClick}>
+    <LoseButton $rotation={rotation} onClick={onClick} aria-label={`Lose Game`}>
       <Skull size="5vmin" color="black" opacity={0.5} />
     </LoseButton>
   );
