@@ -226,7 +226,7 @@ const Settings = ({
     }
   };
 
-  const buttonFontSize = isSide ? '2vmax' : '4vmin';
+  const buttonFontSize = isSide ? '1.5vmax' : '3vmin';
 
   return (
     <SettingsContainer $rotation={player.settings.rotation}>
