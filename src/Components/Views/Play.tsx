@@ -13,7 +13,7 @@ type PlayProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
 };
 
@@ -21,7 +21,7 @@ const Play = ({
   players,
   onPlayerChange,
   gridAreas,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
 }: PlayProps) => {
   return (
@@ -30,7 +30,7 @@ const Play = ({
         players={players}
         onPlayerChange={onPlayerChange}
         gridAreas={gridAreas}
-        resetCurrentGame={resetCurrentGame}
+        goToStart={goToStart}
         wakeLock={wakeLock}
       />
     </MainWrapper>

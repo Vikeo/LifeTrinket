@@ -164,7 +164,7 @@ type LifeCounterProps = {
   player: Player;
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
 };
 
@@ -173,7 +173,7 @@ const LifeCounter = ({
   player,
   opponents,
   onPlayerChange,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
@@ -277,7 +277,7 @@ const LifeCounter = ({
           opponents={opponents}
           onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
-          resetCurrentGame={resetCurrentGame}
+          goToStart={goToStart}
           wakeLock={wakeLock}
         />
       )}

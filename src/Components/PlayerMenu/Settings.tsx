@@ -132,7 +132,7 @@ type SettingsProps = {
   player: Player;
   opponents: Player[];
   onChange: (updatedPlayer: Player) => void;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
 };
@@ -140,7 +140,7 @@ type SettingsProps = {
 const Settings = ({
   player,
   onChange,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
   opponents,
   setShowPlayerMenu,
@@ -179,7 +179,7 @@ const Settings = ({
       : null;
 
     if (!initialGameSettings) {
-      resetCurrentGame();
+      goToStart();
     }
 
     const startingPlayerIndex = Math.floor(
@@ -215,14 +215,14 @@ const Settings = ({
   };
 
   const handleNewGame = () => {
-    resetCurrentGame();
+    goToStart();
   };
 
   const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      enableFullscreen();
-    } else {
+    if (isFullscreen) {
       disableFullscreen();
+    } else {
+      enableFullscreen();
     }
   };
 
