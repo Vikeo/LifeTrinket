@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { WakeLock } from '../../Types/WakeLock';
 
 const PlayerMenuWrapper = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   display: flex;
   flex-direction: column;
@@ -20,19 +20,19 @@ const PlayerMenuWrapper = styled.div<{
   z-index: 2;
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return;
     }
     return css`
-      rotate: ${props.rotation}deg;
+      rotate: ${props.$rotation}deg;
     `;
   }};
 `;
 
 const CloseButton = styled.div<{
-  rotation: Rotation;
+  $rotation: Rotation;
 }>`
   position: absolute;
   top: 15%;
@@ -44,16 +44,16 @@ const CloseButton = styled.div<{
   background-color: transparent;
 
   ${(props) => {
-    if (props.rotation === Rotation.Side) {
+    if (props.$rotation === Rotation.Side) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
         top: 5%;
         right: auto;
         left: 5%;
       `;
-    } else if (props.rotation === Rotation.SideFlipped) {
+    } else if (props.$rotation === Rotation.SideFlipped) {
       return css`
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
         top: auto;
         left: auto;
         bottom: 5%;
@@ -85,8 +85,8 @@ const PlayerMenu = ({
   };
 
   return (
-    <PlayerMenuWrapper rotation={player.settings.rotation}>
-      <CloseButton rotation={player.settings.rotation}>
+    <PlayerMenuWrapper $rotation={player.settings.rotation}>
+      <CloseButton $rotation={player.settings.rotation}>
         <Button
           style={{
             padding: '0 8px',

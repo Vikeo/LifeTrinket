@@ -17,7 +17,7 @@ const CenteredText = styled.div<{
   fillColor?: string;
   fontSize?: string;
   fontWeight?: string;
-  rotation?: Rotation;
+  $rotation?: Rotation;
 }>`
   position: absolute;
   font-weight: ${(props) => props.fontWeight || ''};
@@ -31,14 +31,14 @@ const CenteredText = styled.div<{
 
   color: ${(props) => props.fillColor || theme.palette.common.black};
   font-size: ${(props) => props.fontSize || '6vmin'};
-  -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'} ${(props) => props.strokeColor || theme.palette.common.white};
+  -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'}${(props) => props.strokeColor || theme.palette.common.white};
   -webkit-text-fill-color: ${(props) =>
     props.fillColor || theme.palette.common.black};
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         rotate: 270deg;
@@ -81,7 +81,7 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
         strokeWidth={strokeWidth}
         strokeColor={strokeColor}
         fillColor={fillColor}
-        rotation={rotation}
+        $rotation={rotation}
       >
         {children}
         <CenteredTextOutline aria-hidden>{children}</CenteredTextOutline>

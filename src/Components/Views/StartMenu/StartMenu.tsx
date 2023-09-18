@@ -125,7 +125,6 @@ const Start = ({
   const { enableFullscreen } = useFullscreen();
 
   const toggleWakeLock = () => {
-    console.log(wakeLock.active, wakeLockActive);
     if (wakeLock.active && wakeLockActive) {
       wakeLock.release();
       setWakeLockActive(false);
@@ -149,7 +148,6 @@ const Start = ({
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
     if (!wakeLock.active && wakeLockActive) {
-      console.log('yo');
       wakeLock.request();
     }
 

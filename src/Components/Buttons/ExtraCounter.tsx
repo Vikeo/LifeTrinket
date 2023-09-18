@@ -30,14 +30,14 @@ export const StyledExtraCounterButton = styled.button`
 `;
 
 const IconContainer = styled.div<{
-  rotation: number;
+  $rotation: number;
 }>`
   width: auto;
 
   ${(props) => {
     if (
-      props.rotation === Rotation.SideFlipped ||
-      props.rotation === Rotation.Side
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
     ) {
       return css`
         rotate: -90deg;
@@ -121,7 +121,7 @@ const ExtraCounter = ({
           e.preventDefault();
         }}
       >
-        <IconContainer rotation={rotation}>
+        <IconContainer $rotation={rotation}>
           {Icon}
           <TextContainer>
             <OutlinedText

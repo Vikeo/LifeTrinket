@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Skull } from '../../Icons/generated';
 import { Rotation } from '../../Types/Player';
 
-export const LoseButton = styled.button<{ rotation: Rotation }>`
+export const LoseButton = styled.button<{ $rotation: Rotation }>`
   position: absolute;
   flex-grow: 1;
   border: none;
@@ -21,19 +21,19 @@ export const LoseButton = styled.button<{ rotation: Rotation }>`
   z-index: 1;
 
   ${(props) => {
-    if (props.rotation === Rotation.SideFlipped) {
+    if (props.$rotation === Rotation.SideFlipped) {
       return css`
         right: auto;
         top: 15%;
         left: 27%;
-        rotate: ${props.rotation}deg;
+        rotate: ${props.$rotation}deg;
       `;
-    } else if (props.rotation === Rotation.Side) {
+    } else if (props.$rotation === Rotation.Side) {
       return css`
         right: auto;
         top: 15%;
         left: 27%;
-        rotate: ${props.rotation - 180}deg;
+        rotate: ${props.$rotation - 180}deg;
       `;
     }
   }}
@@ -46,7 +46,7 @@ type LoseButtonProps = {
 
 export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
   return (
-    <LoseButton rotation={rotation} onClick={onClick}>
+    <LoseButton $rotation={rotation} onClick={onClick}>
       <Skull size="5vmin" color="black" opacity={0.5} />
     </LoseButton>
   );
