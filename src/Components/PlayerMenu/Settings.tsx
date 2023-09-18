@@ -328,8 +328,8 @@ const Settings = ({
             checkedIcon={<FullscreenOn size="4vmax" />}
             onChange={toggleFullscreen}
             role="checkbox"
-            aria-checked={player.settings.useExperience}
-            aria-label="Experience"
+            aria-checked={document.fullscreenElement ? true : false}
+            aria-label="Fullscreen"
           />
         </CheckboxContainer>
 
