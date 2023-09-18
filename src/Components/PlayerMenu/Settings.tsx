@@ -1,9 +1,18 @@
 import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
-import { Energy, Experience, PartnerTax, Poison } from '../../Icons/generated';
+import {
+  Energy,
+  Exit,
+  Experience,
+  FullscreenOff,
+  FullscreenOn,
+  PartnerTax,
+  Poison,
+} from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
 import { useFullscreen } from '../../Hooks/useFullscreen';
+import { theme } from '../../Data/theme';
 
 type SettingsProps = {
   player: Player;
@@ -299,33 +308,31 @@ const Settings = ({
       </TogglesSection>
       <ButtonsSections $rotation={player.settings.rotation}>
         <Button
-          variant="contained"
+          variant="text"
           style={{
             cursor: 'pointer',
             userSelect: 'none',
-            fontSize: buttonFontSize,
-            padding: '0 4px 0 4px',
           }}
           onClick={handleNewGame}
           aria-label="Back to start"
         >
-          Back to Start
+          <Exit size="4vmax" style={{ rotate: '180deg' }} />
         </Button>
-        <Button
-          variant={document.fullscreenElement ? 'contained' : 'outlined'}
-          style={{
-            cursor: 'pointer',
-            userSelect: 'none',
-            fontSize: buttonFontSize,
-            padding: '0 4px 0 4px',
-          }}
-          onClick={toggleFullscreen}
-          role="checkbox"
-          aria-checked={document.fullscreenElement ? true : false}
-          aria-label="Fullscreen toggle"
-        >
-          Fullscreen
-        </Button>
+        <CheckboxContainer $rotation={player.settings.rotation}>
+          <Checkbox
+            name="fullscreen"
+            checked={document.fullscreenElement ? true : false}
+            icon={
+              <FullscreenOff size="4vmax" color={theme.palette.primary.main} />
+            }
+            checkedIcon={<FullscreenOn size="4vmax" />}
+            onChange={toggleFullscreen}
+            role="checkbox"
+            aria-checked={player.settings.useExperience}
+            aria-label="Experience"
+          />
+        </CheckboxContainer>
+
         <Button
           variant={wakeLock.active ? 'contained' : 'outlined'}
           style={{

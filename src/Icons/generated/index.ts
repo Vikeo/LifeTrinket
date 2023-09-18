@@ -1,7 +1,10 @@
 export { default as Cog } from './Cog';
 export { default as CommanderTax } from './CommanderTax';
 export { default as Energy } from './Energy';
+export { default as Exit } from './Exit';
 export { default as Experience } from './Experience';
+export { default as FullscreenOff } from './FullscreenOff';
+export { default as FullscreenOn } from './FullscreenOn';
 export { default as Info } from './Info';
 export { default as LittleGuy } from './LittleGuy';
 export { default as Logo } from './Logo';
