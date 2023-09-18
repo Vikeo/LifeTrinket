@@ -159,6 +159,7 @@ const Start = ({
 
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
+    localStorage.setItem('playing', 'false');
   };
 
   useEffect(() => {

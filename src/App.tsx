@@ -76,6 +76,7 @@ const App = () => {
     const updatedPlayers = players.map((player) =>
       player.index === updatedPlayer.index ? updatedPlayer : player
     );
+
     setPlayers(updatedPlayers);
   };
 

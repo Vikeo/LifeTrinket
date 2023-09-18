@@ -104,6 +104,7 @@ const PlayerMenu = ({
         opponents={opponents}
         resetCurrentGame={resetCurrentGame}
         wakeLock={wakeLock}
+        setShowPlayerMenu={setShowPlayerMenu}
       />
     </PlayerMenuWrapper>
   );
