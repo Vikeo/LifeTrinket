@@ -13,14 +13,7 @@ import { Player, Rotation } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
 import { useFullscreen } from '../../Hooks/useFullscreen';
 import { theme } from '../../Data/theme';
-
-type SettingsProps = {
-  player: Player;
-  opponents: Player[];
-  onChange: (updatedPlayer: Player) => void;
-  resetCurrentGame: () => void;
-  wakeLock: WakeLock;
-};
+import { InitialSettings } from '../../Data/getInitialPlayers';
 
 const SettingsContainer = styled.div<{
   $rotation: Rotation;
@@ -135,11 +128,22 @@ const CheckboxContainer = styled.div<{ $rotation: Rotation }>`
   }}
 `;
 
+type SettingsProps = {
+  player: Player;
+  opponents: Player[];
+  onChange: (updatedPlayer: Player) => void;
+  goToStart: () => void;
+  wakeLock: WakeLock;
+  setShowPlayerMenu: (showPlayerMenu: boolean) => void;
+};
+
 const Settings = ({
   player,
   onChange,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
+  opponents,
+  setShowPlayerMenu,
 }: SettingsProps) => {
   const { disableFullscreen, enableFullscreen, isFullscreen } = useFullscreen();
   const isSide =
@@ -168,22 +172,61 @@ const Settings = ({
   };
 
   const handleResetGame = () => {
-    resetCurrentGame();
+    const savedGameSettings = localStorage.getItem('initialGameSettings');
+
+    const initialGameSettings: InitialSettings = savedGameSettings
+      ? JSON.parse(savedGameSettings)
+      : null;
+
+    if (!initialGameSettings) {
+      goToStart();
+    }
+
+    const startingPlayerIndex = Math.floor(
+      Math.random() * initialGameSettings.numberOfPlayers
+    );
+
+    [player, ...opponents].forEach((player: Player) => {
+      player.commanderDamage.map((damage) => {
+        damage.damageTotal = 0;
+        damage.partnerDamageTotal = 0;
+      });
+
+      player.extraCounters.map((counter) => {
+        counter.value = 0;
+      });
+
+      player.lifeTotal = initialGameSettings.startingLifeTotal;
+
+      player.hasLost = false;
+
+      const isStartingPlayer = player.index === startingPlayerIndex;
+
+      player.isStartingPlayer = isStartingPlayer;
+
+      if (player.isStartingPlayer) {
+        player.showStartingPlayer = true;
+      }
+
+      onChange(player);
+    });
+    localStorage.setItem('playing', 'false');
+    setShowPlayerMenu(false);
   };
 
   const handleNewGame = () => {
-    handleResetGame();
+    goToStart();
   };
 
   const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      enableFullscreen();
-    } else {
+    if (isFullscreen) {
       disableFullscreen();
+    } else {
+      enableFullscreen();
     }
   };
 
-  const buttonFontSize = isSide ? '2vmax' : '4vmin';
+  const buttonFontSize = isSide ? '1.5vmax' : '3vmin';
 
   return (
     <SettingsContainer $rotation={player.settings.rotation}>
@@ -347,6 +390,22 @@ const Settings = ({
           aria-label="Keep awake"
         >
           Keep Awake
+        </Button>
+
+        <Button
+          variant="contained"
+          style={{
+            cursor: 'pointer',
+            userSelect: 'none',
+            fontSize: buttonFontSize,
+            padding: '0 4px 0 4px',
+          }}
+          onClick={handleResetGame}
+          role="checkbox"
+          aria-checked={wakeLock.active}
+          aria-label="Reset Game"
+        >
+          Reset Game
         </Button>
       </ButtonsSections>
     </SettingsContainer>

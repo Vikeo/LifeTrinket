@@ -76,10 +76,11 @@ const App = () => {
     const updatedPlayers = players.map((player) =>
       player.index === updatedPlayer.index ? updatedPlayer : player
     );
+
     setPlayers(updatedPlayers);
   };
 
-  const resetCurrentGame = async () => {
+  const goToStart = async () => {
     const currentPlayers = localStorage.getItem('players');
     if (currentPlayers) {
       analytics.trackEvent('go_to_start', {
@@ -101,7 +102,7 @@ const App = () => {
             players={players}
             onPlayerChange={handlePlayerChange}
             gridAreas={initialGameSettings?.gridAreas}
-            resetCurrentGame={resetCurrentGame}
+            goToStart={goToStart}
             wakeLock={wakeLock}
           />
         </PlayWrapper>

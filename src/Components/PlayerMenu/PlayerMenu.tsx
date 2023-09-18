@@ -68,7 +68,7 @@ type PlayerMenuProps = {
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
 };
 
@@ -77,7 +77,7 @@ const PlayerMenu = ({
   opponents,
   onPlayerChange,
   setShowPlayerMenu,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
@@ -102,8 +102,9 @@ const PlayerMenu = ({
         player={player}
         onChange={onPlayerChange}
         opponents={opponents}
-        resetCurrentGame={resetCurrentGame}
+        goToStart={goToStart}
         wakeLock={wakeLock}
+        setShowPlayerMenu={setShowPlayerMenu}
       />
     </PlayerMenuWrapper>
   );

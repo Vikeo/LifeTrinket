@@ -40,7 +40,7 @@ type CountersProps = {
   players: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
 };
 
@@ -48,7 +48,7 @@ const Counters = ({
   players,
   onPlayerChange,
   gridAreas,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
 }: CountersProps) => {
   return (
@@ -67,7 +67,7 @@ const Counters = ({
                   (opponent) => opponent.index !== player.index
                 )}
                 onPlayerChange={onPlayerChange}
-                resetCurrentGame={resetCurrentGame}
+                goToStart={goToStart}
                 wakeLock={wakeLock}
               />
             </GridItemContainer>

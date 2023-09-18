@@ -164,7 +164,7 @@ type LifeCounterProps = {
   player: Player;
   opponents: Player[];
   onPlayerChange: (updatedPlayer: Player) => void;
-  resetCurrentGame: () => void;
+  goToStart: () => void;
   wakeLock: WakeLock;
 };
 
@@ -173,7 +173,7 @@ const LifeCounter = ({
   player,
   opponents,
   onPlayerChange,
-  resetCurrentGame,
+  goToStart,
   wakeLock,
 }: LifeCounterProps) => {
   const handleLifeChange = (updatedLifeTotal: number) => {
@@ -195,9 +195,7 @@ const LifeCounter = ({
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
-  const [showStartingPlayer, setShowStartingPlayer] = useState(
-    localStorage.getItem('playing') === 'true'
-  );
+
   const [differenceKey, setDifferenceKey] = useState(Date.now());
 
   useEffect(() => {
@@ -209,15 +207,17 @@ const LifeCounter = ({
   }, [recentDifference]);
 
   useEffect(() => {
-    if (!showStartingPlayer) {
+    if (player.showStartingPlayer) {
       const playingTimer = setTimeout(() => {
         localStorage.setItem('playing', 'true');
-        setShowStartingPlayer(localStorage.getItem('playing') === 'true');
+        player.showStartingPlayer = false;
+        onPlayerChange(player);
       }, 3_000);
 
       return () => clearTimeout(playingTimer);
     }
-  }, [showStartingPlayer]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player.showStartingPlayer]);
 
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
@@ -225,7 +225,7 @@ const LifeCounter = ({
   return (
     <LifeCounterContentWrapper $backgroundColor={backgroundColor}>
       <LifeCounterWrapper $rotation={player.settings.rotation}>
-        {player.isStartingPlayer && !showStartingPlayer && (
+        {player.isStartingPlayer && player.showStartingPlayer && (
           <PlayerNoticeWrapper
             $rotation={player.settings.rotation}
             $backgroundColor={theme.palette.primary.main}
@@ -277,7 +277,7 @@ const LifeCounter = ({
           opponents={opponents}
           onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
-          resetCurrentGame={resetCurrentGame}
+          goToStart={goToStart}
           wakeLock={wakeLock}
         />
       )}
