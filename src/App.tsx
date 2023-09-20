@@ -3,12 +3,12 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Play from './Components/Views/Play';
 import StartMenu from './Components/Views/StartMenu/StartMenu';
 import { InitialSettings } from './Data/getInitialPlayers';
-import { Player } from './Types/Player';
 
 import { ThemeProvider } from '@mui/material';
+import { useWakeLock } from 'react-screen-wake-lock';
 import { theme } from './Data/theme';
 import { useAnalytics } from './Hooks/useAnalytics';
-import { useWakeLock } from 'react-screen-wake-lock';
+import { PlayersProvider } from './Providers/PlayersProvider';
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -53,9 +53,16 @@ const EmergencyResetButton = styled.button`
 
 const App = () => {
   const analytics = useAnalytics();
-  const savedPlayers = localStorage.getItem('players');
   const savedGameSettings = localStorage.getItem('initialGameSettings');
+  const saveShowPlay = localStorage.getItem('showPlay');
   const { isSupported, release, released, request, type } = useWakeLock();
+  const [initialGameSettings, setInitialGameSettings] =
+    useState<InitialSettings | null>(
+      savedGameSettings ? JSON.parse(savedGameSettings) : null
+    );
+  const [showPlay, setShowPlay] = useState<boolean>(
+    saveShowPlay ? saveShowPlay === 'true' : false
+  );
 
   const isActive = released === undefined ? false : !released;
 
@@ -67,32 +74,15 @@ const App = () => {
     type,
   };
 
-  const [initialGameSettings, setInitialGameSettings] =
-    useState<InitialSettings | null>(
-      savedGameSettings ? JSON.parse(savedGameSettings) : null
-    );
-
-  const [players, setPlayers] = useState<Player[]>(
-    savedPlayers ? JSON.parse(savedPlayers) : []
-  );
-
   useEffect(() => {
-    localStorage.setItem('players', JSON.stringify(players));
     localStorage.setItem(
       'initialGameSettings',
       JSON.stringify(initialGameSettings)
     );
-  }, [initialGameSettings, players]);
-
-  const handlePlayerChange = (updatedPlayer: Player) => {
-    const updatedPlayers = players.map((player) =>
-      player.index === updatedPlayer.index ? updatedPlayer : player
-    );
-
-    setPlayers(updatedPlayers);
-  };
+  }, [initialGameSettings]);
 
   const goToStart = async () => {
+    // this function is broken for the moment, need to set players object
     const currentPlayers = localStorage.getItem('players');
     if (currentPlayers) {
       analytics.trackEvent('go_to_start', {
@@ -101,39 +91,38 @@ const App = () => {
     }
     await removeLocalStorage();
 
-    setPlayers([]);
+    // setPlayers([]);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-
-      {players.length > 0 && initialGameSettings ? (
-        <PlayWrapper>
-          <Play
-            players={players}
-            onPlayerChange={handlePlayerChange}
-            gridAreas={initialGameSettings?.gridAreas}
-            goToStart={goToStart}
-            wakeLock={wakeLock}
-          />
-          <EmergencyResetButton onClick={goToStart}>
-            <p>If you can see this, something is wrong.</p>
-            <p>Press screen to go to start.</p>
-            <br />
-            <p>If the issue persists, please inform me.</p>
-          </EmergencyResetButton>
-        </PlayWrapper>
-      ) : (
-        <StartWrapper>
-          <StartMenu
-            initialGameSettings={initialGameSettings}
-            setInitialGameSettings={setInitialGameSettings}
-            setPlayers={setPlayers}
-            wakeLock={wakeLock}
-          />
-        </StartWrapper>
-      )}
+      <PlayersProvider>
+        {showPlay && initialGameSettings ? (
+          <PlayWrapper>
+            <Play
+              gridAreas={initialGameSettings?.gridAreas}
+              goToStart={goToStart}
+              wakeLock={wakeLock}
+            />
+            <EmergencyResetButton onClick={goToStart}>
+              <p>If you can see this, something is wrong.</p>
+              <p>Press screen to go to start.</p>
+              <br />
+              <p>If the issue persists, please inform me.</p>
+            </EmergencyResetButton>
+          </PlayWrapper>
+        ) : (
+          <StartWrapper>
+            <StartMenu
+              initialGameSettings={initialGameSettings}
+              setInitialGameSettings={setInitialGameSettings}
+              wakeLock={wakeLock}
+              setShowPlay={setShowPlay}
+            />
+          </StartWrapper>
+        )}
+      </PlayersProvider>
     </ThemeProvider>
   );
 };

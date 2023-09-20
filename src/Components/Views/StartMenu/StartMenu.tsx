@@ -10,7 +10,6 @@ import {
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
-import { Player } from '../../../Types/Player';
 import { WakeLock } from '../../../Types/WakeLock';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
@@ -18,6 +17,7 @@ import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
 import { useFullscreen } from '../../../Hooks/useFullscreen';
 import { Spacer } from '../../Misc/Spacer';
+import { usePlayers } from '../../../Hooks/usePlayers';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -99,17 +99,18 @@ const healthMarks = [
 
 type StartProps = {
   setInitialGameSettings: (options: InitialSettings) => void;
-  setPlayers: (updatedPlayer: Player[]) => void;
   initialGameSettings: InitialSettings | null;
   wakeLock: WakeLock;
+  setShowPlay: (showPlay: boolean) => void;
 };
 
 const Start = ({
   initialGameSettings,
-  setPlayers,
   setInitialGameSettings,
   wakeLock,
+  setShowPlay,
 }: StartProps) => {
+  const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
   const [openModal, setOpenModal] = useState(false);
   const [playerOptions, setPlayerOptions] = useState<InitialSettings>(
@@ -159,7 +160,10 @@ const Start = ({
 
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
+    setShowPlay(true);
     localStorage.setItem('playing', 'false');
+    //Todo maybe showPlay is redundant?
+    localStorage.setItem('showPlay', 'true');
   };
 
   useEffect(() => {
