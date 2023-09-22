@@ -33,6 +33,7 @@ const StartButtonFooter = styled.div`
   position: fixed;
   bottom: 1rem;
   translate: -50%, -50%;
+  z-index: 1;
 `;
 
 const ToggleButtonsWrapper = styled.div`
@@ -162,7 +163,7 @@ const Start = ({
     setPlayers(createInitialPlayers(initialGameSettings));
     setShowPlay(true);
     localStorage.setItem('playing', 'false');
-    //Todo maybe showPlay is redundant?
+    // todo maybe showPlay is redundant?
     localStorage.setItem('showPlay', 'true');
   };
 

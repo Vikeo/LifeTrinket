@@ -35,12 +35,6 @@ const PlayWrapper = styled.div`
   }
 `;
 
-const removeLocalStorage = async () => {
-  localStorage.removeItem('initialGameSettings');
-  localStorage.removeItem('players');
-  localStorage.removeItem('playing');
-};
-
 const EmergencyResetButton = styled.button`
   width: 100vmax;
   height: 100vmin;
@@ -54,14 +48,15 @@ const EmergencyResetButton = styled.button`
 const App = () => {
   const analytics = useAnalytics();
   const savedGameSettings = localStorage.getItem('initialGameSettings');
-  const saveShowPlay = localStorage.getItem('showPlay');
+  const savedShowPlay = localStorage.getItem('showPlay');
+
   const { isSupported, release, released, request, type } = useWakeLock();
   const [initialGameSettings, setInitialGameSettings] =
     useState<InitialSettings | null>(
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
   const [showPlay, setShowPlay] = useState<boolean>(
-    saveShowPlay ? saveShowPlay === 'true' : false
+    savedShowPlay ? savedShowPlay === 'true' : false
   );
 
   const isActive = released === undefined ? false : !released;
@@ -80,6 +75,14 @@ const App = () => {
       JSON.stringify(initialGameSettings)
     );
   }, [initialGameSettings]);
+
+  const removeLocalStorage = async () => {
+    localStorage.removeItem('initialGameSettings');
+    localStorage.removeItem('players');
+    localStorage.removeItem('playing');
+    localStorage.removeItem('showPlay');
+    setShowPlay(localStorage.getItem('showPlay') === 'true' ?? false);
+  };
 
   const goToStart = async () => {
     // this function is broken for the moment, need to set players object
