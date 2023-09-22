@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { InitialSettings } from '../Data/getInitialPlayers';
 import Play from './Views/Play';
 import StartMenu from './Views/StartMenu/StartMenu';
 import { useGlobalSettings } from '../Hooks/useGlobalSettings';
@@ -31,21 +29,7 @@ const EmergencyResetButton = styled.button`
 `;
 
 export const LifeTrinket = () => {
-  const savedGameSettings = localStorage.getItem('initialGameSettings');
-
-  const { showPlay, goToStart } = useGlobalSettings();
-
-  const [initialGameSettings, setInitialGameSettings] =
-    useState<InitialSettings | null>(
-      savedGameSettings ? JSON.parse(savedGameSettings) : null
-    );
-
-  useEffect(() => {
-    localStorage.setItem(
-      'initialGameSettings',
-      JSON.stringify(initialGameSettings)
-    );
-  }, [initialGameSettings]);
+  const { showPlay, goToStart, initialGameSettings } = useGlobalSettings();
 
   return (
     <>
@@ -61,10 +45,7 @@ export const LifeTrinket = () => {
         </PlayWrapper>
       ) : (
         <StartWrapper>
-          <StartMenu
-            initialGameSettings={initialGameSettings}
-            setInitialGameSettings={setInitialGameSettings}
-          />
+          <StartMenu />
         </StartWrapper>
       )}
     </>

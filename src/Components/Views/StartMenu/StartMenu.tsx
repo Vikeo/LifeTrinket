@@ -97,15 +97,16 @@ const healthMarks = [
   },
 ];
 
-type StartProps = {
-  setInitialGameSettings: (options: InitialSettings) => void;
-  initialGameSettings: InitialSettings | null;
-};
-
-const Start = ({ initialGameSettings, setInitialGameSettings }: StartProps) => {
+const Start = () => {
   const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
-  const { fullscreen, wakeLock, setShowPlay } = useGlobalSettings();
+  const {
+    fullscreen,
+    wakeLock,
+    setShowPlay,
+    initialGameSettings,
+    setInitialGameSettings,
+  } = useGlobalSettings();
 
   const [openModal, setOpenModal] = useState(false);
   const [keepAwake, setKeepAwake] = useState(true);
@@ -131,8 +132,6 @@ const Start = ({ initialGameSettings, setInitialGameSettings }: StartProps) => {
     } catch (error) {
       console.error(error);
     }
-
-    console.log('go to start', wakeLock.active);
 
     if (keepAwake) {
       wakeLock.request();

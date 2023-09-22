@@ -5,6 +5,7 @@ import {
 } from '../Contexts/GlobalSettingsContext';
 import { useWakeLock } from 'react-screen-wake-lock';
 import { useAnalytics } from '../Hooks/useAnalytics';
+import { InitialSettings } from '../Data/getInitialPlayers';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -14,9 +15,23 @@ export const GlobalSettingsProvider = ({
   const analytics = useAnalytics();
 
   const savedShowPlay = localStorage.getItem('showPlay');
+  const savedGameSettings = localStorage.getItem('initialGameSettings');
+
   const [showPlay, setShowPlay] = useState<boolean>(
     savedShowPlay ? savedShowPlay === 'true' : false
   );
+
+  const [initialGameSettings, setInitialGameSettings] =
+    useState<InitialSettings | null>(
+      savedGameSettings ? JSON.parse(savedGameSettings) : null
+    );
+
+  useEffect(() => {
+    localStorage.setItem(
+      'initialGameSettings',
+      JSON.stringify(initialGameSettings)
+    );
+  }, [initialGameSettings]);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -62,7 +77,6 @@ export const GlobalSettingsProvider = ({
 
   const ctxValue = useMemo((): GlobalSettingsContextType => {
     const goToStart = async () => {
-      // this function is broken for the moment, need to set players object
       const currentPlayers = localStorage.getItem('players');
 
       if (currentPlayers) {
@@ -72,8 +86,6 @@ export const GlobalSettingsProvider = ({
       }
 
       await removeLocalStorage();
-
-      // setPlayers([]);
     };
 
     const toggleWakeLock = async () => {
@@ -98,10 +110,13 @@ export const GlobalSettingsProvider = ({
       goToStart,
       showPlay,
       setShowPlay,
+      initialGameSettings,
+      setInitialGameSettings,
     };
   }, [
     active,
     analytics,
+    initialGameSettings,
     isFullscreen,
     isSupported,
     release,
