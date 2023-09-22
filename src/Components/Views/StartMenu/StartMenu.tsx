@@ -10,7 +10,6 @@ import {
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
-import { WakeLock } from '../../../Types/WakeLock';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
@@ -101,19 +100,16 @@ const healthMarks = [
 type StartProps = {
   setInitialGameSettings: (options: InitialSettings) => void;
   initialGameSettings: InitialSettings | null;
-  wakeLock: WakeLock;
-  setShowPlay: (showPlay: boolean) => void;
 };
 
-const Start = ({
-  initialGameSettings,
-  setInitialGameSettings,
-  wakeLock,
-  setShowPlay,
-}: StartProps) => {
+const Start = ({ initialGameSettings, setInitialGameSettings }: StartProps) => {
   const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
+  const { fullscreen, wakeLock, setShowPlay } = useGlobalSettings();
+
   const [openModal, setOpenModal] = useState(false);
+  const [keepAwake, setKeepAwake] = useState(true);
+
   const [playerOptions, setPlayerOptions] = useState<InitialSettings>(
     initialGameSettings || {
       numberOfPlayers: 4,
@@ -122,25 +118,6 @@ const Start = ({
       gridAreas: GridTemplateAreas.FourPlayers,
     }
   );
-  const [wakeLockActive, setWakeLockActive] = useState(true);
-
-  const { enableFullscreen } = useGlobalSettings();
-
-  const toggleWakeLock = () => {
-    if (wakeLock.active && wakeLockActive) {
-      wakeLock.release();
-      setWakeLockActive(false);
-      return;
-    }
-
-    if (!wakeLock.active && !wakeLockActive) {
-      wakeLock.request();
-      setWakeLockActive(true);
-      return;
-    }
-
-    setWakeLockActive(wakeLock.active);
-  };
 
   const doStartGame = () => {
     if (!initialGameSettings) {
@@ -149,14 +126,16 @@ const Start = ({
 
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
-    if (!wakeLock.active && wakeLockActive) {
-      wakeLock.request();
-    }
-
     try {
-      enableFullscreen();
+      fullscreen.enableFullscreen();
     } catch (error) {
       console.error(error);
+    }
+
+    console.log('go to start', wakeLock.active);
+
+    if (keepAwake) {
+      wakeLock.request();
     }
 
     setInitialGameSettings(initialGameSettings);
@@ -294,8 +273,8 @@ const Start = ({
           <ToggleContainer>
             <FormLabel>Keep Awake</FormLabel>
             <Switch
-              checked={wakeLockActive}
-              onChange={() => toggleWakeLock()}
+              checked={keepAwake}
+              onChange={() => setKeepAwake(!keepAwake)}
             />
           </ToggleContainer>
         </ToggleButtonsWrapper>

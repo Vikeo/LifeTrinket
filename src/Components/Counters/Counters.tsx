@@ -1,7 +1,6 @@
-import { Player } from '../../Types/Player';
-import { WakeLock } from '../../Types/WakeLock';
-import LifeCounter from '../LifeCounter/LifeCounter';
 import styled from 'styled-components';
+import { usePlayers } from '../../Hooks/usePlayers';
+import LifeCounter from '../LifeCounter/LifeCounter';
 
 export const CountersWrapper = styled.div`
   width: 100%;
@@ -29,20 +28,11 @@ export const GridItemContainer = styled.div<{
 `;
 
 type CountersProps = {
-  players: Player[];
-  onPlayerChange: (updatedPlayer: Player) => void;
   gridAreas: string;
-  goToStart: () => void;
-  wakeLock: WakeLock;
 };
 
-const Counters = ({
-  players,
-  onPlayerChange,
-  gridAreas,
-  goToStart,
-  wakeLock,
-}: CountersProps) => {
+const Counters = ({ gridAreas }: CountersProps) => {
+  const { players } = usePlayers();
   return (
     <CountersWrapper>
       <CountersGrid $gridTemplateAreas={gridAreas}>
@@ -53,14 +43,10 @@ const Counters = ({
               $gridArea={`player${player.index}`}
             >
               <LifeCounter
-                backgroundColor={player.color}
                 player={player}
                 opponents={players.filter(
                   (opponent) => opponent.index !== player.index
                 )}
-                onPlayerChange={onPlayerChange}
-                goToStart={goToStart}
-                wakeLock={wakeLock}
               />
             </GridItemContainer>
           );

@@ -10,6 +10,7 @@ import {
   PartnerTax,
   Poison,
 } from '../../Icons/generated';
+import { usePlayers } from '../../Hooks/usePlayers';
 
 const Container = styled.div<{ $rotation: Rotation }>`
   width: 100%;
@@ -56,13 +57,11 @@ const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
 
 type ExtraCountersBarProps = {
   player: Player;
-  onPlayerChange: (updatedPlayer: Player) => void;
 };
 
-const ExtraCountersBar = ({
-  player,
-  onPlayerChange,
-}: ExtraCountersBarProps) => {
+const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
+  const { updatePlayer } = usePlayers();
+
   const handleCounterChange = (
     updatedCounterTotal: number,
     type: CounterType
@@ -82,7 +81,7 @@ const ExtraCountersBar = ({
       };
       const updatedExtraCounters = [...player.extraCounters, newCounter];
       const updatedPlayer = { ...player, extraCounters: updatedExtraCounters };
-      onPlayerChange(updatedPlayer);
+      updatePlayer(updatedPlayer);
       return;
     }
 
@@ -94,7 +93,7 @@ const ExtraCountersBar = ({
     });
 
     const updatedPlayer = { ...player, extraCounters: updatedExtraCounters };
-    onPlayerChange(updatedPlayer);
+    updatePlayer(updatedPlayer);
   };
 
   const iconSize =

@@ -8,7 +8,7 @@ import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import Health from './Health';
-import { WakeLock } from '../../Types/WakeLock';
+import { usePlayers } from '../../Hooks/usePlayers';
 
 const LifeCounterContentWrapper = styled.div<{
   $backgroundColor: string;
@@ -160,42 +160,15 @@ const playerCanLose = (player: Player) => {
 };
 
 type LifeCounterProps = {
-  backgroundColor: string;
   player: Player;
   opponents: Player[];
-  onPlayerChange: (updatedPlayer: Player) => void;
-  goToStart: () => void;
-  wakeLock: WakeLock;
 };
 
-const LifeCounter = ({
-  backgroundColor,
-  player,
-  opponents,
-  onPlayerChange,
-  goToStart,
-  wakeLock,
-}: LifeCounterProps) => {
-  const handleLifeChange = (updatedLifeTotal: number) => {
-    const difference = updatedLifeTotal - player.lifeTotal;
-    const updatedPlayer = {
-      ...player,
-      lifeTotal: updatedLifeTotal,
-      hasLost: false,
-    };
-    setRecentDifference(recentDifference + difference);
-    onPlayerChange(updatedPlayer);
-    setDifferenceKey(Date.now());
-  };
-
-  const toggleGameLost = () => {
-    const updatedPlayer = { ...player, hasLost: !player.hasLost };
-    onPlayerChange(updatedPlayer);
-  };
+const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
+  const { updatePlayer, updateLifeTotal } = usePlayers();
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
-
   const [differenceKey, setDifferenceKey] = useState(Date.now());
 
   useEffect(() => {
@@ -211,7 +184,7 @@ const LifeCounter = ({
       const playingTimer = setTimeout(() => {
         localStorage.setItem('playing', 'true');
         player.showStartingPlayer = false;
-        onPlayerChange(player);
+        updatePlayer(player);
       }, 3_000);
 
       return () => clearTimeout(playingTimer);
@@ -222,8 +195,19 @@ const LifeCounter = ({
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
 
+  const handleLifeChange = (updatedLifeTotal: number) => {
+    const difference = updateLifeTotal(player, updatedLifeTotal);
+    setRecentDifference(recentDifference + difference);
+    setDifferenceKey(Date.now());
+  };
+
+  const toggleGameLost = () => {
+    const updatedPlayer = { ...player, hasLost: !player.hasLost };
+    updatePlayer(updatedPlayer);
+  };
+
   return (
-    <LifeCounterContentWrapper $backgroundColor={backgroundColor}>
+    <LifeCounterContentWrapper $backgroundColor={player.color}>
       <LifeCounterWrapper $rotation={player.settings.rotation}>
         {player.isStartingPlayer && player.showStartingPlayer && (
           <PlayerNoticeWrapper
@@ -245,9 +229,8 @@ const LifeCounter = ({
         <CommanderDamageBar
           opponents={opponents}
           player={player}
-          onPlayerChange={onPlayerChange}
-          setLifeTotal={handleLifeChange}
           key={player.index}
+          handleLifeChange={handleLifeChange}
         />
         <SettingsButton
           onClick={() => {
@@ -263,22 +246,19 @@ const LifeCounter = ({
         )}
         <Health
           player={player}
-          onPlayerChange={onPlayerChange}
-          differenceKey={differenceKey}
-          setDifferenceKey={setDifferenceKey}
           rotation={player.settings.rotation}
+          differenceKey={differenceKey}
+          recentDifference={recentDifference}
+          handleLifeChange={handleLifeChange}
         />
-        <ExtraCountersBar player={player} onPlayerChange={onPlayerChange} />
+        <ExtraCountersBar player={player} />
       </LifeCounterWrapper>
 
       {showPlayerMenu && (
         <PlayerMenu
           player={player}
           opponents={opponents}
-          onPlayerChange={onPlayerChange}
           setShowPlayerMenu={setShowPlayerMenu}
-          goToStart={goToStart}
-          wakeLock={wakeLock}
         />
       )}
     </LifeCounterContentWrapper>

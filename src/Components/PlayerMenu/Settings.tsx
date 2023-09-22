@@ -1,5 +1,8 @@
 import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
+import { InitialSettings } from '../../Data/getInitialPlayers';
+import { theme } from '../../Data/theme';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import {
   Energy,
   Exit,
@@ -10,10 +13,7 @@ import {
   Poison,
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
-import { WakeLock } from '../../Types/WakeLock';
-import { theme } from '../../Data/theme';
-import { InitialSettings } from '../../Data/getInitialPlayers';
-import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../Hooks/usePlayers';
 
 const SettingsContainer = styled.div<{
   $rotation: Rotation;
@@ -131,45 +131,26 @@ const CheckboxContainer = styled.div<{ $rotation: Rotation }>`
 type SettingsProps = {
   player: Player;
   opponents: Player[];
-  onChange: (updatedPlayer: Player) => void;
-  goToStart: () => void;
-  wakeLock: WakeLock;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
 };
 
-const Settings = ({
-  player,
-  onChange,
-  goToStart,
-  wakeLock,
-  opponents,
-  setShowPlayerMenu,
-}: SettingsProps) => {
-  const { disableFullscreen, enableFullscreen, isFullscreen } =
-    useGlobalSettings();
+const Settings = ({ player, opponents, setShowPlayerMenu }: SettingsProps) => {
+  const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
+  const { updatePlayer } = usePlayers();
   const isSide =
     player.settings.rotation === Rotation.Side ||
     player.settings.rotation === Rotation.SideFlipped;
 
-  const handleWakeLock = () => {
-    if (!wakeLock.active) {
-      wakeLock.request();
-      return;
-    }
-
-    wakeLock.release();
-  };
-
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
-    onChange(updatedPlayer);
+    updatePlayer(updatedPlayer);
   };
 
   const handleSettingsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     const updatedSettings = { ...player.settings, [name]: checked };
     const updatedPlayer = { ...player, settings: updatedSettings };
-    onChange(updatedPlayer);
+    updatePlayer(updatedPlayer);
   };
 
   const handleResetGame = () => {
@@ -209,21 +190,17 @@ const Settings = ({
         player.showStartingPlayer = true;
       }
 
-      onChange(player);
+      updatePlayer(player);
     });
     localStorage.setItem('playing', 'false');
     setShowPlayerMenu(false);
   };
 
-  const handleNewGame = () => {
-    goToStart();
-  };
-
   const toggleFullscreen = () => {
-    if (isFullscreen) {
-      disableFullscreen();
+    if (fullscreen.isFullscreen) {
+      fullscreen.disableFullscreen();
     } else {
-      enableFullscreen();
+      fullscreen.enableFullscreen();
     }
   };
 
@@ -357,7 +334,7 @@ const Settings = ({
             cursor: 'pointer',
             userSelect: 'none',
           }}
-          onClick={handleNewGame}
+          onClick={goToStart}
           aria-label="Back to start"
         >
           <Exit size="4vmax" style={{ rotate: '180deg' }} />
@@ -385,7 +362,7 @@ const Settings = ({
             fontSize: buttonFontSize,
             padding: '0 4px 0 4px',
           }}
-          onClick={handleWakeLock}
+          onClick={wakeLock.toggleWakeLock}
           role="checkbox"
           aria-checked={wakeLock.active}
           aria-label="Keep awake"

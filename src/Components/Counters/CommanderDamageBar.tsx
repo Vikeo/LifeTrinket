@@ -26,15 +26,13 @@ const CommanderDamageGrid = styled.div<{ $rotation: number }>`
 type CommanderDamageBarProps = {
   opponents: Player[];
   player: Player;
-  onPlayerChange: (updatedPlayer: Player) => void;
-  setLifeTotal: (lifeTotal: number) => void;
+  handleLifeChange: (updatedLifeTotal: number) => void;
 };
 
 const CommanderDamageBar = ({
   opponents,
   player,
-  onPlayerChange,
-  setLifeTotal,
+  handleLifeChange,
 }: CommanderDamageBarProps) => {
   return (
     <CommanderDamageGrid
@@ -49,9 +47,8 @@ const CommanderDamageBar = ({
           <CommanderDamage
             player={player}
             opponent={opponent}
-            setLifeTotal={setLifeTotal}
-            onPlayerChange={onPlayerChange}
             key={opponent.index}
+            handleLifeChange={handleLifeChange}
           />
         );
       })}

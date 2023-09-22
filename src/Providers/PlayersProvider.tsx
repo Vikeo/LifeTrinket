@@ -14,19 +14,35 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('players', JSON.stringify(players));
   }, [players]);
 
-  const updatePlayer = (updatedPlayer: Player) => {
-    const updatedPlayers = players.map((player) =>
-      player.index === updatedPlayer.index ? updatedPlayer : player
-    );
-
-    setPlayers(updatedPlayers);
-  };
-
   const ctxValue = useMemo((): PlayersContextType => {
+    const updatePlayer = (updatedPlayer: Player) => {
+      const updatedPlayers = players.map((player) =>
+        player.index === updatedPlayer.index ? updatedPlayer : player
+      );
+
+      setPlayers(updatedPlayers);
+    };
+
+    const updateLifeTotal = (
+      player: Player,
+      updatedLifeTotal: number
+    ): number => {
+      const difference = updatedLifeTotal - player.lifeTotal;
+      const updatedPlayer = {
+        ...player,
+        lifeTotal: updatedLifeTotal,
+        hasLost: false,
+      };
+      updatePlayer(updatedPlayer);
+
+      return difference;
+    };
+
     return {
       players,
       setPlayers,
       updatePlayer,
+      updateLifeTotal,
     };
   }, [players]);
 

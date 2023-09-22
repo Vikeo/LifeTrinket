@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { usePlayers } from '../../Hooks/usePlayers';
-import { WakeLock } from '../../Types/WakeLock';
 import Counters from '../Counters/Counters';
 
 const MainWrapper = styled.div`
@@ -13,21 +11,12 @@ const MainWrapper = styled.div`
 
 type PlayProps = {
   gridAreas: string;
-  goToStart: () => void;
-  wakeLock: WakeLock;
 };
 
-const Play = ({ gridAreas, goToStart, wakeLock }: PlayProps) => {
-  const { players, updatePlayer } = usePlayers();
+const Play = ({ gridAreas }: PlayProps) => {
   return (
     <MainWrapper>
-      <Counters
-        players={players}
-        onPlayerChange={updatePlayer}
-        gridAreas={gridAreas}
-        goToStart={goToStart}
-        wakeLock={wakeLock}
-      />
+      <Counters gridAreas={gridAreas} />
     </MainWrapper>
   );
 };

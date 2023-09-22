@@ -1,10 +1,7 @@
-import { Player } from '../../Types/Player';
-import Settings from './Settings';
-import styled from 'styled-components';
-import { css } from 'styled-components';
-import { Rotation } from '../../Types/Player';
 import { Button } from '@mui/material';
-import { WakeLock } from '../../Types/WakeLock';
+import styled, { css } from 'styled-components';
+import { Player, Rotation } from '../../Types/Player';
+import Settings from './Settings';
 
 const PlayerMenuWrapper = styled.div<{
   $rotation: Rotation;
@@ -66,19 +63,13 @@ const CloseButton = styled.div<{
 type PlayerMenuProps = {
   player: Player;
   opponents: Player[];
-  onPlayerChange: (updatedPlayer: Player) => void;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
-  goToStart: () => void;
-  wakeLock: WakeLock;
 };
 
 const PlayerMenu = ({
   player,
   opponents,
-  onPlayerChange,
   setShowPlayerMenu,
-  goToStart,
-  wakeLock,
 }: PlayerMenuProps) => {
   const handleOnClick = () => {
     setShowPlayerMenu(false);
@@ -100,10 +91,7 @@ const PlayerMenu = ({
       </CloseButton>
       <Settings
         player={player}
-        onChange={onPlayerChange}
         opponents={opponents}
-        goToStart={goToStart}
-        wakeLock={wakeLock}
         setShowPlayerMenu={setShowPlayerMenu}
       />
     </PlayerMenuWrapper>
