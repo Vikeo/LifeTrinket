@@ -20,6 +20,7 @@ export const GlobalSettingsProvider = ({
   const [showPlay, setShowPlay] = useState<boolean>(
     savedShowPlay ? savedShowPlay === 'true' : false
   );
+  const [showStartingPlayer, setShowStartingPlayer] = useState(true);
 
   const [initialGameSettings, setInitialGameSettings] =
     useState<InitialSettings | null>(
@@ -112,6 +113,8 @@ export const GlobalSettingsProvider = ({
       setShowPlay,
       initialGameSettings,
       setInitialGameSettings,
+      showStartingPlayer,
+      setShowStartingPlayer,
     };
   }, [
     active,
@@ -122,6 +125,7 @@ export const GlobalSettingsProvider = ({
     release,
     request,
     showPlay,
+    showStartingPlayer,
     type,
   ]);
 

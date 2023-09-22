@@ -20,6 +20,8 @@ export type GlobalSettingsContextType = {
   setShowPlay: (showPlay: boolean) => void;
   initialGameSettings: InitialSettings | null;
   setInitialGameSettings: (initialGameSettings: InitialSettings) => void;
+  showStartingPlayer: boolean;
+  setShowStartingPlayer: (showStartingPlayer: boolean) => void;
 };
 
 export const GlobalSettingsContext =

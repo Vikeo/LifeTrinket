@@ -106,6 +106,8 @@ const Start = () => {
     setShowPlay,
     initialGameSettings,
     setInitialGameSettings,
+    showStartingPlayer,
+    setShowStartingPlayer,
   } = useGlobalSettings();
 
   const [openModal, setOpenModal] = useState(false);
@@ -222,6 +224,7 @@ const Start = () => {
             });
           }}
         />
+        <Spacer height="0.7rem" />
         <FormLabel>Starting Health</FormLabel>
         <Slider
           title="Starting Health"
@@ -239,6 +242,7 @@ const Start = () => {
             })
           }
         />
+        <Spacer height="1rem" />
 
         <ToggleButtonsWrapper>
           <ToggleContainer>
@@ -268,12 +272,22 @@ const Start = () => {
               }}
             />
           </ToggleContainer>
-          <Spacer width="2rem" />
+          <Spacer width="1rem" />
           <ToggleContainer>
             <FormLabel>Keep Awake</FormLabel>
             <Switch
               checked={keepAwake}
               onChange={() => setKeepAwake(!keepAwake)}
+            />
+          </ToggleContainer>
+        </ToggleButtonsWrapper>
+
+        <ToggleButtonsWrapper>
+          <ToggleContainer>
+            <FormLabel>Show Start Player</FormLabel>
+            <Switch
+              checked={showStartingPlayer}
+              onChange={() => setShowStartingPlayer(!showStartingPlayer)}
             />
           </ToggleContainer>
         </ToggleButtonsWrapper>
@@ -288,7 +302,9 @@ const Start = () => {
         />
       </FormControl>
 
-      <Paragraph style={{ textAlign: 'center', maxWidth: '75%' }}>
+      <Paragraph
+        style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
+      >
         If you're on iOS, this page works better if you{' '}
         <strong>hide the toolbar</strong> or{' '}
         <strong>add the app to your home screen</strong>.

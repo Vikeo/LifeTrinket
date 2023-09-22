@@ -9,6 +9,7 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../PlayerMenu/PlayerMenu';
 import Health from './Health';
 import { usePlayers } from '../../Hooks/usePlayers';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 
 const LifeCounterContentWrapper = styled.div<{
   $backgroundColor: string;
@@ -166,6 +167,7 @@ type LifeCounterProps = {
 
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
+  const { showStartingPlayer } = useGlobalSettings();
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
@@ -209,16 +211,18 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   return (
     <LifeCounterContentWrapper $backgroundColor={player.color}>
       <LifeCounterWrapper $rotation={player.settings.rotation}>
-        {player.isStartingPlayer && player.showStartingPlayer && (
-          <PlayerNoticeWrapper
-            $rotation={player.settings.rotation}
-            $backgroundColor={theme.palette.primary.main}
-          >
-            <DynamicText $rotation={player.settings.rotation}>
-              You start!
-            </DynamicText>
-          </PlayerNoticeWrapper>
-        )}
+        {showStartingPlayer &&
+          player.isStartingPlayer &&
+          player.showStartingPlayer && (
+            <PlayerNoticeWrapper
+              $rotation={player.settings.rotation}
+              $backgroundColor={theme.palette.primary.main}
+            >
+              <DynamicText $rotation={player.settings.rotation}>
+                You start!
+              </DynamicText>
+            </PlayerNoticeWrapper>
+          )}
 
         {player.hasLost && (
           <PlayerNoticeWrapper
