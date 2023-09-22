@@ -4,6 +4,7 @@ import { Player, Rotation } from '../../Types/Player';
 import { useRef, useState } from 'react';
 import { OutlinedText } from '../Misc/OutlinedText';
 import { decrementTimeoutMs } from '../../Data/constants';
+import { usePlayers } from '../../Hooks/usePlayers';
 
 const CommanderDamageContainer = styled.div<{
   $rotation: number;
@@ -108,8 +109,7 @@ const PartnerDamageSeperator = styled.div<{
 type CommanderDamageButtonComponentProps = {
   player: Player;
   opponent: Player;
-  onPlayerChange: (updatedPlayer: Player) => void;
-  setLifeTotal: (lifeTotal: number) => void;
+  handleLifeChange: (updatedLifeTotal: number) => void;
 };
 
 type InputProps = {
@@ -120,9 +120,9 @@ type InputProps = {
 export const CommanderDamage = ({
   player,
   opponent,
-  onPlayerChange,
-  setLifeTotal,
+  handleLifeChange,
 }: CommanderDamageButtonComponentProps) => {
+  const { updatePlayer } = usePlayers();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
@@ -149,8 +149,8 @@ export const CommanderDamage = ({
         ...player,
         commanderDamage: updatedCommanderDamage,
       };
-      onPlayerChange(updatedPlayer);
-      setLifeTotal(player.lifeTotal - increment);
+      updatePlayer(updatedPlayer);
+      handleLifeChange(player.lifeTotal - increment);
       return;
     }
     if (currentCommanderDamage.damageTotal === 0 && increment === -1) {
@@ -164,8 +164,8 @@ export const CommanderDamage = ({
       ...player,
       commanderDamage: updatedCommanderDamage,
     };
-    onPlayerChange(updatedPlayer);
-    setLifeTotal(player.lifeTotal - increment);
+    updatePlayer(updatedPlayer);
+    handleLifeChange(player.lifeTotal - increment);
   };
 
   const handleDownInput = ({ opponentIndex, isPartner }: InputProps) => {

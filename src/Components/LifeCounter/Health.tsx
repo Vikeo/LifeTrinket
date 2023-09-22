@@ -84,10 +84,13 @@ export const RecentDifference = styled.span`
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  min-width: 15vmin;
   text-shadow: none;
+  text-align: center;
+
   background-color: rgba(255, 255, 255, 0.6);
   font-variant-numeric: tabular-nums;
-  border-radius: 50%;
+  border-radius: 10vmin;
   padding: 5px 10px;
   font-size: 8vmin;
   color: #333333;
@@ -96,45 +99,24 @@ export const RecentDifference = styled.span`
 
 type HealthProps = {
   player: Player;
-  onPlayerChange: (updatedPlayer: Player) => void;
-  differenceKey: number;
-  setDifferenceKey: (key: number) => void;
   rotation: Rotation;
+  handleLifeChange: (updatedLifeTotal: number) => void;
+  differenceKey: number;
+  recentDifference: number;
 };
 
 const Health = ({
   player,
-  onPlayerChange,
-  differenceKey,
-  setDifferenceKey,
   rotation,
+  handleLifeChange,
+  differenceKey,
+  recentDifference,
 }: HealthProps) => {
-  const handleLifeChange = (updatedLifeTotal: number) => {
-    const difference = updatedLifeTotal - player.lifeTotal;
-    const updatedPlayer = {
-      ...player,
-      lifeTotal: updatedLifeTotal,
-      hasLost: false,
-    };
-    setRecentDifference(recentDifference + difference);
-    onPlayerChange(updatedPlayer);
-    setDifferenceKey(Date.now());
-  };
-
-  const [recentDifference, setRecentDifference] = useState(0);
   const [showStartingPlayer, setShowStartingPlayer] = useState(
     localStorage.getItem('playing') === 'true'
   );
   const [fontSize, setFontSize] = useState(16);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setRecentDifference(0);
-    }, 3_000);
-
-    return () => clearTimeout(timer);
-  }, [recentDifference]);
 
   useEffect(() => {
     if (!showStartingPlayer) {

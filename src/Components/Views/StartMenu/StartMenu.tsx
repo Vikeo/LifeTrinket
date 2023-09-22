@@ -10,14 +10,13 @@ import {
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
-import { Player } from '../../../Types/Player';
-import { WakeLock } from '../../../Types/WakeLock';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
-import { useFullscreen } from '../../../Hooks/useFullscreen';
 import { Spacer } from '../../Misc/Spacer';
+import { usePlayers } from '../../../Hooks/usePlayers';
+import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -33,6 +32,7 @@ const StartButtonFooter = styled.div`
   position: fixed;
   bottom: 1rem;
   translate: -50%, -50%;
+  z-index: 1;
 `;
 
 const ToggleButtonsWrapper = styled.div`
@@ -97,21 +97,22 @@ const healthMarks = [
   },
 ];
 
-type StartProps = {
-  setInitialGameSettings: (options: InitialSettings) => void;
-  setPlayers: (updatedPlayer: Player[]) => void;
-  initialGameSettings: InitialSettings | null;
-  wakeLock: WakeLock;
-};
-
-const Start = ({
-  initialGameSettings,
-  setPlayers,
-  setInitialGameSettings,
-  wakeLock,
-}: StartProps) => {
+const Start = () => {
+  const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
+  const {
+    fullscreen,
+    wakeLock,
+    setShowPlay,
+    initialGameSettings,
+    setInitialGameSettings,
+    showStartingPlayer,
+    setShowStartingPlayer,
+  } = useGlobalSettings();
+
   const [openModal, setOpenModal] = useState(false);
+  const [keepAwake, setKeepAwake] = useState(true);
+
   const [playerOptions, setPlayerOptions] = useState<InitialSettings>(
     initialGameSettings || {
       numberOfPlayers: 4,
@@ -120,25 +121,6 @@ const Start = ({
       gridAreas: GridTemplateAreas.FourPlayers,
     }
   );
-  const [wakeLockActive, setWakeLockActive] = useState(true);
-
-  const { enableFullscreen } = useFullscreen();
-
-  const toggleWakeLock = () => {
-    if (wakeLock.active && wakeLockActive) {
-      wakeLock.release();
-      setWakeLockActive(false);
-      return;
-    }
-
-    if (!wakeLock.active && !wakeLockActive) {
-      wakeLock.request();
-      setWakeLockActive(true);
-      return;
-    }
-
-    setWakeLockActive(wakeLock.active);
-  };
 
   const doStartGame = () => {
     if (!initialGameSettings) {
@@ -147,19 +129,22 @@ const Start = ({
 
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
-    if (!wakeLock.active && wakeLockActive) {
-      wakeLock.request();
-    }
-
     try {
-      enableFullscreen();
+      fullscreen.enableFullscreen();
     } catch (error) {
       console.error(error);
     }
 
+    if (keepAwake) {
+      wakeLock.request();
+    }
+
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
+    setShowPlay(true);
     localStorage.setItem('playing', 'false');
+    // todo maybe showPlay is redundant?
+    localStorage.setItem('showPlay', 'true');
   };
 
   useEffect(() => {
@@ -239,6 +224,7 @@ const Start = ({
             });
           }}
         />
+        <Spacer height="0.7rem" />
         <FormLabel>Starting Health</FormLabel>
         <Slider
           title="Starting Health"
@@ -256,6 +242,7 @@ const Start = ({
             })
           }
         />
+        <Spacer height="1rem" />
 
         <ToggleButtonsWrapper>
           <ToggleContainer>
@@ -285,12 +272,22 @@ const Start = ({
               }}
             />
           </ToggleContainer>
-          <Spacer width="2rem" />
+          <Spacer width="1rem" />
           <ToggleContainer>
             <FormLabel>Keep Awake</FormLabel>
             <Switch
-              checked={wakeLockActive}
-              onChange={() => toggleWakeLock()}
+              checked={keepAwake}
+              onChange={() => setKeepAwake(!keepAwake)}
+            />
+          </ToggleContainer>
+        </ToggleButtonsWrapper>
+
+        <ToggleButtonsWrapper>
+          <ToggleContainer>
+            <FormLabel>Show Start Player</FormLabel>
+            <Switch
+              checked={showStartingPlayer}
+              onChange={() => setShowStartingPlayer(!showStartingPlayer)}
             />
           </ToggleContainer>
         </ToggleButtonsWrapper>
@@ -305,7 +302,9 @@ const Start = ({
         />
       </FormControl>
 
-      <Paragraph style={{ textAlign: 'center', maxWidth: '75%' }}>
+      <Paragraph
+        style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
+      >
         If you're on iOS, this page works better if you{' '}
         <strong>hide the toolbar</strong> or{' '}
         <strong>add the app to your home screen</strong>.

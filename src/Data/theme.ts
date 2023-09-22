@@ -24,13 +24,17 @@ export const theme = createTheme({
     },
   },
   components: {
-    MuiSlider: {
+    MuiFormLabel: {
       styleOverrides: {
         root: {
-          marginBottom: '2.5em',
+          fontSize: '1rem',
         },
+      },
+    },
+    MuiSlider: {
+      styleOverrides: {
         markLabel: {
-          fontSize: '1.2em',
+          fontSize: '1rem',
           color: '#F5F5F5',
         },
         valueLabel: {
@@ -39,20 +43,20 @@ export const theme = createTheme({
           background: '#5E714C',
         },
         track: {
-          height: '1em',
+          height: '0.7rem',
         },
         rail: {
-          height: '1em',
+          height: '0.7rem',
         },
         mark: {
-          width: '0.5em',
-          height: '0.5em',
+          width: '0.5rem',
+          height: '0.5rem',
           borderRadius: '50%',
           display: 'none',
         },
         thumb: {
-          width: '1.7em',
-          height: '1.7em',
+          width: '1.3rem',
+          height: '1.3rem',
         },
       },
     },
