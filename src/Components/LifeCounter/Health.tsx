@@ -84,10 +84,13 @@ export const RecentDifference = styled.span`
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  min-width: 15vmin;
   text-shadow: none;
+  text-align: center;
+
   background-color: rgba(255, 255, 255, 0.6);
   font-variant-numeric: tabular-nums;
-  border-radius: 50%;
+  border-radius: 10vmin;
   padding: 5px 10px;
   font-size: 8vmin;
   color: #333333;
