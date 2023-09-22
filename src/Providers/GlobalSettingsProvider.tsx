@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import {
+  GlobalSettingsContext,
+  GlobalSettingsContextType,
+} from '../Contexts/GlobalSettingsContext';
 
-type FullscreenHookReturnType = {
-  isFullscreen: boolean;
-  enableFullscreen: () => void;
-  disableFullscreen: () => void;
-};
-
-export const useFullscreen = (): FullscreenHookReturnType => {
+export const GlobalSettingsProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const enableFullscreen = () => {
@@ -37,5 +39,13 @@ export const useFullscreen = (): FullscreenHookReturnType => {
     };
   }, []);
 
-  return { isFullscreen, enableFullscreen, disableFullscreen };
+  const ctxValue = useMemo((): GlobalSettingsContextType => {
+    return { isFullscreen, enableFullscreen, disableFullscreen };
+  }, [isFullscreen]);
+
+  return (
+    <GlobalSettingsContext.Provider value={ctxValue}>
+      {children}
+    </GlobalSettingsContext.Provider>
+  );
 };

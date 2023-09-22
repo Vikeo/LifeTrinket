@@ -15,9 +15,9 @@ import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
-import { useFullscreen } from '../../../Hooks/useFullscreen';
 import { Spacer } from '../../Misc/Spacer';
 import { usePlayers } from '../../../Hooks/usePlayers';
+import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -124,7 +124,7 @@ const Start = ({
   );
   const [wakeLockActive, setWakeLockActive] = useState(true);
 
-  const { enableFullscreen } = useFullscreen();
+  const { enableFullscreen } = useGlobalSettings();
 
   const toggleWakeLock = () => {
     if (wakeLock.active && wakeLockActive) {

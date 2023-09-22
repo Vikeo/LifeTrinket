@@ -11,9 +11,9 @@ import {
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { WakeLock } from '../../Types/WakeLock';
-import { useFullscreen } from '../../Hooks/useFullscreen';
 import { theme } from '../../Data/theme';
 import { InitialSettings } from '../../Data/getInitialPlayers';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 
 const SettingsContainer = styled.div<{
   $rotation: Rotation;
@@ -145,7 +145,8 @@ const Settings = ({
   opponents,
   setShowPlayerMenu,
 }: SettingsProps) => {
-  const { disableFullscreen, enableFullscreen, isFullscreen } = useFullscreen();
+  const { disableFullscreen, enableFullscreen, isFullscreen } =
+    useGlobalSettings();
   const isSide =
     player.settings.rotation === Rotation.Side ||
     player.settings.rotation === Rotation.SideFlipped;
