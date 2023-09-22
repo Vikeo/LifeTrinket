@@ -1,6 +1,5 @@
 import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
-import { InitialSettings } from '../../Data/getInitialPlayers';
 import { theme } from '../../Data/theme';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import {
@@ -130,13 +129,12 @@ const CheckboxContainer = styled.div<{ $rotation: Rotation }>`
 
 type SettingsProps = {
   player: Player;
-  opponents: Player[];
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
 };
 
-const Settings = ({ player, opponents, setShowPlayerMenu }: SettingsProps) => {
+const Settings = ({ player, setShowPlayerMenu }: SettingsProps) => {
   const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
-  const { updatePlayer } = usePlayers();
+  const { updatePlayer, resetCurrentGame } = usePlayers();
   const isSide =
     player.settings.rotation === Rotation.Side ||
     player.settings.rotation === Rotation.SideFlipped;
@@ -154,45 +152,7 @@ const Settings = ({ player, opponents, setShowPlayerMenu }: SettingsProps) => {
   };
 
   const handleResetGame = () => {
-    const savedGameSettings = localStorage.getItem('initialGameSettings');
-
-    const initialGameSettings: InitialSettings = savedGameSettings
-      ? JSON.parse(savedGameSettings)
-      : null;
-
-    if (!initialGameSettings) {
-      goToStart();
-    }
-
-    const startingPlayerIndex = Math.floor(
-      Math.random() * initialGameSettings.numberOfPlayers
-    );
-
-    [player, ...opponents].forEach((player: Player) => {
-      player.commanderDamage.map((damage) => {
-        damage.damageTotal = 0;
-        damage.partnerDamageTotal = 0;
-      });
-
-      player.extraCounters.map((counter) => {
-        counter.value = 0;
-      });
-
-      player.lifeTotal = initialGameSettings.startingLifeTotal;
-
-      player.hasLost = false;
-
-      const isStartingPlayer = player.index === startingPlayerIndex;
-
-      player.isStartingPlayer = isStartingPlayer;
-
-      if (player.isStartingPlayer) {
-        player.showStartingPlayer = true;
-      }
-
-      updatePlayer(player);
-    });
-    localStorage.setItem('playing', 'false');
+    resetCurrentGame();
     setShowPlayerMenu(false);
   };
 

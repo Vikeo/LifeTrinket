@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { Player } from '../Types/Player';
 import { useMemo, useState } from 'react';
 import { PlayersContextType, PlayersContext } from '../Contexts/PlayersContext';
+import { InitialSettings } from '../Data/getInitialPlayers';
 
 export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const savedPlayers = localStorage.getItem('players');
@@ -38,11 +39,54 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
       return difference;
     };
 
+    const resetCurrentGame = () => {
+      const savedGameSettings = localStorage.getItem('initialGameSettings');
+
+      const initialGameSettings: InitialSettings = savedGameSettings
+        ? JSON.parse(savedGameSettings)
+        : null;
+
+      if (!initialGameSettings) {
+        return;
+      }
+
+      const startingPlayerIndex = Math.floor(
+        Math.random() * initialGameSettings.numberOfPlayers
+      );
+
+      players.forEach((player: Player) => {
+        player.commanderDamage.map((damage) => {
+          damage.damageTotal = 0;
+          damage.partnerDamageTotal = 0;
+        });
+
+        player.extraCounters.map((counter) => {
+          counter.value = 0;
+        });
+
+        player.lifeTotal = initialGameSettings.startingLifeTotal;
+
+        player.hasLost = false;
+
+        const isStartingPlayer = player.index === startingPlayerIndex;
+
+        player.isStartingPlayer = isStartingPlayer;
+
+        if (player.isStartingPlayer) {
+          player.showStartingPlayer = true;
+        }
+
+        updatePlayer(player);
+      });
+      localStorage.setItem('playing', 'false');
+    };
+
     return {
       players,
       setPlayers,
       updatePlayer,
       updateLifeTotal,
+      resetCurrentGame,
     };
   }, [players]);
 

@@ -255,11 +255,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       </LifeCounterWrapper>
 
       {showPlayerMenu && (
-        <PlayerMenu
-          player={player}
-          opponents={opponents}
-          setShowPlayerMenu={setShowPlayerMenu}
-        />
+        <PlayerMenu player={player} setShowPlayerMenu={setShowPlayerMenu} />
       )}
     </LifeCounterContentWrapper>
   );

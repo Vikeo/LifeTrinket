@@ -62,15 +62,10 @@ const CloseButton = styled.div<{
 
 type PlayerMenuProps = {
   player: Player;
-  opponents: Player[];
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
 };
 
-const PlayerMenu = ({
-  player,
-  opponents,
-  setShowPlayerMenu,
-}: PlayerMenuProps) => {
+const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
   const handleOnClick = () => {
     setShowPlayerMenu(false);
   };
@@ -89,11 +84,7 @@ const PlayerMenu = ({
           X
         </Button>
       </CloseButton>
-      <Settings
-        player={player}
-        opponents={opponents}
-        setShowPlayerMenu={setShowPlayerMenu}
-      />
+      <Settings player={player} setShowPlayerMenu={setShowPlayerMenu} />
     </PlayerMenuWrapper>
   );
 };
