@@ -1,5 +1,6 @@
 export { default as Cog } from './Cog';
 export { default as CommanderTax } from './CommanderTax';
+export { default as Cross } from './Cross';
 export { default as Energy } from './Energy';
 export { default as Exit } from './Exit';
 export { default as Experience } from './Experience';
