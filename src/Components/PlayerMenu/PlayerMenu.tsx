@@ -436,9 +436,11 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
           id={`reset-game-${player.index}`}
           style={{
             borderRadius: '1rem',
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.background.default,
             position: 'absolute',
             top: '25%',
+            color: theme.palette.text.primary,
+            border: 'none',
           }}
         >
           <h3>Reset Game?</h3>
@@ -449,14 +451,17 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               justifyContent: 'space-evenly',
             }}
           >
-            <button
+            <Button
+              variant="contained"
               onClick={() => {
                 settingsContainerRef.current?.querySelector(`dialog`)?.close();
               }}
             >
               No
-            </button>
-            <button
+            </Button>
+            <Spacer width="1rem" />
+            <Button
+              variant="contained"
               onClick={() => {
                 handleResetGame();
 
@@ -464,7 +469,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               }}
             >
               Yes
-            </button>
+            </Button>
           </div>
         </dialog>
       </SettingsContainer>
