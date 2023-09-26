@@ -438,7 +438,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
             borderRadius: '1rem',
             backgroundColor: theme.palette.primary.main,
             position: 'absolute',
-            bottom: '0',
+            top: '25%',
           }}
         >
           <h3>Reset Game?</h3>
