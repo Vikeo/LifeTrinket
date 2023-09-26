@@ -1,4 +1,4 @@
-import { Button, Checkbox, Modal } from '@mui/material';
+import { Button, Checkbox } from '@mui/material';
 import styled, { css } from 'styled-components';
 import { Player, Rotation } from '../../Types/Player';
 import { theme } from '../../Data/theme';
