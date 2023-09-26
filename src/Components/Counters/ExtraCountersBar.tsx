@@ -30,7 +30,7 @@ const Container = styled.div<{ $rotation: Rotation }>`
   }}
 `;
 
-const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
+export const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
   display: flex;
   position: absolute;
   width: 100%;
