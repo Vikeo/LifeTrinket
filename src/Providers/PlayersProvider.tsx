@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { Player } from '../Types/Player';
 import { useMemo, useState } from 'react';
 import { PlayersContextType, PlayersContext } from '../Contexts/PlayersContext';
-import { InitialSettings } from '../Data/getInitialPlayers';
+import { InitialPlaySettings } from '../Data/getInitialPlayers';
 
 export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const savedPlayers = localStorage.getItem('players');
@@ -42,7 +42,7 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     const resetCurrentGame = () => {
       const savedGameSettings = localStorage.getItem('initialGameSettings');
 
-      const initialGameSettings: InitialSettings = savedGameSettings
+      const initialGameSettings: InitialPlaySettings = savedGameSettings
         ? JSON.parse(savedGameSettings)
         : null;
 
