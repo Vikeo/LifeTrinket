@@ -5,7 +5,7 @@ import {
 } from '../Contexts/GlobalSettingsContext';
 import { useWakeLock } from 'react-screen-wake-lock';
 import { useAnalytics } from '../Hooks/useAnalytics';
-import { InitialPlaySettings } from '../Data/getInitialPlayers';
+import { InitialGameSettings } from '../Data/getInitialPlayers';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -23,7 +23,7 @@ export const GlobalSettingsProvider = ({
   const [showStartingPlayer, setShowStartingPlayer] = useState(true);
 
   const [initialGameSettings, setInitialGameSettings] =
-    useState<InitialPlaySettings | null>(
+    useState<InitialGameSettings | null>(
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import {
-  InitialPlaySettings,
+  InitialGameSettings,
   createInitialPlayers,
 } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
@@ -113,7 +113,7 @@ const Start = () => {
   const [openModal, setOpenModal] = useState(false);
   const [keepAwake, setKeepAwake] = useState(true);
 
-  const [playerOptions, setPlayerOptions] = useState<InitialPlaySettings>(
+  const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || {
       numberOfPlayers: 4,
       startingLifeTotal: 40,

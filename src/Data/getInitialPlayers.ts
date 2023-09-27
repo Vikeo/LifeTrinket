@@ -1,7 +1,7 @@
 import { Player, Rotation } from '../Types/Player';
 import { GridTemplateAreas } from './GridTemplateAreas';
 
-export type InitialPlaySettings = {
+export type InitialGameSettings = {
   startingLifeTotal: number;
   useCommanderDamage: boolean;
   numberOfPlayers: number;
@@ -197,7 +197,7 @@ export const createInitialPlayers = ({
   startingLifeTotal,
   useCommanderDamage,
   gridAreas,
-}: InitialPlaySettings): Player[] => {
+}: InitialGameSettings): Player[] => {
   const players: Player[] = [];
   const availableColors = [...presetColors]; // Create a copy of the colors array
   const firstPlayerIndex = Math.floor(Math.random() * numberOfPlayers);
