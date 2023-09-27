@@ -3,10 +3,7 @@ import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
-import {
-  InitialGameSettings,
-  createInitialPlayers,
-} from '../../../Data/getInitialPlayers';
+import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Info } from '../../../Icons/generated';
@@ -17,6 +14,7 @@ import LayoutOptions from './LayoutOptions';
 import { Spacer } from '../../Misc/Spacer';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
+import { InitialGameSettings } from '../../../Types/Settings';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -106,12 +104,11 @@ const Start = () => {
     setShowPlay,
     initialGameSettings,
     setInitialGameSettings,
-    showStartingPlayer,
-    setShowStartingPlayer,
+    settings,
+    setSettings,
   } = useGlobalSettings();
 
   const [openModal, setOpenModal] = useState(false);
-  const [keepAwake, setKeepAwake] = useState(true);
 
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || {
@@ -130,12 +127,14 @@ const Start = () => {
     analytics.trackEvent('game_started', { ...initialGameSettings });
 
     try {
-      fullscreen.enableFullscreen();
+      if (settings.goFullscreenOnStart) {
+        fullscreen.enableFullscreen();
+      }
     } catch (error) {
       console.error(error);
     }
 
-    if (keepAwake) {
+    if (settings.keepAwake) {
       wakeLock.request();
     }
 
@@ -276,8 +275,10 @@ const Start = () => {
           <ToggleContainer>
             <FormLabel>Keep Awake</FormLabel>
             <Switch
-              checked={keepAwake}
-              onChange={() => setKeepAwake(!keepAwake)}
+              checked={settings.keepAwake}
+              onChange={() => {
+                setSettings({ ...settings, keepAwake: !settings.keepAwake });
+              }}
             />
           </ToggleContainer>
         </ToggleButtonsWrapper>
@@ -286,8 +287,13 @@ const Start = () => {
           <ToggleContainer>
             <FormLabel>Show Start Player</FormLabel>
             <Switch
-              checked={showStartingPlayer}
-              onChange={() => setShowStartingPlayer(!showStartingPlayer)}
+              checked={settings.showStartingPlayer}
+              onChange={() => {
+                setSettings({
+                  ...settings,
+                  showStartingPlayer: !settings.showStartingPlayer,
+                });
+              }}
             />
           </ToggleContainer>
         </ToggleButtonsWrapper>

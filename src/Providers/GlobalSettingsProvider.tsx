@@ -5,7 +5,7 @@ import {
 } from '../Contexts/GlobalSettingsContext';
 import { useWakeLock } from 'react-screen-wake-lock';
 import { useAnalytics } from '../Hooks/useAnalytics';
-import { InitialGameSettings } from '../Data/getInitialPlayers';
+import { InitialGameSettings, Settings } from '../Types/Settings';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -16,6 +16,7 @@ export const GlobalSettingsProvider = ({
 
   const savedShowPlay = localStorage.getItem('showPlay');
   const savedGameSettings = localStorage.getItem('initialGameSettings');
+  const savedSettings = localStorage.getItem('settings');
 
   const [showPlay, setShowPlay] = useState<boolean>(
     savedShowPlay ? savedShowPlay === 'true' : false
@@ -27,6 +28,12 @@ export const GlobalSettingsProvider = ({
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
 
+  const [settings, setSettings] = useState<Settings>(
+    savedSettings
+      ? JSON.parse(savedSettings)
+      : { goFullscreenOnStart: true, keepAwake: true, showStartingPlayer: true }
+  );
+
   useEffect(() => {
     localStorage.setItem(
       'initialGameSettings',
@@ -34,12 +41,18 @@ export const GlobalSettingsProvider = ({
     );
   }, [initialGameSettings]);
 
+  useEffect(() => {
+    localStorage.setItem('settings', JSON.stringify(settings));
+  }, [settings]);
+
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const enableFullscreen = () => {
     if (document?.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen().then(() => {
         setIsFullscreen(true);
+        // TODO Remove this when full settings menu is implemented
+        setSettings({ ...settings, goFullscreenOnStart: true });
       });
     }
   };
@@ -48,13 +61,16 @@ export const GlobalSettingsProvider = ({
     if (document.exitFullscreen) {
       document.exitFullscreen().then(() => {
         setIsFullscreen(false);
+        // TODO Remove this when full settings menu is implemented
+        setSettings({ ...settings, goFullscreenOnStart: false });
       });
     }
   };
 
   useEffect(() => {
+    // This is called when fullscreen is entered or exited, by any means
     const fullscreenChangeHandler = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      setIsFullscreen(Boolean(document.fullscreenElement));
     };
 
     document.addEventListener('fullscreenchange', fullscreenChangeHandler);
@@ -66,7 +82,11 @@ export const GlobalSettingsProvider = ({
 
   const { isSupported, release, released, request, type } = useWakeLock();
 
-  const active = released === undefined ? false : !released;
+  const active = settings.keepAwake;
+
+  if (active && released === undefined) {
+    request();
+  }
 
   const removeLocalStorage = async () => {
     localStorage.removeItem('initialGameSettings');
@@ -91,10 +111,12 @@ export const GlobalSettingsProvider = ({
 
     const toggleWakeLock = async () => {
       if (active) {
+        setSettings({ ...settings, keepAwake: false });
         release();
         return;
       }
 
+      setSettings({ ...settings, keepAwake: true });
       request();
     };
 
@@ -113,6 +135,8 @@ export const GlobalSettingsProvider = ({
       setShowPlay,
       initialGameSettings,
       setInitialGameSettings,
+      settings,
+      setSettings,
       showStartingPlayer,
       setShowStartingPlayer,
     };
@@ -124,6 +148,7 @@ export const GlobalSettingsProvider = ({
     isSupported,
     release,
     request,
+    settings,
     showPlay,
     showStartingPlayer,
     type,

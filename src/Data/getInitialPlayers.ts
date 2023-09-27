@@ -1,12 +1,6 @@
 import { Player, Rotation } from '../Types/Player';
+import { InitialGameSettings } from '../Types/Settings';
 import { GridTemplateAreas } from './GridTemplateAreas';
-
-export type InitialGameSettings = {
-  startingLifeTotal: number;
-  useCommanderDamage: boolean;
-  numberOfPlayers: number;
-  gridAreas: GridTemplateAreas;
-};
 
 const presetColors = [
   '#F06292', // Light Pink

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { InitialGameSettings } from '../Data/getInitialPlayers';
+import { InitialGameSettings, Settings } from '../Types/Settings';
 
 export type GlobalSettingsContextType = {
   fullscreen: {
@@ -20,6 +20,8 @@ export type GlobalSettingsContextType = {
   setShowPlay: (showPlay: boolean) => void;
   initialGameSettings: InitialGameSettings | null;
   setInitialGameSettings: (initialGameSettings: InitialGameSettings) => void;
+  settings: Settings;
+  setSettings: (settings: Settings) => void;
   showStartingPlayer: boolean;
   setShowStartingPlayer: (showStartingPlayer: boolean) => void;
 };
