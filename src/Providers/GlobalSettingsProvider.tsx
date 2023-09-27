@@ -46,26 +46,6 @@ export const GlobalSettingsProvider = ({
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const enableFullscreen = () => {
-    if (document?.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-        // TODO Remove this when full settings menu is implemented
-        setSettings({ ...settings, goFullscreenOnStart: true });
-      });
-    }
-  };
-
-  const disableFullscreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen().then(() => {
-        setIsFullscreen(false);
-        // TODO Remove this when full settings menu is implemented
-        setSettings({ ...settings, goFullscreenOnStart: false });
-      });
-    }
-  };
-
   useEffect(() => {
     // This is called when fullscreen is entered or exited, by any means
     const fullscreenChangeHandler = () => {
@@ -117,6 +97,26 @@ export const GlobalSettingsProvider = ({
 
       setSettings({ ...settings, keepAwake: true });
       request();
+    };
+
+    const enableFullscreen = () => {
+      if (document?.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().then(() => {
+          setIsFullscreen(true);
+          // TODO Remove this when full settings menu is implemented
+          setSettings({ ...settings, goFullscreenOnStart: true });
+        });
+      }
+    };
+
+    const disableFullscreen = () => {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().then(() => {
+          setIsFullscreen(false);
+          // TODO Remove this when full settings menu is implemented
+          setSettings({ ...settings, goFullscreenOnStart: false });
+        });
+      }
     };
 
     return {
