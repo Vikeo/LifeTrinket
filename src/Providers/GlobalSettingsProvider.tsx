@@ -104,8 +104,6 @@ export const GlobalSettingsProvider = ({
       if (document?.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().then(() => {
           setIsFullscreen(true);
-          // TODO Remove this when full settings menu is implemented
-          setSettings({ ...settings, goFullscreenOnStart: true });
         });
       }
     };
@@ -114,8 +112,6 @@ export const GlobalSettingsProvider = ({
       if (document.exitFullscreen) {
         document.exitFullscreen().then(() => {
           setIsFullscreen(false);
-          // TODO Remove this when full settings menu is implemented
-          setSettings({ ...settings, goFullscreenOnStart: false });
         });
       }
     };
