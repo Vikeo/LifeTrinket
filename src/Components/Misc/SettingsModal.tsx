@@ -118,6 +118,11 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
             </>
           )}
           <Separator height="2px" />
+          <SettingContainer>
+            <Paragraph>Version: 0.4.0</Paragraph>
+          </SettingContainer>
+          <Separator height="2px" />
+
           <Button variant="contained" onClick={closeModal}>
             Save and Close
           </Button>
