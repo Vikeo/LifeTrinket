@@ -145,7 +145,6 @@ const Start = () => {
     setPlayers(createInitialPlayers(initialGameSettings));
     setShowPlay(true);
     localStorage.setItem('playing', 'false');
-    // todo maybe showPlay is redundant?
     localStorage.setItem('showPlay', 'true');
   };
 
