@@ -22,6 +22,7 @@ export type GlobalSettingsContextType = {
   setInitialGameSettings: (initialGameSettings: InitialGameSettings) => void;
   settings: Settings;
   setSettings: (settings: Settings) => void;
+  isPWA: boolean;
 };
 
 export const GlobalSettingsContext =

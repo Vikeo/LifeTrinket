@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { Player } from '../Types/Player';
 import { useMemo, useState } from 'react';
 import { PlayersContextType, PlayersContext } from '../Contexts/PlayersContext';
-import { InitialGameSettings } from '../Data/getInitialPlayers';
+import { InitialGameSettings } from '../Types/Settings';
 
 export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const savedPlayers = localStorage.getItem('players');

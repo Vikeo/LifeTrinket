@@ -89,6 +89,7 @@ export const GlobalSettingsProvider = ({
     };
 
     const toggleWakeLock = async () => {
+      console.log('on press', active);
       if (active) {
         setSettings({ ...settings, keepAwake: false });
         release();
@@ -136,6 +137,7 @@ export const GlobalSettingsProvider = ({
       setInitialGameSettings,
       settings,
       setSettings,
+      isPWA: window?.matchMedia('(display-mode: standalone)').matches,
     };
   }, [
     active,

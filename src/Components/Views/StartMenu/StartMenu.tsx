@@ -6,7 +6,7 @@ import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
-import { Info } from '../../../Icons/generated';
+import { Cog, Info } from '../../../Icons/generated';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H2, Paragraph } from '../../Misc/TextComponents';
@@ -15,6 +15,7 @@ import { Spacer } from '../../Misc/Spacer';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { InitialGameSettings } from '../../../Types/Settings';
+import { SettingsModal } from '../../Misc/SettingsModal';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -36,7 +37,8 @@ const StartButtonFooter = styled.div`
 const ToggleButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const ToggleContainer = styled.div`
@@ -105,10 +107,11 @@ const Start = () => {
     initialGameSettings,
     setInitialGameSettings,
     settings,
-    setSettings,
+    isPWA,
   } = useGlobalSettings();
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openSettingsModal, setOpenSettingsModal] = useState(false);
 
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || {
@@ -134,7 +137,7 @@ const Start = () => {
       console.error(error);
     }
 
-    if (settings.keepAwake) {
+    if (settings.keepAwake && !wakeLock.active) {
       wakeLock.request();
     }
 
@@ -190,21 +193,27 @@ const Start = () => {
         size="2rem"
         style={{ position: 'absolute', top: '1rem', left: '1rem' }}
         onClick={() => {
-          setOpenModal(!openModal);
+          setOpenInfoModal(!openInfoModal);
         }}
       />
 
       <InfoModal
         closeModal={() => {
-          setOpenModal(false);
+          setOpenInfoModal(false);
         }}
-        isOpen={openModal}
+        isOpen={openInfoModal}
+      />
+
+      <SettingsModal
+        closeModal={() => {
+          setOpenSettingsModal(false);
+        }}
+        isOpen={openSettingsModal}
       />
 
       <SupportMe />
 
       <H2>Life Trinket</H2>
-
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -271,31 +280,15 @@ const Start = () => {
               }}
             />
           </ToggleContainer>
-          <Spacer width="1rem" />
-          <ToggleContainer>
-            <FormLabel>Keep Awake</FormLabel>
-            <Switch
-              checked={settings.keepAwake}
-              onChange={() => {
-                setSettings({ ...settings, keepAwake: !settings.keepAwake });
-              }}
-            />
-          </ToggleContainer>
-        </ToggleButtonsWrapper>
-
-        <ToggleButtonsWrapper>
-          <ToggleContainer>
-            <FormLabel>Show Start Player</FormLabel>
-            <Switch
-              checked={settings.showStartingPlayer}
-              onChange={() => {
-                setSettings({
-                  ...settings,
-                  showStartingPlayer: !settings.showStartingPlayer,
-                });
-              }}
-            />
-          </ToggleContainer>
+          <Button
+            variant="contained"
+            style={{ height: '2rem' }}
+            onClick={() => {
+              setOpenSettingsModal(true);
+            }}
+          >
+            <Cog /> &nbsp; Other settings
+          </Button>
         </ToggleButtonsWrapper>
 
         <FormLabel>Layout</FormLabel>
@@ -308,13 +301,16 @@ const Start = () => {
         />
       </FormControl>
 
-      <Paragraph
-        style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
-      >
-        If you're on iOS, this page works better if you{' '}
-        <strong>hide the toolbar</strong> or{' '}
-        <strong>add the app to your home screen</strong>.
-      </Paragraph>
+      {!isPWA && (
+        <Paragraph
+          style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
+        >
+          If you're on iOS, this page works better if you{' '}
+          <strong>hide the toolbar</strong> or{' '}
+          <strong>add the app to your home screen</strong>.
+        </Paragraph>
+      )}
+
       <StartButtonFooter>
         <Button
           size="large"

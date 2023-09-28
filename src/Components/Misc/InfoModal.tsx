@@ -1,5 +1,21 @@
 import { Modal } from '@mui/material';
 import { theme } from '../../Data/theme';
+import styled from 'styled-components';
+
+export const ModalWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 85vh;
+  background-color: ${theme.palette.background.default};
+  padding: 1rem;
+  overflow: scroll;
+  border-radius: 1rem;
+  color: ${theme.palette.text.primary};
+  border: none;
+`;
 
 type InfoModalProps = {
   isOpen: boolean;
@@ -9,22 +25,7 @@ type InfoModalProps = {
 export const InfoModal = ({ isOpen, closeModal }: InfoModalProps) => {
   return (
     <Modal open={isOpen} onClose={closeModal}>
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '80vw',
-          height: '80vh',
-          backgroundColor: theme.palette.background.default,
-          padding: '1rem',
-          overflow: 'scroll',
-          borderRadius: '1rem',
-          color: theme.palette.text.primary,
-          border: 'none',
-        }}
-      >
+      <ModalWrapper>
         <div>
           <h2 style={{ textAlign: 'center' }}>📋 Usage Guide</h2>
           <p>
@@ -89,7 +90,7 @@ export const InfoModal = ({ isOpen, closeModal }: InfoModalProps) => {
           </a>
           for more info about this web app.
         </div>
-      </div>
+      </ModalWrapper>
     </Modal>
   );
 };

@@ -13,7 +13,7 @@ export const theme = createTheme({
     },
     text: {
       primary: '#F5F5F5',
-      secondary: '#FFFFF0',
+      secondary: '#b3b39b',
     },
     action: {
       disabled: '#5E714C',
@@ -28,6 +28,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '1rem',
+          color: '#F5F5F5',
         },
       },
     },
@@ -93,6 +94,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+        },
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        colorPrimary: {
+          color: '#5E714C',
         },
       },
     },
