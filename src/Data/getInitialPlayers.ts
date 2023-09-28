@@ -1,12 +1,6 @@
 import { Player, Rotation } from '../Types/Player';
+import { InitialGameSettings } from '../Types/Settings';
 import { GridTemplateAreas } from './GridTemplateAreas';
-
-export type InitialSettings = {
-  startingLifeTotal: number;
-  useCommanderDamage: boolean;
-  numberOfPlayers: number;
-  gridAreas: GridTemplateAreas;
-};
 
 const presetColors = [
   '#F06292', // Light Pink
@@ -197,7 +191,7 @@ export const createInitialPlayers = ({
   startingLifeTotal,
   useCommanderDamage,
   gridAreas,
-}: InitialSettings): Player[] => {
+}: InitialGameSettings): Player[] => {
   const players: Player[] = [];
   const availableColors = [...presetColors]; // Create a copy of the colors array
   const firstPlayerIndex = Math.floor(Math.random() * numberOfPlayers);

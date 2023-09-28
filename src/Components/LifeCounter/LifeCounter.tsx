@@ -167,7 +167,7 @@ type LifeCounterProps = {
 
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { showStartingPlayer } = useGlobalSettings();
+  const { settings } = useGlobalSettings();
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
@@ -211,7 +211,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   return (
     <LifeCounterContentWrapper $backgroundColor={player.color}>
       <LifeCounterWrapper $rotation={player.settings.rotation}>
-        {showStartingPlayer &&
+        {settings.showStartingPlayer &&
           player.isStartingPlayer &&
           player.showStartingPlayer && (
             <PlayerNoticeWrapper
