@@ -6,6 +6,6 @@ export const Paragraph = styled.p`
 `;
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const H2 = styled.h2`
+export const H1 = styled.h1`
   color: ${theme.palette.text.primary};
 `;

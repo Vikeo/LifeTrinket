@@ -9,7 +9,7 @@ import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { Cog, Info } from '../../../Icons/generated';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SupportMe } from '../../Misc/SupportMe';
-import { H2, Paragraph } from '../../Misc/TextComponents';
+import { H1, Paragraph } from '../../Misc/TextComponents';
 import LayoutOptions from './LayoutOptions';
 import { Spacer } from '../../Misc/Spacer';
 import { usePlayers } from '../../../Hooks/usePlayers';
@@ -212,7 +212,7 @@ const Start = () => {
 
       <SupportMe />
 
-      <H2>Life Trinket</H2>
+      <H1>Life Trinket</H1>
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
