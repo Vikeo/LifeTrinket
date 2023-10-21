@@ -32,7 +32,6 @@ export const useSafeRotate = ({
 
     const resizeObserver = new ResizeObserver(() => {
       calculateSize(container);
-      console.log('resize by observer');
       return;
     });
 

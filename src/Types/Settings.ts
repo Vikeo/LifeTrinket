@@ -9,6 +9,9 @@ export type Settings = {
 export type InitialGameSettings = {
   startingLifeTotal: number;
   useCommanderDamage: boolean;
+  gameFormat: GameFormat;
   numberOfPlayers: number;
   gridAreas: GridTemplateAreas;
 };
+
+type GameFormat = 'commander' | 'standard' | 'two-headed-giant';
