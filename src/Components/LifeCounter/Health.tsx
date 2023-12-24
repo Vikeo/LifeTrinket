@@ -79,7 +79,7 @@ const fadeOut = keyframes`
   }
 `;
 
-export const RecentDifference = styled.span`
+export const RecentDifference = styled.span<{ $rotation: Rotation }>`
   position: absolute;
   top: 40%;
   left: 50%;
@@ -95,6 +95,20 @@ export const RecentDifference = styled.span`
   font-size: 8vmin;
   color: #333333;
   animation: ${fadeOut} 3s 1s ease-out forwards;
+
+  ${(props) => {
+    if (
+      props.$rotation === Rotation.SideFlipped ||
+      props.$rotation === Rotation.Side
+    ) {
+      return css`
+        top: 27%;
+        left: 30%;
+        transform: translate(-50%, -50%);
+        rotate: 270deg;
+      `;
+    }
+  }}
 `;
 
 type HealthProps = {
@@ -195,7 +209,10 @@ const Health = ({
             {player.lifeTotal}
           </OutlinedText>
           {recentDifference !== 0 && (
-            <RecentDifference key={differenceKey}>
+            <RecentDifference
+              key={differenceKey}
+              $rotation={player.settings.rotation}
+            >
               {recentDifference > 0 ? '+' : ''}
               {recentDifference}
             </RecentDifference>
