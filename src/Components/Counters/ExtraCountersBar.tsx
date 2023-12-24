@@ -49,7 +49,6 @@ export const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
         height: 100%;
         width: auto;
         bottom: auto;
-        right: 0;
       `;
     }
   }}
