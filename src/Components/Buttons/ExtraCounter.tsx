@@ -14,6 +14,9 @@ const ExtraCounterContainer = styled.div`
 `;
 
 export const StyledExtraCounterButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   flex-grow: 1;
   border: none;
