@@ -6,8 +6,6 @@ export enum GridTemplateAreas {
   TwoPlayersSameSide = '"player0 player1"',
   ThreePlayers = '"player0 player0" "player1 player2"',
   ThreePlayersSide = '"player0 player0 player0 player2" "player1 player1 player1 player2"',
-  FourPlayers = '"player0 player1" "player2 player3"',
-  FourPlayersSide = '"player0 player1 player1 player1 player3" "player0 player2 player2 player2 player3"',
   FivePlayers = '"player0 player0 player0 player1 player1 player1" "player2 player2 player3 player3 player4 player4"',
   FivePlayersSide = '"player0 player0 player0 player0 player0 player1 player1 player1 player1 player1 player2" "player3 player3 player3 player3 player3 player4 player4 player4 player4 player4 player2"',
   SixPlayers = '"player0 player1 player2" "player3 player4 player5"',

@@ -119,6 +119,8 @@ const Start = () => {
       startingLifeTotal: 40,
       useCommanderDamage: true,
       gridAreas: GridTemplateAreas.FourPlayers,
+      orientation: 'portrait',
+      gameFormat: 'commander',
     }
   );
 
@@ -181,6 +183,7 @@ const Start = () => {
     setPlayerOptions({
       ...playerOptions,
       gridAreas: defaultLayout,
+      orientation: 'landscape',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerOptions.numberOfPlayers]);
@@ -228,6 +231,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               numberOfPlayers: value as number,
+              orientation: 'landscape',
             });
           }}
         />
@@ -246,6 +250,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               startingLifeTotal: value as number,
+              orientation: 'landscape',
             })
           }
         />
@@ -267,6 +272,7 @@ const Start = () => {
                     useCommanderDamage: value,
                     numberOfPlayers: 4,
                     startingLifeTotal: 40,
+                    orientation: 'landscape',
                   });
                   return;
                 }
@@ -275,6 +281,7 @@ const Start = () => {
                   useCommanderDamage: value,
                   numberOfPlayers: 2,
                   startingLifeTotal: 20,
+                  orientation: 'landscape',
                 });
               }}
             />
@@ -295,7 +302,12 @@ const Start = () => {
           numberOfPlayers={playerOptions.numberOfPlayers}
           gridAreas={playerOptions.gridAreas}
           onChange={(gridAreas) =>
-            setPlayerOptions({ ...playerOptions, gridAreas })
+            setPlayerOptions({
+              ...playerOptions,
+              gridAreas,
+              //TODO fix the layout selection
+              orientation: 'portrait',
+            })
           }
         />
       </FormControl>

@@ -6,6 +6,7 @@ import {
 import { useWakeLock } from 'react-screen-wake-lock';
 import { useAnalytics } from '../Hooks/useAnalytics';
 import { InitialGameSettings, Settings } from '../Types/Settings';
+import { GridTemplateAreas } from '../Data/GridTemplateAreas';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -22,10 +23,22 @@ export const GlobalSettingsProvider = ({
     savedShowPlay ? savedShowPlay === 'true' : false
   );
 
-  const [initialGameSettings, setInitialGameSettings] =
+  const [initialGameSettings, setInitialSettings] =
     useState<InitialGameSettings | null>(
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
+
+  const setInitialGameSettings = (initialGameSettings: InitialGameSettings) => {
+    const defaultSettings: InitialGameSettings = {
+      numberOfPlayers: 4,
+      startingLifeTotal: 40,
+      useCommanderDamage: true,
+      gridAreas: GridTemplateAreas.FourPlayers,
+      orientation: 'portrait',
+      gameFormat: 'commander',
+    };
+    setInitialSettings({ ...defaultSettings, ...initialGameSettings });
+  };
 
   const [settings, setSettings] = useState<Settings>(
     savedSettings
