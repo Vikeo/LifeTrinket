@@ -14,7 +14,7 @@ import { SettingsModal } from '../../Misc/SettingsModal';
 import { Spacer } from '../../Misc/Spacer';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H1, Paragraph } from '../../Misc/TextComponents';
-import LayoutOptions2 from './LayoutOptions2';
+import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -285,7 +285,7 @@ const Start = () => {
             })
           }
         /> */}
-        <LayoutOptions2
+        <LayoutOptions
           numberOfPlayers={playerOptions.numberOfPlayers}
           selectedOrientation={playerOptions.orientation}
           onChange={(orientation) => {
