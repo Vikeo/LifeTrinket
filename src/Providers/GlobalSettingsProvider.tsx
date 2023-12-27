@@ -59,6 +59,7 @@ export const GlobalSettingsProvider = ({
   };
 
   useEffect(() => {
+    console.log('initialGameSettings', JSON.parse(savedGameSettings as string));
     if (JSON.parse(savedGameSettings as string).gridArea) {
       removeLocalStorage();
       return;
