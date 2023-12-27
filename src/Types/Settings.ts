@@ -1,6 +1,8 @@
-import { GridTemplateAreas } from '../Data/GridTemplateAreas';
-
-type Orientation = 'side' | 'landscape' | 'portrait';
+export enum Orientation {
+  OppositeLandscape = 'opposite-landscape',
+  Landscape = 'landscape',
+  Portrait = 'portrait',
+}
 
 export type Settings = {
   keepAwake: boolean;
@@ -13,8 +15,7 @@ export type InitialGameSettings = {
   useCommanderDamage: boolean;
   gameFormat?: GameFormat;
   numberOfPlayers: number;
-  gridAreas: GridTemplateAreas;
-  orientation?: Orientation;
+  orientation: Orientation;
 };
 
 type GameFormat = 'commander' | 'standard' | 'two-headed-giant';

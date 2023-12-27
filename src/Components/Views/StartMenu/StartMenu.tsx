@@ -2,20 +2,19 @@ import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
+import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info } from '../../../Icons/generated';
+import { InitialGameSettings, Orientation } from '../../../Types/Settings';
 import { InfoModal } from '../../Misc/InfoModal';
+import { SettingsModal } from '../../Misc/SettingsModal';
+import { Spacer } from '../../Misc/Spacer';
 import { SupportMe } from '../../Misc/SupportMe';
 import { H1, Paragraph } from '../../Misc/TextComponents';
-import LayoutOptions from './LayoutOptions';
-import { Spacer } from '../../Misc/Spacer';
-import { usePlayers } from '../../../Hooks/usePlayers';
-import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
-import { InitialGameSettings } from '../../../Types/Settings';
-import { SettingsModal } from '../../Misc/SettingsModal';
+import LayoutOptions2 from './LayoutOptions2';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -118,8 +117,7 @@ const Start = () => {
       numberOfPlayers: 4,
       startingLifeTotal: 40,
       useCommanderDamage: true,
-      gridAreas: GridTemplateAreas.FourPlayers,
-      orientation: 'portrait',
+      orientation: Orientation.Portrait,
       gameFormat: 'commander',
     }
   );
@@ -158,32 +156,9 @@ const Start = () => {
     return `${value}`;
   };
 
-  const getDefaultLayout = (numberOfPlayers: number) => {
-    switch (numberOfPlayers) {
-      case 1:
-        return GridTemplateAreas.OnePlayerLandscape;
-      case 2:
-        return GridTemplateAreas.TwoPlayersSameSide;
-      case 3:
-        return GridTemplateAreas.ThreePlayers;
-      case 4:
-        return GridTemplateAreas.FourPlayers;
-      case 5:
-        return GridTemplateAreas.FivePlayers;
-      case 6:
-        return GridTemplateAreas.SixPlayers;
-      default:
-        return GridTemplateAreas.FourPlayers;
-    }
-  };
-
   useEffect(() => {
-    const defaultLayout = getDefaultLayout(playerOptions.numberOfPlayers);
-
     setPlayerOptions({
       ...playerOptions,
-      gridAreas: defaultLayout,
-      orientation: 'landscape',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerOptions.numberOfPlayers]);
@@ -231,7 +206,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               numberOfPlayers: value as number,
-              orientation: 'landscape',
+              orientation: Orientation.Landscape,
             });
           }}
         />
@@ -250,7 +225,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               startingLifeTotal: value as number,
-              orientation: 'landscape',
+              orientation: Orientation.Landscape,
             })
           }
         />
@@ -272,7 +247,7 @@ const Start = () => {
                     useCommanderDamage: value,
                     numberOfPlayers: 4,
                     startingLifeTotal: 40,
-                    orientation: 'landscape',
+                    orientation: Orientation.Landscape,
                   });
                   return;
                 }
@@ -281,7 +256,7 @@ const Start = () => {
                   useCommanderDamage: value,
                   numberOfPlayers: 2,
                   startingLifeTotal: 20,
-                  orientation: 'landscape',
+                  orientation: Orientation.Landscape,
                 });
               }}
             />
@@ -298,7 +273,7 @@ const Start = () => {
         </ToggleButtonsWrapper>
 
         <FormLabel>Layout</FormLabel>
-        <LayoutOptions
+        {/* <LayoutOptions
           numberOfPlayers={playerOptions.numberOfPlayers}
           gridAreas={playerOptions.gridAreas}
           onChange={(gridAreas) =>
@@ -306,9 +281,20 @@ const Start = () => {
               ...playerOptions,
               gridAreas,
               //TODO fix the layout selection
-              orientation: 'portrait',
+              orientation: Orientation.Portrait,
             })
           }
+        /> */}
+        <LayoutOptions2
+          numberOfPlayers={playerOptions.numberOfPlayers}
+          selectedOrientation={playerOptions.orientation}
+          onChange={(orientation) => {
+            console.log('orientation', { orientation });
+            setPlayerOptions({
+              ...playerOptions,
+              orientation,
+            });
+          }}
         />
       </FormControl>
 
