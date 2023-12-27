@@ -28,21 +28,10 @@ export const GlobalSettingsProvider = ({
     savedShowPlay ? savedShowPlay === 'true' : false
   );
 
-  const [initialGameSettings, setInitialSettings] =
+  const [initialGameSettings, setInitialGameSettings] =
     useState<InitialGameSettings | null>(
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
-
-  const setInitialGameSettings = (initialGameSettings: InitialGameSettings) => {
-    const defaultSettings: InitialGameSettings = {
-      numberOfPlayers: 4,
-      startingLifeTotal: 40,
-      useCommanderDamage: true,
-      orientation: Orientation.Landscape,
-      gameFormat: GameFormat.Commander,
-    };
-    setInitialSettings({ ...defaultSettings, ...initialGameSettings });
-  };
 
   const [settings, setSettings] = useState<Settings>(
     savedSettings
