@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Play from './Views/Play';
-import StartMenu from './Views/StartMenu/StartMenu';
 import { useGlobalSettings } from '../Hooks/useGlobalSettings';
+import StartMenu from './Views/StartMenu/StartMenu';
+import { Play } from './Views/Play';
 
 const StartWrapper = styled.div`
   max-width: fit-content;
@@ -35,7 +35,7 @@ export const LifeTrinket = () => {
     <>
       {showPlay && initialGameSettings ? (
         <PlayWrapper>
-          <Play gridAreas={initialGameSettings?.gridAreas} />
+          <Play />
           <EmergencyResetButton onClick={goToStart}>
             <p>If you can see this, something is wrong.</p>
             <p>Press screen to go to start.</p>

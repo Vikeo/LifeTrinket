@@ -1,11 +1,15 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useWakeLock } from 'react-screen-wake-lock';
 import {
   GlobalSettingsContext,
   GlobalSettingsContextType,
 } from '../Contexts/GlobalSettingsContext';
-import { useWakeLock } from 'react-screen-wake-lock';
 import { useAnalytics } from '../Hooks/useAnalytics';
-import { InitialGameSettings, Settings } from '../Types/Settings';
+import {
+  InitialGameSettings,
+  InitialGameSettingsSchema,
+  Settings,
+} from '../Types/Settings';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -33,12 +37,34 @@ export const GlobalSettingsProvider = ({
       : { goFullscreenOnStart: true, keepAwake: true, showStartingPlayer: true }
   );
 
+  const removeLocalStorage = async () => {
+    localStorage.removeItem('initialGameSettings');
+    localStorage.removeItem('players');
+    localStorage.removeItem('playing');
+    localStorage.removeItem('showPlay');
+    setShowPlay(false);
+  };
+
   useEffect(() => {
+    if (savedGameSettings && JSON.parse(savedGameSettings).gridAreas) {
+      removeLocalStorage();
+      return;
+    }
+
+    //parse existing game settings with zod schema
+    const parsedInitialGameSettings =
+      InitialGameSettingsSchema.safeParse(initialGameSettings);
+
+    if (!parsedInitialGameSettings.success) {
+      removeLocalStorage();
+      return;
+    }
+
     localStorage.setItem(
       'initialGameSettings',
       JSON.stringify(initialGameSettings)
     );
-  }, [initialGameSettings]);
+  }, [initialGameSettings, savedGameSettings]);
 
   useEffect(() => {
     localStorage.setItem('settings', JSON.stringify(settings));
@@ -67,14 +93,6 @@ export const GlobalSettingsProvider = ({
     request();
   }
 
-  const removeLocalStorage = async () => {
-    localStorage.removeItem('initialGameSettings');
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('showPlay');
-    setShowPlay(localStorage.getItem('showPlay') === 'true' ?? false);
-  };
-
   const ctxValue = useMemo((): GlobalSettingsContextType => {
     const goToStart = async () => {
       const currentPlayers = localStorage.getItem('players');
@@ -89,7 +107,6 @@ export const GlobalSettingsProvider = ({
     };
 
     const toggleWakeLock = async () => {
-      console.log('on press', active);
       if (active) {
         setSettings({ ...settings, keepAwake: false });
         release();

@@ -2,20 +2,22 @@ import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
-import { Cog, Info } from '../../../Icons/generated';
-import { InfoModal } from '../../Misc/InfoModal';
-import { SupportMe } from '../../Misc/SupportMe';
-import { H1, Paragraph } from '../../Misc/TextComponents';
-import LayoutOptions from './LayoutOptions';
-import { Spacer } from '../../Misc/Spacer';
-import { usePlayers } from '../../../Hooks/usePlayers';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
-import { InitialGameSettings } from '../../../Types/Settings';
+import { usePlayers } from '../../../Hooks/usePlayers';
+import { Cog, Info } from '../../../Icons/generated';
+import {
+  GameFormat,
+  InitialGameSettings,
+  Orientation,
+} from '../../../Types/Settings';
+import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
+import { Spacer } from '../../Misc/Spacer';
+import { SupportMe } from '../../Misc/SupportMe';
+import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = styled.div`
   width: 100dvw;
@@ -118,7 +120,8 @@ const Start = () => {
       numberOfPlayers: 4,
       startingLifeTotal: 40,
       useCommanderDamage: true,
-      gridAreas: GridTemplateAreas.FourPlayers,
+      orientation: Orientation.Portrait,
+      gameFormat: GameFormat.Commander,
     }
   );
 
@@ -156,31 +159,9 @@ const Start = () => {
     return `${value}`;
   };
 
-  const getDefaultLayout = (numberOfPlayers: number) => {
-    switch (numberOfPlayers) {
-      case 1:
-        return GridTemplateAreas.OnePlayerLandscape;
-      case 2:
-        return GridTemplateAreas.TwoPlayersSameSide;
-      case 3:
-        return GridTemplateAreas.ThreePlayers;
-      case 4:
-        return GridTemplateAreas.FourPlayers;
-      case 5:
-        return GridTemplateAreas.FivePlayers;
-      case 6:
-        return GridTemplateAreas.SixPlayers;
-      default:
-        return GridTemplateAreas.FourPlayers;
-    }
-  };
-
   useEffect(() => {
-    const defaultLayout = getDefaultLayout(playerOptions.numberOfPlayers);
-
     setPlayerOptions({
       ...playerOptions,
-      gridAreas: defaultLayout,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerOptions.numberOfPlayers]);
@@ -212,7 +193,10 @@ const Start = () => {
 
       <SupportMe />
 
-      <H1>Life Trinket</H1>
+      <h1 className="text-3xl block font-bold mt-6 mb-5 text-text-primary">
+        Life Trinket
+      </h1>
+
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -228,6 +212,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               numberOfPlayers: value as number,
+              orientation: Orientation.Landscape,
             });
           }}
         />
@@ -246,6 +231,7 @@ const Start = () => {
             setPlayerOptions({
               ...playerOptions,
               startingLifeTotal: value as number,
+              orientation: Orientation.Landscape,
             })
           }
         />
@@ -267,6 +253,7 @@ const Start = () => {
                     useCommanderDamage: value,
                     numberOfPlayers: 4,
                     startingLifeTotal: 40,
+                    orientation: Orientation.Landscape,
                   });
                   return;
                 }
@@ -275,6 +262,7 @@ const Start = () => {
                   useCommanderDamage: value,
                   numberOfPlayers: 2,
                   startingLifeTotal: 20,
+                  orientation: Orientation.Landscape,
                 });
               }}
             />
@@ -291,23 +279,36 @@ const Start = () => {
         </ToggleButtonsWrapper>
 
         <FormLabel>Layout</FormLabel>
-        <LayoutOptions
+        {/* <LayoutOptions
           numberOfPlayers={playerOptions.numberOfPlayers}
           gridAreas={playerOptions.gridAreas}
           onChange={(gridAreas) =>
-            setPlayerOptions({ ...playerOptions, gridAreas })
+            setPlayerOptions({
+              ...playerOptions,
+              gridAreas,
+              //TODO fix the layout selection
+              orientation: Orientation.Portrait,
+            })
           }
+        /> */}
+        <LayoutOptions
+          numberOfPlayers={playerOptions.numberOfPlayers}
+          selectedOrientation={playerOptions.orientation}
+          onChange={(orientation) => {
+            setPlayerOptions({
+              ...playerOptions,
+              orientation,
+            });
+          }}
         />
       </FormControl>
 
       {!isPWA && (
-        <Paragraph
-          style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
-        >
+        <p className="text-center, max-w-[75%] text-xs text-text-primary">
           If you're on iOS, this page works better if you{' '}
           <strong>hide the toolbar</strong> or{' '}
           <strong>add the app to your home screen</strong>.
-        </Paragraph>
+        </p>
       )}
 
       <StartButtonFooter>

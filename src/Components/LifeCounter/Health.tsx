@@ -180,9 +180,9 @@ const Health = ({
 
     const minRatio = Math.min(widthRatio, heightRatio);
 
-    const heightIsLarger = heightRatio > widthRatio;
+    const heightIs40PercentSmaller = heightRatio > widthRatio * 0.6;
 
-    const scaleFactor = heightIsLarger ? 0.8 : 1;
+    const scaleFactor = heightIs40PercentSmaller ? 0.8 : 1;
 
     return minRatio * scaleFactor * 1;
   };

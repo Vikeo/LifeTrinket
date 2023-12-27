@@ -6,7 +6,7 @@ import { LoseGameButton } from '../Buttons/LoseButton';
 import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
-import PlayerMenu from '../PlayerMenu/PlayerMenu';
+import PlayerMenu from '../Player/PlayerMenu';
 import Health from './Health';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
