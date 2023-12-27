@@ -50,13 +50,21 @@ export const GlobalSettingsProvider = ({
       : { goFullscreenOnStart: true, keepAwake: true, showStartingPlayer: true }
   );
 
+  const removeLocalStorage = async () => {
+    localStorage.removeItem('initialGameSettings');
+    localStorage.removeItem('players');
+    localStorage.removeItem('playing');
+    localStorage.removeItem('showPlay');
+    setShowPlay(false);
+  };
+
   useEffect(() => {
     //parse existing game settings with zod schema
     const parsedInitialGameSettings =
       InitialGameSettingsSchema.safeParse(initialGameSettings);
 
     if (!parsedInitialGameSettings.success) {
-      localStorage.setItem('initialGameSettings', '');
+      removeLocalStorage();
       return;
     }
 
@@ -92,14 +100,6 @@ export const GlobalSettingsProvider = ({
   if (active && released === undefined) {
     request();
   }
-
-  const removeLocalStorage = async () => {
-    localStorage.removeItem('initialGameSettings');
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('showPlay');
-    setShowPlay(localStorage.getItem('showPlay') === 'true' ?? false);
-  };
 
   const ctxValue = useMemo((): GlobalSettingsContextType => {
     const goToStart = async () => {
