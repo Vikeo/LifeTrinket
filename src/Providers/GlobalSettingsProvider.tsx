@@ -48,6 +48,7 @@ export const GlobalSettingsProvider = ({
   useEffect(() => {
     if (savedGameSettings && JSON.parse(savedGameSettings).gridAreas) {
       removeLocalStorage();
+      window.location.reload();
       return;
     }
 
@@ -57,6 +58,7 @@ export const GlobalSettingsProvider = ({
 
     if (!parsedInitialGameSettings.success) {
       removeLocalStorage();
+      window.location.reload();
       return;
     }
 
