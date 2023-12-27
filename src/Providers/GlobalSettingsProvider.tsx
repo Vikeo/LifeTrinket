@@ -60,13 +60,11 @@ export const GlobalSettingsProvider = ({
       return;
     }
 
-    console.log('llam');
-
     localStorage.setItem(
       'initialGameSettings',
       JSON.stringify(initialGameSettings)
     );
-  }, [initialGameSettings]);
+  }, [initialGameSettings, savedGameSettings]);
 
   useEffect(() => {
     localStorage.setItem('settings', JSON.stringify(settings));
