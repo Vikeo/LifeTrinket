@@ -60,7 +60,10 @@ export const GlobalSettingsProvider = ({
 
   useEffect(() => {
     console.log('initialGameSettings', JSON.parse(savedGameSettings as string));
-    if (JSON.parse(savedGameSettings as string).gridArea) {
+
+    if (savedGameSettings && JSON.parse(savedGameSettings).gridAreas) {
+      console.log('lmao1');
+
       removeLocalStorage();
       return;
     }
@@ -68,15 +71,19 @@ export const GlobalSettingsProvider = ({
     //parse existing game settings with zod schema
     const parsedInitialGameSettings =
       InitialGameSettingsSchema.safeParse(initialGameSettings);
+    console.log('lmao2');
 
     if (!parsedInitialGameSettings.success) {
+      console.log('lmao3');
       removeLocalStorage();
       return;
     }
 
+    console.log('llam');
+
     localStorage.setItem(
       'initialGameSettings',
-      JSON.stringify(parsedInitialGameSettings.data)
+      JSON.stringify(initialGameSettings)
     );
   }, [initialGameSettings]);
 

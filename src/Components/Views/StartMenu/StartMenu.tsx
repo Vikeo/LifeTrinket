@@ -8,7 +8,11 @@ import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info } from '../../../Icons/generated';
-import { InitialGameSettings, Orientation } from '../../../Types/Settings';
+import {
+  GameFormat,
+  InitialGameSettings,
+  Orientation,
+} from '../../../Types/Settings';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
 import { Spacer } from '../../Misc/Spacer';
@@ -118,7 +122,7 @@ const Start = () => {
       startingLifeTotal: 40,
       useCommanderDamage: true,
       orientation: Orientation.Portrait,
-      gameFormat: 'commander',
+      gameFormat: GameFormat.Commander,
     }
   );
 
