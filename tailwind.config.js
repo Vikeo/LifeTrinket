@@ -6,11 +6,6 @@ export default {
   theme: {
     extend: {
       gridTemplateAreas: {
-        fourPlayerPortrait: [
-          'player0 player1 player1 player1 player1 player3',
-          'player0 player2 player2 player2 player2 player3',
-        ],
-        fourPlayer: ['player0 player1', 'player2 player3'],
         onePlayerLandscape: ['player0 player0'],
         onePlayerPortrait: ['player0', 'player0'],
         twoPlayersOppositeLandscape: ['player0', 'player1'],
@@ -21,6 +16,11 @@ export default {
           'player0 player0 player0 player2',
           'player1 player1 player1 player2',
         ],
+        fourPlayerPortrait: [
+          'player0 player1 player1 player1 player1 player3',
+          'player0 player2 player2 player2 player2 player3',
+        ],
+        fourPlayer: ['player0 player1', 'player2 player3'],
         fivePlayers: [
           'player0 player0 player0 player1 player1 player1',
           'player2 player2 player3 player3 player4 player4',
