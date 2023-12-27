@@ -59,7 +59,11 @@ export const GlobalSettingsProvider = ({
   };
 
   useEffect(() => {
-    console.log('initialGameSettings', JSON.parse(savedGameSettings));
+    if (JSON.parse(savedGameSettings as string).gridArea) {
+      removeLocalStorage();
+      return;
+    }
+
     //parse existing game settings with zod schema
     const parsedInitialGameSettings =
       InitialGameSettingsSchema.safeParse(initialGameSettings);
