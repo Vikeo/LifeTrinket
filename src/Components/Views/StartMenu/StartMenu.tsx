@@ -289,7 +289,6 @@ const Start = () => {
           numberOfPlayers={playerOptions.numberOfPlayers}
           selectedOrientation={playerOptions.orientation}
           onChange={(orientation) => {
-            console.log('orientation', { orientation });
             setPlayerOptions({
               ...playerOptions,
               orientation,

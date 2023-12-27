@@ -151,7 +151,6 @@ const Health = ({
     const textContainer = textContainerRef.current;
     const resizeObserver = new ResizeObserver(() => {
       const calcFontSize = calculateFontSize(textContainer);
-      console.log(calcFontSize);
       setFontSize(calcFontSize);
     });
 
