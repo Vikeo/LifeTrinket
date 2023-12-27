@@ -35,6 +35,12 @@ export default {
           'player0 player4 player4 player4 player4 player5 player5 player5 player5 player3',
         ],
       },
+      colors: {
+        text: {
+          primary: '#F5F5F5',
+          secondary: '#b3b39b',
+        },
+      },
     },
   },
   plugins: [tailwindcssGridAreas],

@@ -17,7 +17,6 @@ import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
 import { Spacer } from '../../Misc/Spacer';
 import { SupportMe } from '../../Misc/SupportMe';
-import { H1, Paragraph } from '../../Misc/TextComponents';
 import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = styled.div`
@@ -194,7 +193,10 @@ const Start = () => {
 
       <SupportMe />
 
-      <H1>Life Trinket</H1>
+      <h1 className="text-3xl block font-bold mt-6 mb-5 text-text-primary">
+        Life Trinket
+      </h1>
+
       <FormControl focused={false} style={{ width: '80vw' }}>
         <FormLabel>Number of Players</FormLabel>
         <Slider
@@ -302,13 +304,11 @@ const Start = () => {
       </FormControl>
 
       {!isPWA && (
-        <Paragraph
-          style={{ textAlign: 'center', maxWidth: '75%', fontSize: '0.7rem' }}
-        >
+        <p className="text-center, max-w-[75%] text-xs text-text-primary">
           If you're on iOS, this page works better if you{' '}
           <strong>hide the toolbar</strong> or{' '}
           <strong>add the app to your home screen</strong>.
-        </Paragraph>
+        </p>
       )}
 
       <StartButtonFooter>
