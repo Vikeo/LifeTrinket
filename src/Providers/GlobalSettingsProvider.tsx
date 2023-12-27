@@ -5,7 +5,13 @@ import {
   GlobalSettingsContextType,
 } from '../Contexts/GlobalSettingsContext';
 import { useAnalytics } from '../Hooks/useAnalytics';
-import { InitialGameSettings, Orientation, Settings } from '../Types/Settings';
+import {
+  GameFormat,
+  InitialGameSettings,
+  InitialGameSettingsSchema,
+  Orientation,
+  Settings,
+} from '../Types/Settings';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -33,7 +39,7 @@ export const GlobalSettingsProvider = ({
       startingLifeTotal: 40,
       useCommanderDamage: true,
       orientation: Orientation.Landscape,
-      gameFormat: 'commander',
+      gameFormat: GameFormat.Commander,
     };
     setInitialSettings({ ...defaultSettings, ...initialGameSettings });
   };
@@ -45,9 +51,18 @@ export const GlobalSettingsProvider = ({
   );
 
   useEffect(() => {
+    //parse existing game settings with zod schema
+    const parsedInitialGameSettings =
+      InitialGameSettingsSchema.safeParse(initialGameSettings);
+
+    if (!parsedInitialGameSettings.success) {
+      localStorage.setItem('initialGameSettings', '');
+      return;
+    }
+
     localStorage.setItem(
       'initialGameSettings',
-      JSON.stringify(initialGameSettings)
+      JSON.stringify(parsedInitialGameSettings.data)
     );
   }, [initialGameSettings]);
 
