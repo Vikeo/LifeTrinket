@@ -1,6 +1,5 @@
 import { Player, Rotation } from '../Types/Player';
-import { InitialGameSettings } from '../Types/Settings';
-import { GridTemplateAreas } from './GridTemplateAreas';
+import { InitialGameSettings, Orientation } from '../Types/Settings';
 
 const presetColors = [
   '#F06292', // Light Pink
@@ -13,184 +12,182 @@ const presetColors = [
   '#FF8A80', // Coral
 ];
 
-const getRotation = (index: number, gridAreas: GridTemplateAreas): Rotation => {
-  if (gridAreas === GridTemplateAreas.OnePlayerLandscape && index === 0) {
-    return Rotation.Normal;
+const getOrientationRotations = (
+  index: number,
+  numberOfPlayers: number,
+  orientation: Orientation
+): Rotation => {
+  switch (numberOfPlayers) {
+    case 1:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          return Rotation.Normal;
+        case Orientation.Portrait:
+          return Rotation.Side;
+      }
+    case 2:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          return Rotation.Normal;
+        case Orientation.Portrait:
+          switch (index) {
+            case 0:
+              return Rotation.SideFlipped;
+            case 1:
+              return Rotation.Side;
+            default:
+              return Rotation.Normal;
+          }
+        case Orientation.OppositeLandscape:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Normal;
+            default:
+              return Rotation.Normal;
+          }
+      }
+    case 3:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Normal;
+            case 2:
+              return Rotation.Normal;
+            default:
+              return Rotation.Normal;
+          }
+        case Orientation.Portrait:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Normal;
+            case 2:
+              return Rotation.Side;
+            default:
+              return Rotation.Normal;
+          }
+      }
+    case 4:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Flipped;
+            case 2:
+              return Rotation.Normal;
+            case 3:
+              return Rotation.Normal;
+            default:
+              return Rotation.Normal;
+          }
+        case Orientation.Portrait:
+          switch (index) {
+            case 0:
+              return Rotation.SideFlipped;
+            case 1:
+              return Rotation.Flipped;
+            case 2:
+              return Rotation.Normal;
+            case 3:
+              return Rotation.Side;
+            default:
+              return Rotation.Normal;
+          }
+      }
+    case 5:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Flipped;
+            case 2:
+              return Rotation.Normal;
+            case 3:
+              return Rotation.Normal;
+            case 4:
+              return Rotation.Normal;
+            default:
+              return Rotation.Normal;
+          }
+        case Orientation.Portrait:
+          switch (index) {
+            case 0:
+              return Rotation.Side;
+            case 1:
+              return Rotation.Side;
+            case 2:
+              return Rotation.SideFlipped;
+            case 3:
+              return Rotation.SideFlipped;
+            case 4:
+              return Rotation.SideFlipped;
+            default:
+              return Rotation.Normal;
+          }
+      }
+    case 6:
+      switch (orientation) {
+        default:
+        case Orientation.Landscape:
+          switch (index) {
+            case 0:
+              return Rotation.Flipped;
+            case 1:
+              return Rotation.Flipped;
+            case 2:
+              return Rotation.Flipped;
+            case 3:
+              return Rotation.Normal;
+            case 4:
+              return Rotation.Normal;
+            case 5:
+              return Rotation.Normal;
+            default:
+              return Rotation.Normal;
+          }
+        case Orientation.Portrait:
+          switch (index) {
+            case 0:
+              return Rotation.Side;
+            case 1:
+              return Rotation.Side;
+            case 2:
+              return Rotation.Side;
+            case 3:
+              return Rotation.SideFlipped;
+            case 4:
+              return Rotation.SideFlipped;
+            case 5:
+              return Rotation.SideFlipped;
+            default:
+              return Rotation.Normal;
+          }
+      }
+    default:
+      return Rotation.Normal;
   }
-
-  if (gridAreas === GridTemplateAreas.OnePlayerPortrait && index === 0) {
-    return Rotation.Side;
-  }
-
-  if (gridAreas === GridTemplateAreas.TwoPlayersOppositePortrait) {
-    switch (index) {
-      case 0:
-        return Rotation.SideFlipped;
-      case 1:
-        return Rotation.Side;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.TwoPlayersOppositeLandscape) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.TwoPlayersSameSide) {
-    switch (index) {
-      case 0:
-        return Rotation.Normal;
-      case 1:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.ThreePlayers) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Normal;
-      case 2:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.ThreePlayersSide) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Normal;
-      case 2:
-        return Rotation.Side;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.FourPlayers) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Normal;
-      case 3:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.FourPlayersSide) {
-    switch (index) {
-      case 0:
-        return Rotation.SideFlipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Normal;
-      case 3:
-        return Rotation.Side;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.FivePlayers) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Normal;
-      case 3:
-        return Rotation.Normal;
-      case 4:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.FivePlayersSide) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Side;
-      case 3:
-        return Rotation.Normal;
-      case 4:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.SixPlayers) {
-    switch (index) {
-      case 0:
-        return Rotation.Flipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Flipped;
-      case 3:
-        return Rotation.Normal;
-      case 4:
-        return Rotation.Normal;
-      case 5:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  if (gridAreas === GridTemplateAreas.SixPlayersSide) {
-    switch (index) {
-      case 0:
-        return Rotation.SideFlipped;
-      case 1:
-        return Rotation.Flipped;
-      case 2:
-        return Rotation.Flipped;
-      case 3:
-        return Rotation.Side;
-      case 4:
-        return Rotation.Normal;
-      case 5:
-        return Rotation.Normal;
-      default:
-        return Rotation.Normal;
-    }
-  }
-
-  return Rotation.Normal;
 };
 
 export const createInitialPlayers = ({
   numberOfPlayers,
   startingLifeTotal,
   useCommanderDamage,
-  gridAreas,
+  orientation,
 }: InitialGameSettings): Player[] => {
   const players: Player[] = [];
   const availableColors = [...presetColors]; // Create a copy of the colors array
@@ -213,7 +210,7 @@ export const createInitialPlayers = ({
       });
     }
 
-    const rotation = getRotation(i, gridAreas);
+    const rotation = getOrientationRotations(i, numberOfPlayers, orientation);
 
     const player: Player = {
       lifeTotal: startingLifeTotal,

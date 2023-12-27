@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import Counters from '../Counters/Counters';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../Hooks/usePlayers';
+import { Orientation } from '../../Types/Settings';
+import { Player } from '../Player/Player';
 
 const MainWrapper = styled.div`
   width: 100vmax;
@@ -9,16 +12,62 @@ const MainWrapper = styled.div`
   overflow: hidden;
 `;
 
-type PlayProps = {
-  gridAreas: string;
-};
+export const Play = () => {
+  const { players } = usePlayers();
+  const { initialGameSettings } = useGlobalSettings();
 
-const Play = ({ gridAreas }: PlayProps) => {
-  return (
-    <MainWrapper>
-      <Counters gridAreas={gridAreas} />
-    </MainWrapper>
-  );
-};
+  let Layout: JSX.Element;
+  switch (players.length) {
+    case 1:
+      if (initialGameSettings?.orientation === Orientation.Portrait) {
+        Layout = Player(players, 'grid-areas-onePlayerPortrait');
+      }
+      Layout = Player(players, 'grid-areas-onePlayerLandscape');
+      break;
+    case 2:
+      switch (initialGameSettings?.orientation) {
+        case Orientation.Portrait:
+          Layout = Player(players, 'grid-areas-twoPlayersOppositePortrait');
+          break;
+        default:
+        case Orientation.Landscape:
+          Layout = Player(players, 'grid-areas-twoPlayersSameSideLandscape');
+          break;
+        case Orientation.OppositeLandscape:
+          Layout = Player(players, 'grid-areas-twoPlayersOppositeLandscape');
+          break;
+      }
+      break;
+    case 3:
+      if (initialGameSettings?.orientation === Orientation.Portrait) {
+        Layout = Player(players, 'grid-areas-threePlayersSide');
+        break;
+      }
+      Layout = Player(players, 'grid-areas-threePlayers');
+      break;
+    default:
+    case 4:
+      if (initialGameSettings?.orientation === Orientation.Portrait) {
+        Layout = Player(players, 'grid-areas-fourPlayerPortrait');
+        break;
+      }
+      Layout = Player(players, 'grid-areas-fourPlayer');
+      break;
+    case 5:
+      if (initialGameSettings?.orientation === Orientation.Portrait) {
+        Layout = Player(players, 'grid-areas-fivePlayersSide');
+        break;
+      }
+      Layout = Player(players, 'grid-areas-fivePlayers');
+      break;
+    case 6:
+      if (initialGameSettings?.orientation === Orientation.Portrait) {
+        Layout = Player(players, 'grid-areas-sixPlayersSide');
+        break;
+      }
+      Layout = Player(players, 'grid-areas-sixPlayers');
+      break;
+  }
 
-export default Play;
+  return <MainWrapper>{Layout}</MainWrapper>;
+};

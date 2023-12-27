@@ -1,21 +1,22 @@
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
-import { GridTemplateAreas } from '../../../Data/GridTemplateAreas';
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import { theme } from '../../../Data/theme';
 import {
-  OnePlayerPortrait,
-  TwoPlayersOppositeLandscape,
-  TwoPlayersOppositePortrait,
-  ThreePlayers,
-  ThreePlayersSide,
+  FivePlayers,
   FourPlayers,
   FourPlayersSide,
-  FivePlayers,
+  OnePlayerPortrait,
   SixPlayers,
+  ThreePlayers,
+  ThreePlayersSide,
+  TwoPlayersOppositeLandscape,
+  TwoPlayersOppositePortrait,
   TwoPlayersSameSide,
 } from '../../../Icons/generated/Layouts';
+
 import OnePlayerLandscape from '../../../Icons/generated/Layouts/OnePlayerLandscape';
+import { Orientation } from '../../../Types/Settings';
 
 const LayoutWrapper = styled.div`
   flex-direction: row;
@@ -25,13 +26,13 @@ const LayoutWrapper = styled.div`
 
 type LayoutOptionsProps = {
   numberOfPlayers: number;
-  gridAreas: GridTemplateAreas;
-  onChange: (gridAreas: GridTemplateAreas) => void;
+  selectedOrientation: Orientation;
+  onChange: (orientation: Orientation) => void;
 };
 
-const LayoutOptions: React.FC<LayoutOptionsProps> = ({
+export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
   numberOfPlayers,
-  gridAreas,
+  selectedOrientation,
   onChange,
 }) => {
   const iconHeight = '30vmin';
@@ -43,7 +44,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.OnePlayerLandscape}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -66,7 +67,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.OnePlayerPortrait}
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
@@ -94,7 +95,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.TwoPlayersSameSide}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -117,7 +118,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.TwoPlayersOppositePortrait}
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
@@ -140,7 +141,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.TwoPlayersOppositeLandscape}
+              value={Orientation.OppositeLandscape}
               control={
                 <Radio
                   icon={
@@ -168,7 +169,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.ThreePlayers}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -191,7 +192,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.ThreePlayersSide}
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
@@ -220,7 +221,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.FourPlayers}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -243,7 +244,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               label=""
             />
             <FormControlLabel
-              value={GridTemplateAreas.FourPlayersSide}
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
@@ -272,7 +273,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.FivePlayers}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -324,7 +325,7 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
         return (
           <>
             <FormControlLabel
-              value={GridTemplateAreas.SixPlayers}
+              value={Orientation.Landscape}
               control={
                 <Radio
                   icon={
@@ -382,9 +383,9 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
       <RadioGroup
         row
         onChange={(_e, value) => {
-          onChange(value as GridTemplateAreas);
+          onChange(value as Orientation);
         }}
-        value={gridAreas}
+        value={selectedOrientation}
         style={{ justifyContent: 'center' }}
       >
         {renderLayoutOptions()}
@@ -392,5 +393,3 @@ const LayoutOptions: React.FC<LayoutOptionsProps> = ({
     </LayoutWrapper>
   );
 };
-
-export default LayoutOptions;
