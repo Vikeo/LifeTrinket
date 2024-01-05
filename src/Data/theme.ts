@@ -1,34 +1,27 @@
 import { createTheme } from '@mui/material';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../tailwind.config';
+
+const fullConfig = resolveConfig(tailwindConfig);
+
+const { primary, secondary, background, text, action, common } =
+  fullConfig.theme.colors;
 
 export const theme = createTheme({
   palette: {
-    primary: {
-      main: '#7F9172',
-    },
-    secondary: {
-      main: '#5E714C',
-    },
-    background: {
-      default: '#495E35',
-    },
-    text: {
-      primary: '#F5F5F5',
-      secondary: '#b3b39b',
-    },
-    action: {
-      disabled: '#5E714C',
-    },
-    common: {
-      white: '#F9FFE3',
-      black: '#000000',
-    },
+    primary,
+    secondary,
+    background,
+    text,
+    action,
+    common,
   },
   components: {
     MuiFormLabel: {
       styleOverrides: {
         root: {
           fontSize: '1rem',
-          color: '#F5F5F5',
+          color: text.primary,
         },
       },
     },
@@ -36,12 +29,12 @@ export const theme = createTheme({
       styleOverrides: {
         markLabel: {
           fontSize: '1rem',
-          color: '#F5F5F5',
+          color: text.primary,
         },
         valueLabel: {
           display: 'none',
-          color: '#F5F5F5',
-          background: '#5E714C',
+          color: text.primary,
+          background: secondary.main,
         },
         track: {
           height: '0.7rem',
@@ -77,7 +70,7 @@ export const theme = createTheme({
       styleOverrides: {
         paper: {
           top: '1rem',
-          background: '#495E35',
+          background: background.default,
           height: 'auto',
           borderRadius: '8px',
         },
@@ -86,7 +79,7 @@ export const theme = createTheme({
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundColor: background.backdrop,
         },
       },
     },
@@ -100,7 +93,7 @@ export const theme = createTheme({
     MuiSwitch: {
       styleOverrides: {
         colorPrimary: {
-          color: '#5E714C',
+          color: action.disabled,
         },
       },
     },
