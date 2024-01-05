@@ -45,7 +45,7 @@ export default {
         },
         background: {
           default: '#495E35',
-          backdrop: '#000000',
+          backdrop: 'rgba(0, 0, 0, 0.3)',
         },
         text: {
           primary: '#F5F5F5',
