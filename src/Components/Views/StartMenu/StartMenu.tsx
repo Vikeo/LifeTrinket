@@ -1,7 +1,6 @@
 import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
@@ -18,36 +17,15 @@ import { SettingsModal } from '../../Misc/SettingsModal';
 import { Spacer } from '../../Misc/Spacer';
 import { SupportMe } from '../../Misc/SupportMe';
 import { LayoutOptions } from './LayoutOptions';
+import { twc } from 'react-twc';
 
-const MainWrapper = styled.div`
-  width: 100dvw;
-  height: fit-content;
-  padding-bottom: 58px;
-  overflow: hidden;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`;
+const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = styled.div`
-  position: fixed;
-  bottom: 1rem;
-  translate: -50%, -50%;
-  z-index: 1;
-`;
+const StartButtonFooter = twc.div`fixed bottom-4 -translate-y-1/2 z-1`;
 
-const ToggleButtonsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
+const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
-const ToggleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const ToggleContainer = twc.div`flex flex-col items-center`;
 
 const playerMarks = [
   {

@@ -1,47 +1,37 @@
-import styled from 'styled-components';
+import { twc } from 'react-twc';
 import { useGlobalSettings } from '../Hooks/useGlobalSettings';
-import StartMenu from './Views/StartMenu/StartMenu';
 import { Play } from './Views/Play';
+import StartMenu from './Views/StartMenu/StartMenu';
 
-const StartWrapper = styled.div`
-  max-width: fit-content;
-  max-height: fit-content;
-`;
+const StartWrapper = twc.div`max-w-fit max-h-fit`;
 
-const PlayWrapper = styled.div`
-  position: relative;
-  z-index: 0;
-  max-width: fit-content;
-  max-height: fit-content;
-  @media (orientation: portrait) {
-    rotate: 90deg;
-  }
-`;
+const PlayWrapper = twc.div`relative z-0 max-w-fit max-h-fit portrait:rotate-90`;
 
-const EmergencyResetButton = styled.button`
-  width: 100vmax;
-  height: 100vmin;
-  font-size: 4vmax;
-  position: absolute;
-  top: 0;
-  z-index: -1;
-  background-color: #4e6815;
-`;
+const EmergencyResetButton = () => {
+  const { goToStart } = useGlobalSettings();
+
+  const EmergencyResetButton = twc.button`w-[100vmax] h-[100vmin] absolute top-0 z-[-1] bg-background-default`;
+  const Paragraph = twc.p`text-[4vmax] text-text-secondary`;
+
+  return (
+    <EmergencyResetButton onClick={goToStart}>
+      <Paragraph>If you can see this, something is wrong.</Paragraph>
+      <Paragraph>Press screen to go to start.</Paragraph>
+      <br />
+      <Paragraph>If the issue persists, please inform me.</Paragraph>
+    </EmergencyResetButton>
+  );
+};
 
 export const LifeTrinket = () => {
-  const { showPlay, goToStart, initialGameSettings } = useGlobalSettings();
+  const { showPlay, initialGameSettings } = useGlobalSettings();
 
   return (
     <>
       {showPlay && initialGameSettings ? (
         <PlayWrapper>
           <Play />
-          <EmergencyResetButton onClick={goToStart}>
-            <p>If you can see this, something is wrong.</p>
-            <p>Press screen to go to start.</p>
-            <br />
-            <p>If the issue persists, please inform me.</p>
-          </EmergencyResetButton>
+          <EmergencyResetButton />
         </PlayWrapper>
       ) : (
         <StartWrapper>

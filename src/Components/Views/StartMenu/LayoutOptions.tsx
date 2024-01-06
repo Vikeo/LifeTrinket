@@ -1,6 +1,5 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import React from 'react';
-import styled from 'styled-components';
 import { theme } from '../../../Data/theme';
 import {
   FivePlayers,
@@ -15,14 +14,11 @@ import {
   TwoPlayersSameSide,
 } from '../../../Icons/generated/Layouts';
 
+import { twc } from 'react-twc';
 import OnePlayerLandscape from '../../../Icons/generated/Layouts/OnePlayerLandscape';
 import { Orientation } from '../../../Types/Settings';
 
-const LayoutWrapper = styled.div`
-  flex-direction: row;
-  display: flex;
-  justify-content: space-evenly;
-`;
+const LayoutWrapper = twc.div`flex flex-row justify-between self-center`;
 
 type LayoutOptionsProps = {
   numberOfPlayers: number;
