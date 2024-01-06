@@ -10,4 +10,7 @@ export default defineConfig({
       external: ['babel-plugin-macros'],
     },
   },
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
 });

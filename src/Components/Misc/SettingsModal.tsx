@@ -119,7 +119,8 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           )}
           <Separator height="2px" />
           <SettingContainer>
-            <Paragraph>Version: 0.4.0</Paragraph>
+            {/* @ts-expect-error is defined in vite.config.ts*/}
+            <Paragraph>Version: {APP_VERSION}</Paragraph>
           </SettingContainer>
           <Separator height="2px" />
 
