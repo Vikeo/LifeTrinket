@@ -1,110 +1,45 @@
-import styled from 'styled-components';
-import { css } from 'styled-components';
-import { Player, Rotation } from '../../Types/Player';
 import { useRef, useState } from 'react';
-import { OutlinedText } from '../Misc/OutlinedText';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { usePlayers } from '../../Hooks/usePlayers';
+import { Player, Rotation } from '../../Types/Player';
+import { OutlinedText } from '../Misc/OutlinedText';
+import { TwcComponentProps, twc } from 'react-twc';
 
-const CommanderDamageContainer = styled.div<{
-  $rotation: number;
-}>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
+type RotationDivProps = TwcComponentProps<'div'> & {
+  $rotation?: number;
+};
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column;
-      `;
-    }
-  }}
-`;
+type RotationButtonProps = TwcComponentProps<'button'> & {
+  $rotation?: number;
+};
 
-const CommanderDamageButton = styled.button<{
-  $backgroundColor?: string;
-  $rotation: number;
-}>`
-  display: flex;
-  flex-grow: 1;
-  border: none;
-  height: 10vmin;
-  width: 50%;
-  outline: none;
-  cursor: pointer;
-  background-color: ${(props) => props.$backgroundColor || 'antiquewhite'};
-  margin: 0;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  padding: 0;
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        width: 6vmax;
-        height: auto;
-      `;
-    }
-  }}
-`;
+const CommanderDamageContainer = twc.div<RotationDivProps>((props) => [
+  'flex flex-row flex-grow w-full',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'flex-col'
+    : '',
+]);
 
-const CommanderDamageTextContainer = styled.div<{
-  $rotation: number;
-}>`
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-variant-numeric: tabular-nums;
-  pointer-events: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+const CommanderDamageButton = twc.button<RotationButtonProps>((props) => [
+  'flex flex-grow border-none h-[10vmin] w-1/2 outline-none cursor-pointer m-0 p-0',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'w-[6vmax] h-auto'
+    : '',
+]);
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: 270deg;
-      `;
-    }
-  }}
-`;
+const CommanderDamageTextContainer = twc.div<RotationDivProps>((props) => [
+  'relative top-1/2 left-1/2 tabular-nums pointer-events-none select-none',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'rotate-[270deg]'
+    : '',
+]);
 
-const PartnerDamageSeperator = styled.div<{
-  $rotation: number;
-}>`
-  width: 1px;
-  background-color: rgba(0, 0, 0, 1);
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        width: auto;
-        height: 1px;
-      `;
-    }
-  }}
-`;
+const PartnerDamageSeperator = twc.div<RotationDivProps>((props) => [
+  'w-px bg-black',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'w-[5.999vmax] h-px'
+    : '',
+]);
 
 type CommanderDamageButtonComponentProps = {
   player: Player;
@@ -214,8 +149,8 @@ export const CommanderDamage = ({
         onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           e.preventDefault();
         }}
-        $backgroundColor={opponent.color}
         aria-label={`Commander damage. Player ${player.index}, opponent ${opponent.index}`}
+        style={{ background: opponent.color }}
       >
         <CommanderDamageTextContainer $rotation={player.settings.rotation}>
           <OutlinedText
@@ -248,8 +183,8 @@ export const CommanderDamage = ({
             ) => {
               e.preventDefault();
             }}
-            $backgroundColor={opponent.color}
             aria-label={`Partner Commander damage. Player ${player.index}, opponent ${opponent.index}`}
+            style={{ background: opponent.color }}
           >
             <CommanderDamageTextContainer $rotation={player.settings.rotation}>
               <OutlinedText
