@@ -5,40 +5,44 @@ import { Player, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
 import { TwcComponentProps, twc } from 'react-twc';
 
-type RotationDivProps = TwcComponentProps<'div'> & {
+export type RotationDivProps = TwcComponentProps<'div'> & {
   $rotation?: number;
 };
 
-type RotationButtonProps = TwcComponentProps<'button'> & {
+export type RotationSpanProps = TwcComponentProps<'span'> & {
+  $rotation?: number;
+};
+
+export type RotationButtonProps = TwcComponentProps<'button'> & {
   $rotation?: number;
 };
 
 const CommanderDamageContainer = twc.div<RotationDivProps>((props) => [
-  'flex flex-row flex-grow w-full',
+  'flex flex-grow',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'flex-col'
-    : '',
+    : 'flex-row',
 ]);
 
 const CommanderDamageButton = twc.button<RotationButtonProps>((props) => [
-  'flex flex-grow border-none h-[10vmin] w-1/2 outline-none cursor-pointer m-0 p-0',
+  'flex flex-grow border-none outline-none cursor-pointer m-0 p-0 webkit-user-select-none',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'w-[6vmax] h-auto'
-    : '',
+    : 'h-[10vmin] w-1/2',
 ]);
 
 const CommanderDamageTextContainer = twc.div<RotationDivProps>((props) => [
-  'relative top-1/2 left-1/2 tabular-nums pointer-events-none select-none',
+  'relative top-1/2 left-1/2 tabular-nums pointer-events-none select-none webkit-user-select-none',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'rotate-[270deg]'
     : '',
 ]);
 
 const PartnerDamageSeperator = twc.div<RotationDivProps>((props) => [
-  'w-px bg-black',
+  'bg-black',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
-    ? 'w-[5.999vmax] h-px'
-    : '',
+    ? 'w-full h-px'
+    : 'w-px',
 ]);
 
 type CommanderDamageButtonComponentProps = {

@@ -59,8 +59,49 @@ export default {
           white: '#F9FFE3',
           black: '#000000',
         },
+        lifeCounter: {
+          text: 'rgba(0, 0, 0, 0.4)',
+          lostWrapper: '#00000070',
+        },
+        interface: {
+          loseButton: {
+            background: '#43434380',
+          },
+          recentDifference: {
+            background: 'rgba(255, 255, 255, 0.6);',
+            text: '#333333',
+          },
+        },
+      },
+      keyframes: {
+        fadeOut: {
+          '0%': {
+            opacity: '1',
+          },
+          '33%': {
+            opacity: '0.6',
+          },
+          '100%': {
+            opacity: '0',
+          },
+        },
+      },
+      animation: {
+        fadeOut: 'fadeOut 3s 1s ease-out forwards',
       },
     },
   },
   plugins: [tailwindcssGridAreas],
 } satisfies Config;
+
+// const fadeOut = keyframes`
+//   0% {
+//     opacity: 1;
+//   }
+//   33% {
+//     opacity: 0.6;
+//   }
+//   100% {
+//     opacity: 0;
+//   }
+// `;

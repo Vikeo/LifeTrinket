@@ -1,115 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import { twc } from 'react-twc';
 import { Player, Rotation } from '../../Types/Player';
+import {
+  RotationDivProps,
+  RotationSpanProps,
+} from '../Buttons/CommanderDamage';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import { OutlinedText } from '../Misc/OutlinedText';
 
-const LifeCountainer = styled.div<{
-  $rotation: Rotation;
-}>`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
-  align-items: center;
+const LifeCountainer = twc.div<RotationDivProps>((props) => [
+  'flex flex-grow relative w-full h-full justify-between items-center',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'flex-col-reverse'
+    : 'flex-row',
+]);
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column-reverse;
-      `;
-    }
-  }}
+const LifeCounterTextContainer = twc.div<RotationDivProps>((props) => [
+  'absolute m-0 p-0 pointer-events-none select-none webkit-user-select-none',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'w-full h-2/3'
+    : 'w-2/3 h-full',
+]);
+
+const TextWrapper = twc.div`
+  flex
+  absolute
+  justify-center
+  items-center
+  w-full
+  h-full
+  z-[-1]
 `;
 
-const LifeCounterTextContainer = styled.div<{
-  $rotation: Rotation;
-}>`
-  position: absolute;
-  width: 60%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  pointer-events: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        width: 100%;
-        height: 60%;
-      `;
-    }
-  }}
-`;
-
-const TextWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-`;
-
-const fadeOut = keyframes`
-  0% {
-    opacity: 1;
-  }
-  33% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-
-export const RecentDifference = styled.span<{ $rotation: Rotation }>`
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 15vmin;
-  text-shadow: none;
-  text-align: center;
-
-  background-color: rgba(255, 255, 255, 0.6);
-  font-variant-numeric: tabular-nums;
-  border-radius: 10vmin;
-  padding: 5px 10px;
-  font-size: 8vmin;
-  color: #333333;
-  animation: ${fadeOut} 3s 1s ease-out forwards;
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        top: 27%;
-        left: 30%;
-        transform: translate(-50%, -50%);
-        rotate: 270deg;
-      `;
-    }
-  }}
-`;
+const RecentDifference = twc.div<RotationSpanProps>((props) => [
+  'absolute min-w-[20vmin] drop-shadow-none text-center bg-interface-recentDifference-background tabular-nums rounded-full p-[6px 12px] text-[8vmin] text-interface-recentDifference-text animate-fadeOut',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'top-1/3 translate-x-1/4 translate-y-1/2 rotate-[270deg]'
+    : 'top-1/4 left-[50%] -translate-x-1/2',
+]);
 
 type HealthProps = {
   player: Player;

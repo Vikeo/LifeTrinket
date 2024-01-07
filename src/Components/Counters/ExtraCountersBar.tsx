@@ -1,8 +1,5 @@
-import { CounterType, Player } from '../../Types/Player';
-import ExtraCounter from '../Buttons/ExtraCounter';
-import styled from 'styled-components';
-import { css } from 'styled-components';
-import { Rotation } from '../../Types/Player';
+import { twc } from 'react-twc';
+import { usePlayers } from '../../Hooks/usePlayers';
 import {
   CommanderTax,
   Energy,
@@ -10,49 +7,23 @@ import {
   PartnerTax,
   Poison,
 } from '../../Icons/generated';
-import { usePlayers } from '../../Hooks/usePlayers';
+import { CounterType, Player, Rotation } from '../../Types/Player';
+import { RotationDivProps } from '../Buttons/CommanderDamage';
+import ExtraCounter from '../Buttons/ExtraCounter';
 
-const Container = styled.div<{ $rotation: Rotation }>`
-  width: 100%;
-  height: 20vmin;
-  display: flex;
+const Container = twc.div<RotationDivProps>((props) => [
+  'flex',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'h-full w-[8vmax]'
+    : 'h-[20vmin] w-full',
+]);
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        height: 100%;
-        width: 9.3vmax;
-      `;
-    }
-  }}
-`;
-
-export const ExtraCountersGrid = styled.div<{ $rotation: Rotation }>`
-  display: flex;
-  position: absolute;
-  width: 100%;
-  flex-direction: row;
-  flex-grow: 1;
-  bottom: 0;
-  pointer-events: none;
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column-reverse;
-        height: 100%;
-        width: auto;
-        bottom: auto;
-      `;
-    }
-  }}
-`;
+export const ExtraCountersGrid = twc.div<RotationDivProps>((props) => [
+  'flex absolute flex-row flex-grow pointer-events-none',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'flex-col-reverse h-full w-auto bottom-auto'
+    : 'w-full bottom-0',
+]);
 
 type ExtraCountersBarProps = {
   player: Player;
