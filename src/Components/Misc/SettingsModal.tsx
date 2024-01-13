@@ -4,7 +4,7 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { ModalWrapper } from './InfoModal';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SettingContainer = twc.div`w-full flex flex-col`;
 
