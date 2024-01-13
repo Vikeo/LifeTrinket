@@ -31,10 +31,16 @@ jobs:
   release:
     # needs: build_and_deploy
     runs-on: ubuntu-latest
+    env:
+      working-directory: ${{ github.workspace }}
     steps:
+      - name: List Repository Contents
+        run: ls -R
+
       - name: get version
         id: version
         uses: notiz-dev/github-action-json-property@v0.2.0
+
         with:
           path: 'package.json'
           prop_path: 'version'
