@@ -44,17 +44,19 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
         const data = await result.json();
 
         if (!data.name) {
-          setIsLatestVersion(false);
           setNewVersion(undefined);
+          setIsLatestVersion(false);
           return;
         }
 
+        setNewVersion(data.name);
+
         /* @ts-expect-error is defined in vite.config.ts*/
         if (data.name === APP_VERSION) {
-          setNewVersion(data.name);
           setIsLatestVersion(true);
           return;
         }
+
         setIsLatestVersion(false);
       } catch (error) {
         console.error('error getting latest version string', error);
