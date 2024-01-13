@@ -12,5 +12,6 @@ export default defineConfig({
   },
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
+    REPO_READ_ACCESS_TOKEN: JSON.stringify(process.env.REPO_READ_ACCESS_TOKEN),
   },
 });

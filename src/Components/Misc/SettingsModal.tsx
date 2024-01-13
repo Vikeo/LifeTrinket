@@ -28,13 +28,13 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
   useEffect(() => {
     async function checkIfLatestVersion() {
       console.log('checking latest version');
-
       try {
         const result = await fetch(
           'https://api.github.com/repos/Vikeo/LifeTrinket/releases/latest',
           {
             headers: {
-              Authorization: `Bearer ${process.env.REPO_READ_ACCESS_TOKEN}`,
+              /* @ts-expect-error is defined in vite.config.ts*/
+              Authorization: `Bearer ${REPO_READ_ACCESS_TOKEN}`,
               Accept: 'application/vnd.github+json',
               'X-GitHub-Api-Version': '2022-11-28',
             },
