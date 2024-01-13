@@ -10,7 +10,7 @@ const PlayWrapper = twc.div`relative z-0 max-w-fit max-h-fit portrait:rotate-90`
 const EmergencyResetButton = () => {
   const { goToStart } = useGlobalSettings();
 
-  const EmergencyResetButton = twc.button`w-[100vmax] h-[100vmin] absolute top-0 z-[-1] bg-background-default`;
+  const EmergencyResetButton = twc.button`w-[100dvmax] h-[100dvmin] absolute top-0 z-[-1] bg-background-default`;
   const Paragraph = twc.p`text-[4vmax] text-text-secondary`;
 
   return (

@@ -4,7 +4,7 @@ import { Orientation } from '../../Types/Settings';
 import { Player } from '../Player/Player';
 import { twc } from 'react-twc';
 
-const MainWrapper = twc.div`w-[100vmax] h-[100vmin] w-[100dvmax] h-[100dvmin] overflow-hidden`;
+const MainWrapper = twc.div`w-[100dvmax] h-[100dvmin] overflow-hidden`;
 
 export const Play = () => {
   const { players } = usePlayers();
