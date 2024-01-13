@@ -41,14 +41,14 @@ jobs:
         id: create_release_note
         run: echo "Release Note for version ${{ steps.version.outputs.version }}" > release_note.txt
 
-      - name: Release
-        uses: 'marvinpinto/action-automatic-releases@latest'
-        with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: 'latest'
-          prerelease: true
-          title: ${{ steps.version.outputs.version }}
-          files: release_note.txt
+      # - name: Release
+      #   uses: 'marvinpinto/action-automatic-releases@latest'
+      #   with:
+      #     repo_token: '${{ secrets.RELEASE_TOKEN }}'
+      #     automatic_release_tag: 'latest'
+      #     prerelease: true
+      #     title: ${{ steps.version.outputs.version }}
+      #     files: release_note.txt
 
       - name: Create Release
         uses: ncipollo/release-action@v1.13.0
@@ -57,4 +57,4 @@ jobs:
           body: 'Release notes for version ${{ steps.version.outputs.version }}' # Customize your release notes
           commit: ${{ github.sha }} # Use the commit hash of the current workflow run
           tag: '${{ steps.version.outputs.version }}' # Specify the tag for the release
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+          token: ${{ secrets.RELEASE_TOKEN }} # GitHub token for authentication
