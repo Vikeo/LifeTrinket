@@ -3,7 +3,7 @@ import { Cog } from '../../Icons/generated';
 import { Rotation } from '../../Types/Player';
 import { RotationButtonProps } from './CommanderDamage';
 
-const StyledSettingsButton = twc.button<RotationButtonProps>((props) => [
+const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
   'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
     ? `right-auto top-[1vmax] left-[27%]`
@@ -17,13 +17,13 @@ type SettingsButtonProps = {
 
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
-    <StyledSettingsButton
+    <SettingsButtonTwc
       onClick={onClick}
       $rotation={rotation}
       aria-label={`Settings`}
     >
       <Cog size="5vmin" color="black" opacity="0.3" />
-    </StyledSettingsButton>
+    </SettingsButtonTwc>
   );
 };
 

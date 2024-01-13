@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
+import { TwcComponentProps, twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
-import { TwcComponentProps, twc } from 'react-twc';
 
 export type RotationDivProps = TwcComponentProps<'div'> & {
   $rotation?: number;

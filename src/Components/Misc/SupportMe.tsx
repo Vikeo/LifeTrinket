@@ -1,43 +1,30 @@
 import { Button, Drawer } from '@mui/material';
 import { useState } from 'react';
-import styled from 'styled-components';
-import { theme } from '../../Data/theme';
 import { BuyMeCoffee, KoFi } from '../../Icons/generated/Support';
 import { Paragraph } from './TextComponents';
 import LittleGuy from '../../Icons/generated/LittleGuy';
 import { useAnalytics } from '../../Hooks/useAnalytics';
+import { twc } from 'react-twc';
 
-// import { ButtonBase } from '@mui/material';
+const SupportContainer = twc.div`flex flex-col items-center justify-center gap-4 mt-4 mb-4`;
 
-const SupportContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 16px 0;
-`;
-
-const SupportButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  background-color: ${theme.palette.primary.main};
-  border-radius: 4px;
-  margin: 0 1rem;
-  padding: 0 1rem;
-  transition: background-color 0.2s ease-in-out;
-  box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
-  &:hover {
-    background-color: ${theme.palette.primary.dark};
-  }
-`;
+const SupportButton = twc.button`
+  flex
+  flex-row
+  items-center
+  justify-left
+  border-none
+  cursor-pointer
+  bg-primary-main
+  rounded-md
+  w-10/12
+  mx-4
+  px-4
+  py-2
+  transition-colors duration-200 ease-in-out
+  shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)]
+  hover:bg-primary-dark
+  `;
 
 export const SupportMe = () => {
   const analytics = useAnalytics();
@@ -87,13 +74,7 @@ export const SupportMe = () => {
       <LittleGuy
         height={'4rem'}
         width={'2.5rem'}
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          top: '2.5rem',
-          right: '0',
-          color: theme.palette.text.primary,
-        }}
+        className="pointer-events-none absolute top-10 right-0 text-text-primary"
       />
 
       <Drawer
@@ -104,22 +85,12 @@ export const SupportMe = () => {
       >
         <SupportContainer>
           <SupportButton onClick={handleOpenBuyMeCoffee}>
-            <BuyMeCoffee
-              height={'1.5rem'}
-              width={'1.5rem'}
-              style={{ marginRight: '0.5rem' }}
-            />
-            <Paragraph style={{ fontSize: '0.7rem' }}>Buy him a tea</Paragraph>
+            <BuyMeCoffee height="1.5rem" width="1.5rem" className="mr-2" />
+            <Paragraph className="text-xs">Buy him a tea</Paragraph>
           </SupportButton>
           <SupportButton onClick={handleOpenKoFi}>
-            <KoFi
-              height={'1.5rem'}
-              width={'1.5rem'}
-              style={{ marginRight: '0.5rem' }}
-            />
-            <Paragraph style={{ fontSize: '0.7rem' }}>
-              Buy him a ko-fi
-            </Paragraph>
+            <KoFi height="1.5rem" width="1.5rem" className="mr-2" />
+            <Paragraph className="text-xs">Buy him a ko-fi</Paragraph>
           </SupportButton>
         </SupportContainer>
       </Drawer>

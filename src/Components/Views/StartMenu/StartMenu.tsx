@@ -1,6 +1,7 @@
 import { Button, FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
+import { twc } from 'react-twc';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
@@ -14,14 +15,12 @@ import {
 } from '../../../Types/Settings';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
-import { Spacer } from '../../Misc/Spacer';
 import { SupportMe } from '../../Misc/SupportMe';
 import { LayoutOptions } from './LayoutOptions';
-import { twc } from 'react-twc';
 
 const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = twc.div`fixed bottom-4 -translate-y-1/2 z-1`;
+const StartButtonFooter = twc.div`fixed bottom-4 z-1`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
@@ -194,8 +193,7 @@ const Start = () => {
             });
           }}
         />
-        <Spacer height="0.7rem" />
-        <FormLabel>Starting Health</FormLabel>
+        <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
         <Slider
           title="Starting Health"
           max={60}
@@ -213,9 +211,8 @@ const Start = () => {
             })
           }
         />
-        <Spacer height="1rem" />
 
-        <ToggleButtonsWrapper>
+        <ToggleButtonsWrapper className="mt-4">
           <ToggleContainer>
             <FormLabel>Commander</FormLabel>
             <Switch

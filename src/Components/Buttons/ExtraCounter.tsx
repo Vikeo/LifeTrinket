@@ -1,8 +1,8 @@
 import { ReactNode, useRef, useState } from 'react';
+import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
-import { twc } from 'react-twc';
 import { RotationDivProps } from './CommanderDamage';
 
 const ExtraCounterContainer = twc.div`
@@ -13,7 +13,7 @@ const ExtraCounterContainer = twc.div`
   flex-grow
 `;
 
-const StyledExtraCounterButton = twc.button`
+const ExtraCounterButton = twc.button`
   flex
   justify-center
   items-center
@@ -103,7 +103,7 @@ const ExtraCounter = ({
 
   return (
     <ExtraCounterContainer>
-      <StyledExtraCounterButton
+      <ExtraCounterButton
         onPointerDown={handleDownInput}
         onPointerUp={handleUpInput}
         onPointerLeave={handleLeaveInput}
@@ -124,7 +124,7 @@ const ExtraCounter = ({
             </OutlinedText>
           </TextContainer>
         </IconContainer>
-      </StyledExtraCounterButton>
+      </ExtraCounterButton>
     </ExtraCounterContainer>
   );
 };

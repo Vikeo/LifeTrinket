@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../tailwind.config';
 
+//TODO Create provider for this
 const fullConfig = resolveConfig(tailwindConfig);
 
 const { primary, secondary, background, text, action, common } =

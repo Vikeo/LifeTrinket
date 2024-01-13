@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
-import { lifeLongPressMultiplier } from '../../Data/constants';
-
 import { TwcComponentProps, twc } from 'react-twc';
+import { lifeLongPressMultiplier } from '../../Data/constants';
 import { Rotation } from '../../Types/Player';
 
 type RotationButtonProps = TwcComponentProps<'div'> & {
@@ -9,7 +8,7 @@ type RotationButtonProps = TwcComponentProps<'div'> & {
   $rotation?: number;
 };
 
-const StyledLifeCounterButton = twc.button`
+const LifeCounterButtonTwc = twc.button`
   h-full
   w-full
   flex
@@ -92,7 +91,7 @@ const LifeCounterButton = ({
       : '12vmin';
 
   return (
-    <StyledLifeCounterButton
+    <LifeCounterButtonTwc
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -108,7 +107,7 @@ const LifeCounterButton = ({
       >
         {operation === 'add' ? '\u002B' : '\u2212'}
       </TextContainer>
-    </StyledLifeCounterButton>
+    </LifeCounterButtonTwc>
   );
 };
 

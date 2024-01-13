@@ -40,6 +40,7 @@ export default {
       colors: {
         primary: {
           main: '#7F9172',
+          dark: '#57654F',
         },
         secondary: {
           main: '#5E714C',
@@ -47,6 +48,7 @@ export default {
         background: {
           default: '#495E35',
           backdrop: 'rgba(0, 0, 0, 0.3)',
+          settings: 'rgba(20, 20, 0, 0.9)',
         },
         text: {
           primary: '#F5F5F5',
