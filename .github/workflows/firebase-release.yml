@@ -1,0 +1,50 @@
+name: Deploy to Firebase Hosting on merge
+'on':
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    env:
+      REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Build, lint, and deploy
+        run: |
+          bun install
+          bun run build
+          bun run lint
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFE_TRINKET }}'
+          channelId: live
+          projectId: life-trinket
+
+  release:
+    needs: build_and_deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract version from package.json
+        id: version
+        run: echo "::set-output name=version::$(jq -r .version package.json)"
+
+      - name: Create Release Note
+        id: create_release_note
+        run: echo "Release Note for version ${{ steps.version.outputs.version }}" > release_note.txt
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          body_path: release_note.txt
