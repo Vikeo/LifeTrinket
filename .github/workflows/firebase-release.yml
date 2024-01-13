@@ -41,10 +41,11 @@ jobs:
         id: create_release_note
         run: echo "Release Note for version ${{ steps.version.outputs.version }}" > release_note.txt
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Release
+        uses: 'marvinpinto/action-automatic-releases@latest'
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
-          body_path: release_note.txt
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: 'latest'
+          prerelease: true
+          title: ${{ steps.version.outputs.version }}
+          files: release_note.txt
