@@ -43,8 +43,6 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
         );
         const data = await result.json();
 
-        console.info('liveVersion', data.name);
-
         if (!data.name) {
           setNewVersion(undefined);
           setIsLatestVersion(false);
