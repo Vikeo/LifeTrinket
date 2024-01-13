@@ -1,64 +1,42 @@
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
-import { css } from 'styled-components';
+import { TwcComponentProps, twc } from 'react-twc';
 import { lifeLongPressMultiplier } from '../../Data/constants';
-
 import { Rotation } from '../../Types/Player';
 
-export const StyledLifeCounterButton = styled.button`
-  width: 100%;
-  height: 100%;
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: 600;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-`;
-
-const TextContainer = styled.div<{
+type RotationButtonProps = TwcComponentProps<'div'> & {
   $align?: string;
-  $rotation: number;
-}>`
-  position: relative;
+  $rotation?: number;
+};
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      if (props.$align === 'right') {
-        return css`
-          rotate: -90deg;
-          bottom: 25%;
-          top: auto;
-        `;
-      }
-      return css`
-        rotate: -90deg;
-        top: 25%;
-      `;
-    }
+const LifeCounterButtonTwc = twc.button`
+  h-full
+  w-full
+  flex
+  text-lifeCounter-text
+  font-semibold
+  bg-transparent
+  border-none
+  outline-none
+  cursor-pointer
+  justify-center
+  items-center
+  select-none
+  webkit-user-select-none
+  `;
 
-    if (props.$align === 'right') {
-      return css`
-        left: 25%;
-      `;
-    }
-    return css`
-      right: 25%;
-    `;
-  }}
-`;
+const TextContainer = twc.div<RotationButtonProps>((props) => [
+  'relative',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? props.$align === 'right'
+      ? '-rotate-90 bottom-1/4 top-auto'
+      : '-rotate-90 top-1/4'
+    : 'top-auto',
+  props.$rotation === Rotation.Flipped || props.$rotation === Rotation.Normal
+    ? props.$align === 'right'
+      ? 'left-1/4'
+      : 'right-1/4'
+    : '',
+]);
 
 type LifeCounterButtonProps = {
   lifeTotal: number;
@@ -113,7 +91,7 @@ const LifeCounterButton = ({
       : '12vmin';
 
   return (
-    <StyledLifeCounterButton
+    <LifeCounterButtonTwc
       onPointerDown={handleDownInput}
       onPointerUp={handleUpInput}
       onPointerLeave={handleLeaveInput}
@@ -129,7 +107,7 @@ const LifeCounterButton = ({
       >
         {operation === 'add' ? '\u002B' : '\u2212'}
       </TextContainer>
-    </StyledLifeCounterButton>
+    </LifeCounterButtonTwc>
   );
 };
 

@@ -1,168 +1,98 @@
 import { Button, Checkbox } from '@mui/material';
-import styled, { css } from 'styled-components';
-import { Player, Rotation } from '../../Types/Player';
+import { useRef } from 'react';
+import { twc } from 'react-twc';
 import { theme } from '../../Data/theme';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
+import { useSafeRotate } from '../../Hooks/useSafeRotate';
 import {
-  PartnerTax,
-  Poison,
+  Cross,
   Energy,
-  Experience,
   Exit,
+  Experience,
   FullscreenOff,
   FullscreenOn,
-  Cross,
+  PartnerTax,
+  Poison,
   ResetGame,
 } from '../../Icons/generated';
-import { useRef } from 'react';
-import { Spacer } from '../Misc/Spacer';
-import { useSafeRotate } from '../../Hooks/useSafeRotate';
+import { Player, Rotation } from '../../Types/Player';
+import {
+  RotationButtonProps,
+  RotationDivProps,
+} from '../Buttons/CommanderDamage';
 
-const SettingsContainer = styled.div<{
-  $rotation: Rotation;
-}>`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
+const CheckboxContainer = twc.div``;
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column-reverse;
-        height: 100%;
-        width: 100%;
-      `;
-    }
-  }}
-  ${(props) => {
-    if (props.$rotation === Rotation.Side) {
-      return css`
-        rotate: ${props.$rotation - 180}deg;
-      `;
-    } else if (props.$rotation === Rotation.SideFlipped) {
-      return css`
-        rotate: ${props.$rotation - 180}deg;
-      `;
-    }
-  }}
+const PlayerMenuWrapper = twc.div`
+  flex
+  flex-col
+  absolute
+  w-full
+  h-full
+  bg-background-settings
+  items-center
+  justify-center
+  z-[2]
+  webkit-user-select-none
 `;
 
-const BetterRowContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-  justify-content: end;
-  align-items: stretch;
+const BetterRowContainer = twc.div`
+  flex
+  flex-col
+  flex-grow
+  w-full
+  h-full
+  justify-end
+  items-stretch
 `;
 
-const TogglesSection = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: space-evenly;
+const TogglesSection = twc.div`
+  flex
+  relative
+  flex-row
+  gap-2
+  justify-evenly
 `;
 
-const ButtonsSections = styled.div`
-  display: flex;
-  max-width: 100%;
-  gap: 1rem;
-  justify-content: space-between;
-  padding: 3% 3%;
-  align-items: center;
+const ButtonsSections = twc.div`
+  flex
+  max-w-full
+  gap-4
+  justify-between
+  p-[3%]
+  items-center
 `;
 
-const ColorPicker = styled.input`
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  height: 8vmax;
-  width: 8vmax;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-  user-select: none;
-  color: #ffffff;
+const ColorPicker = twc.input`
+  absolute
+  top-[5%]
+  left-[5%]
+  h-[8vmax]
+  w-[8vmax]
+  border-none
+  outline-none
+  cursor-pointer
+  bg-transparent
+  user-select-none
+  text-common-white
 `;
 
-const CheckboxContainer = styled.div<{ $rotation: Rotation }>`
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        /* rotate: ${props.$rotation - 180}deg; */
-      `;
-    }
-  }}
-`;
+const SettingsContainer = twc.div<RotationDivProps>((props) => [
+  'flex flex-wrap h-full w-full',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'flex-col'
+    : 'flex-row',
+]);
 
-const PlayerMenuWrapper = styled.div<{
-  $rotation: Rotation;
-}>`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(20, 20, 20, 0.9);
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return;
-    }
-    return css`
-      rotate: ${props.$rotation}deg;
-    `;
-  }};
-`;
-
-const CloseButton = styled.div<{
-  $rotation: Rotation;
-}>`
-  position: absolute;
-  top: 15%;
-  right: 5%;
-  z-index: 9999;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-
-  ${(props) => {
-    if (props.$rotation === Rotation.Side) {
-      return css`
-        rotate: ${props.$rotation - 180}deg;
-        top: 5%;
-        right: auto;
-        left: 5%;
-      `;
-    } else if (props.$rotation === Rotation.SideFlipped) {
-      return css`
-        rotate: ${props.$rotation - 180}deg;
-        top: auto;
-        left: auto;
-        bottom: 5%;
-        right: 5%;
-      `;
-    }
-  }}
-`;
+const CloseButton = twc.button<RotationButtonProps>((props) => [
+  'absolute border-none outline-none cursor-pointer bg-transparent z-[99]',
+  props.$rotation === Rotation.Side
+    ? `top-[5%] right-auto left-[5%]`
+    : props.$rotation === Rotation.SideFlipped
+    ? 'top-auto left-auto bottom-[5%] right-[5%]'
+    : 'top-[15%] right-[5%]',
+]);
 
 type PlayerMenuProps = {
   player: Player;
@@ -214,9 +144,31 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
   const extraCountersSize = isSide ? '8vmin' : '4vmax';
   const closeButtonSize = isSide ? '6vmin' : '3vmax';
 
+  const calcRotation =
+    player.settings.rotation === Rotation.Side
+      ? `${player.settings.rotation - 180}deg`
+      : player.settings.rotation === Rotation.SideFlipped
+      ? `${player.settings.rotation - 180}deg`
+      : '';
+
   return (
-    <PlayerMenuWrapper $rotation={player.settings.rotation}>
-      <CloseButton $rotation={player.settings.rotation}>
+    <PlayerMenuWrapper
+      //TODO: Fix hacky solution to rotation for SideFlipped
+      style={{
+        rotate:
+          player.settings.rotation === Rotation.SideFlipped ? '180deg' : '',
+      }}
+    >
+      <CloseButton
+        $rotation={player.settings.rotation}
+        style={{
+          rotate:
+            player.settings.rotation === Rotation.Side ||
+            player.settings.rotation === Rotation.SideFlipped
+              ? `${player.settings.rotation - 180}deg`
+              : '',
+        }}
+      >
         <Button
           variant="text"
           onClick={handleOnClick}
@@ -230,8 +182,12 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
           <Cross size={closeButtonSize} />
         </Button>
       </CloseButton>
+
       <SettingsContainer
         $rotation={player.settings.rotation}
+        style={{
+          rotate: calcRotation,
+        }}
         ref={settingsContainerRef}
       >
         <ColorPicker
@@ -244,7 +200,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
         <BetterRowContainer>
           <TogglesSection>
             {player.settings.useCommanderDamage && (
-              <CheckboxContainer $rotation={player.settings.rotation}>
+              <CheckboxContainer>
                 <Checkbox
                   name="usePartner"
                   checked={player.settings.usePartner}
@@ -272,7 +228,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               </CheckboxContainer>
             )}
 
-            <CheckboxContainer $rotation={player.settings.rotation}>
+            <CheckboxContainer>
               <Checkbox
                 name="usePoison"
                 checked={player.settings.usePoison}
@@ -299,7 +255,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               />
             </CheckboxContainer>
 
-            <CheckboxContainer $rotation={player.settings.rotation}>
+            <CheckboxContainer>
               <Checkbox
                 name="useEnergy"
                 checked={player.settings.useEnergy}
@@ -326,7 +282,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               />
             </CheckboxContainer>
 
-            <CheckboxContainer $rotation={player.settings.rotation}>
+            <CheckboxContainer>
               <Checkbox
                 name="useExperience"
                 checked={player.settings.useExperience}
@@ -353,8 +309,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
               />
             </CheckboxContainer>
           </TogglesSection>
-          <Spacer height="1rem" />
-          <ButtonsSections>
+          <ButtonsSections className="mt-4">
             <Button
               variant="text"
               style={{
@@ -366,7 +321,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
             >
               <Exit size={iconSize} style={{ rotate: '180deg' }} />
             </Button>
-            <CheckboxContainer $rotation={player.settings.rotation}>
+            <CheckboxContainer>
               <Checkbox
                 name="fullscreen"
                 checked={document.fullscreenElement ? true : false}
@@ -418,15 +373,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
         </BetterRowContainer>
         <dialog
           ref={dialogRef}
-          style={{
-            zIndex: 9999,
-            background: theme.palette.background.default,
-            color: theme.palette.text.primary,
-            borderRadius: '1rem',
-            border: 'none',
-            position: 'absolute',
-            top: '10%',
-          }}
+          className="z-[9999] bg-background-default text-text-primary rounded-2xl border-none absolute top-[10%]"
         >
           <h1>Reset Game?</h1>
           <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>

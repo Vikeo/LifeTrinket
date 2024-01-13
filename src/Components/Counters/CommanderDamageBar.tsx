@@ -1,27 +1,13 @@
+import { twc } from 'react-twc';
 import { Player, Rotation } from '../../Types/Player';
-import styled from 'styled-components';
-import { css } from 'styled-components';
-import { CommanderDamage } from '../Buttons/CommanderDamage';
+import { CommanderDamage, RotationDivProps } from '../Buttons/CommanderDamage';
 
-const CommanderDamageGrid = styled.div<{ $rotation: number }>`
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  width: 100%;
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: column;
-        height: 100%;
-        width: auto;
-      `;
-    }
-  }}
-`;
+const CommanderDamageGrid = twc.div<RotationDivProps>((props) => [
+  'flex flex-grow',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'flex-col h-full w-auto'
+    : 'flex-row w-full',
+]);
 
 type CommanderDamageBarProps = {
   opponents: Player[];

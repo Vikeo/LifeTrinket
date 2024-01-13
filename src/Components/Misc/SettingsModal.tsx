@@ -1,38 +1,17 @@
 import { Button, FormLabel, Modal, Switch } from '@mui/material';
-import { ModalWrapper } from './InfoModal';
-import styled from 'styled-components';
+import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
-import { theme } from '../../Data/theme';
+import { ModalWrapper } from './InfoModal';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
 
-const SettingContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+const SettingContainer = twc.div`w-full flex flex-col`;
 
-const ToggleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
+const ToggleContainer = twc.div`flex flex-row justify-between items-center`;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
+const Container = twc.div`flex flex-col items-center w-full`;
 
-const Description = styled.p`
-  margin-top: -0.25rem;
-  margin-right: 3.5rem;
-  font-size: 0.8rem;
-  text-align: left;
-  color: ${theme.palette.text.secondary};
-`;
+const Description = twc.p`mr-16 text-xs text-left text-text-secondary`;
 
 type SettingsModalProps = {
   isOpen: boolean;
@@ -100,7 +79,7 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           </SettingContainer>
           {!isPWA && (
             <>
-              <Separator height="2px" />
+              <Separator height="1px" />
               <SettingContainer>
                 <ToggleContainer>
                   <Paragraph>
@@ -110,18 +89,19 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                     normal app!
                   </Paragraph>
                 </ToggleContainer>
-                <Description>
+                <Description className="mt-1">
                   If you do, this app will work offline and the toolbar will be
                   automatically hidden.
                 </Description>
               </SettingContainer>
             </>
           )}
-          <Separator height="2px" />
+          <Separator height="1px" />
           <SettingContainer>
-            <Paragraph>Version: 0.4.0</Paragraph>
+            {/* @ts-expect-error is defined in vite.config.ts*/}
+            <Paragraph>Version: {APP_VERSION}</Paragraph>
           </SettingContainer>
-          <Separator height="2px" />
+          <Separator height="1px" />
 
           <Button variant="contained" onClick={closeModal}>
             Save and Close

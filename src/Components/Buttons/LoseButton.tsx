@@ -1,43 +1,17 @@
-import styled, { css } from 'styled-components';
+import { twc } from 'react-twc';
 import { Skull } from '../../Icons/generated';
 import { Rotation } from '../../Types/Player';
+import { RotationDivProps } from './CommanderDamage';
 
-export const LoseButton = styled.button<{ $rotation: Rotation }>`
-  position: absolute;
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  top: 25%;
-  right: 15%;
-  background-color: #43434380;
-  border-radius: 8px;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  z-index: 1;
+const LoseButton = twc.div<RotationDivProps>((props) => [
+  'absolute flex-grow border-none outline-none cursor-pointer bg-interface-loseButton-background rounded-lg select-none z-[1] webkit-user-select-none',
 
-  ${(props) => {
-    if (props.$rotation === Rotation.SideFlipped) {
-      return css`
-        right: auto;
-        top: 15%;
-        left: 27%;
-        rotate: ${props.$rotation}deg;
-      `;
-    } else if (props.$rotation === Rotation.Side) {
-      return css`
-        right: auto;
-        top: 15%;
-        left: 27%;
-        rotate: ${props.$rotation - 180}deg;
-      `;
-    }
-  }}
-`;
+  props.$rotation === Rotation.SideFlipped
+    ? `right-auto top-[15%] left-[27%]`
+    : props.$rotation === Rotation.Side
+    ? `right-auto top-[15%] left-[27%]`
+    : 'right-[15%] top-1/4',
+]);
 
 type LoseButtonProps = {
   onClick: () => void;
@@ -45,8 +19,20 @@ type LoseButtonProps = {
 };
 
 export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
+  const calcRotation =
+    rotation === Rotation.SideFlipped
+      ? rotation
+      : rotation === Rotation.Side
+      ? rotation - 180
+      : rotation;
+
   return (
-    <LoseButton $rotation={rotation} onClick={onClick} aria-label={`Lose Game`}>
+    <LoseButton
+      $rotation={rotation}
+      onClick={onClick}
+      aria-label={`Lose Game`}
+      style={{ rotate: `${calcRotation}deg` }}
+    >
       <Skull size="5vmin" color="black" opacity={0.5} />
     </LoseButton>
   );

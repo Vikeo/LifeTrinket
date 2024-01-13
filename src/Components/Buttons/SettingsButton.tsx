@@ -1,37 +1,14 @@
-import styled from 'styled-components';
-import { css } from 'styled-components';
-import { Rotation } from '../../Types/Player';
+import { twc } from 'react-twc';
 import { Cog } from '../../Icons/generated';
+import { Rotation } from '../../Types/Player';
+import { RotationButtonProps } from './CommanderDamage';
 
-export const StyledSettingsButton = styled.button<{ $rotation: Rotation }>`
-  position: absolute;
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  top: 25%;
-  right: 1vmax;
-  background-color: transparent;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  z-index: 1;
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.Side ||
-      props.$rotation === Rotation.SideFlipped
-    ) {
-      return css`
-        right: auto;
-        top: 1vmax;
-        left: 27%;
-      `;
-    }
-  }}
-`;
+const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
+  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
+  props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
+    ? `right-auto top-[1vmax] left-[27%]`
+    : 'top-1/4 right-[1vmax]',
+]);
 
 type SettingsButtonProps = {
   onClick: () => void;
@@ -40,13 +17,13 @@ type SettingsButtonProps = {
 
 const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
   return (
-    <StyledSettingsButton
+    <SettingsButtonTwc
       onClick={onClick}
       $rotation={rotation}
       aria-label={`Settings`}
     >
       <Cog size="5vmin" color="black" opacity="0.3" />
-    </StyledSettingsButton>
+    </SettingsButtonTwc>
   );
 };
 

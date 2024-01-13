@@ -1,58 +1,30 @@
-import styled, { css } from 'styled-components';
-import { theme } from '../../Data/theme';
 import { Rotation } from '../../Types/Player';
 
-const Container = styled.div`
-  display: flex;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-`;
+import { twc } from 'react-twc';
+//TODO Create provider for this
+import tailwindConfig from './../../../tailwind.config';
+import resolveConfig from 'tailwindcss/resolveConfig';
 
-const CenteredText = styled.div<{
-  strokeWidth?: string;
-  strokeColor?: string;
-  fillColor?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  $rotation?: Rotation;
-}>`
-  position: absolute;
-  font-weight: ${(props) => props.fontWeight || ''};
-  font-variant-numeric: tabular-nums;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+const fullConfig = resolveConfig(tailwindConfig);
 
-  color: ${(props) => props.fillColor || theme.palette.common.black};
-  font-size: ${(props) => props.fontSize || '6vmin'};
-  -webkit-text-stroke: ${(props) => props.strokeWidth || '1vmin'}${(props) => props.strokeColor || theme.palette.common.white};
-  -webkit-text-fill-color: ${(props) =>
-    props.fillColor || theme.palette.common.black};
+const Container = twc.div`
+  flex
+  relative
+  w-full
+  h-full
+  items-center
+  justify-center
+  `;
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: 270deg;
-      `;
-    }
-  }}
-`;
+const CenteredText = twc.div`absolute select-none text-common-black text-[6vmin] stroke-common-white
+webkit-user-select-none tabular-nums`;
 
-const CenteredTextOutline = styled.span`
-  position: absolute;
-  left: 0;
-  -webkit-text-stroke: 0;
-  pointer-events: none;
-`;
+const CenteredTextOutline = twc.span`
+  absolute
+  left-0
+  stroke-none
+  pointer-events-none
+  `;
 
 type OutlinedTextProps = {
   children?: React.ReactNode;
@@ -73,18 +45,33 @@ export const OutlinedText: React.FC<OutlinedTextProps> = ({
   fillColor,
   rotation,
 }) => {
+  const calcRotation =
+    rotation === Rotation.Side
+      ? rotation - 180
+      : rotation === Rotation.SideFlipped
+      ? rotation
+      : 0;
+
   return (
     <Container>
       <CenteredText
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        strokeWidth={strokeWidth}
-        strokeColor={strokeColor}
-        fillColor={fillColor}
-        $rotation={rotation}
+        style={{
+          fontSize,
+          fontWeight,
+          strokeWidth: strokeWidth || '1vmin',
+          color: fillColor || fullConfig.theme.colors.common.black,
+          WebkitTextStroke: `${strokeWidth || '1vmin'} ${
+            strokeColor || fullConfig.theme.colors.common.white
+          }`,
+          WebkitTextFillColor:
+            fillColor || fullConfig.theme.colors.common.black,
+          rotate: `${calcRotation}deg`,
+        }}
       >
         {children}
-        <CenteredTextOutline aria-hidden>{children}</CenteredTextOutline>
+        <CenteredTextOutline aria-hidden style={{ WebkitTextStroke: 0 }}>
+          {children}
+        </CenteredTextOutline>
       </CenteredText>
     </Container>
   );

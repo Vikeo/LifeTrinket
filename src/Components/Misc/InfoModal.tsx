@@ -1,21 +1,8 @@
 import { Modal } from '@mui/material';
 import { theme } from '../../Data/theme';
-import styled from 'styled-components';
+import { twc } from 'react-twc';
 
-export const ModalWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80vw;
-  height: 85vh;
-  background-color: ${theme.palette.background.default};
-  padding: 1rem;
-  overflow: scroll;
-  border-radius: 1rem;
-  color: ${theme.palette.text.primary};
-  border: none;
-`;
+export const ModalWrapper = twc.div`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[85vh] bg-background-default p-4 overflow-scroll rounded-2xl border-none text-text-primary`;
 
 type InfoModalProps = {
   isOpen: boolean;

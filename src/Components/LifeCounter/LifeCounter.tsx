@@ -1,137 +1,36 @@
 import { useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
-import { theme } from '../../Data/theme';
+import { twc } from 'react-twc';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
+import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { LoseGameButton } from '../Buttons/LoseButton';
 import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Player/PlayerMenu';
 import Health from './Health';
-import { usePlayers } from '../../Hooks/usePlayers';
-import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 
-const LifeCounterContentWrapper = styled.div<{
-  $backgroundColor: string;
-}>`
-  position: relative;
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background-color: ${(props) => props.$backgroundColor || 'antiquewhite'};
-  @media (orientation: landscape) {
-    max-width: 100vmax;
-    max-height: 100vmin;
-  }
+const LifeCounterContentWrapper = twc.div`
+  relative flex flex-grow flex-col items-center w-full h-full overflow-hidden`;
 
-  overflow: hidden;
-`;
+const LifeCounterWrapper = twc.div<RotationDivProps>((props) => [
+  'relative flex items-center w-full h-full z-[1]',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? `flex-row`
+    : `flex-col`,
+]);
 
-const LifeCounterWrapper = styled.div<{
-  $rotation: Rotation;
-}>`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+const StartingPlayerNoticeWrapper = twc.div`z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-primary-main`;
 
-  z-index: 1;
+const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
+  'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? `rotate-[${props.$rotation - 90}deg]`
+    : '',
+]);
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        flex-direction: row;
-        rotate: ${props.$rotation - 90}deg;
-      `;
-    }
-
-    return css`
-      flex-direction: column;
-      rotate: ${props.$rotation}deg;
-    `;
-  }}
-`;
-
-const PlayerNoticeWrapper = styled.div<{
-  $rotation: Rotation;
-  $backgroundColor: string;
-}>`
-  z-index: 1;
-  display: flex;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background: ${(props) => props.$backgroundColor};
-  pointer-events: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: ${props.$rotation - 90}deg;
-      `;
-    }
-  }}
-`;
-
-const DynamicText = styled.div<{ $rotation: Rotation }>`
-  font-size: 8vmin;
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: ${props.$rotation - 180}deg;
-      `;
-    }
-  }}
-`;
-
-const fadeOut = keyframes`
-  0% {
-    opacity: 1;
-  }
-  33% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-
-export const RecentDifference = styled.span`
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-shadow: none;
-  background-color: rgba(255, 255, 255, 0.6);
-  font-variant-numeric: tabular-nums;
-  border-radius: 50%;
-  padding: 5px 10px;
-  font-size: 8vmin;
-  color: #333333;
-  animation: ${fadeOut} 3s 1s ease-out forwards;
-`;
+const DynamicText = twc.div`text-[8vmin]`;
 
 const hasCommanderDamageReached21 = (player: Player) => {
   const commanderDamageTotals = player.commanderDamage.map(
@@ -208,27 +107,38 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
     updatePlayer(updatedPlayer);
   };
 
+  const calcRotation =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? player.settings.rotation - 90
+      : player.settings.rotation;
+
+  const calcTextRotation =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
+      ? player.settings.rotation - 180
+      : player.settings.rotation;
+
   return (
-    <LifeCounterContentWrapper $backgroundColor={player.color}>
-      <LifeCounterWrapper $rotation={player.settings.rotation}>
+    <LifeCounterContentWrapper style={{ background: player.color }}>
+      <LifeCounterWrapper
+        $rotation={player.settings.rotation}
+        style={{ rotate: `${calcRotation}deg` }}
+      >
         {settings.showStartingPlayer &&
           player.isStartingPlayer &&
           player.showStartingPlayer && (
-            <PlayerNoticeWrapper
-              $rotation={player.settings.rotation}
-              $backgroundColor={theme.palette.primary.main}
+            <StartingPlayerNoticeWrapper
+              style={{ rotate: `${calcRotation}deg` }}
             >
-              <DynamicText $rotation={player.settings.rotation}>
+              <DynamicText style={{ rotate: `${calcTextRotation}deg` }}>
                 You start!
               </DynamicText>
-            </PlayerNoticeWrapper>
+            </StartingPlayerNoticeWrapper>
           )}
 
         {player.hasLost && (
-          <PlayerNoticeWrapper
-            $rotation={player.settings.rotation}
-            $backgroundColor={'#00000070'}
-          />
+          <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
         <CommanderDamageBar
           opponents={opponents}
@@ -256,11 +166,10 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           handleLifeChange={handleLifeChange}
         />
         <ExtraCountersBar player={player} />
+        {showPlayerMenu && (
+          <PlayerMenu player={player} setShowPlayerMenu={setShowPlayerMenu} />
+        )}
       </LifeCounterWrapper>
-
-      {showPlayerMenu && (
-        <PlayerMenu player={player} setShowPlayerMenu={setShowPlayerMenu} />
-      )}
     </LifeCounterContentWrapper>
   );
 };

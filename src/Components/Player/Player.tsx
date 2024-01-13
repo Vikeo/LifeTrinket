@@ -1,5 +1,6 @@
 import LifeCounter from '../LifeCounter/LifeCounter';
 import { Player as PlayerType } from '../../Types/Player';
+import { twc } from 'react-twc';
 
 const getGridArea = (player: PlayerType) => {
   switch (player.index) {
@@ -20,9 +21,11 @@ const getGridArea = (player: PlayerType) => {
   }
 };
 
+const PlayerWrapper = twc.div`w-full h-full bg-black`;
+
 export const Player = (players: PlayerType[], gridClasses: string) => {
   return (
-    <div className="w-full h-full bg-black">
+    <PlayerWrapper>
       <div className={`grid w-full h-full gap-1 box-border ${gridClasses} `}>
         {players.map((player) => {
           const gridArea = getGridArea(player);
@@ -42,6 +45,6 @@ export const Player = (players: PlayerType[], gridClasses: string) => {
           );
         })}
       </div>
-    </div>
+    </PlayerWrapper>
   );
 };

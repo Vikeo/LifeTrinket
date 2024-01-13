@@ -1,60 +1,45 @@
 import { ReactNode, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { css } from 'styled-components';
+import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
+import { RotationDivProps } from './CommanderDamage';
 
-const ExtraCounterContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: all;
-  flex-grow: 1;
+const ExtraCounterContainer = twc.div`
+  flex
+  justify-center
+  items-center
+  pointer-events-all
+  flex-grow
 `;
 
-export const StyledExtraCounterButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: transparent;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  height: 100%;
-`;
+const ExtraCounterButton = twc.button`
+  flex
+  justify-center
+  items-center
+  relative
+  flex-grow
+  border-none
+  outline-none
+  cursor-pointer
+  bg-transparent
+  select-none
+  h-full
+  webkit-user-select-none
+  `;
 
-const IconContainer = styled.div<{
-  $rotation: number;
-}>`
-  width: auto;
+const IconContainer = twc.div<RotationDivProps>((props) => [
+  'w-auto',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? 'rotate-[-90deg]'
+    : '',
+]);
 
-  ${(props) => {
-    if (
-      props.$rotation === Rotation.SideFlipped ||
-      props.$rotation === Rotation.Side
-    ) {
-      return css`
-        rotate: -90deg;
-      `;
-    }
-  }}
-`;
-
-const TextContainer = styled.div`
-  position: absolute;
-  translate: -50%;
-  top: 50%;
-  left: 50%;
-`;
+const TextContainer = twc.div`
+  absolute
+  top-1/2
+  left-1/2
+  `;
 
 type ExtraCounterProps = {
   Icon: ReactNode;
@@ -118,7 +103,7 @@ const ExtraCounter = ({
 
   return (
     <ExtraCounterContainer>
-      <StyledExtraCounterButton
+      <ExtraCounterButton
         onPointerDown={handleDownInput}
         onPointerUp={handleUpInput}
         onPointerLeave={handleLeaveInput}
@@ -139,7 +124,7 @@ const ExtraCounter = ({
             </OutlinedText>
           </TextContainer>
         </IconContainer>
-      </StyledExtraCounterButton>
+      </ExtraCounterButton>
     </ExtraCounterContainer>
   );
 };
