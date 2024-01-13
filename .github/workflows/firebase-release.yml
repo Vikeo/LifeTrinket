@@ -1,27 +1,10 @@
 name: Deploy to Firebase Hosting
 'on':
   push:
-    branches:
-      - main
     tags:
       - '*'
 jobs:
-  verify_version:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v1
-
-      - uses: del-systems/check-if-version-bumped@v1.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: 'package.json'
-
   build_and_deploy:
-    needs: verify_version
     runs-on: ubuntu-latest
     env:
       REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
