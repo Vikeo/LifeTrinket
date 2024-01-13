@@ -22,12 +22,13 @@ type SettingsModalProps = {
 export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
   const { settings, setSettings, isPWA } = useGlobalSettings();
   const [isLatestVersion, setIsLatestVersion] = useState(false);
-  // latestVersion ref
   const newVersion = useRef<string | undefined>(undefined);
 
   useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
     async function checkIfLatestVersion() {
-      console.log('checking latest version');
       try {
         const result = await fetch(
           'https://api.github.com/repos/Vikeo/LifeTrinket/releases/latest',
@@ -43,7 +44,6 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
         const data = await result.json();
 
         if (!data.name) {
-          console.log('no version string found, result:', result);
           setIsLatestVersion(false);
           newVersion.current = undefined;
           return;
@@ -51,21 +51,17 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
 
         /* @ts-expect-error is defined in vite.config.ts*/
         if (data.name === APP_VERSION) {
-          console.log('latestVersion true');
-
           newVersion.current = data.name;
           setIsLatestVersion(true);
           return;
         }
-
-        console.log('latestVersion false');
         setIsLatestVersion(false);
       } catch (error) {
-        console.log('error getting latest version string', error);
+        console.error('error getting latest version string', error);
       }
     }
     checkIfLatestVersion();
-  }, []);
+  }, [isOpen]);
 
   return (
     <Modal open={isOpen} onClose={closeModal}>
