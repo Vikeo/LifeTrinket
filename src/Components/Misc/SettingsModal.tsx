@@ -22,7 +22,7 @@ type SettingsModalProps = {
 export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
   const { settings, setSettings, isPWA } = useGlobalSettings();
   const [isLatestVersion, setIsLatestVersion] = useState(false);
-  const newVersion = useRef<string | undefined>(undefined);
+  const [newVersion, setNewVersion] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (!isOpen) {
@@ -45,13 +45,13 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
 
         if (!data.name) {
           setIsLatestVersion(false);
-          newVersion.current = undefined;
+          setNewVersion(undefined);
           return;
         }
 
         /* @ts-expect-error is defined in vite.config.ts*/
         if (data.name === APP_VERSION) {
-          newVersion.current = data.name;
+          setNewVersion(data.name);
           setIsLatestVersion(true);
           return;
         }
@@ -147,13 +147,13 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                 <span className="text-sm text-text-secondary">(latest)</span>
               )}
             </Paragraph>
-            {!isLatestVersion && newVersion.current && (
+            {!isLatestVersion && newVersion && (
               <Paragraph className="text-text-secondary text-lg text-center">
-                New version ({newVersion.current}) is available!{' '}
+                New version ({newVersion}) is available!{' '}
               </Paragraph>
             )}
           </SettingContainer>
-          {!isLatestVersion && newVersion.current && (
+          {!isLatestVersion && newVersion && (
             <Button
               variant="contained"
               style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
