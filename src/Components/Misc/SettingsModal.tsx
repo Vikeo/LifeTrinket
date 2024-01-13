@@ -4,6 +4,7 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { ModalWrapper } from './InfoModal';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
+import { useEffect, useRef, useState } from 'react';
 
 const SettingContainer = twc.div`w-full flex flex-col`;
 
@@ -20,6 +21,43 @@ type SettingsModalProps = {
 
 export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
   const { settings, setSettings, isPWA } = useGlobalSettings();
+  const [isLatestVersion, setIsLatestVersion] = useState(false);
+  // latestVersion ref
+  const newVersion = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    async function checkIfLatestVersion() {
+      console.log('checking latest version');
+
+      try {
+        const result = await fetch(
+          'https://api.github.com/repos/Vikeo/LifeTrinket/releases/latest',
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.REPO_READ_ACCESS_TOKEN}`,
+              Accept: 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+            },
+          }
+        );
+        const data = await result.json();
+
+        /* @ts-expect-error is defined in vite.config.ts*/
+        if (data.name === APP_VERSION) {
+          console.log('latestVersion true');
+
+          newVersion.current = data.name;
+          setIsLatestVersion(true);
+          return;
+        }
+        console.log('latestVersion false');
+        setIsLatestVersion(false);
+      } catch (error) {
+        console.log('error getting latest version string', error);
+      }
+    }
+    checkIfLatestVersion();
+  }, []);
 
   return (
     <Modal open={isOpen} onClose={closeModal}>
@@ -98,18 +136,36 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           )}
           <Separator height="1px" />
           <SettingContainer>
-            {/* @ts-expect-error is defined in vite.config.ts*/}
-            <Paragraph>Version: {APP_VERSION}</Paragraph>
+            <Paragraph>
+              {/* @ts-expect-error is defined in vite.config.ts*/}
+              Current version: {APP_VERSION}{' '}
+              {isLatestVersion && (
+                <span className="text-sm text-text-secondary">(latest)</span>
+              )}
+            </Paragraph>
+            {!isLatestVersion && (
+              <Paragraph className="text-text-secondary text-lg text-center">
+                New version ({newVersion.current}) is available!{' '}
+              </Paragraph>
+            )}
+          </SettingContainer>
+          {!isLatestVersion && (
             <Button
               variant="contained"
+              style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
               onClick={() => window?.location?.reload()}
             >
-              Try to update version
+              <span>Update</span>
+              <span className="text-xs">&nbsp;(reload app)</span>
             </Button>
-          </SettingContainer>
+          )}
           <Separator height="1px" />
 
-          <Button variant="contained" onClick={closeModal}>
+          <Button
+            variant="contained"
+            onClick={closeModal}
+            style={{ marginTop: '0.25rem' }}
+          >
             Save and Close
           </Button>
         </Container>
