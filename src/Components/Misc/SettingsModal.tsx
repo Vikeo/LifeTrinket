@@ -42,6 +42,13 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
         );
         const data = await result.json();
 
+        if (!data.name) {
+          console.log('no version string found, result:', result);
+          setIsLatestVersion(false);
+          newVersion.current = undefined;
+          return;
+        }
+
         /* @ts-expect-error is defined in vite.config.ts*/
         if (data.name === APP_VERSION) {
           console.log('latestVersion true');
@@ -50,6 +57,7 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           setIsLatestVersion(true);
           return;
         }
+
         console.log('latestVersion false');
         setIsLatestVersion(false);
       } catch (error) {
@@ -143,13 +151,13 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                 <span className="text-sm text-text-secondary">(latest)</span>
               )}
             </Paragraph>
-            {!isLatestVersion && (
+            {!isLatestVersion && newVersion.current && (
               <Paragraph className="text-text-secondary text-lg text-center">
                 New version ({newVersion.current}) is available!{' '}
               </Paragraph>
             )}
           </SettingContainer>
-          {!isLatestVersion && (
+          {!isLatestVersion && newVersion.current && (
             <Button
               variant="contained"
               style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
