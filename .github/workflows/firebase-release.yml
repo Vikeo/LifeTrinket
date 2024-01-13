@@ -34,6 +34,9 @@ jobs:
     env:
       working-directory: ${{ github.workspace }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: List Repository Contents
         run: ls -R
 
