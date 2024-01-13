@@ -22,6 +22,21 @@ import {
   RotationDivProps,
 } from '../Buttons/CommanderDamage';
 
+const CheckboxContainer = twc.div``;
+
+const PlayerMenuWrapper = twc.div`
+  flex
+  flex-col
+  absolute
+  w-full
+  h-full
+  bg-background-settings
+  items-center
+  justify-center
+  z-[2]
+  webkit-user-select-none
+`;
+
 const BetterRowContainer = twc.div`
   flex
   flex-col
@@ -59,7 +74,8 @@ const ColorPicker = twc.input`
   outline-none
   cursor-pointer
   bg-transparent
-  user-select-nonetext-common-white
+  user-select-none
+  text-common-white
 `;
 
 const SettingsContainer = twc.div<RotationDivProps>((props) => [
@@ -68,20 +84,6 @@ const SettingsContainer = twc.div<RotationDivProps>((props) => [
     ? 'flex-col'
     : 'flex-row',
 ]);
-
-const CheckboxContainer = twc.div``;
-
-const PlayerMenuWrapper = twc.div`
-  flex
-  flex-col
-  absolute
-  w-full
-  h-full
-  bg-background-settings
-  items-center
-  justify-center
-  z-[2]
-`;
 
 const CloseButton = twc.button<RotationButtonProps>((props) => [
   'absolute border-none outline-none cursor-pointer bg-transparent z-[99]',
