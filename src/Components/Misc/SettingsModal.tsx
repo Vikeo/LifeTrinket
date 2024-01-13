@@ -99,10 +99,10 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           <Separator height="1px" />
           <SettingContainer>
             {/* @ts-expect-error is defined in vite.config.ts*/}
-            <Paragraph>Version: 0.4.1</Paragraph>
+            <Paragraph>Version: {APP_VERSION}.test</Paragraph>
             <Button
               variant="contained"
-              onClick={() => window?.location.reload()}
+              onClick={() => window?.location?.reload()}
             >
               Try to update version
             </Button>
