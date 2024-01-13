@@ -4,56 +4,64 @@ name: Deploy to Firebase Hosting on merge
     tags:
       - '*'
 jobs:
-  # build_and_deploy:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Setup bun
-  #       uses: oven-sh/setup-bun@v1
-
-  #     - name: Build, lint, and deploy
-  #       run: |
-  #         bun install
-  #         bun run build
-  #         bun run lint
-  #     - name: Deploy to Firebase Hosting
-  #       uses: FirebaseExtended/action-hosting-deploy@v0
-  #       with:
-  #         repoToken: '${{ secrets.GITHUB_TOKEN }}'
-  #         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFE_TRINKET }}'
-  #         channelId: live
-  #         projectId: life-trinket
-
-  release:
-    # needs: build_and_deploy
+  verify_version:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract version from package.json
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - uses: del-systems/check-if-version-bumped@v1.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: 'package.json'
+
+  build_and_deploy:
+    needs: verify_version
+    runs-on: ubuntu-latest
+    env:
+      REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Build, lint, and deploy
+        run: |
+          bun install
+          bun run build
+          bun run lint
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFE_TRINKET }}'
+          channelId: live
+          projectId: life-trinket
+
+  release:
+    needs: build_and_deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: get version
         id: version
-        run: echo "::set-output name=version::$(jq -r .version package.json)"
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'package.json'
+          prop_path: 'version'
 
       - name: Create Release Note
         id: create_release_note
-        run: echo "Release Note for version ${{ steps.version.outputs.version }}" > release_note.txt
-
-      # - name: Release
-      #   uses: 'marvinpinto/action-automatic-releases@latest'
-      #   with:
-      #     repo_token: '${{ secrets.RELEASE_TOKEN }}'
-      #     automatic_release_tag: 'latest'
-      #     prerelease: true
-      #     title: ${{ steps.version.outputs.version }}
-      #     files: release_note.txt
+        run: echo "Release Note for version ${{ steps.version.outputs.prop }}" > release_note.txt
 
       - name: Create Release
         uses: ncipollo/release-action@v1.13.0
         with:
-          artifacts: 'path/to/artifact.tar.gz,another/path/to/artifact.txt' # Add your artifact paths
-          body: 'Release notes for version ${{ steps.version.outputs.version }}' # Customize your release notes
-          commit: ${{ github.sha }} # Use the commit hash of the current workflow run
-          tag: '${{ steps.version.outputs.version }}' # Specify the tag for the release
-          token: ${{ secrets.RELEASE_TOKEN }} # GitHub token for authentication
+          body: release_note.txt
+          commit: ${{ github.sha }}
+          tag: '${{ steps.version.outputs.prop }}'
+          token: ${{ secrets.RELEASE_TOKEN }}
