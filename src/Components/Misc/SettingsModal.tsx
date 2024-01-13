@@ -99,7 +99,7 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
           <Separator height="1px" />
           <SettingContainer>
             {/* @ts-expect-error is defined in vite.config.ts*/}
-            <Paragraph>Version: {APP_VERSION}.test</Paragraph>
+            <Paragraph>Version: {APP_VERSION}</Paragraph>
             <Button
               variant="contained"
               onClick={() => window?.location?.reload()}
