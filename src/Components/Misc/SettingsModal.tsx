@@ -69,7 +69,8 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
     <Modal open={isOpen} onClose={closeModal}>
       <ModalWrapper>
         <Container>
-          <h2 style={{ textAlign: 'center' }}>⚙️ Settings ⚙️</h2>
+          <h2 className="text-center text-2xl mb-2">⚙️ Settings ⚙️</h2>
+          <Separator height="1px" />
           <SettingContainer>
             <ToggleContainer>
               <FormLabel>Show Start Player</FormLabel>

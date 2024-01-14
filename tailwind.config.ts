@@ -95,15 +95,3 @@ export default {
   },
   plugins: [tailwindcssGridAreas],
 } satisfies Config;
-
-// const fadeOut = keyframes`
-//   0% {
-//     opacity: 1;
-//   }
-//   33% {
-//     opacity: 0.6;
-//   }
-//   100% {
-//     opacity: 0;
-//   }
-// `;

@@ -20,7 +20,7 @@ import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = twc.div`fixed bottom-4 z-1`;
+const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-col px-4`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
@@ -174,87 +174,88 @@ const Start = () => {
         Life Trinket
       </h1>
 
-      <FormControl focused={false} style={{ width: '80vw' }}>
-        <FormLabel>Number of Players</FormLabel>
-        <Slider
-          title="Number of Players"
-          max={6}
-          min={1}
-          aria-label="Custom marks"
-          value={playerOptions?.numberOfPlayers ?? 4}
-          getAriaValueText={valuetext}
-          step={null}
-          marks={playerMarks}
-          onChange={(_e, value) => {
-            setPlayerOptions({
-              ...playerOptions,
-              numberOfPlayers: value as number,
-              orientation: Orientation.Landscape,
-            });
-          }}
-        />
-        <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
-        <Slider
-          title="Starting Health"
-          max={60}
-          min={20}
-          aria-label="Custom marks"
-          value={playerOptions?.startingLifeTotal ?? 40}
-          getAriaValueText={valuetext}
-          step={10}
-          marks={healthMarks}
-          onChange={(_e, value) =>
-            setPlayerOptions({
-              ...playerOptions,
-              startingLifeTotal: value as number,
-              orientation: Orientation.Landscape,
-            })
-          }
-        />
+      <div className="overflow-hidden items-center flex flex-col max-w-[548px] mb-8 px-4">
+        <FormControl focused={false}>
+          <FormLabel>Number of Players</FormLabel>
+          <Slider
+            title="Number of Players"
+            max={6}
+            min={1}
+            aria-label="Custom marks"
+            value={playerOptions?.numberOfPlayers ?? 4}
+            getAriaValueText={valuetext}
+            step={null}
+            marks={playerMarks}
+            onChange={(_e, value) => {
+              setPlayerOptions({
+                ...playerOptions,
+                numberOfPlayers: value as number,
+                orientation: Orientation.Landscape,
+              });
+            }}
+          />
+          <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
+          <Slider
+            title="Starting Health"
+            max={60}
+            min={20}
+            aria-label="Custom marks"
+            value={playerOptions?.startingLifeTotal ?? 40}
+            getAriaValueText={valuetext}
+            step={10}
+            marks={healthMarks}
+            onChange={(_e, value) =>
+              setPlayerOptions({
+                ...playerOptions,
+                startingLifeTotal: value as number,
+                orientation: Orientation.Landscape,
+              })
+            }
+          />
 
-        <ToggleButtonsWrapper className="mt-4">
-          <ToggleContainer>
-            <FormLabel>Commander</FormLabel>
-            <Switch
-              checked={
-                playerOptions.useCommanderDamage ??
-                initialGameSettings?.useCommanderDamage ??
-                true
-              }
-              onChange={(_e, value) => {
-                if (value) {
+          <ToggleButtonsWrapper className="mt-4">
+            <ToggleContainer>
+              <FormLabel>Commander</FormLabel>
+              <Switch
+                checked={
+                  playerOptions.useCommanderDamage ??
+                  initialGameSettings?.useCommanderDamage ??
+                  true
+                }
+                onChange={(_e, value) => {
+                  if (value) {
+                    setPlayerOptions({
+                      ...playerOptions,
+                      useCommanderDamage: value,
+                      numberOfPlayers: 4,
+                      startingLifeTotal: 40,
+                      orientation: Orientation.Landscape,
+                    });
+                    return;
+                  }
                   setPlayerOptions({
                     ...playerOptions,
                     useCommanderDamage: value,
-                    numberOfPlayers: 4,
-                    startingLifeTotal: 40,
+                    numberOfPlayers: 2,
+                    startingLifeTotal: 20,
                     orientation: Orientation.Landscape,
                   });
-                  return;
-                }
-                setPlayerOptions({
-                  ...playerOptions,
-                  useCommanderDamage: value,
-                  numberOfPlayers: 2,
-                  startingLifeTotal: 20,
-                  orientation: Orientation.Landscape,
-                });
+                }}
+              />
+            </ToggleContainer>
+            <Button
+              variant="contained"
+              style={{ height: '2rem' }}
+              onClick={() => {
+                setOpenSettingsModal(true);
               }}
-            />
-          </ToggleContainer>
-          <Button
-            variant="contained"
-            style={{ height: '2rem' }}
-            onClick={() => {
-              setOpenSettingsModal(true);
-            }}
-          >
-            <Cog /> &nbsp; Other settings
-          </Button>
-        </ToggleButtonsWrapper>
+            >
+              <Cog /> &nbsp; Other settings
+            </Button>
+          </ToggleButtonsWrapper>
 
-        <FormLabel>Layout</FormLabel>
-        {/* <LayoutOptions
+          <FormLabel>Layout</FormLabel>
+          {/* <LayoutOptions
           numberOfPlayers={playerOptions.numberOfPlayers}
           gridAreas={playerOptions.gridAreas}
           onChange={(gridAreas) =>
@@ -266,32 +267,32 @@ const Start = () => {
             })
           }
         /> */}
-        <LayoutOptions
-          numberOfPlayers={playerOptions.numberOfPlayers}
-          selectedOrientation={playerOptions.orientation}
-          onChange={(orientation) => {
-            setPlayerOptions({
-              ...playerOptions,
-              orientation,
-            });
-          }}
-        />
-      </FormControl>
-
-      {!isPWA && (
-        <p className="text-center, max-w-[75%] text-xs text-text-primary">
-          If you're on iOS, this page works better if you{' '}
-          <strong>hide the toolbar</strong> or{' '}
-          <strong>add the app to your home screen</strong>.
-        </p>
-      )}
+          <LayoutOptions
+            numberOfPlayers={playerOptions.numberOfPlayers}
+            selectedOrientation={playerOptions.orientation}
+            onChange={(orientation) => {
+              setPlayerOptions({
+                ...playerOptions,
+                orientation,
+              });
+            }}
+          />
+        </FormControl>
+        {!isPWA && (
+          <p className="text-center text-xs text-text-primary w-11/12 mt-4">
+            If you're on iOS, this page works better if you{' '}
+            <strong>hide the toolbar</strong> or{' '}
+            <strong>add the app to your home screen</strong>.
+          </p>
+        )}
+      </div>
 
       <StartButtonFooter>
         <Button
           size="large"
           variant="contained"
           onClick={doStartGame}
-          style={{ width: '90dvw' }}
+          fullWidth
         >
           START GAME
         </Button>
