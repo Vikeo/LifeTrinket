@@ -13,7 +13,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate-icons": "npx @svgr/cli src/Icons/svgs",
-    "deploy": "bun build && firebase deploy --only hosting"
+    "deploy": "bun run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@mui/material": "^5.13.6",
