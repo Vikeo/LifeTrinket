@@ -373,25 +373,27 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
         </BetterRowContainer>
         <dialog
           ref={dialogRef}
-          className="z-[9999] bg-background-default text-text-primary rounded-2xl border-none absolute top-[10%]"
+          className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute top-[10%]"
         >
-          <h1>Reset Game?</h1>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-            <Button
-              variant="contained"
-              onClick={() => dialogRef.current?.close()}
-            >
-              No
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                handleResetGame();
-                dialogRef.current?.close();
-              }}
-            >
-              Yes
-            </Button>
+          <div className="h-full flex flex-col p-4 gap-2">
+            <h1 className="text-center">Reset Game?</h1>
+            <div className="flex justify-evenly gap-4">
+              <Button
+                variant="contained"
+                onClick={() => dialogRef.current?.close()}
+              >
+                No
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleResetGame();
+                  dialogRef.current?.close();
+                }}
+              >
+                Yes
+              </Button>
+            </div>
           </div>
         </dialog>
       </SettingsContainer>
