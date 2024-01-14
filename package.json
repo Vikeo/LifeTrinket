@@ -1,7 +1,7 @@
 {
   "name": "life-trinket",
   "private": true,
-  "version": "0.5.5",
+  "version": "0.5.51",
   "type": "commonjs",
   "engines": {
     "node": ">=18",
