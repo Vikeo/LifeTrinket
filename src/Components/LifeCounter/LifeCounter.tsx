@@ -30,7 +30,7 @@ const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
     : '',
 ]);
 
-const DynamicText = twc.div`text-[8vmin]`;
+const DynamicText = twc.div`text-[8vmin] whitespace-nowrap`;
 
 const hasCommanderDamageReached21 = (player: Player) => {
   const commanderDamageTotals = player.commanderDamage.map(
@@ -131,7 +131,11 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
             <StartingPlayerNoticeWrapper
               style={{ rotate: `${calcRotation}deg` }}
             >
-              <DynamicText style={{ rotate: `${calcTextRotation}deg` }}>
+              <DynamicText
+                style={{
+                  rotate: `${calcTextRotation}deg`,
+                }}
+              >
                 You start!
               </DynamicText>
             </StartingPlayerNoticeWrapper>

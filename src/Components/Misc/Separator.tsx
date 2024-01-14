@@ -7,7 +7,7 @@ export const Separator = ({
 }) => {
   return (
     <div
-      className={`bg-common-black bg-opacity-30 rounded-full mt-2 mb-2`}
+      className={`bg-common-white bg-opacity-30 rounded-full mt-2 mb-2`}
       style={{ width, height }}
     />
   );

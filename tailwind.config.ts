@@ -39,14 +39,15 @@ export default {
       },
       colors: {
         primary: {
-          main: '#7F9172',
-          dark: '#57654F',
+          main: '#3E7D78',
+          dark: '#2D5F5B',
         },
         secondary: {
-          main: '#5E714C',
+          main: '#284F4C',
+          dark: '#1B3B38',
         },
         background: {
-          default: '#495E35',
+          default: '#08253B',
           backdrop: 'rgba(0, 0, 0, 0.3)',
           settings: 'rgba(20, 20, 0, 0.9)',
         },
@@ -95,3 +96,4 @@ export default {
   },
   plugins: [tailwindcssGridAreas],
 } satisfies Config;
+// #98FF98
