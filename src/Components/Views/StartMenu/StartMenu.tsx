@@ -22,6 +22,8 @@ const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center 
 
 const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-col px-4`;
 
+const SliderWrapper = twc.div`mx-8`;
+
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
 const ToggleContainer = twc.div`flex flex-col items-center`;
@@ -175,43 +177,48 @@ const Start = () => {
       </h1>
 
       <div className="overflow-hidden items-center flex flex-col max-w-[548px] mb-8 px-4">
-        <FormControl focused={false}>
+        <FormControl focused={false} style={{ width: '100%' }}>
           <FormLabel>Number of Players</FormLabel>
-          <Slider
-            title="Number of Players"
-            max={6}
-            min={1}
-            aria-label="Custom marks"
-            value={playerOptions?.numberOfPlayers ?? 4}
-            getAriaValueText={valuetext}
-            step={null}
-            marks={playerMarks}
-            onChange={(_e, value) => {
-              setPlayerOptions({
-                ...playerOptions,
-                numberOfPlayers: value as number,
-                orientation: Orientation.Landscape,
-              });
-            }}
-          />
+          <SliderWrapper>
+            <Slider
+              title="Number of Players"
+              max={6}
+              min={1}
+              aria-label="Custom marks"
+              value={playerOptions?.numberOfPlayers ?? 4}
+              getAriaValueText={valuetext}
+              step={null}
+              marks={playerMarks}
+              onChange={(_e, value) => {
+                setPlayerOptions({
+                  ...playerOptions,
+                  numberOfPlayers: value as number,
+                  orientation: Orientation.Landscape,
+                });
+              }}
+            />
+          </SliderWrapper>
+
           <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
-          <Slider
-            title="Starting Health"
-            max={60}
-            min={20}
-            aria-label="Custom marks"
-            value={playerOptions?.startingLifeTotal ?? 40}
-            getAriaValueText={valuetext}
-            step={10}
-            marks={healthMarks}
-            onChange={(_e, value) =>
-              setPlayerOptions({
-                ...playerOptions,
-                startingLifeTotal: value as number,
-                orientation: Orientation.Landscape,
-              })
-            }
-          />
+          <SliderWrapper>
+            <Slider
+              title="Starting Health"
+              max={60}
+              min={20}
+              aria-label="Custom marks"
+              value={playerOptions?.startingLifeTotal ?? 40}
+              getAriaValueText={valuetext}
+              step={10}
+              marks={healthMarks}
+              onChange={(_e, value) =>
+                setPlayerOptions({
+                  ...playerOptions,
+                  startingLifeTotal: value as number,
+                  orientation: Orientation.Landscape,
+                })
+              }
+            />
+          </SliderWrapper>
 
           <ToggleButtonsWrapper className="mt-4">
             <ToggleContainer>

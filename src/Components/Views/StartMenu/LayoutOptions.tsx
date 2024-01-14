@@ -18,7 +18,7 @@ import { twc } from 'react-twc';
 import OnePlayerLandscape from '../../../Icons/generated/Layouts/OnePlayerLandscape';
 import { Orientation } from '../../../Types/Settings';
 
-const LayoutWrapper = twc.div`flex flex-row justify-between self-center`;
+const LayoutWrapper = twc.div`flex flex-row justify-center items-center self-center w-full`;
 
 type LayoutOptionsProps = {
   numberOfPlayers: number;
@@ -31,14 +31,16 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
   selectedOrientation,
   onChange,
 }) => {
-  const iconHeight = '30vmin';
-  const iconWidth = '20vmin';
+  const iconWidth = '21vmin';
+  const iconHeight = '40vmin';
+  const iconMaxWidth = '124px';
+  const iconMaxHeight = '196px';
 
   const renderLayoutOptions = () => {
     switch (numberOfPlayers) {
       case 1:
         return (
-          <>
+          <div>
             <FormControlLabel
               value={Orientation.Landscape}
               control={
@@ -58,6 +60,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                     />
                   }
                   TouchRippleProps={{ style: { display: 'none' } }}
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                 />
               }
               label=""
@@ -81,11 +84,12 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                     />
                   }
                   TouchRippleProps={{ style: { display: 'none' } }}
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                 />
               }
               label=""
             />
-          </>
+          </div>
         );
       case 2:
         return (
@@ -94,6 +98,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Landscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <TwoPlayersSameSide
                       height={iconHeight}
@@ -117,6 +122,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Portrait}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <TwoPlayersOppositePortrait
                       height={iconHeight}
@@ -140,6 +146,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.OppositeLandscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <TwoPlayersOppositeLandscape
                       height={iconHeight}
@@ -168,6 +175,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Landscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <ThreePlayers
                       height={iconHeight}
@@ -191,6 +199,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Portrait}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <ThreePlayersSide
                       height={iconHeight}
@@ -220,6 +229,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Landscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <FourPlayers
                       height={iconHeight}
@@ -243,6 +253,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Portrait}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <FourPlayersSide
                       height={iconHeight}
@@ -272,6 +283,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Landscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <FivePlayers
                       height={iconHeight}
@@ -324,6 +336,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Landscape}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <SixPlayers
                       height={iconHeight}
