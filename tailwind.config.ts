@@ -6,6 +6,9 @@ import type { Config } from 'tailwindcss';
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      modalSm: '548px',
+    },
     extend: {
       gridTemplateAreas: {
         onePlayerLandscape: ['player0 player0'],
@@ -53,10 +56,10 @@ export default {
         },
         text: {
           primary: '#F5F5F5',
-          secondary: '#b3b39b',
+          secondary: '#76A6A5',
         },
         action: {
-          disabled: '#5E714C',
+          disabled: '#234A47',
         },
         common: {
           white: '#F9FFE3',

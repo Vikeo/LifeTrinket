@@ -67,116 +67,129 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
 
   return (
     <Modal open={isOpen} onClose={closeModal}>
-      <ModalWrapper>
-        <Container>
-          <h2 className="text-center text-2xl mb-2">⚙️ Settings ⚙️</h2>
-          <Separator height="1px" />
-          <SettingContainer>
-            <ToggleContainer>
-              <FormLabel>Show Start Player</FormLabel>
-              <Switch
-                checked={settings.showStartingPlayer}
-                onChange={() => {
-                  setSettings({
-                    ...settings,
-                    showStartingPlayer: !settings.showStartingPlayer,
-                  });
-                }}
-              />
-            </ToggleContainer>
-            <Description>
-              On start or reset of game, will pick a random player who will
-              start first if this is enabled.
-            </Description>
-          </SettingContainer>
-          <SettingContainer>
-            <ToggleContainer>
-              <FormLabel>Keep Awake</FormLabel>
-              <Switch
-                checked={settings.keepAwake}
-                onChange={() => {
-                  setSettings({ ...settings, keepAwake: !settings.keepAwake });
-                }}
-              />
-            </ToggleContainer>
-            <Description>
-              Will prevent device from going to sleep while this app is open if
-              this is enabled.
-            </Description>
-          </SettingContainer>
-          <SettingContainer>
-            <ToggleContainer>
-              <FormLabel>Go fullscreen on start (Android only)</FormLabel>
-              <Switch
-                checked={settings.goFullscreenOnStart}
-                onChange={() => {
-                  setSettings({
-                    ...settings,
-                    goFullscreenOnStart: !settings.goFullscreenOnStart,
-                  });
-                }}
-              />
-            </ToggleContainer>
-            <Description>
-              Will enter fullscreen mode when starting a game if this is
-              enabled.
-            </Description>
-          </SettingContainer>
-          {!isPWA && (
-            <>
-              <Separator height="1px" />
-              <SettingContainer>
-                <ToggleContainer>
-                  <Paragraph>
-                    <b>Tip:</b> You can{' '}
-                    <b>add this webapp to your home page on iOS</b> or{' '}
-                    <b>install it on Android</b> to have it act just like a
-                    normal app!
-                  </Paragraph>
-                </ToggleContainer>
-                <Description className="mt-1">
-                  If you do, this app will work offline and the toolbar will be
-                  automatically hidden.
-                </Description>
-              </SettingContainer>
-            </>
-          )}
-          <Separator height="1px" />
-          <SettingContainer>
-            <Paragraph>
-              {/* @ts-expect-error is defined in vite.config.ts*/}
-              Current version: {APP_VERSION}{' '}
-              {isLatestVersion && (
-                <span className="text-sm text-text-secondary">(latest)</span>
-              )}
-            </Paragraph>
-            {!isLatestVersion && newVersion && (
-              <Paragraph className="text-text-secondary text-lg text-center">
-                New version ({newVersion}) is available!{' '}
-              </Paragraph>
+      <>
+        <div className="flex relative w-full max-w-[548px]">
+          <button
+            onClick={closeModal}
+            className="flex absolute top-10 right-0 z-10 w-10 h-10 text-common-white bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
+          >
+            X
+          </button>
+        </div>
+        <ModalWrapper>
+          <Container>
+            <h2 className="text-center text-2xl mb-2">⚙️ Settings ⚙️</h2>
+            <Separator height="1px" />
+            <SettingContainer>
+              <ToggleContainer>
+                <FormLabel>Show Start Player</FormLabel>
+                <Switch
+                  checked={settings.showStartingPlayer}
+                  onChange={() => {
+                    setSettings({
+                      ...settings,
+                      showStartingPlayer: !settings.showStartingPlayer,
+                    });
+                  }}
+                />
+              </ToggleContainer>
+              <Description>
+                On start or reset of game, will pick a random player who will
+                start first if this is enabled.
+              </Description>
+            </SettingContainer>
+            <SettingContainer>
+              <ToggleContainer>
+                <FormLabel>Keep Awake</FormLabel>
+                <Switch
+                  checked={settings.keepAwake}
+                  onChange={() => {
+                    setSettings({
+                      ...settings,
+                      keepAwake: !settings.keepAwake,
+                    });
+                  }}
+                />
+              </ToggleContainer>
+              <Description>
+                Will prevent device from going to sleep while this app is open
+                if this is enabled.
+              </Description>
+            </SettingContainer>
+            <SettingContainer>
+              <ToggleContainer>
+                <FormLabel>Go fullscreen on start (Android only)</FormLabel>
+                <Switch
+                  checked={settings.goFullscreenOnStart}
+                  onChange={() => {
+                    setSettings({
+                      ...settings,
+                      goFullscreenOnStart: !settings.goFullscreenOnStart,
+                    });
+                  }}
+                />
+              </ToggleContainer>
+              <Description>
+                Will enter fullscreen mode when starting a game if this is
+                enabled.
+              </Description>
+            </SettingContainer>
+            {!isPWA && (
+              <>
+                <Separator height="1px" />
+                <SettingContainer>
+                  <ToggleContainer>
+                    <Paragraph>
+                      <b>Tip:</b> You can{' '}
+                      <b>add this webapp to your home page on iOS</b> or{' '}
+                      <b>install it on Android</b> to have it act just like a
+                      normal app!
+                    </Paragraph>
+                  </ToggleContainer>
+                  <Description className="mt-1">
+                    If you do, this app will work offline and the toolbar will
+                    be automatically hidden.
+                  </Description>
+                </SettingContainer>
+              </>
             )}
-          </SettingContainer>
-          {!isLatestVersion && newVersion && (
+            <Separator height="1px" />
+            <SettingContainer>
+              <Paragraph>
+                {/* @ts-expect-error is defined in vite.config.ts*/}
+                Current version: {APP_VERSION}{' '}
+                {isLatestVersion && (
+                  <span className="text-sm text-text-secondary">(latest)</span>
+                )}
+              </Paragraph>
+              {!isLatestVersion && newVersion && (
+                <Paragraph className="text-text-secondary text-lg text-center">
+                  New version ({newVersion}) is available!{' '}
+                </Paragraph>
+              )}
+            </SettingContainer>
+            {!isLatestVersion && newVersion && (
+              <Button
+                variant="contained"
+                style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
+                onClick={() => window?.location?.reload()}
+              >
+                <span>Update</span>
+                <span className="text-xs">&nbsp;(reload app)</span>
+              </Button>
+            )}
+            <Separator height="1px" />
+
             <Button
               variant="contained"
-              style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
-              onClick={() => window?.location?.reload()}
+              onClick={closeModal}
+              style={{ marginTop: '0.25rem' }}
             >
-              <span>Update</span>
-              <span className="text-xs">&nbsp;(reload app)</span>
+              Save and Close
             </Button>
-          )}
-          <Separator height="1px" />
-
-          <Button
-            variant="contained"
-            onClick={closeModal}
-            style={{ marginTop: '0.25rem' }}
-          >
-            Save and Close
-          </Button>
-        </Container>
-      </ModalWrapper>
+          </Container>
+        </ModalWrapper>
+      </>
     </Modal>
   );
 };

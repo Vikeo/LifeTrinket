@@ -176,7 +176,7 @@ const Start = () => {
         Life Trinket
       </h1>
 
-      <div className="overflow-hidden items-center flex flex-col max-w-[548px] mb-8 px-4">
+      <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
         <FormControl focused={false} style={{ width: '100%' }}>
           <FormLabel>Number of Players</FormLabel>
           <SliderWrapper>
