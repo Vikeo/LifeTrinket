@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
@@ -72,6 +73,25 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const [recentDifference, setRecentDifference] = useState(0);
   const [differenceKey, setDifferenceKey] = useState(Date.now());
 
+  const isSide =
+    player.settings.rotation === Rotation.Side ||
+    player.settings.rotation === Rotation.SideFlipped;
+
+  const rotationAngle = isSide
+    ? player.settings.rotation - 180
+    : player.settings.rotation;
+
+  const handlers = useSwipeable({
+    onSwipedDown: (eventData) => {
+      console.log(`User Swiped on player ${player.index}`, eventData);
+      setShowPlayerMenu(!showPlayerMenu);
+    },
+
+    swipeDuration: 500,
+    onSwiping: (eventData) => console.log(eventData),
+    rotationAngle,
+  });
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setRecentDifference(0);
@@ -124,6 +144,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       <LifeCounterWrapper
         $rotation={player.settings.rotation}
         style={{ rotate: `${calcRotation}deg` }}
+        {...handlers}
       >
         {settings.showStartingPlayer &&
           player.isStartingPlayer &&
