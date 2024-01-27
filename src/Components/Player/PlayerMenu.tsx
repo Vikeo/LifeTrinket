@@ -101,9 +101,6 @@ const PlayerMenu = ({
     containerRef: settingsContainerRef,
   });
 
-  const handleOnClick = () => {
-    setShowPlayerMenu(false);
-  };
   const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
@@ -135,7 +132,6 @@ const PlayerMenu = ({
   const buttonFontSize = isSide ? '1.5vmax' : '3vmin';
   const iconSize = isSide ? '6vmin' : '3vmax';
   const extraCountersSize = isSide ? '8vmin' : '4vmax';
-  const closeButtonSize = isSide ? '6vmin' : '3vmax';
 
   const calcRotation =
     player.settings.rotation === Rotation.Side
