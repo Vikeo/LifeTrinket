@@ -47,6 +47,7 @@ type ExtraCounterProps = {
   type: CounterType;
   setCounterTotal: (updatedCounterTotal: number, type: CounterType) => void;
   rotation: number;
+  isSide: boolean;
   playerIndex: number;
 };
 
@@ -56,14 +57,12 @@ const ExtraCounter = ({
   setCounterTotal,
   type,
   rotation,
+  isSide,
   playerIndex,
 }: ExtraCounterProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
-
-  const isSide =
-    rotation === Rotation.Side || rotation === Rotation.SideFlipped;
 
   const handleCountChange = (increment: number) => {
     if (!counterTotal) {

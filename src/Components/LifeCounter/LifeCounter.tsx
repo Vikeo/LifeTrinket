@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { LoseGameButton } from '../Buttons/LoseButton';
-import SettingsButton from '../Buttons/SettingsButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Player/PlayerMenu';
@@ -24,7 +24,7 @@ const LifeCounterWrapper = twc.div<RotationDivProps>((props) => [
 const StartingPlayerNoticeWrapper = twc.div`z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-primary-main`;
 
 const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
-  'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper',
+  'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper opacity-75',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? `rotate-[${props.$rotation - 90}deg]`
     : '',
@@ -71,14 +71,51 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
   const [differenceKey, setDifferenceKey] = useState(Date.now());
+  const [isLandscape, setIsLandscape] = useState(false);
+
+  const calcRot = player.isSide
+    ? player.settings.rotation - 180
+    : player.settings.rotation;
+
+  const rotationAngle = isLandscape ? calcRot : calcRot + 90;
+
+  const handlers = useSwipeable({
+    trackMouse: true,
+    onSwipedDown: () => {
+      console.log(`User DOWN Swiped on player ${player.index}`);
+      setShowPlayerMenu(true);
+    },
+    onSwipedUp: () => {
+      console.log(`User UP Swiped on player ${player.index}`);
+      setShowPlayerMenu(false);
+    },
+
+    swipeDuration: 500,
+    onSwiping: (eventData) => console.log(eventData),
+    rotationAngle,
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setRecentDifference(0);
     }, 3_000);
 
-    return () => clearTimeout(timer);
-  }, [recentDifference]);
+    const resizeObserver = new ResizeObserver(() => {
+      if (document.body.clientWidth > document.body.clientHeight)
+        setIsLandscape(true);
+      else setIsLandscape(false);
+      return;
+    });
+
+    resizeObserver.observe(document.body);
+
+    return () => {
+      clearTimeout(timer);
+      // Cleanup: disconnect the ResizeObserver when the component unmounts.
+      resizeObserver.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recentDifference, document.body.clientHeight, document.body.clientWidth]);
 
   useEffect(() => {
     if (player.showStartingPlayer) {
@@ -124,6 +161,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       <LifeCounterWrapper
         $rotation={player.settings.rotation}
         style={{ rotate: `${calcRotation}deg` }}
+        {...handlers}
       >
         {settings.showStartingPlayer &&
           player.isStartingPlayer &&
@@ -150,12 +188,6 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           key={player.index}
           handleLifeChange={handleLifeChange}
         />
-        <SettingsButton
-          onClick={() => {
-            setShowPlayerMenu(!showPlayerMenu);
-          }}
-          rotation={player.settings.rotation}
-        />
         {playerCanLose(player) && (
           <LoseGameButton
             rotation={player.settings.rotation}
@@ -170,9 +202,12 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           handleLifeChange={handleLifeChange}
         />
         <ExtraCountersBar player={player} />
-        {showPlayerMenu && (
-          <PlayerMenu player={player} setShowPlayerMenu={setShowPlayerMenu} />
-        )}
+
+        <PlayerMenu
+          isShown={showPlayerMenu}
+          player={player}
+          setShowPlayerMenu={setShowPlayerMenu}
+        />
       </LifeCounterWrapper>
     </LifeCounterContentWrapper>
   );
