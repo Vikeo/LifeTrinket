@@ -229,6 +229,7 @@ export const createInitialPlayers = ({
       extraCounters: [],
       commanderDamage,
       hasLost: false,
+      isSide: rotation === Rotation.Side || rotation === Rotation.SideFlipped,
     };
 
     players.push(player);

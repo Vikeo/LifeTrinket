@@ -8,6 +8,7 @@ export type Player = {
   isStartingPlayer: boolean;
   showStartingPlayer: boolean;
   hasLost: boolean;
+  isSide: boolean;
 };
 
 export type PlayerSettings = {

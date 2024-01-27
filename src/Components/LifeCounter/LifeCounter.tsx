@@ -73,11 +73,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const [recentDifference, setRecentDifference] = useState(0);
   const [differenceKey, setDifferenceKey] = useState(Date.now());
 
-  const isSide =
-    player.settings.rotation === Rotation.Side ||
-    player.settings.rotation === Rotation.SideFlipped;
-
-  const rotationAngle = isSide
+  const rotationAngle = player.isSide
     ? player.settings.rotation - 180
     : player.settings.rotation;
 

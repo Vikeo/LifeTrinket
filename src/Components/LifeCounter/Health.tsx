@@ -8,7 +8,7 @@ import {
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import { OutlinedText } from '../Misc/OutlinedText';
 
-const LifeCountainer = twc.div<RotationDivProps>((props) => [
+const LifeContainer = twc.div<RotationDivProps>((props) => [
   'flex flex-grow relative w-full h-full justify-between items-center',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'flex-col-reverse'
@@ -49,7 +49,6 @@ type HealthProps = {
 
 const Health = ({
   player,
-  rotation,
   handleLifeChange,
   differenceKey,
   recentDifference,
@@ -99,12 +98,13 @@ const Health = ({
   }, [textContainerRef]);
 
   const calculateFontSize = (container: HTMLDivElement) => {
-    const isSide =
-      rotation === Rotation.SideFlipped || rotation === Rotation.Side;
+    const widthRatio = player.isSide
+      ? container.clientHeight
+      : container.clientWidth;
 
-    const widthRatio = isSide ? container.clientHeight : container.clientWidth;
-
-    const heightRatio = isSide ? container.clientWidth : container.clientHeight;
+    const heightRatio = player.isSide
+      ? container.clientWidth
+      : container.clientHeight;
 
     const minRatio = Math.min(widthRatio, heightRatio);
 
@@ -116,7 +116,7 @@ const Health = ({
   };
 
   return (
-    <LifeCountainer $rotation={player.settings.rotation}>
+    <LifeContainer $rotation={player.settings.rotation}>
       <LifeCounterButton
         lifeTotal={player.lifeTotal}
         setLifeTotal={handleLifeChange}
@@ -154,7 +154,7 @@ const Health = ({
         operation="add"
         increment={1}
       />
-    </LifeCountainer>
+    </LifeContainer>
   );
 };
 

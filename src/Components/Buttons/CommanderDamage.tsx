@@ -66,10 +66,6 @@ export const CommanderDamage = ({
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
 
-  const isSide =
-    player.settings.rotation === Rotation.Side ||
-    player.settings.rotation === Rotation.SideFlipped;
-
   const handleCommanderDamageChange = (
     index: number,
     increment: number,
@@ -132,9 +128,9 @@ export const CommanderDamage = ({
   };
 
   const opponentIndex = opponent.index;
-  const fontSize = isSide ? '4vmax' : '7vmin';
+  const fontSize = player.isSide ? '4vmax' : '7vmin';
   const fontWeight = 'bold';
-  const strokeWidth = isSide ? '0.4vmax' : '0.7vmin';
+  const strokeWidth = player.isSide ? '0.4vmax' : '0.7vmin';
 
   return (
     <CommanderDamageContainer

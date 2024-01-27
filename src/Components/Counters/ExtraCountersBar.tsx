@@ -100,6 +100,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
                 (counter) => counter.type === 'commanderTax'
               )?.value
             }
+            isSide={player.isSide}
             setCounterTotal={handleCounterChange}
             playerIndex={player.index}
           />
@@ -114,6 +115,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
                 (counter) => counter.type === 'partnerTax'
               )?.value
             }
+            isSide={player.isSide}
             setCounterTotal={handleCounterChange}
             playerIndex={player.index}
           />
@@ -127,6 +129,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
               player.extraCounters?.find((counter) => counter.type === 'poison')
                 ?.value
             }
+            isSide={player.isSide}
             setCounterTotal={handleCounterChange}
             playerIndex={player.index}
           />
@@ -140,6 +143,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
               player.extraCounters?.find((counter) => counter.type === 'energy')
                 ?.value
             }
+            isSide={player.isSide}
             setCounterTotal={handleCounterChange}
             playerIndex={player.index}
           />
@@ -154,6 +158,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
                 (counter) => counter.type === 'experience'
               )?.value
             }
+            isSide={player.isSide}
             setCounterTotal={handleCounterChange}
             playerIndex={player.index}
           />
