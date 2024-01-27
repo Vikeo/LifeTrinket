@@ -4,13 +4,11 @@ import { Rotation } from '../../Types/Player';
 import { RotationDivProps } from './CommanderDamage';
 
 const LoseButton = twc.div<RotationDivProps>((props) => [
-  'absolute flex-grow border-none outline-none cursor-pointer bg-interface-loseButton-background rounded-lg select-none z-[1] webkit-user-select-none',
+  'absolute flex-grow border-none outline-none cursor-pointer bg-interface-loseButton-background rounded-lg select-none z-[1] webkit-user-select-none py-2 px-4 ',
 
-  props.$rotation === Rotation.SideFlipped
-    ? `right-auto top-[15%] left-[27%]`
-    : props.$rotation === Rotation.Side
-    ? `right-auto top-[15%] left-[27%]`
-    : 'right-[15%] top-1/4',
+  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
+    ? `left-[19%]`
+    : 'top-[21%]',
 ]);
 
 type LoseButtonProps = {
@@ -24,6 +22,8 @@ export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
       ? rotation
       : rotation === Rotation.Side
       ? rotation - 180
+      : rotation === Rotation.Flipped
+      ? rotation - 180
       : rotation;
 
   return (
@@ -33,7 +33,7 @@ export const LoseGameButton = ({ rotation, onClick }: LoseButtonProps) => {
       aria-label={`Lose Game`}
       style={{ rotate: `${calcRotation}deg` }}
     >
-      <Skull size="5vmin" color="black" opacity={0.5} />
+      <Skull size="8vmin" color="black" opacity={0.5} />
     </LoseButton>
   );
 };

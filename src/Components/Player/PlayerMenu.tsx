@@ -6,7 +6,6 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
 import {
-  Cross,
   Energy,
   Exit,
   Experience,
@@ -17,10 +16,7 @@ import {
   ResetGame,
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
-import {
-  RotationButtonProps,
-  RotationDivProps,
-} from '../Buttons/CommanderDamage';
+import { RotationDivProps } from '../Buttons/CommanderDamage';
 
 const CheckboxContainer = twc.div``;
 
@@ -35,6 +31,7 @@ const PlayerMenuWrapper = twc.div`
   justify-center
   z-[2]
   webkit-user-select-none
+  transition-all
 `;
 
 const BetterRowContainer = twc.div`
@@ -85,21 +82,17 @@ const SettingsContainer = twc.div<RotationDivProps>((props) => [
     : 'flex-row',
 ]);
 
-const CloseButton = twc.button<RotationButtonProps>((props) => [
-  'absolute border-none outline-none cursor-pointer bg-transparent z-[99]',
-  props.$rotation === Rotation.Side
-    ? `top-[5%] right-auto left-[5%]`
-    : props.$rotation === Rotation.SideFlipped
-    ? 'top-auto left-auto bottom-[5%] right-[5%]'
-    : 'top-[15%] right-[5%]',
-]);
-
 type PlayerMenuProps = {
   player: Player;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
+  isShown: boolean;
 };
 
-const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
+const PlayerMenu = ({
+  player,
+  setShowPlayerMenu,
+  isShown,
+}: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -156,33 +149,10 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
       //TODO: Fix hacky solution to rotation for SideFlipped
       style={{
         rotate:
-          player.settings.rotation === Rotation.SideFlipped ? '180deg' : '',
+          player.settings.rotation === Rotation.SideFlipped ? `180deg` : '',
+        translate: isShown ? '' : player.isSide ? `-100%` : `0 -100%`,
       }}
     >
-      <CloseButton
-        $rotation={player.settings.rotation}
-        style={{
-          rotate:
-            player.settings.rotation === Rotation.Side ||
-            player.settings.rotation === Rotation.SideFlipped
-              ? `${player.settings.rotation - 180}deg`
-              : '',
-        }}
-      >
-        <Button
-          variant="text"
-          onClick={handleOnClick}
-          style={{
-            margin: 0,
-            padding: 0,
-            height: closeButtonSize,
-            width: closeButtonSize,
-          }}
-        >
-          <Cross size={closeButtonSize} />
-        </Button>
-      </CloseButton>
-
       <SettingsContainer
         $rotation={player.settings.rotation}
         style={{
@@ -373,7 +343,7 @@ const PlayerMenu = ({ player, setShowPlayerMenu }: PlayerMenuProps) => {
         </BetterRowContainer>
         <dialog
           ref={dialogRef}
-          className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute top-[10%]"
+          className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute bottom-[20%]"
         >
           <div className="h-full flex flex-col p-4 gap-2">
             <h1 className="text-center">Reset Game?</h1>

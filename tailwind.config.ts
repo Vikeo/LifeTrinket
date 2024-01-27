@@ -67,7 +67,7 @@ export default {
         },
         lifeCounter: {
           text: 'rgba(0, 0, 0, 0.4)',
-          lostWrapper: '#00000070',
+          lostWrapper: '#000000',
         },
         interface: {
           loseButton: {
