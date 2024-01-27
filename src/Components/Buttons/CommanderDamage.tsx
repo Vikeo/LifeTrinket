@@ -17,6 +17,8 @@ export type RotationButtonProps = TwcComponentProps<'button'> & {
   $rotation?: number;
 };
 
+export const MAX_TAP_MOVE_DISTANCE = 20;
+
 const CommanderDamageContainer = twc.div<RotationDivProps>((props) => [
   'flex flex-grow',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
@@ -38,7 +40,7 @@ const CommanderDamageTextContainer = twc.div<RotationDivProps>((props) => [
     : '',
 ]);
 
-const PartnerDamageSeperator = twc.div<RotationDivProps>((props) => [
+const PartnerDamageSeparator = twc.div<RotationDivProps>((props) => [
   'bg-black',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'w-full h-px'
@@ -54,6 +56,7 @@ type CommanderDamageButtonComponentProps = {
 type InputProps = {
   opponentIndex: number;
   isPartner: boolean;
+  event: React.PointerEvent<HTMLButtonElement>;
 };
 
 export const CommanderDamage = ({
@@ -65,6 +68,7 @@ export const CommanderDamage = ({
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
+  const downPositionRef = useRef({ x: 0, y: 0 });
 
   const handleCommanderDamageChange = (
     index: number,
@@ -103,7 +107,8 @@ export const CommanderDamage = ({
     handleLifeChange(player.lifeTotal - increment);
   };
 
-  const handleDownInput = ({ opponentIndex, isPartner }: InputProps) => {
+  const handleDownInput = ({ opponentIndex, isPartner, event }: InputProps) => {
+    downPositionRef.current = { x: event.clientX, y: event.clientY };
     setTimeoutFinished(false);
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
@@ -112,11 +117,23 @@ export const CommanderDamage = ({
     }, decrementTimeoutMs);
   };
 
-  const handleUpInput = ({ opponentIndex, isPartner }: InputProps) => {
+  const handleUpInput = ({ opponentIndex, isPartner, event }: InputProps) => {
     if (!(hasPressedDown && !timeoutFinished)) {
       return;
     }
-    clearTimeout(timeoutRef.current);
+
+    const upPosition = { x: event.clientX, y: event.clientY };
+
+    const hasMoved =
+      Math.abs(upPosition.x - downPositionRef.current.x) >
+        MAX_TAP_MOVE_DISTANCE ||
+      Math.abs(upPosition.y - downPositionRef.current.y) >
+        MAX_TAP_MOVE_DISTANCE;
+
+    if (hasMoved) {
+      return;
+    }
+
     handleCommanderDamageChange(opponentIndex, 1, isPartner);
     setHasPressedDown(false);
   };
@@ -141,10 +158,12 @@ export const CommanderDamage = ({
       <CommanderDamageButton
         key={opponentIndex}
         $rotation={player.settings.rotation}
-        onPointerDown={() =>
-          handleDownInput({ opponentIndex, isPartner: false })
+        onPointerDown={(e) =>
+          handleDownInput({ opponentIndex, isPartner: false, event: e })
         }
-        onPointerUp={() => handleUpInput({ opponentIndex, isPartner: false })}
+        onPointerUp={(e) =>
+          handleUpInput({ opponentIndex, isPartner: false, event: e })
+        }
         onPointerLeave={handleLeaveInput}
         onContextMenu={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           e.preventDefault();
@@ -167,15 +186,15 @@ export const CommanderDamage = ({
 
       {opponent.settings.usePartner && (
         <>
-          <PartnerDamageSeperator $rotation={player.settings.rotation} />
+          <PartnerDamageSeparator $rotation={player.settings.rotation} />
           <CommanderDamageButton
             key={opponentIndex}
             $rotation={player.settings.rotation}
-            onPointerDown={() =>
-              handleDownInput({ opponentIndex, isPartner: true })
+            onPointerDown={(e) =>
+              handleDownInput({ opponentIndex, isPartner: true, event: e })
             }
-            onPointerUp={() =>
-              handleUpInput({ opponentIndex, isPartner: true })
+            onPointerUp={(e) =>
+              handleUpInput({ opponentIndex, isPartner: true, event: e })
             }
             onPointerLeave={handleLeaveInput}
             onContextMenu={(

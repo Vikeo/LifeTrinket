@@ -40,16 +40,19 @@ const BetterRowContainer = twc.div`
   flex-grow
   w-full
   h-full
-  justify-end
+  justify-between
   items-stretch
 `;
 
 const TogglesSection = twc.div`
   flex
-  relative
   flex-row
+  flex-wrap
+  relative
   gap-2
+  h-full
   justify-evenly
+  items-center
 `;
 
 const ButtonsSections = twc.div`
@@ -59,14 +62,14 @@ const ButtonsSections = twc.div`
   justify-between
   p-[3%]
   items-center
+  flex-wrap
 `;
 
 const ColorPicker = twc.input`
-  absolute
-  top-[5%]
-  left-[5%]
   h-[8vmax]
   w-[8vmax]
+  max-h-12
+  max-w-11
   border-none
   outline-none
   cursor-pointer
@@ -156,15 +159,15 @@ const PlayerMenu = ({
         }}
         ref={settingsContainerRef}
       >
-        <ColorPicker
-          type="color"
-          value={player.color}
-          onChange={handleColorChange}
-          role="button"
-          aria-label="Color picker"
-        />
         <BetterRowContainer>
           <TogglesSection>
+            <ColorPicker
+              type="color"
+              value={player.color}
+              onChange={handleColorChange}
+              role="button"
+              aria-label="Color picker"
+            />
             {player.settings.useCommanderDamage && (
               <CheckboxContainer>
                 <Checkbox
@@ -341,7 +344,7 @@ const PlayerMenu = ({
           ref={dialogRef}
           className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute bottom-[20%]"
         >
-          <div className="h-full flex flex-col p-4 gap-2">
+          <div className="flex flex-col p-4 gap-2">
             <h1 className="text-center">Reset Game?</h1>
             <div className="flex justify-evenly gap-4">
               <Button

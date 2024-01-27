@@ -3,7 +3,7 @@ import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
-import { RotationDivProps } from './CommanderDamage';
+import { MAX_TAP_MOVE_DISTANCE, RotationDivProps } from './CommanderDamage';
 
 const ExtraCounterContainer = twc.div`
   flex
@@ -63,6 +63,7 @@ const ExtraCounter = ({
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
+  const downPositionRef = useRef({ x: 0, y: 0 });
 
   const handleCountChange = (increment: number) => {
     if (!counterTotal) {
@@ -72,7 +73,8 @@ const ExtraCounter = ({
     setCounterTotal(counterTotal + increment, type);
   };
 
-  const handleDownInput = () => {
+  const handleDownInput = (event: React.PointerEvent<HTMLButtonElement>) => {
+    downPositionRef.current = { x: event.clientX, y: event.clientY };
     setTimeoutFinished(false);
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
@@ -81,10 +83,23 @@ const ExtraCounter = ({
     }, decrementTimeoutMs);
   };
 
-  const handleUpInput = () => {
+  const handleUpInput = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (!(hasPressedDown && !timeoutFinished)) {
       return;
     }
+
+    const upPosition = { x: event.clientX, y: event.clientY };
+
+    const hasMoved =
+      Math.abs(upPosition.x - downPositionRef.current.x) >
+        MAX_TAP_MOVE_DISTANCE ||
+      Math.abs(upPosition.y - downPositionRef.current.y) >
+        MAX_TAP_MOVE_DISTANCE;
+
+    if (hasMoved) {
+      return;
+    }
+
     clearTimeout(timeoutRef.current);
     handleCountChange(1);
     setHasPressedDown(false);

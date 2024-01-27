@@ -64,6 +64,8 @@ type LifeCounterProps = {
   opponents: Player[];
 };
 
+const RECENT_DIFFERENCE_TTL = 3_000;
+
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings } = useGlobalSettings();
@@ -81,24 +83,26 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
 
   const handlers = useSwipeable({
     trackMouse: true,
-    onSwipedDown: () => {
+    onSwipedDown: (e) => {
+      e.event.stopPropagation();
       console.log(`User DOWN Swiped on player ${player.index}`);
       setShowPlayerMenu(true);
     },
-    onSwipedUp: () => {
+    onSwipedUp: (e) => {
+      e.event.stopPropagation();
       console.log(`User UP Swiped on player ${player.index}`);
       setShowPlayerMenu(false);
     },
 
     swipeDuration: 500,
-    onSwiping: (eventData) => console.log(eventData),
+    onSwiping: (e) => e.event.stopPropagation(),
     rotationAngle,
   });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setRecentDifference(0);
-    }, 3_000);
+    }, RECENT_DIFFERENCE_TTL);
 
     const resizeObserver = new ResizeObserver(() => {
       if (document.body.clientWidth > document.body.clientHeight)

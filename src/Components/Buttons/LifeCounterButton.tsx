@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { TwcComponentProps, twc } from 'react-twc';
 import { lifeLongPressMultiplier } from '../../Data/constants';
 import { Rotation } from '../../Types/Player';
+import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
 
 type RotationButtonProps = TwcComponentProps<'div'> & {
   $align?: string;
@@ -56,12 +57,14 @@ const LifeCounterButton = ({
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
+  const downPositionRef = useRef({ x: 0, y: 0 });
 
   const handleLifeChange = (increment: number) => {
     setLifeTotal(lifeTotal + increment);
   };
 
-  const handleDownInput = () => {
+  const handleDownInput = (event: React.PointerEvent<HTMLButtonElement>) => {
+    downPositionRef.current = { x: event.clientX, y: event.clientY };
     setTimeoutFinished(false);
     setHasPressedDown(true);
     timeoutRef.current = setTimeout(() => {
@@ -70,10 +73,23 @@ const LifeCounterButton = ({
     }, 500);
   };
 
-  const handleUpInput = () => {
+  const handleUpInput = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (!(hasPressedDown && !timeoutFinished)) {
       return;
     }
+
+    const upPosition = { x: event.clientX, y: event.clientY };
+
+    const hasMoved =
+      Math.abs(upPosition.x - downPositionRef.current.x) >
+        MAX_TAP_MOVE_DISTANCE ||
+      Math.abs(upPosition.y - downPositionRef.current.y) >
+        MAX_TAP_MOVE_DISTANCE;
+
+    if (hasMoved) {
+      return;
+    }
+
     clearTimeout(timeoutRef.current);
     handleLifeChange(operation === 'add' ? 1 : -1);
     setHasPressedDown(false);
