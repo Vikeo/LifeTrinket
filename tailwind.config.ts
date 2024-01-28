@@ -54,6 +54,10 @@ export default {
           backdrop: 'rgba(0, 0, 0, 0.3)',
           settings: 'rgba(20, 20, 0, 0.9)',
         },
+        icons: {
+          dark: '#000000',
+          light: '#FFFFFF',
+        },
         text: {
           primary: '#F5F5F5',
           secondary: '#76A6A5',
