@@ -5,6 +5,7 @@ import { theme } from '../../Data/theme';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
+import { HexColorPicker } from 'react-colorful';
 import {
   Energy,
   Exit,
@@ -65,17 +66,12 @@ const ButtonsSections = twc.div`
   flex-wrap
 `;
 
-const ColorPicker = twc.input`
+const ColorPicker = twc.button`
   h-[8vmax]
   w-[8vmax]
   max-h-12
-  max-w-11
-  border-none
-  outline-none
-  cursor-pointer
-  bg-transparent
-  user-select-none
-  text-common-white
+  max-w-12
+  rounded-full
 `;
 
 const SettingsContainer = twc.div<RotationDivProps>((props) => [
@@ -97,7 +93,8 @@ const PlayerMenu = ({
   isShown,
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
+  const colorPickerDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -107,8 +104,8 @@ const PlayerMenu = ({
   const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
-  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedPlayer = { ...player, color: event.target.value };
+  const handleColorChange = (newColor: string) => {
+    const updatedPlayer = { ...player, color: newColor };
     updatePlayer(updatedPlayer);
   };
 
@@ -162,12 +159,11 @@ const PlayerMenu = ({
         <BetterRowContainer>
           <TogglesSection>
             <ColorPicker
-              type="color"
-              value={player.color}
-              onChange={handleColorChange}
-              role="button"
+              style={{ backgroundColor: player.color }}
+              onClick={() => colorPickerDialogRef.current?.show()}
               aria-label="Color picker"
             />
+            {/* <HexColorPicker color={player.color} onChange={handleColorChange} /> */}
             {player.settings.useCommanderDamage && (
               <CheckboxContainer>
                 <Checkbox
@@ -196,7 +192,6 @@ const PlayerMenu = ({
                 />
               </CheckboxContainer>
             )}
-
             <CheckboxContainer>
               <Checkbox
                 name="usePoison"
@@ -223,7 +218,6 @@ const PlayerMenu = ({
                 aria-label="Poison"
               />
             </CheckboxContainer>
-
             <CheckboxContainer>
               <Checkbox
                 name="useEnergy"
@@ -250,7 +244,6 @@ const PlayerMenu = ({
                 aria-label="Energy"
               />
             </CheckboxContainer>
-
             <CheckboxContainer>
               <Checkbox
                 name="useExperience"
@@ -331,7 +324,7 @@ const PlayerMenu = ({
                 fontSize: buttonFontSize,
                 padding: '4px',
               }}
-              onClick={() => dialogRef.current?.show()}
+              onClick={() => resetGameDialogRef.current?.show()}
               role="checkbox"
               aria-checked={wakeLock.active}
               aria-label="Reset Game"
@@ -341,28 +334,44 @@ const PlayerMenu = ({
           </ButtonsSections>
         </BetterRowContainer>
         <dialog
-          ref={dialogRef}
-          className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute bottom-[20%]"
+          ref={resetGameDialogRef}
+          className="z-[999] size-full bg-background-settings"
+          onClick={() => resetGameDialogRef.current?.close()}
         >
-          <div className="flex flex-col p-4 gap-2">
-            <h1 className="text-center">Reset Game?</h1>
-            <div className="flex justify-evenly gap-4">
-              <Button
-                variant="contained"
-                onClick={() => dialogRef.current?.close()}
-              >
-                No
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  handleResetGame();
-                  dialogRef.current?.close();
-                }}
-              >
-                Yes
-              </Button>
+          <div className="flex size-full items-center justify-center">
+            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-2xl border-none">
+              <h1 className="text-center text-text-primary">Reset Game?</h1>
+              <div className="flex justify-evenly gap-4">
+                <Button
+                  variant="contained"
+                  onClick={() => resetGameDialogRef.current?.close()}
+                >
+                  No
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    handleResetGame();
+                    resetGameDialogRef.current?.close();
+                  }}
+                >
+                  Yes
+                </Button>
+              </div>
             </div>
+          </div>
+        </dialog>
+        <dialog
+          ref={colorPickerDialogRef}
+          className="z-[9999] size-full bg-background-settings"
+          onClick={() => colorPickerDialogRef.current?.close()}
+        >
+          <div className="flex justify-center items-center size-full">
+            <HexColorPicker
+              color={player.color}
+              onChange={handleColorChange}
+              style={{ height: '80%', width: '60%' }}
+            />
           </div>
         </dialog>
       </SettingsContainer>

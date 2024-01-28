@@ -7,7 +7,7 @@ const LoseButton = twc.div<RotationDivProps>((props) => [
   'absolute flex-grow border-none outline-none cursor-pointer bg-interface-loseButton-background rounded-lg select-none z-[1] webkit-user-select-none py-2 px-4 ',
 
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
-    ? `left-[19%]`
+    ? `left-[21%]`
     : 'top-[21%]',
 ]);
 
