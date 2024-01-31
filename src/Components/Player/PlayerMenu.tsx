@@ -27,6 +27,7 @@ const PlayerMenuWrapper = twc.div`
   w-full
   h-full
   bg-background-settings
+  backdrop-blur-[10px]
   items-center
   justify-center
   z-[2]
