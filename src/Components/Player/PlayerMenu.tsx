@@ -67,12 +67,15 @@ const ButtonsSections = twc.div`
   flex-wrap
 `;
 
-const ColorPickerButton = twc.button`
+const ColorPickerButton = twc.div`
   h-[8vmax]
   w-[8vmax]
+  relative
   max-h-12
   max-w-12
   rounded-full
+  cursor-pointer
+  overflow-hidden
 `;
 
 const SettingsContainer = twc.div<RotationDivProps>((props) => [
@@ -159,11 +162,13 @@ const PlayerMenu = ({
       >
         <BetterRowContainer>
           <TogglesSection>
-            <ColorPickerButton
-              style={{ backgroundColor: player.color }}
-              onClick={() => colorPickerDialogRef.current?.show()}
-              aria-label="Color picker"
-            />
+            <ColorPickerButton aria-label="Color picker">
+              <input
+                type="color"
+                className="size-[200%] absolute -left-2 -top-2"
+                value={player.color}
+              />
+            </ColorPickerButton>
             {player.settings.useCommanderDamage && (
               <CheckboxContainer>
                 <Checkbox
