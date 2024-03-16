@@ -70,8 +70,8 @@ const bc = 0.0722;
 // low-gamma adjust coefficient
 const lowc = 1 / 12.92;
 
-function adjustGamma(_) {
-  return Math.pow((_ + 0.055) / 1.055, 2.4);
+function adjustGamma(input: number) {
+  return Math.pow((input + 0.055) / 1.055, 2.4);
 }
 
 export const relativeLuminance = (rgb: RGBA) => {
