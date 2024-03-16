@@ -17,7 +17,6 @@ import {
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
-import { ColorPicker } from '../ColorPicker';
 
 const CheckboxContainer = twc.div``;
 
@@ -98,7 +97,6 @@ const PlayerMenu = ({
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
-  const colorPickerDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -108,8 +106,8 @@ const PlayerMenu = ({
   const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
-  const handleColorChange = (newColor: string) => {
-    const updatedPlayer = { ...player, color: newColor };
+  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedPlayer = { ...player, color: event.target.value };
     updatePlayer(updatedPlayer);
   };
 
@@ -164,6 +162,7 @@ const PlayerMenu = ({
           <TogglesSection>
             <ColorPickerButton aria-label="Color picker">
               <input
+                onChange={handleColorChange}
                 type="color"
                 className="size-[200%] absolute -left-2 -top-2"
                 value={player.color}
@@ -364,24 +363,6 @@ const PlayerMenu = ({
                 </Button>
               </div>
             </div>
-          </div>
-        </dialog>
-
-        <dialog
-          ref={colorPickerDialogRef}
-          className="z-[9999] size-full bg-background-settings"
-          onClick={() => colorPickerDialogRef.current?.close()}
-        >
-          <div className="flex justify-center items-center size-full">
-            {/* <HexColorPicker
-              color={player.color}
-              onChange={handleColorChange}
-              style={{
-                height: '80%',
-                width: '60%',
-              }}
-            /> */}
-            <ColorPicker onChange={handleColorChange} />
           </div>
         </dialog>
       </SettingsContainer>
