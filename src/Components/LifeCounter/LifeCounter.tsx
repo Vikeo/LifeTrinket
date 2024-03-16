@@ -13,7 +13,7 @@ import { LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { Paragraph } from '../Misc/TextComponents';
-import PlayerMenu from '../Player/PlayerMenu';
+import PlayerMenu from '../Players/PlayerMenu';
 import Health from './Health';
 import { baseColors } from '../../../tailwind.config';
 
@@ -90,13 +90,15 @@ const playerCanLose = (player: Player) => {
 type LifeCounterProps = {
   player: Player;
   opponents: Player[];
+  isStartingPlayer?: boolean;
 };
 
 const RECENT_DIFFERENCE_TTL = 3_000;
 
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { settings } = useGlobalSettings();
+  const { settings, playing, setPlaying, stopPlayerRandomization } =
+    useGlobalSettings();
   const playingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
@@ -114,12 +116,10 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
     trackMouse: true,
     onSwipedDown: (e) => {
       e.event.stopPropagation();
-      console.log(`User DOWN Swiped on player ${player.index}`);
       setShowPlayerMenu(true);
     },
     onSwipedUp: (e) => {
       e.event.stopPropagation();
-      console.log(`User UP Swiped on player ${player.index}`);
       setShowPlayerMenu(false);
     },
 
@@ -151,12 +151,26 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   }, [recentDifference, document.body.clientHeight, document.body.clientWidth]);
 
   useEffect(() => {
-    playingTimerRef.current = setTimeout(() => {
-      localStorage.setItem('playing', 'true');
-    }, 10_000);
+    if (
+      player.isStartingPlayer &&
+      ((!playing &&
+        settings.useRandomStartingPlayerInterval &&
+        stopPlayerRandomization) ||
+        (!settings.useRandomStartingPlayerInterval && !playing))
+    ) {
+      playingTimerRef.current = setTimeout(() => {
+        setPlaying(true);
+      }, 10_000);
+    }
 
     return () => clearTimeout(playingTimerRef.current);
-  }, []);
+  }, [
+    player.isStartingPlayer,
+    playing,
+    setPlaying,
+    settings.useRandomStartingPlayerInterval,
+    stopPlayerRandomization,
+  ]);
 
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
@@ -191,39 +205,52 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         style={{ rotate: `${calcRotation}deg` }}
         {...handlers}
       >
-        {settings.showStartingPlayer &&
-          player.isStartingPlayer &&
-          player.showStartingPlayer && (
-            <div
-              className="z-10 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
+        {!playing && settings.showStartingPlayer && player.isStartingPlayer && (
+          <div
+            className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
+            style={{
+              rotate: `${calcRotation}deg`,
+              backgroundImage:
+                stopPlayerRandomization ||
+                !settings.useRandomStartingPlayerInterval
+                  ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
+                  : 'none',
+            }}
+            onClick={() => {
+              clearTimeout(playingTimerRef.current);
+              setPlaying(true);
+            }}
+          >
+            <DynamicText
               style={{
-                rotate: `${calcRotation}deg`,
-                backgroundImage: `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`,
-              }}
-              onClick={() => {
-                clearTimeout(playingTimerRef.current);
-                localStorage.setItem('playing', 'true');
-                player.showStartingPlayer = false;
-                updatePlayer(player);
+                rotate: `${calcTextRotation}deg`,
               }}
             >
-              <DynamicText
-                style={{
-                  rotate: `${calcTextRotation}deg`,
-                }}
-              >
-                <div className="flex flex-col justify-center items-center">
-                  <Paragraph>👑</Paragraph>
-                  <Paragraph>You start!</Paragraph>
-                  <Paragraph className="text-xl">(Press to hide)</Paragraph>
-                </div>
-              </DynamicText>
-            </div>
-          )}
+              <div className="flex flex-col justify-center items-center">
+                <Paragraph>👑</Paragraph>
+                {(stopPlayerRandomization ||
+                  !settings.useRandomStartingPlayerInterval) && (
+                  <>
+                    <Paragraph>You start!</Paragraph>
+                    <Paragraph className="text-xl">(Press to hide)</Paragraph>
+                  </>
+                )}
+              </div>
+            </DynamicText>
+          </div>
+        )}
 
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
+        {settings.useRandomStartingPlayerInterval &&
+          !stopPlayerRandomization &&
+          !playing && (
+            <div
+              className="flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none z-10"
+              style={{ backgroundColor: player.color }}
+            />
+          )}
         <CommanderDamageBar
           opponents={opponents}
           player={player}

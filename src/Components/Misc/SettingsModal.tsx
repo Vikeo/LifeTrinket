@@ -123,6 +123,26 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
             </SettingContainer>
             <SettingContainer>
               <ToggleContainer>
+                <FormLabel>Randomize starting player with interval</FormLabel>
+                <Switch
+                  checked={settings.useRandomStartingPlayerInterval}
+                  onChange={() => {
+                    setSettings({
+                      ...settings,
+                      useRandomStartingPlayerInterval:
+                        !settings.useRandomStartingPlayerInterval,
+                    });
+                  }}
+                />
+              </ToggleContainer>
+              <Description>
+                Will randomize between all players at when starting a game,
+                pressing the screen aborts the interval and chooses the player
+                that has the crown.
+              </Description>
+            </SettingContainer>
+            <SettingContainer>
+              <ToggleContainer>
                 <FormLabel>Keep Awake</FormLabel>
                 <Switch
                   checked={settings.keepAwake}
