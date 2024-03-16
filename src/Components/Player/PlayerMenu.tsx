@@ -66,17 +66,15 @@ const ButtonsSections = twc.div`
   flex-wrap
 `;
 
-const ColorPicker = twc.input`
+const ColorPickerButton = twc.div`
   h-[8vmax]
   w-[8vmax]
+  relative
   max-h-12
-  max-w-11
-  border-none
-  outline-none
+  max-w-12
+  rounded-full
   cursor-pointer
-  bg-transparent
-  user-select-none
-  text-common-white
+  overflow-hidden
 `;
 
 const SettingsContainer = twc.div<RotationDivProps>((props) => [
@@ -98,7 +96,7 @@ const PlayerMenu = ({
   isShown,
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
-  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -162,13 +160,14 @@ const PlayerMenu = ({
       >
         <BetterRowContainer>
           <TogglesSection>
-            <ColorPicker
-              type="color"
-              value={player.color}
-              onChange={handleColorChange}
-              role="button"
-              aria-label="Color picker"
-            />
+            <ColorPickerButton aria-label="Color picker">
+              <input
+                onChange={handleColorChange}
+                type="color"
+                className="size-[200%] absolute -left-2 -top-2"
+                value={player.color}
+              />
+            </ColorPickerButton>
             {player.settings.useCommanderDamage && (
               <CheckboxContainer>
                 <Checkbox
@@ -197,7 +196,6 @@ const PlayerMenu = ({
                 />
               </CheckboxContainer>
             )}
-
             <CheckboxContainer>
               <Checkbox
                 name="usePoison"
@@ -224,7 +222,6 @@ const PlayerMenu = ({
                 aria-label="Poison"
               />
             </CheckboxContainer>
-
             <CheckboxContainer>
               <Checkbox
                 name="useEnergy"
@@ -251,7 +248,6 @@ const PlayerMenu = ({
                 aria-label="Energy"
               />
             </CheckboxContainer>
-
             <CheckboxContainer>
               <Checkbox
                 name="useExperience"
@@ -332,7 +328,7 @@ const PlayerMenu = ({
                 fontSize: buttonFontSize,
                 padding: '4px',
               }}
-              onClick={() => dialogRef.current?.show()}
+              onClick={() => resetGameDialogRef.current?.show()}
               role="checkbox"
               aria-checked={wakeLock.active}
               aria-label="Reset Game"
@@ -342,27 +338,30 @@ const PlayerMenu = ({
           </ButtonsSections>
         </BetterRowContainer>
         <dialog
-          ref={dialogRef}
-          className="z-[9999] min-h-2/4 bg-background-default text-text-primary rounded-2xl border-none absolute bottom-[20%]"
+          ref={resetGameDialogRef}
+          className="z-[999] size-full bg-background-settings"
+          onClick={() => resetGameDialogRef.current?.close()}
         >
-          <div className="flex flex-col p-4 gap-2">
-            <h1 className="text-center">Reset Game?</h1>
-            <div className="flex justify-evenly gap-4">
-              <Button
-                variant="contained"
-                onClick={() => dialogRef.current?.close()}
-              >
-                No
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  handleResetGame();
-                  dialogRef.current?.close();
-                }}
-              >
-                Yes
-              </Button>
+          <div className="flex size-full items-center justify-center">
+            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-2xl border-none">
+              <h1 className="text-center text-text-primary">Reset Game?</h1>
+              <div className="flex justify-evenly gap-4">
+                <Button
+                  variant="contained"
+                  onClick={() => resetGameDialogRef.current?.close()}
+                >
+                  No
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    handleResetGame();
+                    resetGameDialogRef.current?.close();
+                  }}
+                >
+                  Yes
+                </Button>
+              </div>
             </div>
           </div>
         </dialog>

@@ -66,8 +66,7 @@ export const CommanderDamage = ({
 }: CommanderDamageButtonComponentProps) => {
   const { updatePlayer } = usePlayers();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const [timeoutFinished, setTimeoutFinished] = useState(false);
-  const [hasPressedDown, setHasPressedDown] = useState(false);
+  const [downLongPressed, setDownLongPressed] = useState(false);
   const downPositionRef = useRef({ x: 0, y: 0 });
 
   const handleCommanderDamageChange = (
@@ -109,16 +108,16 @@ export const CommanderDamage = ({
 
   const handleDownInput = ({ opponentIndex, isPartner, event }: InputProps) => {
     downPositionRef.current = { x: event.clientX, y: event.clientY };
-    setTimeoutFinished(false);
-    setHasPressedDown(true);
+    setDownLongPressed(false);
+
     timeoutRef.current = setTimeout(() => {
-      setTimeoutFinished(true);
+      setDownLongPressed(true);
       handleCommanderDamageChange(opponentIndex, -1, isPartner);
     }, decrementTimeoutMs);
   };
 
   const handleUpInput = ({ opponentIndex, isPartner, event }: InputProps) => {
-    if (!(hasPressedDown && !timeoutFinished)) {
+    if (downLongPressed) {
       return;
     }
 
@@ -134,14 +133,14 @@ export const CommanderDamage = ({
       return;
     }
 
+    clearTimeout(timeoutRef.current);
+
     handleCommanderDamageChange(opponentIndex, 1, isPartner);
-    setHasPressedDown(false);
   };
 
   const handleLeaveInput = () => {
-    setTimeoutFinished(true);
+    setDownLongPressed(true);
     clearTimeout(timeoutRef.current);
-    setHasPressedDown(false);
   };
 
   const opponentIndex = opponent.index;

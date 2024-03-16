@@ -10,6 +10,8 @@ import {
 import { CounterType, Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import ExtraCounter from '../Buttons/ExtraCounter';
+import { useEffect, useState } from 'react';
+import { checkContrast } from '../../Utils/checkContrast';
 
 const Container = twc.div<RotationDivProps>((props) => [
   'flex',
@@ -31,6 +33,17 @@ type ExtraCountersBarProps = {
 
 const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
   const { updatePlayer } = usePlayers();
+  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const contrast = checkContrast(player.color, '#00000080');
+
+    if (contrast === 'Fail') {
+      setIconColor('light');
+    } else {
+      setIconColor('dark');
+    }
+  }, [player.color]);
 
   const handleCounterChange = (
     updatedCounterTotal: number,
@@ -93,7 +106,13 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
         {useCommanderDamage && (
           <ExtraCounter
             rotation={player.settings.rotation}
-            Icon={<CommanderTax size={iconSize} opacity="0.5" color="black" />}
+            Icon={
+              <CommanderTax
+                size={iconSize}
+                data-contrast={iconColor}
+                className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+              />
+            }
             type={CounterType.CommanderTax}
             counterTotal={
               player.extraCounters?.find(
@@ -108,7 +127,13 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
         {Boolean(useCommanderDamage && usePartner) && (
           <ExtraCounter
             rotation={player.settings.rotation}
-            Icon={<PartnerTax size={iconSize} opacity="0.5" color="black" />}
+            Icon={
+              <PartnerTax
+                size={iconSize}
+                data-contrast={iconColor}
+                className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+              />
+            }
             type={CounterType.PartnerTax}
             counterTotal={
               player.extraCounters?.find(
@@ -123,7 +148,13 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
         {usePoison && (
           <ExtraCounter
             rotation={player.settings.rotation}
-            Icon={<Poison size={iconSize} opacity="0.5" color="black" />}
+            Icon={
+              <Poison
+                size={iconSize}
+                data-contrast={iconColor}
+                className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+              />
+            }
             type={CounterType.Poison}
             counterTotal={
               player.extraCounters?.find((counter) => counter.type === 'poison')
@@ -137,7 +168,13 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
         {useEnergy && (
           <ExtraCounter
             rotation={player.settings.rotation}
-            Icon={<Energy size={iconSize} opacity="0.5" color="black" />}
+            Icon={
+              <Energy
+                size={iconSize}
+                data-contrast={iconColor}
+                className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+              />
+            }
             type={CounterType.Energy}
             counterTotal={
               player.extraCounters?.find((counter) => counter.type === 'energy')
@@ -151,7 +188,13 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
         {useExperience && (
           <ExtraCounter
             rotation={player.settings.rotation}
-            Icon={<Experience size={iconSize} opacity="0.5" color="black" />}
+            Icon={
+              <Experience
+                size={iconSize}
+                data-contrast={iconColor}
+                className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+              />
+            }
             type={CounterType.Experience}
             counterTotal={
               player.extraCounters?.find(

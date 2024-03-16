@@ -118,9 +118,8 @@ const Health = ({
   return (
     <LifeContainer $rotation={player.settings.rotation}>
       <LifeCounterButton
-        lifeTotal={player.lifeTotal}
+        player={player}
         setLifeTotal={handleLifeChange}
-        rotation={player.settings.rotation}
         operation="subtract"
         increment={-1}
       />
@@ -148,9 +147,8 @@ const Health = ({
         </LifeCounterTextContainer>
       </TextWrapper>
       <LifeCounterButton
-        lifeTotal={player.lifeTotal}
+        player={player}
         setLifeTotal={handleLifeChange}
-        rotation={player.settings.rotation}
         operation="add"
         increment={1}
       />
