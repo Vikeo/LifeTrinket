@@ -91,6 +91,7 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
         clearInterval(randomIntervalRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     players.length,
     playing,
