@@ -67,7 +67,7 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
                 }
           )
         );
-      }, 200);
+      }, 100);
     }
 
     if (!settings.useRandomStartingPlayerInterval) {
@@ -105,7 +105,7 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
         !stopPlayerRandomization &&
         !playing && (
           <div
-            className="absolute flex justify-center items-center bg-black bg-opacity-50 size-full z-50 cursor-pointer text-5xl"
+            className="absolute flex justify-center items-center bg-black bg-opacity-40 h-screen w-screen portrait:h-[100vw] portrait:w-[100vh] z-50 cursor-pointer text-5xl"
             onClick={() => {
               if (randomIntervalRef.current) {
                 clearInterval(randomIntervalRef.current);
@@ -114,7 +114,9 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
               setStopPlayerRandomization(true);
             }}
           >
-            CHOOSE A PLAYER
+            <div className="bg-primary-main px-8 py-2 rounded-2xl opacity-70 text-[5vmax]">
+              PRESS TO SELECT PLAYER
+            </div>
           </div>
         )}
       <div className={`grid w-full h-full gap-1 box-border ${gridClasses} `}>
