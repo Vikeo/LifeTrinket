@@ -17,6 +17,7 @@ export type Settings = {
   showStartingPlayer: boolean;
   showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
+  useRandomStartingPlayerInterval: boolean;
 };
 
 export type InitialGameSettings = {

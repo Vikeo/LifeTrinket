@@ -39,6 +39,7 @@ export const GlobalSettingsProvider = ({
           keepAwake: true,
           showStartingPlayer: true,
           showPlayerMenuCog: true,
+          useRandomStartingPlayerInterval: false,
         }
   );
 

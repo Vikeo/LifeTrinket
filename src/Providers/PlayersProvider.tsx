@@ -50,10 +50,6 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const startingPlayerIndex = Math.floor(
-        Math.random() * initialGameSettings.numberOfPlayers
-      );
-
       players.forEach((player: Player) => {
         player.commanderDamage.map((damage) => {
           damage.damageTotal = 0;
@@ -67,14 +63,6 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         player.lifeTotal = initialGameSettings.startingLifeTotal;
 
         player.hasLost = false;
-
-        const isStartingPlayer = player.index === startingPlayerIndex;
-
-        player.isStartingPlayer = isStartingPlayer;
-
-        if (player.isStartingPlayer) {
-          player.showStartingPlayer = true;
-        }
 
         updatePlayer(player);
       });

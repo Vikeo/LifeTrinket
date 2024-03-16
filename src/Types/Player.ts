@@ -5,8 +5,6 @@ export type Player = {
   settings: PlayerSettings;
   commanderDamage: CommanderDamage[];
   extraCounters: ExtraCounter[];
-  isStartingPlayer: boolean;
-  showStartingPlayer: boolean;
   hasLost: boolean;
   isSide: boolean;
 };
