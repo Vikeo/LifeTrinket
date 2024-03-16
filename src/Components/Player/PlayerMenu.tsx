@@ -6,6 +6,7 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
 import {
+  Cross,
   Energy,
   Exit,
   Experience,
@@ -103,7 +104,7 @@ const PlayerMenu = ({
     containerRef: settingsContainerRef,
   });
 
-  const { fullscreen, wakeLock, goToStart } = useGlobalSettings();
+  const { fullscreen, wakeLock, goToStart, settings } = useGlobalSettings();
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,6 +159,14 @@ const PlayerMenu = ({
         }}
         ref={settingsContainerRef}
       >
+        {settings.showPlayerMenuCog && (
+          <button
+            onClick={() => setShowPlayerMenu(false)}
+            className="flex absolute top-0 right-2 z-10 w-8 h-8 bg-transparent items-center justify-center rounded-full border-solid border-primary-main border-2"
+          >
+            <Cross size="16px" className="text-primary-main " />
+          </button>
+        )}
         <BetterRowContainer>
           <TogglesSection>
             <ColorPickerButton aria-label="Color picker">

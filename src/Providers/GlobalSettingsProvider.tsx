@@ -34,7 +34,12 @@ export const GlobalSettingsProvider = ({
   const [settings, setSettings] = useState<Settings>(
     savedSettings
       ? JSON.parse(savedSettings)
-      : { goFullscreenOnStart: true, keepAwake: true, showStartingPlayer: true }
+      : {
+          goFullscreenOnStart: true,
+          keepAwake: true,
+          showStartingPlayer: true,
+          showPlayerMenuCog: true,
+        }
   );
 
   const removeLocalStorage = async () => {

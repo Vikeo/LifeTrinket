@@ -5,10 +5,11 @@ import { ModalWrapper } from './InfoModal';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
 import { useEffect, useState } from 'react';
+import { Cross } from '../../Icons/generated';
 
-const SettingContainer = twc.div`w-full flex flex-col`;
+const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
-const ToggleContainer = twc.div`flex flex-row justify-between items-center`;
+const ToggleContainer = twc.div`flex flex-row justify-between items-center -mb-1`;
 
 const Container = twc.div`flex flex-col items-center w-full`;
 
@@ -66,14 +67,18 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
   }, [isOpen]);
 
   return (
-    <Modal open={isOpen} onClose={closeModal}>
+    <Modal
+      open={isOpen}
+      onClose={closeModal}
+      className="w-full flex justify-center"
+    >
       <>
-        <div className="flex relative w-full max-w-[548px]">
+        <div className="flex justify-center items-center relative w-full max-w-[532px]">
           <button
             onClick={closeModal}
-            className="flex absolute top-10 right-0 z-10 w-10 h-10 text-common-white bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
+            className="flex absolute top-12 right-0 z-10 w-10 h-10 bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
           >
-            X
+            <Cross size="16px" className="text-text-primary " />
           </button>
         </div>
         <ModalWrapper>
@@ -96,6 +101,24 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
               <Description>
                 On start or reset of game, will pick a random player who will
                 start first if this is enabled.
+              </Description>
+            </SettingContainer>
+            <SettingContainer>
+              <ToggleContainer>
+                <FormLabel>Show Player Menu Cog</FormLabel>
+                <Switch
+                  checked={settings.showPlayerMenuCog}
+                  onChange={() => {
+                    setSettings({
+                      ...settings,
+                      showPlayerMenuCog: !settings.showPlayerMenuCog,
+                    });
+                  }}
+                />
+              </ToggleContainer>
+              <Description>
+                A cog on the top right of each player's card will be shown if
+                this is enabled.
               </Description>
             </SettingContainer>
             <SettingContainer>

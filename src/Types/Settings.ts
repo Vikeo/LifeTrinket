@@ -15,6 +15,7 @@ export enum GameFormat {
 export type Settings = {
   keepAwake: boolean;
   showStartingPlayer: boolean;
+  showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
 };
 

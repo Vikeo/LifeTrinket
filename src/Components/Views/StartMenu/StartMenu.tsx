@@ -20,7 +20,7 @@ import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-col px-4`;
+const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-col px-4 z-10`;
 
 const SliderWrapper = twc.div`mx-8`;
 

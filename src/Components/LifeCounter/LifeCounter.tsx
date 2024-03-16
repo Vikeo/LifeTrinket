@@ -4,12 +4,40 @@ import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
-import { RotationDivProps } from '../Buttons/CommanderDamage';
+import {
+  RotationButtonProps,
+  RotationDivProps,
+} from '../Buttons/CommanderDamage';
 import { LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Player/PlayerMenu';
 import Health from './Health';
+import { Cog } from '../../Icons/generated';
+
+const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
+  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
+  props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
+    ? `right-auto top-[1vmax] left-[27%]`
+    : 'top-1/4 right-[1vmax]',
+]);
+
+type SettingsButtonProps = {
+  onClick: () => void;
+  rotation: Rotation;
+};
+
+const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
+  return (
+    <SettingsButtonTwc
+      onClick={onClick}
+      $rotation={rotation}
+      aria-label={`Settings`}
+    >
+      <Cog size="5vmin" color="black" opacity="0.3" />
+    </SettingsButtonTwc>
+  );
+};
 
 const LifeCounterContentWrapper = twc.div`
   relative flex flex-grow flex-col items-center w-full h-full overflow-hidden`;
@@ -21,7 +49,7 @@ const LifeCounterWrapper = twc.div<RotationDivProps>((props) => [
     : `flex-col`,
 ]);
 
-const StartingPlayerNoticeWrapper = twc.div`z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-primary-main`;
+const StartingPlayerNoticeWrapper = twc.div`z-10 flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-primary-main`;
 
 const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
   'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper opacity-75',
@@ -192,6 +220,14 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           key={player.index}
           handleLifeChange={handleLifeChange}
         />
+        {settings.showPlayerMenuCog && (
+          <SettingsButton
+            onClick={() => {
+              setShowPlayerMenu(!showPlayerMenu);
+            }}
+            rotation={player.settings.rotation}
+          />
+        )}
         {playerCanLose(player) && (
           <LoseGameButton
             rotation={player.settings.rotation}

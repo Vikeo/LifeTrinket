@@ -2,6 +2,7 @@ import { Modal } from '@mui/material';
 import { twc } from 'react-twc';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
+import { Cross } from '../../Icons/generated';
 
 export const ModalWrapper = twc.div`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[85vh] bg-background-default p-4 overflow-scroll rounded-2xl border-none text-text-primary w-[95vw] max-w-[548px]`;
 
@@ -18,12 +19,12 @@ export const InfoModal = ({ isOpen, closeModal }: InfoModalProps) => {
       style={{ display: 'flex', justifyContent: 'center' }}
     >
       <>
-        <div className="flex relative w-full max-w-[548px]">
+        <div className="flex justify-center items-center relative w-full max-w-[532px]">
           <button
             onClick={closeModal}
-            className="flex absolute top-10 right-0 z-10 w-10 h-10 text-common-white bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
+            className="flex absolute top-12 right-0 z-10 w-10 h-10 bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
           >
-            X
+            <Cross size="16px" className="text-text-primary " />
           </button>
         </div>
         <ModalWrapper>
@@ -60,25 +61,34 @@ export const InfoModal = ({ isOpen, closeModal }: InfoModalProps) => {
               </li>
             </ul>
 
-            <h3 className="text-lg font-bold mb-2">Other</h3>
-            <Paragraph className="mb-4">
-              When a player is <strong>at or below 0 life</strong>, has taken{' '}
-              <strong>21 or more Commander Damage</strong> or has{' '}
-              <strong>10 or more poison counters</strong>, a button with a skull
-              will appear on that player's card. Tapping it will dim the
-              player's card.
-            </Paragraph>
+            <h3 className="text-lg font-bold mb-2">Other functionality</h3>
+            <ul className="list-disc ml-6">
+              <li>
+                <Paragraph className="mb-1">
+                  When a player is <strong>at or below 0 life</strong>, has
+                  taken <strong>21 or more Commander Damage</strong> or has{' '}
+                  <strong>10 or more poison counters</strong>, a button with a
+                  skull will appear on that player's card. Tapping it will dim
+                  the player's card.
+                </Paragraph>
+              </li>
+              <li>
+                <Paragraph className="mb-4">
+                  Swiping <strong>down</strong> on a player's card will show
+                  that player's settings menu.
+                </Paragraph>
+              </li>
+            </ul>
           </div>
           <div className="text-center mt-4">
-            Visit my
+            Visit my{' '}
             <a
               href="https://github.com/Vikeo/LifeTrinket"
               target="_blank"
               className="text-text-secondary underline"
             >
-              {' '}
-              GitHub{' '}
-            </a>
+              GitHub
+            </a>{' '}
             for more info about this web app.
           </div>
         </ModalWrapper>
