@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
+import { Cog } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import {
   RotationButtonProps,
@@ -11,9 +12,10 @@ import {
 import { LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
+import { Paragraph } from '../Misc/TextComponents';
 import PlayerMenu from '../Player/PlayerMenu';
 import Health from './Health';
-import { Cog } from '../../Icons/generated';
+import { baseColors } from '../../../tailwind.config';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
   'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
@@ -48,8 +50,6 @@ const LifeCounterWrapper = twc.div<RotationDivProps>((props) => [
     ? `flex-row`
     : `flex-col`,
 ]);
-
-const StartingPlayerNoticeWrapper = twc.div`z-10 flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-primary-main`;
 
 const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
   'z-[1] flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none bg-lifeCounter-lostWrapper opacity-75',
@@ -97,6 +97,7 @@ const RECENT_DIFFERENCE_TTL = 3_000;
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings } = useGlobalSettings();
+  const playingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
@@ -150,17 +151,12 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   }, [recentDifference, document.body.clientHeight, document.body.clientWidth]);
 
   useEffect(() => {
-    if (player.showStartingPlayer) {
-      const playingTimer = setTimeout(() => {
-        localStorage.setItem('playing', 'true');
-        player.showStartingPlayer = false;
-        updatePlayer(player);
-      }, 3_000);
+    playingTimerRef.current = setTimeout(() => {
+      localStorage.setItem('playing', 'true');
+    }, 10_000);
 
-      return () => clearTimeout(playingTimer);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [player.showStartingPlayer]);
+    return () => clearTimeout(playingTimerRef.current);
+  }, []);
 
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
@@ -198,17 +194,31 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         {settings.showStartingPlayer &&
           player.isStartingPlayer &&
           player.showStartingPlayer && (
-            <StartingPlayerNoticeWrapper
-              style={{ rotate: `${calcRotation}deg` }}
+            <div
+              className="z-10 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
+              style={{
+                rotate: `${calcRotation}deg`,
+                backgroundImage: `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`,
+              }}
+              onClick={() => {
+                clearTimeout(playingTimerRef.current);
+                localStorage.setItem('playing', 'true');
+                player.showStartingPlayer = false;
+                updatePlayer(player);
+              }}
             >
               <DynamicText
                 style={{
                   rotate: `${calcTextRotation}deg`,
                 }}
               >
-                You start!
+                <div className="flex flex-col justify-center items-center">
+                  <Paragraph>👑</Paragraph>
+                  <Paragraph>You start!</Paragraph>
+                  <Paragraph className="text-xl">(Press to hide)</Paragraph>
+                </div>
               </DynamicText>
-            </StartingPlayerNoticeWrapper>
+            </div>
           )}
 
         {player.hasLost && (

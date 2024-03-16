@@ -53,22 +53,8 @@ const Health = ({
   differenceKey,
   recentDifference,
 }: HealthProps) => {
-  const [showStartingPlayer, setShowStartingPlayer] = useState(
-    localStorage.getItem('playing') === 'true'
-  );
   const [fontSize, setFontSize] = useState(16);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!showStartingPlayer) {
-      const playingTimer = setTimeout(() => {
-        localStorage.setItem('playing', 'true');
-        setShowStartingPlayer(localStorage.getItem('playing') === 'true');
-      }, 3_000);
-
-      return () => clearTimeout(playingTimer);
-    }
-  }, [showStartingPlayer]);
 
   useEffect(() => {
     if (!textContainerRef.current) {
