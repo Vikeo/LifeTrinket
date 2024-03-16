@@ -55,8 +55,8 @@ export default {
           settings: 'rgba(20, 20, 0, 0.9)',
         },
         icons: {
-          dark: '#000000',
-          light: '#FFFFFF',
+          dark: '#00000080',
+          light: '#ffffff4f',
         },
         text: {
           primary: '#F5F5F5',

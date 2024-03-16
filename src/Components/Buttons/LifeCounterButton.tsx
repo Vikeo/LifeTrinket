@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TwcComponentProps, twc } from 'react-twc';
 import { lifeLongPressMultiplier } from '../../Data/constants';
-import { Rotation } from '../../Types/Player';
+import { Player, Rotation } from '../../Types/Player';
 import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
+import { checkContrast } from '../../Utils/checkContrast';
 
 type RotationButtonProps = TwcComponentProps<'div'> & {
   $align?: string;
@@ -13,7 +14,6 @@ const LifeCounterButtonTwc = twc.button`
   h-full
   w-full
   flex
-  text-lifeCounter-text
   font-semibold
   bg-transparent
   border-none
@@ -40,17 +40,15 @@ const TextContainer = twc.div<RotationButtonProps>((props) => [
 ]);
 
 type LifeCounterButtonProps = {
-  lifeTotal: number;
+  player: Player;
   setLifeTotal: (lifeTotal: number) => void;
-  rotation: number;
   operation: 'add' | 'subtract';
   increment: number;
 };
 
 const LifeCounterButton = ({
-  lifeTotal,
+  player,
   setLifeTotal,
-  rotation,
   operation,
   increment,
 }: LifeCounterButtonProps) => {
@@ -59,8 +57,20 @@ const LifeCounterButton = ({
   const [hasPressedDown, setHasPressedDown] = useState(false);
   const downPositionRef = useRef({ x: 0, y: 0 });
 
+  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const contrast = checkContrast(player.color, '#00000080');
+
+    if (contrast === 'Fail') {
+      setIconColor('light');
+    } else {
+      setIconColor('dark');
+    }
+  }, [player.color]);
+
   const handleLifeChange = (increment: number) => {
-    setLifeTotal(lifeTotal + increment);
+    setLifeTotal(player.lifeTotal + increment);
   };
 
   const handleDownInput = (event: React.PointerEvent<HTMLButtonElement>) => {
@@ -102,7 +112,8 @@ const LifeCounterButton = ({
   };
 
   const fontSize =
-    rotation === Rotation.SideFlipped || rotation === Rotation.Side
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side
       ? '8vmax'
       : '12vmin';
 
@@ -118,8 +129,11 @@ const LifeCounterButton = ({
       aria-label={`${operation === 'add' ? 'Add' : 'Subtract'} life`}
     >
       <TextContainer
-        $rotation={rotation}
+        $rotation={player.settings.rotation}
         $align={operation === 'add' ? 'right' : 'left'}
+        data-contrast={iconColor}
+        className="data-[contrast=dark]:text-icons-dark
+        data-[contrast=light]:text-icons-light"
       >
         {operation === 'add' ? '\u002B' : '\u2212'}
       </TextContainer>
