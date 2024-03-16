@@ -104,7 +104,14 @@ const PlayerMenu = ({
     containerRef: settingsContainerRef,
   });
 
-  const { fullscreen, wakeLock, goToStart, settings } = useGlobalSettings();
+  const {
+    fullscreen,
+    wakeLock,
+    goToStart,
+    settings,
+    setPlaying,
+    setStopPlayerRandomization,
+  } = useGlobalSettings();
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +129,13 @@ const PlayerMenu = ({
   const handleResetGame = () => {
     resetCurrentGame();
     setShowPlayerMenu(false);
+    setPlaying(false);
+    setStopPlayerRandomization(false);
+  };
+
+  const handleGoToStart = () => {
+    goToStart();
+    setStopPlayerRandomization(false);
   };
 
   const toggleFullscreen = () => {
@@ -291,7 +305,7 @@ const PlayerMenu = ({
                 cursor: 'pointer',
                 userSelect: 'none',
               }}
-              onClick={goToStart}
+              onClick={handleGoToStart}
               aria-label="Back to start"
             >
               <Exit size={iconSize} style={{ rotate: '180deg' }} />

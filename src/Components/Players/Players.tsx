@@ -1,8 +1,9 @@
-import LifeCounter from '../LifeCounter/LifeCounter';
-import { Player as PlayerType } from '../../Types/Player';
-import { twc } from 'react-twc';
 import { useEffect, useRef, useState } from 'react';
+import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../Hooks/usePlayers';
+import { Player as PlayerType } from '../../Types/Player';
+import LifeCounter from '../LifeCounter/LifeCounter';
 
 const getGridArea = (player: PlayerType) => {
   switch (player.index) {
@@ -27,23 +28,63 @@ const PlayersWrapper = twc.div`w-full h-full bg-black`;
 
 export const Players = (players: PlayerType[], gridClasses: string) => {
   const randomIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [randomPlayerIndex, setRandomPlayerIndex] = useState<number>(
-    Math.floor(Math.random() * players.length)
-  );
-  const [stopRandom, setStopRandom] = useState<boolean>(false);
-  const { settings } = useGlobalSettings();
+
+  const prevRandomIndexRef = useRef<number>(-1);
+
+  const {
+    settings,
+    stopPlayerRandomization,
+    setStopPlayerRandomization,
+    playing,
+  } = useGlobalSettings();
+
+  const { setPlayers } = usePlayers();
 
   useEffect(() => {
-    if (settings.useRandomStartingPlayerInterval) {
+    if (
+      settings.useRandomStartingPlayerInterval &&
+      !stopPlayerRandomization &&
+      !playing
+    ) {
       randomIntervalRef.current = setInterval(() => {
         let randomIndex: number;
 
         do {
           randomIndex = Math.floor(Math.random() * players.length);
-        } while (randomIndex === randomPlayerIndex);
+        } while (randomIndex === prevRandomIndexRef.current);
 
-        setRandomPlayerIndex(randomIndex);
-      }, 100);
+        prevRandomIndexRef.current = randomIndex;
+        setPlayers(
+          players.map((p) =>
+            p.index === prevRandomIndexRef.current
+              ? {
+                  ...p,
+                  isStartingPlayer: true,
+                }
+              : {
+                  ...p,
+                  isStartingPlayer: false,
+                }
+          )
+        );
+      }, 200);
+    }
+
+    if (!settings.useRandomStartingPlayerInterval) {
+      const randomPlayerIndex = Math.floor(Math.random() * players.length);
+      setPlayers(
+        players.map((p) =>
+          p.index === randomPlayerIndex
+            ? {
+                ...p,
+                isStartingPlayer: true,
+              }
+            : {
+                ...p,
+                isStartingPlayer: false,
+              }
+        )
+      );
     }
     return () => {
       if (randomIntervalRef.current) {
@@ -52,27 +93,30 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
     };
   }, [
     players.length,
-    randomPlayerIndex,
+    playing,
+    setPlayers,
     settings.useRandomStartingPlayerInterval,
+    stopPlayerRandomization,
   ]);
 
   return (
     <PlayersWrapper>
-      {settings.useRandomStartingPlayerInterval && (
-        <div
-          data-stopRandom={stopRandom}
-          className="absolute flex justify-center items-center bg-black bg-opacity-50 size-full z-50 cursor-pointer text-5xl data-[stopRandom=true]:hidden"
-          onClick={() => {
-            if (randomIntervalRef.current) {
-              clearInterval(randomIntervalRef.current);
-              randomIntervalRef.current = null;
-              setStopRandom(true);
-            }
-          }}
-        >
-          CHOOSE A PLAYER
-        </div>
-      )}
+      {settings.useRandomStartingPlayerInterval &&
+        !stopPlayerRandomization &&
+        !playing && (
+          <div
+            className="absolute flex justify-center items-center bg-black bg-opacity-50 size-full z-50 cursor-pointer text-5xl"
+            onClick={() => {
+              if (randomIntervalRef.current) {
+                clearInterval(randomIntervalRef.current);
+                randomIntervalRef.current = null;
+              }
+              setStopPlayerRandomization(true);
+            }}
+          >
+            CHOOSE A PLAYER
+          </div>
+        )}
       <div className={`grid w-full h-full gap-1 box-border ${gridClasses} `}>
         {players.map((player) => {
           const gridArea = getGridArea(player);
@@ -83,12 +127,10 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
               className={`flex justify-center items-center align-middle ${gridArea}`}
             >
               <LifeCounter
-                stopRandom={stopRandom}
                 player={player}
                 opponents={players.filter(
                   (opponent) => opponent.index !== player.index
                 )}
-                isStartingPlayer={randomPlayerIndex === player.index}
               />
             </div>
           );

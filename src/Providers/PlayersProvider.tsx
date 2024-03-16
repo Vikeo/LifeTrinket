@@ -7,6 +7,17 @@ import { InitialGameSettings } from '../Types/Settings';
 export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const savedPlayers = localStorage.getItem('players');
 
+  const savedStartingPlayerIndex = localStorage.getItem('startingPlayerIndex');
+
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(
+    savedStartingPlayerIndex ? parseInt(savedStartingPlayerIndex) : -1
+  );
+
+  const setStartingPlayerIndexAndLocalStorage = (index: number) => {
+    setStartingPlayerIndex(index);
+    localStorage.setItem('startingPlayerIndex', String(index));
+  };
+
   const [players, setPlayers] = useState<Player[]>(
     savedPlayers ? JSON.parse(savedPlayers) : []
   );
@@ -50,6 +61,8 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
+      const newStartingPlayerIndex = Math.floor(Math.random() * players.length);
+
       players.forEach((player: Player) => {
         player.commanderDamage.map((damage) => {
           damage.damageTotal = 0;
@@ -61,8 +74,9 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         });
 
         player.lifeTotal = initialGameSettings.startingLifeTotal;
-
         player.hasLost = false;
+
+        player.isStartingPlayer = newStartingPlayerIndex === player.index;
 
         updatePlayer(player);
       });
@@ -75,8 +89,10 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
       updatePlayer,
       updateLifeTotal,
       resetCurrentGame,
+      startingPlayerIndex,
+      setStartingPlayerIndex: setStartingPlayerIndexAndLocalStorage,
     };
-  }, [players]);
+  }, [players, startingPlayerIndex]);
 
   return (
     <PlayersContext.Provider value={ctxValue}>

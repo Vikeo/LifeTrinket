@@ -21,10 +21,22 @@ export const GlobalSettingsProvider = ({
   const savedShowPlay = localStorage.getItem('showPlay');
   const savedGameSettings = localStorage.getItem('initialGameSettings');
   const savedSettings = localStorage.getItem('settings');
+  const savedPlaying = localStorage.getItem('playing');
+
+  const [playing, setPlaying] = useState<boolean>(
+    savedPlaying ? savedPlaying === 'true' : false
+  );
+  const setPlayingAndLocalStorage = (playing: boolean) => {
+    setPlaying(playing);
+    localStorage.setItem('playing', String(playing));
+  };
 
   const [showPlay, setShowPlay] = useState<boolean>(
     savedShowPlay ? savedShowPlay === 'true' : false
   );
+
+  const [stopPlayerRandomization, setStopPlayerRandomization] =
+    useState<boolean>(false);
 
   const [initialGameSettings, setInitialGameSettings] =
     useState<InitialGameSettings | null>(
@@ -48,6 +60,8 @@ export const GlobalSettingsProvider = ({
     localStorage.removeItem('players');
     localStorage.removeItem('playing');
     localStorage.removeItem('showPlay');
+
+    setPlaying(false);
     setShowPlay(false);
   };
 
@@ -154,10 +168,14 @@ export const GlobalSettingsProvider = ({
       goToStart,
       showPlay,
       setShowPlay,
+      playing,
+      setPlaying: setPlayingAndLocalStorage,
       initialGameSettings,
       setInitialGameSettings,
       settings,
       setSettings,
+      stopPlayerRandomization,
+      setStopPlayerRandomization,
       isPWA: window?.matchMedia('(display-mode: standalone)').matches,
     };
   }, [
@@ -166,10 +184,12 @@ export const GlobalSettingsProvider = ({
     initialGameSettings,
     isFullscreen,
     isSupported,
+    playing,
     release,
     request,
     settings,
     showPlay,
+    stopPlayerRandomization,
     type,
   ]);
 

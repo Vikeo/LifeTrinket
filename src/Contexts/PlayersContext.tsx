@@ -7,6 +7,8 @@ export type PlayersContextType = {
   updatePlayer: (updatedPlayer: Player) => void;
   updateLifeTotal: (player: Player, updatedLifeTotal: number) => number;
   resetCurrentGame: () => void;
+  startingPlayerIndex: number;
+  setStartingPlayerIndex: (index: number) => void;
 };
 
 export const PlayersContext = createContext<PlayersContextType | null>(null);

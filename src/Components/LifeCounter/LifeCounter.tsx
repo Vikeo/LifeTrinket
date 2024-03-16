@@ -88,7 +88,6 @@ const playerCanLose = (player: Player) => {
 };
 
 type LifeCounterProps = {
-  stopRandom: boolean;
   player: Player;
   opponents: Player[];
   isStartingPlayer?: boolean;
@@ -96,16 +95,11 @@ type LifeCounterProps = {
 
 const RECENT_DIFFERENCE_TTL = 3_000;
 
-const LifeCounter = ({
-  stopRandom,
-  player,
-  opponents,
-  isStartingPlayer,
-}: LifeCounterProps) => {
+const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { settings } = useGlobalSettings();
+  const { settings, playing, setPlaying, stopPlayerRandomization } =
+    useGlobalSettings();
   const playingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
-  const [playing, setPlaying] = useState(false);
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
@@ -122,12 +116,10 @@ const LifeCounter = ({
     trackMouse: true,
     onSwipedDown: (e) => {
       e.event.stopPropagation();
-      console.log(`User DOWN Swiped on player ${player.index}`);
       setShowPlayerMenu(true);
     },
     onSwipedUp: (e) => {
       e.event.stopPropagation();
-      console.log(`User UP Swiped on player ${player.index}`);
       setShowPlayerMenu(false);
     },
 
@@ -135,7 +127,6 @@ const LifeCounter = ({
     onSwiping: (e) => e.event.stopPropagation(),
     rotationAngle,
   });
-  console.log('stopRandom', stopRandom);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -160,13 +151,26 @@ const LifeCounter = ({
   }, [recentDifference, document.body.clientHeight, document.body.clientWidth]);
 
   useEffect(() => {
-    playingTimerRef.current = setTimeout(() => {
-      localStorage.setItem('playing', 'true');
-      setPlaying(true);
-    }, 10_000);
+    if (
+      player.isStartingPlayer &&
+      ((!playing &&
+        settings.useRandomStartingPlayerInterval &&
+        stopPlayerRandomization) ||
+        (!settings.useRandomStartingPlayerInterval && !playing))
+    ) {
+      playingTimerRef.current = setTimeout(() => {
+        setPlaying(true);
+      }, 10_000);
+    }
 
     return () => clearTimeout(playingTimerRef.current);
-  }, []);
+  }, [
+    player.isStartingPlayer,
+    playing,
+    setPlaying,
+    settings.useRandomStartingPlayerInterval,
+    stopPlayerRandomization,
+  ]);
 
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
@@ -201,19 +205,19 @@ const LifeCounter = ({
         style={{ rotate: `${calcRotation}deg` }}
         {...handlers}
       >
-        {!playing && settings.showStartingPlayer && isStartingPlayer && (
+        {!playing && settings.showStartingPlayer && player.isStartingPlayer && (
           <div
             className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
             style={{
               rotate: `${calcRotation}deg`,
               backgroundImage:
-                stopRandom || !settings.useRandomStartingPlayerInterval
+                stopPlayerRandomization ||
+                !settings.useRandomStartingPlayerInterval
                   ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
                   : 'none',
             }}
             onClick={() => {
               clearTimeout(playingTimerRef.current);
-              localStorage.setItem('playing', 'true');
               setPlaying(true);
             }}
           >
@@ -224,7 +228,8 @@ const LifeCounter = ({
             >
               <div className="flex flex-col justify-center items-center">
                 <Paragraph>👑</Paragraph>
-                {(stopRandom || !settings.useRandomStartingPlayerInterval) && (
+                {(stopPlayerRandomization ||
+                  !settings.useRandomStartingPlayerInterval) && (
                   <>
                     <Paragraph>You start!</Paragraph>
                     <Paragraph className="text-xl">(Press to hide)</Paragraph>
@@ -238,12 +243,14 @@ const LifeCounter = ({
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
-        {settings.useRandomStartingPlayerInterval && !stopRandom && (
-          <div
-            className="flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none z-10"
-            style={{ backgroundColor: player.color }}
-          />
-        )}
+        {settings.useRandomStartingPlayerInterval &&
+          !stopPlayerRandomization &&
+          !playing && (
+            <div
+              className="flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none z-10"
+              style={{ backgroundColor: player.color }}
+            />
+          )}
         <CommanderDamageBar
           opponents={opponents}
           player={player}
