@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
+import { baseColors } from '../../../tailwind.config';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Cog } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
+import { checkContrast } from '../../Utils/checkContrast';
 import {
   RotationButtonProps,
   RotationDivProps,
@@ -15,7 +17,6 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import { Paragraph } from '../Misc/TextComponents';
 import PlayerMenu from '../Players/PlayerMenu';
 import Health from './Health';
-import { baseColors } from '../../../tailwind.config';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
   'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
@@ -27,16 +28,33 @@ const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
 type SettingsButtonProps = {
   onClick: () => void;
   rotation: Rotation;
+  color: string;
 };
 
-const SettingsButton = ({ onClick, rotation }: SettingsButtonProps) => {
+const SettingsButton = ({ onClick, rotation, color }: SettingsButtonProps) => {
+  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const contrast = checkContrast(color, '#00000080');
+
+    if (contrast === 'Fail') {
+      setIconColor('light');
+    } else {
+      setIconColor('dark');
+    }
+  }, [color]);
+
   return (
     <SettingsButtonTwc
       onClick={onClick}
       $rotation={rotation}
       aria-label={`Settings`}
     >
-      <Cog size="5vmin" color="black" opacity="0.3" />
+      <Cog
+        size="5vmin"
+        data-contrast={iconColor}
+        className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+      />
     </SettingsButtonTwc>
   );
 };
@@ -264,6 +282,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
               setShowPlayerMenu(!showPlayerMenu);
             }}
             rotation={player.settings.rotation}
+            color={player.color}
           />
         )}
         {playerCanLose(player) && (
