@@ -42,6 +42,7 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
 
   useEffect(() => {
     if (
+      settings.showStartingPlayer &&
       settings.useRandomStartingPlayerInterval &&
       !stopPlayerRandomization &&
       !playing
@@ -102,7 +103,8 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
 
   return (
     <PlayersWrapper>
-      {settings.useRandomStartingPlayerInterval &&
+      {settings.showStartingPlayer &&
+        settings.useRandomStartingPlayerInterval &&
         !stopPlayerRandomization &&
         !playing && (
           <div

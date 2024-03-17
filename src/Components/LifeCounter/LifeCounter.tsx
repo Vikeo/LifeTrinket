@@ -243,7 +243,8 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
-        {settings.useRandomStartingPlayerInterval &&
+        {settings.showStartingPlayer &&
+          settings.useRandomStartingPlayerInterval &&
           !stopPlayerRandomization &&
           !playing && (
             <div
