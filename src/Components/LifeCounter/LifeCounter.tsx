@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { baseColors } from '../../../tailwind.config';
+import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Cog } from '../../Icons/generated';
@@ -118,6 +119,9 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { settings, playing, setPlaying, stopPlayerRandomization } =
     useGlobalSettings();
   const playingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
+    undefined
+  );
 
   const [showPlayerMenu, setShowPlayerMenu] = useState(false);
   const [recentDifference, setRecentDifference] = useState(0);
@@ -145,28 +149,41 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
     onSwiping: (e) => e.event.stopPropagation(),
     rotationAngle,
   });
+  const analytics = useAnalytics();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (recentDifference === 0) {
+      clearTimeout(recentDifferenceTimerRef.current);
+      return;
+    }
+
+    recentDifferenceTimerRef.current = setTimeout(() => {
+      analytics.trackEvent('life_changed', {
+        lifeChangedAmount: recentDifference,
+      });
       setRecentDifference(0);
     }, RECENT_DIFFERENCE_TTL);
 
+    return () => {
+      clearTimeout(recentDifferenceTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recentDifference]);
+
+  useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
       if (document.body.clientWidth > document.body.clientHeight)
         setIsLandscape(true);
       else setIsLandscape(false);
-      return;
+      return () => {
+        // Cleanup: disconnect the ResizeObserver when the component unmounts.
+        resizeObserver.disconnect();
+      };
     });
 
     resizeObserver.observe(document.body);
-
-    return () => {
-      clearTimeout(timer);
-      // Cleanup: disconnect the ResizeObserver when the component unmounts.
-      resizeObserver.disconnect();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recentDifference, document.body.clientHeight, document.body.clientWidth]);
+  }, [document.body.clientHeight, document.body.clientWidth]);
 
   useEffect(() => {
     if (

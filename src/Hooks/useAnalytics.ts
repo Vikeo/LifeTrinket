@@ -18,6 +18,11 @@ export const useAnalytics = () => {
     eventName: string,
     eventParams?: { [key: string]: unknown }
   ) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.info('Event not tracked:', { eventName, eventParams });
+      return;
+    }
+
     logEvent(analytics, eventName, eventParams);
   };
 
