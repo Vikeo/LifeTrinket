@@ -3,10 +3,12 @@ import React from 'react';
 import { theme } from '../../../Data/theme';
 import {
   FivePlayers,
+  FivePlayersSide,
   FourPlayers,
   FourPlayersSide,
   OnePlayerPortrait,
   SixPlayers,
+  SixPlayersSide,
   ThreePlayers,
   ThreePlayersSide,
   TwoPlayersOppositeLandscape,
@@ -303,20 +305,20 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               }
               label=""
             />
-            {/* <FormControlLabel
-              value={GridTemplateAreas.FivePlayersSide}
+            <FormControlLabel
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
                     <FivePlayersSide
-                                            height={iconHeight}
+                      height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <FivePlayersSide
-                                            height={iconHeight}
+                      height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.primary.main}
                     />
@@ -325,7 +327,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 />
               }
               label=""
-            /> */}
+            />
           </>
         );
 
@@ -356,20 +358,20 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               }
               label=""
             />
-            {/* <FormControlLabel
-              value={GridTemplateAreas.SixPlayersSide}
+            <FormControlLabel
+              value={Orientation.Portrait}
               control={
                 <Radio
                   icon={
                     <SixPlayersSide
-                                            height={iconHeight}
+                      height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.secondary.main}
                     />
                   }
                   checkedIcon={
                     <SixPlayersSide
-                                            height={iconHeight}
+                      height={iconHeight}
                       width={iconWidth}
                       fill={theme.palette.primary.main}
                     />
@@ -378,7 +380,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
                 />
               }
               label=""
-            /> */}
+            />
           </>
         );
 

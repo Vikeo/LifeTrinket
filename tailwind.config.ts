@@ -80,8 +80,8 @@ export default {
         ],
         sixPlayers: ['player0 player1 player2', 'player3 player4 player5'],
         sixPlayersSide: [
-          'player0 player1 player1 player1 player1 player2 player2 player2 player2 player3',
-          'player0 player4 player4 player4 player4 player5 player5 player5 player5 player3',
+          'player0 player1 player1 player1 player1 player1 player1  player2 player2 player2 player2 player2 player2 player3',
+          'player0 player4 player4 player4 player4 player4 player4 player5 player5 player5 player5 player5 player5 player3',
         ],
       },
       colors: baseColors,

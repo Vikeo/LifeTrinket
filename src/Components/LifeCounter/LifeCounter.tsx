@@ -233,6 +233,8 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       ? player.settings.rotation - 180
       : player.settings.rotation;
 
+  const amountOfPlayers = opponents.length + 1;
+
   return (
     <LifeCounterContentWrapper style={{ background: player.color }}>
       <LifeCounterWrapper
@@ -240,45 +242,49 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         style={{ rotate: `${calcRotation}deg` }}
         {...handlers}
       >
-        {!playing && settings.showStartingPlayer && player.isStartingPlayer && (
-          <div
-            className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
-            style={{
-              rotate: `${calcRotation}deg`,
-              backgroundImage:
-                stopPlayerRandomization ||
-                !settings.useRandomStartingPlayerInterval
-                  ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
-                  : 'none',
-            }}
-            onClick={() => {
-              clearTimeout(playingTimerRef.current);
-              setPlaying(true);
-            }}
-          >
-            <DynamicText
+        {amountOfPlayers > 1 &&
+          !playing &&
+          settings.showStartingPlayer &&
+          player.isStartingPlayer && (
+            <div
+              className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
               style={{
-                rotate: `${calcTextRotation}deg`,
+                rotate: `${calcRotation}deg`,
+                backgroundImage:
+                  stopPlayerRandomization ||
+                  !settings.useRandomStartingPlayerInterval
+                    ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
+                    : 'none',
+              }}
+              onClick={() => {
+                clearTimeout(playingTimerRef.current);
+                setPlaying(true);
               }}
             >
-              <div className="flex flex-col justify-center items-center">
-                <Paragraph>👑</Paragraph>
-                {(stopPlayerRandomization ||
-                  !settings.useRandomStartingPlayerInterval) && (
-                  <>
-                    <Paragraph>You start!</Paragraph>
-                    <Paragraph className="text-xl">(Press to hide)</Paragraph>
-                  </>
-                )}
-              </div>
-            </DynamicText>
-          </div>
-        )}
+              <DynamicText
+                style={{
+                  rotate: `${calcTextRotation}deg`,
+                }}
+              >
+                <div className="flex flex-col justify-center items-center">
+                  <Paragraph>👑</Paragraph>
+                  {(stopPlayerRandomization ||
+                    !settings.useRandomStartingPlayerInterval) && (
+                    <>
+                      <Paragraph>You start!</Paragraph>
+                      <Paragraph className="text-xl">(Press to hide)</Paragraph>
+                    </>
+                  )}
+                </div>
+              </DynamicText>
+            </div>
+          )}
 
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
-        {settings.showStartingPlayer &&
+        {amountOfPlayers > 1 &&
+          settings.showStartingPlayer &&
           settings.useRandomStartingPlayerInterval &&
           !stopPlayerRandomization &&
           !playing && (

@@ -127,15 +127,15 @@ const getOrientationRotations = (
         case Orientation.Portrait:
           switch (index) {
             case 0:
-              return Rotation.Side;
+              return Rotation.Flipped;
             case 1:
-              return Rotation.Side;
+              return Rotation.Flipped;
             case 2:
-              return Rotation.SideFlipped;
+              return Rotation.Side;
             case 3:
-              return Rotation.SideFlipped;
+              return Rotation.Normal;
             case 4:
-              return Rotation.SideFlipped;
+              return Rotation.Normal;
             default:
               return Rotation.Normal;
           }
@@ -163,17 +163,17 @@ const getOrientationRotations = (
         case Orientation.Portrait:
           switch (index) {
             case 0:
-              return Rotation.Side;
+              return Rotation.SideFlipped;
             case 1:
-              return Rotation.Side;
+              return Rotation.Flipped;
             case 2:
-              return Rotation.Side;
+              return Rotation.Flipped;
             case 3:
-              return Rotation.SideFlipped;
+              return Rotation.Side;
             case 4:
-              return Rotation.SideFlipped;
+              return Rotation.Normal;
             case 5:
-              return Rotation.SideFlipped;
+              return Rotation.Normal;
             default:
               return Rotation.Normal;
           }

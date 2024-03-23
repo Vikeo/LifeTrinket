@@ -1,4 +1,4 @@
-import { Button, Checkbox } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import { useRef } from 'react';
 import { twc } from 'react-twc';
 import { theme } from '../../Data/theme';
@@ -18,8 +18,6 @@ import {
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
-
-const CheckboxContainer = twc.div``;
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -51,7 +49,6 @@ const TogglesSection = twc.div`
   flex-row
   flex-wrap
   relative
-  gap-2
   h-full
   justify-evenly
   items-center
@@ -60,11 +57,11 @@ const TogglesSection = twc.div`
 const ButtonsSections = twc.div`
   flex
   max-w-full
-  gap-4
-  justify-between
-  p-[3%]
+  justify-evenly
   items-center
   flex-wrap
+  mt-0
+  px-2
 `;
 
 const ColorPickerButton = twc.div`
@@ -79,7 +76,7 @@ const ColorPickerButton = twc.div`
 `;
 
 const SettingsContainer = twc.div<RotationDivProps>((props) => [
-  'flex flex-wrap h-full w-full',
+  'flex flex-wrap h-full w-full overflow-y-scroll',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'flex-col'
     : 'flex-row',
@@ -98,6 +95,7 @@ const PlayerMenu = ({
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
+  const endGameDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -112,6 +110,7 @@ const PlayerMenu = ({
     setPlaying,
     setStopPlayerRandomization,
   } = useGlobalSettings();
+
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,14 +172,13 @@ const PlayerMenu = ({
         }}
         ref={settingsContainerRef}
       >
-        {settings.showPlayerMenuCog && (
-          <button
-            onClick={() => setShowPlayerMenu(false)}
-            className="flex absolute top-0 right-2 z-10 w-8 h-8 bg-transparent items-center justify-center rounded-full border-solid border-primary-main border-2"
-          >
-            <Cross size="16px" className="text-primary-main " />
-          </button>
-        )}
+        <button
+          onClick={() => setShowPlayerMenu(false)}
+          className="flex absolute top-0 right-2 z-10 bg-transparent items-center justify-center rounded-full border-solid border-primary-main border-2 p-[0.2rem]"
+        >
+          <Cross size={buttonFontSize} className="text-primary-main " />
+        </button>
+
         <BetterRowContainer>
           <TogglesSection>
             <ColorPickerButton aria-label="Color picker">
@@ -192,7 +190,7 @@ const PlayerMenu = ({
               />
             </ColorPickerButton>
             {player.settings.useCommanderDamage && (
-              <CheckboxContainer>
+              <div>
                 <Checkbox
                   name="usePartner"
                   checked={player.settings.usePartner}
@@ -217,9 +215,9 @@ const PlayerMenu = ({
                   aria-checked={player.settings.usePartner}
                   aria-label="Partner"
                 />
-              </CheckboxContainer>
+              </div>
             )}
-            <CheckboxContainer>
+            <div>
               <Checkbox
                 name="usePoison"
                 checked={player.settings.usePoison}
@@ -244,8 +242,8 @@ const PlayerMenu = ({
                 aria-checked={player.settings.usePoison}
                 aria-label="Poison"
               />
-            </CheckboxContainer>
-            <CheckboxContainer>
+            </div>
+            <div>
               <Checkbox
                 name="useEnergy"
                 checked={player.settings.useEnergy}
@@ -270,8 +268,8 @@ const PlayerMenu = ({
                 aria-checked={player.settings.useEnergy}
                 aria-label="Energy"
               />
-            </CheckboxContainer>
-            <CheckboxContainer>
+            </div>
+            <div>
               <Checkbox
                 name="useExperience"
                 checked={player.settings.useExperience}
@@ -296,21 +294,22 @@ const PlayerMenu = ({
                 aria-checked={player.settings.useExperience}
                 aria-label="Experience"
               />
-            </CheckboxContainer>
+            </div>
           </TogglesSection>
-          <ButtonsSections className="mt-4">
-            <Button
-              variant="text"
-              style={{
-                cursor: 'pointer',
-                userSelect: 'none',
-              }}
-              onClick={handleGoToStart}
+          <ButtonsSections>
+            <button
+              className="text-primary-main cursor-pointer webkit-user-select-none"
+              onClick={() => endGameDialogRef.current?.show()}
               aria-label="Back to start"
             >
               <Exit size={iconSize} style={{ rotate: '180deg' }} />
-            </Button>
-            <CheckboxContainer>
+            </button>
+            <div
+              data-fullscreen={document.fullscreenElement ? true : false}
+              className="flex
+                data-[fullscreen=true]:bg-secondary-dark rounded-lg border border-transparent
+              data-[fullscreen=true]:border-primary-main"
+            >
               <Checkbox
                 name="fullscreen"
                 checked={document.fullscreenElement ? true : false}
@@ -325,65 +324,113 @@ const PlayerMenu = ({
                 role="checkbox"
                 aria-checked={document.fullscreenElement ? true : false}
                 aria-label="Fullscreen"
+                style={{ padding: '4px' }}
               />
-            </CheckboxContainer>
+            </div>
 
-            <Button
-              variant={wakeLock.active ? 'contained' : 'outlined'}
+            <button
+              data-wake-lock-active={settings.keepAwake}
               style={{
-                cursor: 'pointer',
-                userSelect: 'none',
                 fontSize: buttonFontSize,
-                padding: '0 4px 0 4px',
               }}
-              onClick={wakeLock.toggleWakeLock}
+              className="text-primary-main px-1 webkit-user-select-none cursor-pointer 
+              data-[wake-lock-active=false]:bg-secondary-dark rounded-lg border border-transparent
+              data-[wake-lock-active=false]:border-primary-main
+              "
+              onClick={() => {
+                wakeLock.toggleWakeLock();
+              }}
               role="checkbox"
-              aria-checked={wakeLock.active}
+              aria-checked={settings.keepAwake}
               aria-label="Keep awake"
             >
               Keep Awake
-            </Button>
+            </button>
 
-            <Button
+            <button
               style={{
                 cursor: 'pointer',
                 userSelect: 'none',
                 fontSize: buttonFontSize,
-                padding: '4px',
+                padding: '2px',
               }}
+              className="text-primary-main"
               onClick={() => resetGameDialogRef.current?.show()}
               role="checkbox"
-              aria-checked={wakeLock.active}
               aria-label="Reset Game"
             >
               <ResetGame size={iconSize} />
-            </Button>
+            </button>
           </ButtonsSections>
         </BetterRowContainer>
+
         <dialog
           ref={resetGameDialogRef}
-          className="z-[999] size-full bg-background-settings"
+          className="z-[999] size-full bg-background-settings overflow-y-scroll"
           onClick={() => resetGameDialogRef.current?.close()}
         >
           <div className="flex size-full items-center justify-center">
-            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-2xl border-none">
-              <h1 className="text-center text-text-primary">Reset Game?</h1>
-              <div className="flex justify-evenly gap-4">
-                <Button
-                  variant="contained"
+            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-xl border-none">
+              <h1
+                className="text-center text-text-primary"
+                style={{ fontSize: extraCountersSize }}
+              >
+                Reset Game?
+              </h1>
+              <div className="flex justify-evenly gap-2">
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
+                  style={{ fontSize: iconSize }}
                   onClick={() => resetGameDialogRef.current?.close()}
                 >
                   No
-                </Button>
-                <Button
-                  variant="contained"
+                </button>
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
                   onClick={() => {
                     handleResetGame();
                     resetGameDialogRef.current?.close();
                   }}
+                  style={{ fontSize: iconSize }}
                 >
                   Yes
-                </Button>
+                </button>
+              </div>
+            </div>
+          </div>
+        </dialog>
+
+        <dialog
+          ref={endGameDialogRef}
+          className="z-[999] size-full bg-background-settings overflow-y-scroll"
+          onClick={() => endGameDialogRef.current?.close()}
+        >
+          <div className="flex size-full items-center justify-center">
+            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-xl border-none">
+              <h1
+                className="text-center text-text-primary"
+                style={{ fontSize: extraCountersSize }}
+              >
+                End Game?
+              </h1>
+              <div className="flex justify-evenly gap-2">
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
+                  style={{ fontSize: iconSize }}
+                  onClick={() => endGameDialogRef.current?.close()}
+                >
+                  No
+                </button>
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
+                  onClick={() => {
+                    handleGoToStart();
+                    endGameDialogRef.current?.close();
+                  }}
+                  style={{ fontSize: iconSize }}
+                >
+                  Yes
+                </button>
               </div>
             </div>
           </div>

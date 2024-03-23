@@ -42,6 +42,7 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
 
   useEffect(() => {
     if (
+      players.length > 1 &&
       settings.showStartingPlayer &&
       settings.useRandomStartingPlayerInterval &&
       !stopPlayerRandomization &&
@@ -101,14 +102,17 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
     stopPlayerRandomization,
   ]);
 
+  const gradientColors = players.map((player) => player.color).join(', ');
+
   return (
     <PlayersWrapper>
-      {settings.showStartingPlayer &&
+      {players.length > 1 &&
+        settings.showStartingPlayer &&
         settings.useRandomStartingPlayerInterval &&
         !stopPlayerRandomization &&
         !playing && (
           <div
-            className="absolute flex justify-center items-center bg-black bg-opacity-40 h-screen w-screen portrait:h-[100vw] portrait:w-[100vh] z-50 cursor-pointer text-5xl"
+            className="absolute flex justify-center items-center h-screen w-screen portrait:h-[100vw] portrait:w-[100vh] z-50 cursor-pointer text-5xl"
             onClick={() => {
               if (randomIntervalRef.current) {
                 clearInterval(randomIntervalRef.current);
@@ -117,8 +121,16 @@ export const Players = (players: PlayerType[], gridClasses: string) => {
               setStopPlayerRandomization(true);
             }}
           >
-            <div className="bg-primary-main px-8 py-2 rounded-2xl opacity-70 text-[5vmax]">
-              PRESS TO SELECT PLAYER
+            <div className="absolute flex top-[30%] justify-center items-center px-8 py-4">
+              <div
+                className="absolute size-full blur-[3px] rounded-2xl opacity-90 saturate-150"
+                style={{
+                  backgroundImage: `linear-gradient(60deg, ${gradientColors})`,
+                }}
+              />
+              <p className="relative z-10 text-[5vmax]">
+                PRESS TO SELECT PLAYER
+              </p>
             </div>
           </div>
         )}

@@ -262,18 +262,6 @@ const Start = () => {
           </ToggleButtonsWrapper>
 
           <FormLabel>Layout</FormLabel>
-          {/* <LayoutOptions
-          numberOfPlayers={playerOptions.numberOfPlayers}
-          gridAreas={playerOptions.gridAreas}
-          onChange={(gridAreas) =>
-            setPlayerOptions({
-              ...playerOptions,
-              gridAreas,
-              //TODO fix the layout selection
-              orientation: Orientation.Portrait,
-            })
-          }
-        /> */}
           <LayoutOptions
             numberOfPlayers={playerOptions.numberOfPlayers}
             selectedOrientation={playerOptions.orientation}

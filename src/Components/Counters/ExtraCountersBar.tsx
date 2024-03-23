@@ -21,9 +21,9 @@ const Container = twc.div<RotationDivProps>((props) => [
 ]);
 
 export const ExtraCountersGrid = twc.div<RotationDivProps>((props) => [
-  'flex absolute flex-row flex-grow pointer-events-none',
+  'flex absolute flex-row flex-grow pointer-events-none overflow-x-scroll overflow-y-hidden',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
-    ? 'flex-col-reverse h-full w-auto bottom-auto'
+    ? 'flex-col-reverse h-full w-auto bottom-auto right-0'
     : 'w-full bottom-0',
 ]);
 

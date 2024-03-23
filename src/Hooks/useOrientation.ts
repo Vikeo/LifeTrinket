@@ -23,7 +23,6 @@ export default function useOrientation(
     const onChange = () => {
       if (mounted) {
         const { orientation } = screen;
-        console.log(orientation);
 
         if (orientation) {
           const { angle, type } = orientation;
