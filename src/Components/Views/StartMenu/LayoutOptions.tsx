@@ -42,7 +42,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
     switch (numberOfPlayers) {
       case 1:
         return (
-          <div>
+          <>
             <FormControlLabel
               value={Orientation.Landscape}
               control={
@@ -91,7 +91,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               }
               label=""
             />
-          </div>
+          </>
         );
       case 2:
         return (
@@ -309,6 +309,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Portrait}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <FivePlayersSide
                       height={iconHeight}
@@ -362,6 +363,7 @@ export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
               value={Orientation.Portrait}
               control={
                 <Radio
+                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
                   icon={
                     <SixPlayersSide
                       height={iconHeight}

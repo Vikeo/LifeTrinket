@@ -334,8 +334,8 @@ const PlayerMenu = ({
                 fontSize: buttonFontSize,
               }}
               className="text-primary-main px-1 webkit-user-select-none cursor-pointer 
-              data-[wake-lock-active=false]:bg-secondary-dark rounded-lg border border-transparent
-              data-[wake-lock-active=false]:border-primary-main
+              data-[wake-lock-active=true]:bg-secondary-dark rounded-lg border border-transparent
+              data-[wake-lock-active=true]:border-primary-main
               "
               onClick={() => {
                 wakeLock.toggleWakeLock();
