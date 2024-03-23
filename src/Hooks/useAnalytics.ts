@@ -14,13 +14,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 export const useAnalytics = () => {
-  if (process.env.NODE_ENV === 'development') {
-    // Code to run in local development environment
-    console.log('Running in development mode');
-  } else {
-    // Code to run in production environment
-    console.log('Running in production mode');
-  }
   const trackEvent = (
     eventName: string,
     eventParams?: { [key: string]: unknown }
