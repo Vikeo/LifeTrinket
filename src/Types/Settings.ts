@@ -12,12 +12,18 @@ export enum GameFormat {
   TwoHeadedGiant = 'two-headed-giant',
 }
 
+export enum PreStartMode {
+  None = 'none',
+  RandomKing = 'random-king',
+  FingerGame = 'finger-game',
+}
+
 export type Settings = {
   keepAwake: boolean;
   showStartingPlayer: boolean;
   showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
-  useRandomStartingPlayerInterval: boolean;
+  preStartMode: PreStartMode;
 };
 
 export type InitialGameSettings = {

@@ -12,6 +12,7 @@ import {
   GameFormat,
   InitialGameSettings,
   Orientation,
+  PreStartMode,
 } from '../../../Types/Settings';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
@@ -89,6 +90,7 @@ const Start = () => {
     setInitialGameSettings,
     settings,
     isPWA,
+    setRandomizingPlayer,
   } = useGlobalSettings();
 
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -126,6 +128,7 @@ const Start = () => {
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
     setShowPlay(true);
+    setRandomizingPlayer(settings.preStartMode === PreStartMode.RandomKing);
     localStorage.setItem('playing', 'false');
     localStorage.setItem('showPlay', 'true');
   };

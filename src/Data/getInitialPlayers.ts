@@ -1,7 +1,7 @@
 import { Player, Rotation } from '../Types/Player';
 import { InitialGameSettings, Orientation } from '../Types/Settings';
 
-const presetColors = [
+export const presetColors = [
   '#F06292', // Light Pink
   '#4DB6AC', // Teal
   '#FFA726', // Orange

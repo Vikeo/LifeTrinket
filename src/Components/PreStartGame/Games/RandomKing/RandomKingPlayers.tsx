@@ -1,10 +1,9 @@
-import { twc } from 'react-twc';
-import { usePlayers } from '../../Hooks/usePlayers';
-import { Player as PlayerType } from '../../Types/Player';
-import LifeCounter from '../LifeCounter/LifeCounter';
-import { GridLayout } from '../Views/Play';
+import { usePlayers } from '../../../../Hooks/usePlayers';
+import { Player } from '../../../../Types/Player';
+import { GridLayout } from '../../../Views/Play';
+import { RoulettePlayerCard } from './RoulettePlayerCard';
 
-const getGridArea = (player: PlayerType) => {
+const getGridArea = (player: Player) => {
   switch (player.index) {
     case 0:
       return 'grid-in-player0';
@@ -23,13 +22,15 @@ const getGridArea = (player: PlayerType) => {
   }
 };
 
-const PlayersWrapper = twc.div`w-full h-full bg-black`;
-
-export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
+export const RandomKingPlayers = ({
+  gridLayout,
+}: {
+  gridLayout: GridLayout;
+}) => {
   const { players } = usePlayers();
 
   return (
-    <PlayersWrapper>
+    <div className="w-full h-full bg-black">
       <div className={`grid w-full h-full gap-1 box-border ${gridLayout} `}>
         {players.map((player) => {
           const gridArea = getGridArea(player);
@@ -38,16 +39,11 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
               key={player.index}
               className={`flex justify-center items-center align-middle ${gridArea}`}
             >
-              <LifeCounter
-                player={player}
-                opponents={players.filter(
-                  (opponent) => opponent.index !== player.index
-                )}
-              />
+              <RoulettePlayerCard player={player} />
             </div>
           );
         })}
       </div>
-    </PlayersWrapper>
+    </div>
   );
 };
