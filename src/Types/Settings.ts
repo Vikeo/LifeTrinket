@@ -34,10 +34,18 @@ export type InitialGameSettings = {
   orientation: Orientation;
 };
 
-export const InitialGameSettingsSchema = z.object({
+export const initialGameSettingsSchema = z.object({
   startingLifeTotal: z.number().min(1).max(200).default(20),
   useCommanderDamage: z.boolean().default(false),
   gameFormat: z.nativeEnum(GameFormat).optional(),
   numberOfPlayers: z.number().min(1).max(6).default(2),
   orientation: z.nativeEnum(Orientation).default(Orientation.Landscape),
+});
+
+export const settingsSchema = z.object({
+  keepAwake: z.boolean().default(true),
+  showStartingPlayer: z.boolean().default(true),
+  showPlayerMenuCog: z.boolean().default(true),
+  goFullscreenOnStart: z.boolean().default(true),
+  preStartMode: z.nativeEnum(PreStartMode).default(PreStartMode.None),
 });

@@ -7,8 +7,10 @@ import {
 import { useAnalytics } from '../Hooks/useAnalytics';
 import {
   InitialGameSettings,
-  InitialGameSettingsSchema,
+  initialGameSettingsSchema,
+  PreStartMode,
   Settings,
+  settingsSchema,
 } from '../Types/Settings';
 
 export const GlobalSettingsProvider = ({
@@ -51,15 +53,18 @@ export const GlobalSettingsProvider = ({
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
 
+  const parsedSettings = settingsSchema.safeParse(
+    JSON.parse(savedSettings ?? '')
+  );
   const [settings, setSettings] = useState<Settings>(
-    savedSettings
-      ? JSON.parse(savedSettings)
+    parsedSettings.success
+      ? parsedSettings.data
       : {
           goFullscreenOnStart: true,
           keepAwake: true,
           showStartingPlayer: true,
           showPlayerMenuCog: true,
-          useRandomStartingPlayerInterval: false,
+          preStartMode: PreStartMode.None,
         }
   );
 
@@ -89,7 +94,7 @@ export const GlobalSettingsProvider = ({
 
     //parse existing game settings with zod schema
     const parsedInitialGameSettings =
-      InitialGameSettingsSchema.safeParse(initialGameSettings);
+      initialGameSettingsSchema.safeParse(initialGameSettings);
 
     if (!parsedInitialGameSettings.success) {
       removeLocalStorage();
