@@ -108,7 +108,7 @@ const PlayerMenu = ({
     goToStart,
     settings,
     setPlaying,
-    setStopPlayerRandomization,
+    setRandomizingPlayer,
   } = useGlobalSettings();
 
   const { updatePlayer, resetCurrentGame } = usePlayers();
@@ -129,12 +129,12 @@ const PlayerMenu = ({
     resetCurrentGame();
     setShowPlayerMenu(false);
     setPlaying(false);
-    setStopPlayerRandomization(false);
+    setRandomizingPlayer(true);
   };
 
   const handleGoToStart = () => {
     goToStart();
-    setStopPlayerRandomization(false);
+    setRandomizingPlayer(true);
   };
 
   const toggleFullscreen = () => {

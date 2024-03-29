@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
-import { baseColors } from '../../../tailwind.config';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
@@ -15,8 +14,8 @@ import {
 import { LoseGameButton } from '../Buttons/LoseButton';
 import CommanderDamageBar from '../Counters/CommanderDamageBar';
 import ExtraCountersBar from '../Counters/ExtraCountersBar';
-import { Paragraph } from '../Misc/TextComponents';
 import PlayerMenu from '../Players/PlayerMenu';
+import { StartingPlayerCard } from '../PreStartGame/StartingPlayerCard';
 import Health from './Health';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
@@ -77,8 +76,6 @@ const PlayerLostWrapper = twc.div<RotationDivProps>((props) => [
     : '',
 ]);
 
-const DynamicText = twc.div`text-[8vmin] whitespace-nowrap`;
-
 const hasCommanderDamageReached21 = (player: Player) => {
   const commanderDamageTotals = player.commanderDamage.map(
     (commanderDamage) => commanderDamage.damageTotal
@@ -116,9 +113,7 @@ const RECENT_DIFFERENCE_TTL = 3_000;
 
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { settings, playing, setPlaying, stopPlayerRandomization } =
-    useGlobalSettings();
-  const playingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const { settings, playing } = useGlobalSettings();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
     undefined
   );
@@ -185,28 +180,6 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.body.clientHeight, document.body.clientWidth]);
 
-  useEffect(() => {
-    if (
-      player.isStartingPlayer &&
-      ((!playing &&
-        settings.useRandomStartingPlayerInterval &&
-        stopPlayerRandomization) ||
-        (!settings.useRandomStartingPlayerInterval && !playing))
-    ) {
-      playingTimerRef.current = setTimeout(() => {
-        setPlaying(true);
-      }, 10_000);
-    }
-
-    return () => clearTimeout(playingTimerRef.current);
-  }, [
-    player.isStartingPlayer,
-    playing,
-    setPlaying,
-    settings.useRandomStartingPlayerInterval,
-    stopPlayerRandomization,
-  ]);
-
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
 
@@ -227,12 +200,6 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       ? player.settings.rotation - 90
       : player.settings.rotation;
 
-  const calcTextRotation =
-    player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side
-      ? player.settings.rotation - 180
-      : player.settings.rotation;
-
   const amountOfPlayers = opponents.length + 1;
 
   return (
@@ -245,54 +212,12 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         {amountOfPlayers > 1 &&
           !playing &&
           settings.showStartingPlayer &&
-          player.isStartingPlayer && (
-            <div
-              className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
-              style={{
-                rotate: `${calcRotation}deg`,
-                backgroundImage:
-                  stopPlayerRandomization ||
-                  !settings.useRandomStartingPlayerInterval
-                    ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
-                    : 'none',
-              }}
-              onClick={() => {
-                clearTimeout(playingTimerRef.current);
-                setPlaying(true);
-              }}
-            >
-              <DynamicText
-                style={{
-                  rotate: `${calcTextRotation}deg`,
-                }}
-              >
-                <div className="flex flex-col justify-center items-center">
-                  <Paragraph>👑</Paragraph>
-                  {(stopPlayerRandomization ||
-                    !settings.useRandomStartingPlayerInterval) && (
-                    <>
-                      <Paragraph>You start!</Paragraph>
-                      <Paragraph className="text-xl">(Press to hide)</Paragraph>
-                    </>
-                  )}
-                </div>
-              </DynamicText>
-            </div>
-          )}
+          player.isStartingPlayer && <StartingPlayerCard player={player} />}
 
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
-        {amountOfPlayers > 1 &&
-          settings.showStartingPlayer &&
-          settings.useRandomStartingPlayerInterval &&
-          !stopPlayerRandomization &&
-          !playing && (
-            <div
-              className="flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none z-10"
-              style={{ backgroundColor: player.color }}
-            />
-          )}
+
         <CommanderDamageBar
           opponents={opponents}
           player={player}

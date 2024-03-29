@@ -24,9 +24,11 @@ export type GlobalSettingsContextType = {
   setSettings: (settings: Settings) => void;
   playing: boolean;
   setPlaying: (playing: boolean) => void;
-  stopPlayerRandomization: boolean;
-  setStopPlayerRandomization: (stopRandom: boolean) => void;
+  randomizingPlayer: boolean;
+  setRandomizingPlayer: (stopRandom: boolean) => void;
   isPWA: boolean;
+  preStartCompleted: boolean;
+  setPreStartCompleted: (completed: boolean) => void;
 };
 
 export const GlobalSettingsContext =

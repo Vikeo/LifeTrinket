@@ -1,11 +1,12 @@
-import { Button, FormLabel, Modal, Switch } from '@mui/material';
+import { Button, Modal, Switch } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { Cross } from '../../Icons/generated';
+import { PreStartMode } from '../../Types/Settings';
 import { ModalWrapper } from './InfoModal';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
-import { useEffect, useState } from 'react';
-import { Cross } from '../../Icons/generated';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
@@ -84,28 +85,35 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
         <ModalWrapper>
           <Container>
             <h2 className="text-center text-2xl mb-2">⚙️ Settings ⚙️</h2>
-            <Separator height="1px" />
             <SettingContainer>
-              <ToggleContainer>
-                <FormLabel>Show Start Player</FormLabel>
-                <Switch
-                  checked={settings.showStartingPlayer}
-                  onChange={() => {
-                    setSettings({
-                      ...settings,
-                      showStartingPlayer: !settings.showStartingPlayer,
-                    });
-                  }}
-                />
-              </ToggleContainer>
-              <Description>
-                On start or reset of game, will pick a random player who will
-                start first if this is enabled.
-              </Description>
+              <Paragraph>
+                {/* @ts-expect-error is defined in vite.config.ts*/}
+                Current version: {APP_VERSION}{' '}
+                {isLatestVersion && (
+                  <span className="text-sm text-text-secondary">(latest)</span>
+                )}
+              </Paragraph>
+              {!isLatestVersion && newVersion && (
+                <Paragraph className="text-text-secondary text-lg text-center">
+                  New version ({newVersion}) is available!{' '}
+                </Paragraph>
+              )}
             </SettingContainer>
+            {!isLatestVersion && newVersion && (
+              <Button
+                variant="contained"
+                style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
+                onClick={() => window?.location?.reload()}
+              >
+                <span>Update</span>
+                <span className="text-xs">&nbsp;(reload app)</span>
+              </Button>
+            )}
+            <Separator height="1px" />
+
             <SettingContainer>
               <ToggleContainer>
-                <FormLabel>Show Player Menu Cog</FormLabel>
+                <label>Show Player Menu Cog</label>
                 <Switch
                   checked={settings.showPlayerMenuCog}
                   onChange={() => {
@@ -123,27 +131,73 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
             </SettingContainer>
             <SettingContainer>
               <ToggleContainer>
-                <FormLabel>Randomize starting player with interval</FormLabel>
+                <label>Show Start Player</label>
                 <Switch
-                  checked={settings.useRandomStartingPlayerInterval}
+                  checked={settings.showStartingPlayer}
                   onChange={() => {
                     setSettings({
                       ...settings,
-                      useRandomStartingPlayerInterval:
-                        !settings.useRandomStartingPlayerInterval,
+                      showStartingPlayer: !settings.showStartingPlayer,
                     });
                   }}
                 />
               </ToggleContainer>
               <Description>
-                Will randomize between all players at when starting a game,
-                pressing the screen aborts the interval and chooses the player
-                that has the crown.
+                On start or reset of game, will pick a random starting player,
+                according to the <b>Pre-Start mode</b>
               </Description>
             </SettingContainer>
             <SettingContainer>
+              <div className="flex flex-row justify-between items-center mb-1">
+                <label htmlFor="pre-start-modes">Pre-Start mode</label>
+                <select
+                  name="pre-start-modes"
+                  id="pre-start-modes"
+                  value={settings.preStartMode}
+                  className="bg-primary-main border-none outline-none text-text-primary rounded-md p-1 text-xs disabled:bg-primary-dark"
+                  onChange={(e) => {
+                    setSettings({
+                      ...settings,
+                      preStartMode: e.target.value as PreStartMode,
+                    });
+                  }}
+                  disabled={!settings.showStartingPlayer}
+                >
+                  <option value={PreStartMode.None}>None</option>
+                  <option value={PreStartMode.RandomKing}>Random King</option>
+                  <option value={PreStartMode.FingerGame}>Finger Game</option>
+                </select>
+              </div>
+              <div className="text-xs text-left text-text-secondary">
+                Different ways to determine the starting player before the game
+                starts.
+              </div>
+
+              {settings.preStartMode === PreStartMode.None && (
+                <div className="text-xs text-left text-text-secondary mt-1">
+                  <span className="text-text-primary">None:</span> The starting
+                  player will simply be shown.
+                </div>
+              )}
+              {settings.preStartMode === PreStartMode.RandomKing && (
+                <div className="text-xs text-left text-text-secondary mt-1">
+                  <span className="text-text-primary">Random King:</span>{' '}
+                  Randomly pass a crown between all players, press the screen to
+                  stop it. The player who has the crown when it stops gets to
+                  start.
+                </div>
+              )}
+              {settings.preStartMode === PreStartMode.FingerGame && (
+                <div className="text-xs text-left text-text-secondary mt-1">
+                  <span className="text-text-primary">Finger Game:</span> All
+                  players put a finger on the screen, one will be chosen at
+                  random.
+                </div>
+              )}
+            </SettingContainer>
+            <SettingContainer>
               <ToggleContainer>
-                <FormLabel>Keep Awake</FormLabel>
+                <label>Keep Awake</label>
                 <Switch
                   checked={settings.keepAwake}
                   onChange={() => {
@@ -161,7 +215,10 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
             </SettingContainer>
             <SettingContainer>
               <ToggleContainer>
-                <FormLabel>Go fullscreen on start (Android only)</FormLabel>
+                <label>
+                  Fullscreen on start{' '}
+                  <span className="text-xs">(Android only)</span>
+                </label>
                 <Switch
                   checked={settings.goFullscreenOnStart}
                   onChange={() => {
@@ -195,31 +252,6 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                   </Description>
                 </SettingContainer>
               </>
-            )}
-            <Separator height="1px" />
-            <SettingContainer>
-              <Paragraph>
-                {/* @ts-expect-error is defined in vite.config.ts*/}
-                Current version: {APP_VERSION}{' '}
-                {isLatestVersion && (
-                  <span className="text-sm text-text-secondary">(latest)</span>
-                )}
-              </Paragraph>
-              {!isLatestVersion && newVersion && (
-                <Paragraph className="text-text-secondary text-lg text-center">
-                  New version ({newVersion}) is available!{' '}
-                </Paragraph>
-              )}
-            </SettingContainer>
-            {!isLatestVersion && newVersion && (
-              <Button
-                variant="contained"
-                style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
-                onClick={() => window?.location?.reload()}
-              >
-                <span>Update</span>
-                <span className="text-xs">&nbsp;(reload app)</span>
-              </Button>
             )}
             <Separator height="1px" />
 
