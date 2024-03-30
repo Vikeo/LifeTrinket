@@ -23,7 +23,12 @@ export const useAnalytics = () => {
       return;
     }
 
-    logEvent(analytics, eventName, eventParams);
+    const paramsWithVersion = {
+      ...eventParams,
+      app_version: import.meta.env.VITE_APP_VERSION,
+    };
+
+    logEvent(analytics, eventName, paramsWithVersion);
   };
 
   return { trackEvent };
