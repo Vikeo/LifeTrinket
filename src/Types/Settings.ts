@@ -35,17 +35,33 @@ export type InitialGameSettings = {
 };
 
 export const initialGameSettingsSchema = z.object({
-  startingLifeTotal: z.number().min(1).max(200).default(20),
-  useCommanderDamage: z.boolean().default(false),
-  gameFormat: z.nativeEnum(GameFormat).optional(),
-  numberOfPlayers: z.number().min(1).max(6).default(2),
-  orientation: z.nativeEnum(Orientation).default(Orientation.Landscape),
+  startingLifeTotal: z.number().min(1).max(200),
+  useCommanderDamage: z.boolean(),
+  gameFormat: z.nativeEnum(GameFormat),
+  numberOfPlayers: z.number().min(1).max(6),
+  orientation: z.nativeEnum(Orientation),
 });
 
+export const defaultInitialGameSettings = {
+  numberOfPlayers: 4,
+  startingLifeTotal: 40,
+  useCommanderDamage: true,
+  orientation: Orientation.Landscape,
+  gameFormat: GameFormat.Commander,
+};
+
 export const settingsSchema = z.object({
-  keepAwake: z.boolean().default(true),
-  showStartingPlayer: z.boolean().default(true),
-  showPlayerMenuCog: z.boolean().default(true),
-  goFullscreenOnStart: z.boolean().default(true),
-  preStartMode: z.nativeEnum(PreStartMode).default(PreStartMode.None),
+  keepAwake: z.boolean(),
+  showStartingPlayer: z.boolean(),
+  showPlayerMenuCog: z.boolean(),
+  goFullscreenOnStart: z.boolean(),
+  preStartMode: z.nativeEnum(PreStartMode),
 });
+
+export const defaultSettings: Settings = {
+  goFullscreenOnStart: true,
+  keepAwake: true,
+  showStartingPlayer: true,
+  showPlayerMenuCog: true,
+  preStartMode: PreStartMode.None,
+};

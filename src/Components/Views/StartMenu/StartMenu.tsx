@@ -9,10 +9,10 @@ import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info } from '../../../Icons/generated';
 import {
-  GameFormat,
   InitialGameSettings,
   Orientation,
   PreStartMode,
+  defaultInitialGameSettings,
 } from '../../../Types/Settings';
 import { InfoModal } from '../../Misc/InfoModal';
 import { SettingsModal } from '../../Misc/SettingsModal';
@@ -97,13 +97,7 @@ const Start = () => {
   const [openSettingsModal, setOpenSettingsModal] = useState(false);
 
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
-    initialGameSettings || {
-      numberOfPlayers: 4,
-      startingLifeTotal: 40,
-      useCommanderDamage: true,
-      orientation: Orientation.Portrait,
-      gameFormat: GameFormat.Commander,
-    }
+    initialGameSettings || defaultInitialGameSettings
   );
 
   const doStartGame = () => {

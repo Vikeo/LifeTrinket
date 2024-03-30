@@ -7,9 +7,10 @@ import {
 import { useAnalytics } from '../Hooks/useAnalytics';
 import {
   InitialGameSettings,
-  initialGameSettingsSchema,
-  PreStartMode,
   Settings,
+  defaultInitialGameSettings,
+  defaultSettings,
+  initialGameSettingsSchema,
   settingsSchema,
 } from '../Types/Settings';
 
@@ -53,19 +54,18 @@ export const GlobalSettingsProvider = ({
       savedGameSettings ? JSON.parse(savedGameSettings) : null
     );
 
-  const parsedSettings = settingsSchema.safeParse(
-    JSON.parse(savedSettings ?? '')
-  );
+  const setInitialGameSettingsAndLocalStorage = (
+    initialGameSettings: InitialGameSettings
+  ) => {
+    setInitialGameSettings(initialGameSettings);
+    localStorage.setItem(
+      'initialGameSettings',
+      JSON.stringify(initialGameSettings)
+    );
+  };
+
   const [settings, setSettings] = useState<Settings>(
-    parsedSettings.success
-      ? parsedSettings.data
-      : {
-          goFullscreenOnStart: true,
-          keepAwake: true,
-          showStartingPlayer: true,
-          showPlayerMenuCog: true,
-          preStartMode: PreStartMode.None,
-        }
+    savedSettings ? JSON.parse(savedSettings) : defaultSettings
   );
 
   const setSettingsAndLocalStorage = (settings: Settings) => {
@@ -85,10 +85,29 @@ export const GlobalSettingsProvider = ({
     setPreStartCompleted(false);
   };
 
+  // Set settings if they are not valid
   useEffect(() => {
-    if (savedGameSettings && JSON.parse(savedGameSettings).gridAreas) {
-      removeLocalStorage();
-      window.location.reload();
+    // If there are no saved settings, set default settings
+    if (!savedSettings) {
+      setSettingsAndLocalStorage(defaultSettings);
+      return;
+    }
+
+    const parsedSettings = settingsSchema.safeParse(JSON.parse(savedSettings));
+
+    // If saved settings are not valid, remove them
+    if (!parsedSettings.success) {
+      console.error('invalid settings, resetting to default settings');
+      setSettingsAndLocalStorage(defaultSettings);
+      return;
+    }
+    localStorage.setItem('settings', JSON.stringify(parsedSettings.data));
+  }, [settings, savedSettings]);
+
+  // Set initial game settings if they are not valid
+  useEffect(() => {
+    if (!savedGameSettings) {
+      setInitialGameSettingsAndLocalStorage(defaultInitialGameSettings);
       return;
     }
 
@@ -97,14 +116,14 @@ export const GlobalSettingsProvider = ({
       initialGameSettingsSchema.safeParse(initialGameSettings);
 
     if (!parsedInitialGameSettings.success) {
-      removeLocalStorage();
-      window.location.reload();
+      console.error('invalid game settings, resetting to default settings');
+      setInitialGameSettingsAndLocalStorage(defaultInitialGameSettings);
       return;
     }
 
     localStorage.setItem(
       'initialGameSettings',
-      JSON.stringify(initialGameSettings)
+      JSON.stringify(parsedInitialGameSettings.data)
     );
   }, [initialGameSettings, savedGameSettings]);
 
