@@ -142,6 +142,11 @@ export const GlobalSettingsProvider = ({
     };
   }, []);
 
+  const [isLatestVersion, setIsLatestVersion] = useState(false);
+  const [remoteVersion, setRemoteVersion] = useState<string | undefined>(
+    undefined
+  );
+
   const { isSupported, release, released, request, type } = useWakeLock();
 
   const active = settings.keepAwake;
@@ -195,6 +200,46 @@ export const GlobalSettingsProvider = ({
       localStorage.setItem('playing', String(playing));
     };
 
+    async function checkForNewVersion(source: 'settings' | 'start_menu') {
+      try {
+        const result = await fetch(
+          'https://api.github.com/repos/Vikeo/LifeTrinket/releases/latest',
+          {
+            headers: {
+              Authorization: `Bearer ${
+                import.meta.env.VITE_REPO_READ_ACCESS_TOKEN
+              }`,
+              Accept: 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+            },
+          }
+        );
+        const data = await result.json();
+
+        if (!data.name) {
+          setRemoteVersion(undefined);
+          setIsLatestVersion(false);
+          return;
+        }
+
+        setRemoteVersion(data.name);
+
+        if (data.name === import.meta.env.VITE_APP_VERSION) {
+          setIsLatestVersion(true);
+          return;
+        }
+
+        analytics.trackEvent(`${source}_has_new_version`, {
+          remoteVersion: data.name,
+          installedVersion: import.meta.env.VITE_APP_VERSION,
+        });
+
+        setIsLatestVersion(false);
+      } catch (error) {
+        console.error('error getting latest version string', error);
+      }
+    }
+
     return {
       fullscreen: { isFullscreen, enableFullscreen, disableFullscreen },
       wakeLock: {
@@ -219,6 +264,13 @@ export const GlobalSettingsProvider = ({
       isPWA: window?.matchMedia('(display-mode: standalone)').matches,
       preStartCompleted,
       setPreStartCompleted: setPreStartCompletedAndLocalStorage,
+
+      version: {
+        installedVersion: import.meta.env.VITE_APP_VERSION,
+        remoteVersion,
+        isLatest: isLatestVersion,
+        checkForNewVersion,
+      },
     };
   }, [
     isFullscreen,
@@ -233,6 +285,8 @@ export const GlobalSettingsProvider = ({
     settings,
     randomizingPlayer,
     preStartCompleted,
+    remoteVersion,
+    isLatestVersion,
     analytics,
   ]);
 

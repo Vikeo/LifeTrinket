@@ -91,6 +91,7 @@ const Start = () => {
     settings,
     isPWA,
     setRandomizingPlayer,
+    version,
   } = useGlobalSettings();
 
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -99,6 +100,29 @@ const Start = () => {
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || defaultInitialGameSettings
   );
+
+  let tracked = false;
+  // Check for new version on mount
+  useEffect(() => {
+    if (!tracked) {
+      console.log('checking version');
+      version.checkForNewVersion('start_menu');
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      tracked = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    setInitialGameSettings(playerOptions);
+  }, [playerOptions, setInitialGameSettings]);
+
+  useEffect(() => {
+    setPlayerOptions({
+      ...playerOptions,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerOptions.numberOfPlayers]);
 
   const doStartGame = () => {
     if (!initialGameSettings) {
@@ -127,20 +151,9 @@ const Start = () => {
     localStorage.setItem('showPlay', 'true');
   };
 
-  useEffect(() => {
-    setInitialGameSettings(playerOptions);
-  }, [playerOptions, setInitialGameSettings]);
-
-  const valuetext = (value: number) => {
+  const valueText = (value: number) => {
     return `${value}`;
   };
-
-  useEffect(() => {
-    setPlayerOptions({
-      ...playerOptions,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playerOptions.numberOfPlayers]);
 
   return (
     <MainWrapper>
@@ -169,8 +182,12 @@ const Start = () => {
 
       <SupportMe />
 
-      <h1 className="text-3xl block font-bold mt-6 mb-5 text-text-primary">
+      <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
         Life Trinket
+        <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
+        <div className="flex absolute text-xs font-medium -bottom-4">
+          v{version.installedVersion}
+        </div>
       </h1>
 
       <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
@@ -183,7 +200,7 @@ const Start = () => {
               min={1}
               aria-label="Custom marks"
               value={playerOptions?.numberOfPlayers ?? 4}
-              getAriaValueText={valuetext}
+              getAriaValueText={valueText}
               step={null}
               marks={playerMarks}
               onChange={(_e, value) => {
@@ -204,7 +221,7 @@ const Start = () => {
               min={20}
               aria-label="Custom marks"
               value={playerOptions?.startingLifeTotal ?? 40}
-              getAriaValueText={valuetext}
+              getAriaValueText={valueText}
               step={10}
               marks={healthMarks}
               onChange={(_e, value) =>
@@ -247,15 +264,32 @@ const Start = () => {
                 }}
               />
             </ToggleContainer>
-            <Button
-              variant="contained"
-              style={{ height: '2rem' }}
-              onClick={() => {
-                setOpenSettingsModal(true);
-              }}
-            >
-              <Cog /> &nbsp; Other settings
-            </Button>
+            <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
+              <Button
+                variant="contained"
+                style={{ height: '2rem' }}
+                onClick={() => {
+                  setOpenSettingsModal(true);
+                }}
+              >
+                <Cog /> &nbsp; Game Settings
+              </Button>
+
+              <div
+                data-not-latest-version={
+                  !version.isLatest && !!version.remoteVersion
+                }
+                className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
+                opacity-0 transition-all duration-200 delay-500
+                data-[not-latest-version=true]:opacity-100
+                "
+              >
+                <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
+                <span className="z-10">
+                  v{version.remoteVersion} available!
+                </span>
+              </div>
+            </div>
           </ToggleButtonsWrapper>
 
           <FormLabel>Layout</FormLabel>

@@ -18,6 +18,7 @@ import {
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
+import { useAnalytics } from '../../Hooks/useAnalytics';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -111,6 +112,8 @@ const PlayerMenu = ({
     setRandomizingPlayer,
   } = useGlobalSettings();
 
+  const analytics = useAnalytics();
+
   const { updatePlayer, resetCurrentGame } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +133,7 @@ const PlayerMenu = ({
     setShowPlayerMenu(false);
     setPlaying(false);
     setRandomizingPlayer(true);
+    analytics.trackEvent('reset_game');
   };
 
   const handleGoToStart = () => {
@@ -173,7 +177,10 @@ const PlayerMenu = ({
         ref={settingsContainerRef}
       >
         <button
-          onClick={() => setShowPlayerMenu(false)}
+          onClick={() => {
+            analytics.trackEvent('close_player_menu_button');
+            setShowPlayerMenu(false);
+          }}
           className="flex absolute top-0 right-2 z-10 bg-transparent items-center justify-center rounded-full border-solid border-primary-main border-2 p-[0.2rem]"
         >
           <Cross size={buttonFontSize} className="text-primary-main " />
@@ -187,6 +194,11 @@ const PlayerMenu = ({
                 type="color"
                 className="size-[200%] absolute -left-2 -top-2"
                 value={player.color}
+                onClick={() => {
+                  analytics.trackEvent('color_picker_opened', {
+                    player: player.index,
+                  });
+                }}
               />
             </ColorPickerButton>
             {player.settings.useCommanderDamage && (
@@ -210,7 +222,12 @@ const PlayerMenu = ({
                       strokeWidth="30"
                     />
                   }
-                  onChange={handleSettingsChange}
+                  onChange={(e) => {
+                    analytics.trackEvent('toggle_partner', {
+                      checked: e.target.checked,
+                    });
+                    handleSettingsChange(e);
+                  }}
                   role="checkbox"
                   aria-checked={player.settings.usePartner}
                   aria-label="Partner"
@@ -237,7 +254,12 @@ const PlayerMenu = ({
                     strokeWidth="30"
                   />
                 }
-                onChange={handleSettingsChange}
+                onChange={(e) => {
+                  analytics.trackEvent('toggle_poison', {
+                    checked: e.target.checked,
+                  });
+                  handleSettingsChange(e);
+                }}
                 role="checkbox"
                 aria-checked={player.settings.usePoison}
                 aria-label="Poison"
@@ -263,7 +285,12 @@ const PlayerMenu = ({
                     strokeWidth="15"
                   />
                 }
-                onChange={handleSettingsChange}
+                onChange={(e) => {
+                  analytics.trackEvent('toggle_energy', {
+                    checked: e.target.checked,
+                  });
+                  handleSettingsChange(e);
+                }}
                 role="checkbox"
                 aria-checked={player.settings.useEnergy}
                 aria-label="Energy"
@@ -289,7 +316,12 @@ const PlayerMenu = ({
                     strokeWidth="15"
                   />
                 }
-                onChange={handleSettingsChange}
+                onChange={(e) => {
+                  analytics.trackEvent('toggle_experience', {
+                    checked: e.target.checked,
+                  });
+                  handleSettingsChange(e);
+                }}
                 role="checkbox"
                 aria-checked={player.settings.useExperience}
                 aria-label="Experience"

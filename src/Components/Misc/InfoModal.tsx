@@ -3,6 +3,8 @@ import { twc } from 'react-twc';
 import { Separator } from './Separator';
 import { Paragraph } from './TextComponents';
 import { Cross } from '../../Icons/generated';
+import { useEffect } from 'react';
+import { useAnalytics } from '../../Hooks/useAnalytics';
 
 export const ModalWrapper = twc.div`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[85vh] bg-background-default p-4 overflow-scroll rounded-2xl border-none text-text-primary w-[95vw] max-w-[548px]`;
 
@@ -12,6 +14,17 @@ type InfoModalProps = {
 };
 
 export const InfoModal = ({ isOpen, closeModal }: InfoModalProps) => {
+  const analytics = useAnalytics();
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    analytics.trackEvent('info_opened');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
   return (
     <Modal
       open={isOpen}

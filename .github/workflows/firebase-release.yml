@@ -7,7 +7,7 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     env:
-      REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
+      VITE_REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

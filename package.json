@@ -1,11 +1,12 @@
 {
   "name": "life-trinket",
   "private": true,
-  "version": "0.9.1",
+  "version": "0.9.2",
   "type": "commonjs",
   "engines": {
     "node": ">=18",
-    "npm": "please use bun or yarn :) "
+    "yarn": "use pnpm",
+    "npm": "please use pnpm"
   },
   "scripts": {
     "dev": "vite",

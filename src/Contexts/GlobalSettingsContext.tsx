@@ -1,6 +1,13 @@
 import { createContext } from 'react';
 import { InitialGameSettings, Settings } from '../Types/Settings';
 
+type Version = {
+  installedVersion: string;
+  isLatest: boolean;
+  checkForNewVersion: (source: 'settings' | 'start_menu') => Promise<void>;
+  remoteVersion?: string;
+};
+
 export type GlobalSettingsContextType = {
   fullscreen: {
     isFullscreen: boolean;
@@ -29,6 +36,8 @@ export type GlobalSettingsContextType = {
   isPWA: boolean;
   preStartCompleted: boolean;
   setPreStartCompleted: (completed: boolean) => void;
+
+  version: Version;
 };
 
 export const GlobalSettingsContext =

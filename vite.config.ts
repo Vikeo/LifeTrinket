@@ -21,7 +21,11 @@ export default defineConfig({
     },
   },
   define: {
-    APP_VERSION: JSON.stringify(process.env.npm_package_version),
-    REPO_READ_ACCESS_TOKEN: JSON.stringify(process.env.REPO_READ_ACCESS_TOKEN),
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(
+      process.env.npm_package_version
+    ),
+    VITE_REPO_READ_ACCESS_TOKEN: JSON.stringify(
+      process.env.VITE_REPO_READ_ACCESS_TOKEN
+    ),
   },
 });

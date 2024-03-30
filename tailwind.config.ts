@@ -103,6 +103,9 @@ export default {
       animation: {
         fadeOut: 'fadeOut 3s 1s ease-out forwards',
       },
+      fontSize: {
+        xxs: ['0.625rem', '1rem'],
+      },
     },
   },
   plugins: [tailwindcssGridAreas],

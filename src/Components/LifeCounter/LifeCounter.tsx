@@ -133,10 +133,12 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
     trackMouse: true,
     onSwipedDown: (e) => {
       e.event.stopPropagation();
+      analytics.trackEvent('open_player_menu_swipe');
       setShowPlayerMenu(true);
     },
     onSwipedUp: (e) => {
       e.event.stopPropagation();
+      analytics.trackEvent('close_player_menu_swipe');
       setShowPlayerMenu(false);
     },
 
@@ -227,6 +229,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
         {settings.showPlayerMenuCog && (
           <SettingsButton
             onClick={() => {
+              analytics.trackEvent('open_player_menu_button');
               setShowPlayerMenu(!showPlayerMenu);
             }}
             rotation={player.settings.rotation}
