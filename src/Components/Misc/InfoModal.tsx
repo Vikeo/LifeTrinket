@@ -6,7 +6,7 @@ import { Cross } from '../../Icons/generated';
 import { useEffect } from 'react';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 
-export const ModalWrapper = twc.div`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[85vh] bg-background-default p-4 overflow-scroll rounded-2xl border-none text-text-primary w-[95vw] max-w-[548px]`;
+export const ModalWrapper = twc.div`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[47.5%] h-[95%] bg-background-default p-4 overflow-scroll rounded-2xl border-none text-text-primary w-[95vw] max-w-[548px]`;
 
 type InfoModalProps = {
   isOpen: boolean;

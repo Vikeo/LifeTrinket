@@ -110,11 +110,13 @@ const PlayerMenu = ({
     settings,
     setPlaying,
     setRandomizingPlayer,
+    saveCurrentGame,
+    initialGameSettings,
   } = useGlobalSettings();
 
   const analytics = useAnalytics();
 
-  const { updatePlayer, resetCurrentGame } = usePlayers();
+  const { updatePlayer, resetCurrentGame, players } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedPlayer = { ...player, color: event.target.value };
@@ -137,6 +139,7 @@ const PlayerMenu = ({
   };
 
   const handleGoToStart = () => {
+    saveCurrentGame({ players, initialGameSettings });
     goToStart();
     setRandomizingPlayer(true);
   };
@@ -443,8 +446,14 @@ const PlayerMenu = ({
                 className="text-center text-text-primary"
                 style={{ fontSize: extraCountersSize }}
               >
-                End Game?
+                Go to start?
               </h1>
+              <div
+                style={{ fontSize: iconSize }}
+                className="text-center text-text-primary"
+              >
+                (Game will be saved)
+              </div>
               <div className="flex justify-evenly gap-2">
                 <button
                   className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
