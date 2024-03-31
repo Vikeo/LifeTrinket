@@ -129,7 +129,11 @@ const Start = () => {
       return;
     }
 
-    analytics.trackEvent('game_started', { ...initialGameSettings });
+    analytics.trackEvent('game_started', {
+      ...initialGameSettings,
+      ...settings,
+      isPWA,
+    });
 
     try {
       if (settings.goFullscreenOnStart) {
