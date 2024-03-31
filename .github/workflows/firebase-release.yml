@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
+      VITE_FIREBASE_ANALYTICS_API_KEY: ${{ secrets.FIREBASE_ANALYTICS_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

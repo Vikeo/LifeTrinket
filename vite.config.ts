@@ -27,5 +27,8 @@ export default defineConfig({
     VITE_REPO_READ_ACCESS_TOKEN: JSON.stringify(
       process.env.VITE_REPO_READ_ACCESS_TOKEN
     ),
+    VITE_FIREBASE_ANALYTICS_API_KEY: JSON.stringify(
+      process.env.VITE_FIREBASE_ANALYTICS_API_KEY
+    ),
   },
 });
