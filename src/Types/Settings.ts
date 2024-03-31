@@ -16,6 +16,7 @@ export enum PreStartMode {
   None = 'none',
   RandomKing = 'random-king',
   FingerGame = 'finger-game',
+  Trivia = 'trivia',
 }
 
 export type Settings = {

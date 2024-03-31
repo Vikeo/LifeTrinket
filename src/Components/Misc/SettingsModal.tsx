@@ -187,6 +187,7 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                   <option value={PreStartMode.FingerGame}>
                     Touch Roulette
                   </option>
+                  <option value={PreStartMode.Trivia}>Group Trivia</option>
                 </select>
               </div>
               <div className="text-xs text-left text-text-secondary">
@@ -213,6 +214,14 @@ export const SettingsModal = ({ isOpen, closeModal }: SettingsModalProps) => {
                   <span className="text-text-primary">Touch Roulette:</span> All
                   players put a finger on the screen, one will be chosen at
                   random.
+                </div>
+              )}
+
+              {settings.preStartMode === PreStartMode.Trivia && (
+                <div className="text-xs text-left text-text-secondary mt-1">
+                  <span className="text-text-primary">Group Trivia:</span> A
+                  random "who is the most ..." type question will be shown, the
+                  group decides which player fits the question best.
                 </div>
               )}
             </SettingContainer>

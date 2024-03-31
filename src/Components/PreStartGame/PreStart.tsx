@@ -4,6 +4,7 @@ import { GridLayout } from '../Views/Play';
 import { FingerGame } from './Games/FingerGame';
 import { RandomKingPlayers } from './Games/RandomKing/RandomKingPlayers';
 import { RandomKingSelectWrapper } from './Games/RandomKing/RandomKingSelectWrapper';
+import { Trivia } from './Games/Trivia';
 
 export const PreStart = ({ gridLayout }: { gridLayout: GridLayout }) => {
   const { settings, randomizingPlayer, goToStart } = useGlobalSettings();
@@ -23,6 +24,10 @@ export const PreStart = ({ gridLayout }: { gridLayout: GridLayout }) => {
 
   if (settings.preStartMode === PreStartMode.FingerGame) {
     return <FingerGame />;
+  }
+
+  if (settings.preStartMode === PreStartMode.Trivia) {
+    return <Trivia />;
   }
 
   goToStart();
