@@ -1,8 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
+const usingNewFirebaseKey = import.meta.env.VITE_FIREBASE_API_KEY !== undefined;
+
+console.log('usingNewFirebaseKey', usingNewFirebaseKey);
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyCZ1AHMb5zmWS4VoRnC-OBxTswUfrJ0mlY',
+  apiKey:
+    import.meta.env.VITE_FIREBASE_API_KEY ??
+    'AIzaSyCZ1AHMb5zmWS4VoRnC-OBxTswUfrJ0mlY',
   authDomain: 'life-trinket.firebaseapp.com',
   projectId: 'life-trinket',
   storageBucket: 'life-trinket.appspot.com',
