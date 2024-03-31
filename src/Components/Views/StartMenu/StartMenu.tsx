@@ -19,9 +19,9 @@ import { SettingsModal } from '../../Misc/SettingsModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { LayoutOptions } from './LayoutOptions';
 
-const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
+const MainWrapper = twc.div`w-[100dvw] h-fit pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
 
-const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row px-4 z-10`;
+const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row flex-wrap px-4 z-10 gap-4`;
 
 const SliderWrapper = twc.div`mx-8`;
 
@@ -350,23 +350,24 @@ const Start = () => {
       </div>
 
       <StartButtonFooter>
-        <Button
-          size="large"
-          variant="contained"
+        <button
+          className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]"
           onClick={doStartNewGame}
-          fullWidth
         >
-          START GAME
-        </Button>
+          NEW GAME
+        </button>
+
         {savedGame && (
-          <Button
-            size="large"
-            variant="contained"
+          <button
+            className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-dark px-3 py-2 rounded-md text-text-primary min-w-[150px]"
             onClick={doResumeGame}
-            fullWidth
           >
-            RESUME GAME
-          </Button>
+            RESUME&nbsp;
+            <span className="text-xs">
+              ({savedGame.players.length}&nbsp;
+              {savedGame.players.length > 1 ? 'players' : 'player'})
+            </span>
+          </button>
         )}
       </StartButtonFooter>
     </MainWrapper>
