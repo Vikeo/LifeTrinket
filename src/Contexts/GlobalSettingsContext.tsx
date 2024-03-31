@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { InitialGameSettings, Settings } from '../Types/Settings';
+import { Player } from '../Types/Player';
 
 type Version = {
   installedVersion: string;
@@ -7,6 +8,11 @@ type Version = {
   checkForNewVersion: (source: 'settings' | 'start_menu') => Promise<void>;
   remoteVersion?: string;
 };
+
+export type SavedGame = {
+  initialGameSettings: InitialGameSettings;
+  players: Player[];
+} | null;
 
 export type GlobalSettingsContextType = {
   fullscreen: {
@@ -25,7 +31,7 @@ export type GlobalSettingsContextType = {
   goToStart: () => void;
   showPlay: boolean;
   setShowPlay: (showPlay: boolean) => void;
-  initialGameSettings: InitialGameSettings | null;
+  initialGameSettings: InitialGameSettings;
   setInitialGameSettings: (initialGameSettings: InitialGameSettings) => void;
   settings: Settings;
   setSettings: (settings: Settings) => void;
@@ -36,8 +42,9 @@ export type GlobalSettingsContextType = {
   isPWA: boolean;
   preStartCompleted: boolean;
   setPreStartCompleted: (completed: boolean) => void;
-
   version: Version;
+  savedGame: SavedGame;
+  saveCurrentGame: (currentGame: SavedGame) => void;
 };
 
 export const GlobalSettingsContext =

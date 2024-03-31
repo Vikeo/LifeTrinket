@@ -3,6 +3,7 @@ import { useWakeLock } from 'react-screen-wake-lock';
 import {
   GlobalSettingsContext,
   GlobalSettingsContextType,
+  SavedGame,
 } from '../Contexts/GlobalSettingsContext';
 import { useAnalytics } from '../Hooks/useAnalytics';
 import {
@@ -21,12 +22,21 @@ export const GlobalSettingsProvider = ({
 }) => {
   const analytics = useAnalytics();
 
-  const savedShowPlay = localStorage.getItem('showPlay');
-  const savedGameSettings = localStorage.getItem('initialGameSettings');
-  const savedSettings = localStorage.getItem('settings');
-  const savedPlaying = localStorage.getItem('playing');
-  const savedPreStartComplete = localStorage.getItem('preStartComplete');
+  const localSavedGame = localStorage.getItem('savedGame');
+  const [savedGame, setCurrentGame] = useState<SavedGame>(
+    localSavedGame ? JSON.parse(localSavedGame) : null
+  );
+  const setCurrentGameAndLocalStorage = (savedGame: SavedGame) => {
+    if (!savedGame) {
+      setCurrentGame(savedGame);
+      localStorage.removeItem('savedGame');
+      return;
+    }
+    setCurrentGame(savedGame);
+    localStorage.setItem('savedGame', JSON.stringify(savedGame));
+  };
 
+  const savedPlaying = localStorage.getItem('playing');
   const [playing, setPlaying] = useState<boolean>(
     savedPlaying ? savedPlaying === 'true' : false
   );
@@ -35,23 +45,42 @@ export const GlobalSettingsProvider = ({
     localStorage.setItem('playing', String(playing));
   };
 
+  const savedPreStartComplete = localStorage.getItem('preStartComplete');
   const [preStartCompleted, setPreStartCompleted] = useState<boolean>(
     savedPreStartComplete ? savedPreStartComplete === 'true' : false
   );
 
+  const savedShowPlay = localStorage.getItem('showPlay');
   const [showPlay, setShowPlay] = useState<boolean>(
     savedShowPlay ? savedShowPlay === 'true' : false
   );
+  const setShowPlayAndLocalStorage = (showPlay: boolean) => {
+    setShowPlay(showPlay);
+    localStorage.setItem('showPlay', String(showPlay));
+  };
 
+  const savedSettings = localStorage.getItem('settings');
   const [randomizingPlayer, setRandomizingPlayer] = useState<boolean>(
     savedSettings
       ? Boolean(JSON.parse(savedSettings).preStartMode === 'random-king')
       : true
   );
+  const [settings, setSettings] = useState<Settings>(
+    savedSettings ? JSON.parse(savedSettings) : defaultSettings
+  );
+
+  const setSettingsAndLocalStorage = (settings: Settings) => {
+    setSettings(settings);
+    localStorage.setItem('settings', JSON.stringify(settings));
+  };
+
+  const savedGameSettings = localStorage.getItem('initialGameSettings');
 
   const [initialGameSettings, setInitialGameSettings] =
-    useState<InitialGameSettings | null>(
-      savedGameSettings ? JSON.parse(savedGameSettings) : null
+    useState<InitialGameSettings>(
+      savedGameSettings
+        ? JSON.parse(savedGameSettings)
+        : defaultInitialGameSettings
     );
 
   const setInitialGameSettingsAndLocalStorage = (
@@ -62,15 +91,6 @@ export const GlobalSettingsProvider = ({
       'initialGameSettings',
       JSON.stringify(initialGameSettings)
     );
-  };
-
-  const [settings, setSettings] = useState<Settings>(
-    savedSettings ? JSON.parse(savedSettings) : defaultSettings
-  );
-
-  const setSettingsAndLocalStorage = (settings: Settings) => {
-    setSettings(settings);
-    localStorage.setItem('settings', JSON.stringify(settings));
   };
 
   const removeLocalStorage = async () => {
@@ -252,7 +272,7 @@ export const GlobalSettingsProvider = ({
       },
       goToStart,
       showPlay,
-      setShowPlay,
+      setShowPlay: setShowPlayAndLocalStorage,
       playing,
       setPlaying: setPlayingAndLocalStorage,
       initialGameSettings,
@@ -264,6 +284,8 @@ export const GlobalSettingsProvider = ({
       isPWA: window?.matchMedia('(display-mode: standalone)').matches,
       preStartCompleted,
       setPreStartCompleted: setPreStartCompletedAndLocalStorage,
+      savedGame,
+      saveCurrentGame: setCurrentGameAndLocalStorage,
 
       version: {
         installedVersion: import.meta.env.VITE_APP_VERSION,
@@ -285,6 +307,7 @@ export const GlobalSettingsProvider = ({
     settings,
     randomizingPlayer,
     preStartCompleted,
+    savedGame,
     remoteVersion,
     isLatestVersion,
     analytics,

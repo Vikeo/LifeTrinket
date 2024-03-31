@@ -21,7 +21,7 @@ import { LayoutOptions } from './LayoutOptions';
 
 const MainWrapper = twc.div`w-[100dvw] h-fit pb-14 overflow-hidden items-center flex flex-col`;
 
-const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-col px-4 z-10`;
+const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row px-4 z-10`;
 
 const SliderWrapper = twc.div`mx-8`;
 
@@ -92,6 +92,9 @@ const Start = () => {
     isPWA,
     setRandomizingPlayer,
     version,
+    setPlaying,
+    savedGame,
+    saveCurrentGame,
   } = useGlobalSettings();
 
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -124,7 +127,7 @@ const Start = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerOptions.numberOfPlayers]);
 
-  const doStartGame = () => {
+  const doStartNewGame = () => {
     if (!initialGameSettings) {
       return;
     }
@@ -149,10 +152,40 @@ const Start = () => {
 
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));
-    setShowPlay(true);
     setRandomizingPlayer(settings.preStartMode === PreStartMode.RandomKing);
-    localStorage.setItem('playing', 'false');
-    localStorage.setItem('showPlay', 'true');
+    setShowPlay(true);
+    setPlaying(false);
+  };
+
+  const doResumeGame = () => {
+    if (!savedGame) {
+      return;
+    }
+
+    analytics.trackEvent('game_resumed', {
+      ...initialGameSettings,
+      ...settings,
+      isPWA,
+    });
+
+    try {
+      if (settings.goFullscreenOnStart) {
+        fullscreen.enableFullscreen();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (settings.keepAwake && !wakeLock.active) {
+      wakeLock.request();
+    }
+
+    setInitialGameSettings(savedGame.initialGameSettings);
+    setPlayers(savedGame.players);
+    saveCurrentGame(null);
+    setRandomizingPlayer(false);
+    setShowPlay(true);
+    setPlaying(true);
   };
 
   const valueText = (value: number) => {
@@ -196,48 +229,6 @@ const Start = () => {
 
       <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
         <FormControl focused={false} style={{ width: '100%' }}>
-          <FormLabel>Number of Players</FormLabel>
-          <SliderWrapper>
-            <Slider
-              title="Number of Players"
-              max={6}
-              min={1}
-              aria-label="Custom marks"
-              value={playerOptions?.numberOfPlayers ?? 4}
-              getAriaValueText={valueText}
-              step={null}
-              marks={playerMarks}
-              onChange={(_e, value) => {
-                setPlayerOptions({
-                  ...playerOptions,
-                  numberOfPlayers: value as number,
-                  orientation: Orientation.Landscape,
-                });
-              }}
-            />
-          </SliderWrapper>
-
-          <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
-          <SliderWrapper>
-            <Slider
-              title="Starting Health"
-              max={60}
-              min={20}
-              aria-label="Custom marks"
-              value={playerOptions?.startingLifeTotal ?? 40}
-              getAriaValueText={valueText}
-              step={10}
-              marks={healthMarks}
-              onChange={(_e, value) =>
-                setPlayerOptions({
-                  ...playerOptions,
-                  startingLifeTotal: value as number,
-                  orientation: Orientation.Landscape,
-                })
-              }
-            />
-          </SliderWrapper>
-
           <ToggleButtonsWrapper className="mt-4">
             <ToggleContainer>
               <FormLabel>Commander</FormLabel>
@@ -295,6 +286,47 @@ const Start = () => {
               </div>
             </div>
           </ToggleButtonsWrapper>
+          <FormLabel>Number of Players</FormLabel>
+          <SliderWrapper>
+            <Slider
+              title="Number of Players"
+              max={6}
+              min={1}
+              aria-label="Custom marks"
+              value={playerOptions?.numberOfPlayers ?? 4}
+              getAriaValueText={valueText}
+              step={null}
+              marks={playerMarks}
+              onChange={(_e, value) => {
+                setPlayerOptions({
+                  ...playerOptions,
+                  numberOfPlayers: value as number,
+                  orientation: Orientation.Landscape,
+                });
+              }}
+            />
+          </SliderWrapper>
+
+          <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
+          <SliderWrapper>
+            <Slider
+              title="Starting Health"
+              max={60}
+              min={20}
+              aria-label="Custom marks"
+              value={playerOptions?.startingLifeTotal ?? 40}
+              getAriaValueText={valueText}
+              step={10}
+              marks={healthMarks}
+              onChange={(_e, value) =>
+                setPlayerOptions({
+                  ...playerOptions,
+                  startingLifeTotal: value as number,
+                  orientation: Orientation.Landscape,
+                })
+              }
+            />
+          </SliderWrapper>
 
           <FormLabel>Layout</FormLabel>
           <LayoutOptions
@@ -321,11 +353,21 @@ const Start = () => {
         <Button
           size="large"
           variant="contained"
-          onClick={doStartGame}
+          onClick={doStartNewGame}
           fullWidth
         >
           START GAME
         </Button>
+        {savedGame && (
+          <Button
+            size="large"
+            variant="contained"
+            onClick={doResumeGame}
+            fullWidth
+          >
+            RESUME GAME
+          </Button>
+        )}
       </StartButtonFooter>
     </MainWrapper>
   );
