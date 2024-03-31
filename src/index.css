@@ -31,6 +31,16 @@ code {
     monospace;
 }
 
+// hide scrollbar globally
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 @layer utilities {
   .pointer-events-all {
     pointer-events: all;
