@@ -2,6 +2,7 @@ import { Checkbox } from '@mui/material';
 import { useRef } from 'react';
 import { twc } from 'react-twc';
 import { theme } from '../../Data/theme';
+import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
@@ -17,8 +18,8 @@ import {
   ResetGame,
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
+import { PreStartMode } from '../../Types/Settings';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
-import { useAnalytics } from '../../Hooks/useAnalytics';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -112,6 +113,7 @@ const PlayerMenu = ({
     setRandomizingPlayer,
     saveCurrentGame,
     initialGameSettings,
+    setPreStartCompleted,
   } = useGlobalSettings();
 
   const analytics = useAnalytics();
@@ -133,8 +135,14 @@ const PlayerMenu = ({
   const handleResetGame = () => {
     resetCurrentGame();
     setShowPlayerMenu(false);
+
     setPlaying(false);
-    setRandomizingPlayer(true);
+
+    if (settings.preStartMode === PreStartMode.RandomKing) {
+      setRandomizingPlayer(true);
+      setPreStartCompleted(false);
+    }
+
     analytics.trackEvent('reset_game');
   };
 

@@ -95,6 +95,7 @@ export const Play = () => {
   }, []);
 
   if (
+    players.length > 1 &&
     !preStartCompleted &&
     settings.preStartMode !== PreStartMode.None &&
     !playing &&
