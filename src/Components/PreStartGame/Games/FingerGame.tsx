@@ -14,6 +14,10 @@ const getOrientation = () => {
     : 'landscape';
 };
 
+const ANIMATION_INTRO_LENGTH = 500;
+
+const BEFORE_INTRO_TIMER_LENGTH = 100;
+
 export const FingerGame = () => {
   const { players } = usePlayers();
 
@@ -34,7 +38,7 @@ export const FingerGame = () => {
       aboutToStartTimerRef.current = setTimeout(() => {
         setSelectedTouchPoint(undefined);
         setPlaying(true);
-      }, 500);
+      }, ANIMATION_INTRO_LENGTH);
 
       setTimerStarted(true);
       return;
@@ -46,7 +50,7 @@ export const FingerGame = () => {
         const randomIndex = Math.floor(Math.random() * touchPoints.length);
         const randomTouchPoint = touchPoints[randomIndex];
         setSelectedTouchPoint(randomTouchPoint);
-      }, 250);
+      }, BEFORE_INTRO_TIMER_LENGTH);
       return;
     }
 
@@ -99,7 +103,7 @@ export const FingerGame = () => {
       aboutToStartTimerRef.current = setTimeout(() => {
         setSelectedTouchPoint(undefined);
         setPlaying(true);
-      }, 500);
+      }, ANIMATION_INTRO_LENGTH);
       setTimerStarted(true);
       return;
     }
@@ -180,7 +184,7 @@ export const FingerGame = () => {
           key={`touch-point-${index}`}
           data-is-selected={selectedTouchPoint?.id === point.id}
           data-unloading={timerStarted}
-          className="absolute rounded-full translate-x-[-50%] translate-y-[-50%] transition-all duration-1000
+          className="absolute rounded-full translate-x-[-50%] translate-y-[-50%] transition-all duration-500
               h-[75px] w-[75px]
               data-[unloading=false]:data-[is-selected=true]:h-[250px] data-[unloading=false]:data-[is-selected=true]:w-[250px]
               data-[unloading=true]:h-[0px] data-[unloading=true]:w-[0px] data-[unloading=true]:duration-[400ms]
