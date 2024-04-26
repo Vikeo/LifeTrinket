@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Switch } from '@mui/material';
+import { FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
@@ -260,15 +260,17 @@ const Start = () => {
               />
             </ToggleContainer>
             <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
-              <Button
-                variant="contained"
-                style={{ height: '2rem' }}
+              <button
+                className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md"
                 onClick={() => {
                   setOpenSettingsModal(true);
                 }}
               >
-                <Cog /> &nbsp; Game Settings
-              </Button>
+                <span className="text-sm flex flex-row items-center text-text-primary">
+                  <Cog />
+                  &nbsp; Game Settings
+                </span>
+              </button>
 
               <div
                 data-not-latest-version={
