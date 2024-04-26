@@ -1,6 +1,4 @@
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
-import React from 'react';
-import { theme } from '../../../Data/theme';
+import { twc } from 'react-twc';
 import {
   FivePlayers,
   FivePlayersSide,
@@ -15,12 +13,18 @@ import {
   TwoPlayersOppositePortrait,
   TwoPlayersSameSide,
 } from '../../../Icons/generated/Layouts';
-
-import { twc } from 'react-twc';
 import OnePlayerLandscape from '../../../Icons/generated/Layouts/OnePlayerLandscape';
 import { Orientation } from '../../../Types/Settings';
 
-const LayoutWrapper = twc.div`flex flex-row justify-center items-center self-center w-full`;
+const LayoutsRadioGroup = twc.div`flex flex-row justify-center items-center gap-4 self-center w-full`;
+
+const Label = twc.label`flex flex-row relative max-w-[118px] hover:bg-primary-main hover:bg-opacity-5 rounded-2xl cursor-pointer`;
+
+const Input = twc.input`peer sr-only`;
+
+const IconWrapper = twc(
+  'div'
+)`peer-checked:fill-primary-main fill-primary-dark max-h-[200px] h-[40vmin] w-[21vmin]`;
 
 type LayoutOptionsProps = {
   numberOfPlayers: number;
@@ -28,381 +32,212 @@ type LayoutOptionsProps = {
   onChange: (orientation: Orientation) => void;
 };
 
-export const LayoutOptions: React.FC<LayoutOptionsProps> = ({
+export const LayoutOptions = ({
   numberOfPlayers,
   selectedOrientation,
   onChange,
-}) => {
-  const iconWidth = '21vmin';
-  const iconHeight = '40vmin';
-  const iconMaxWidth = '124px';
-  const iconMaxHeight = '196px';
+}: LayoutOptionsProps) => {
+  switch (numberOfPlayers) {
+    case 1:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
+              value={Orientation.Landscape}
+              onChange={(e) => onChange(e.target.value as Orientation)}
+            />
+            <IconWrapper>
+              <OnePlayerLandscape className="w-full h-full" />
+            </IconWrapper>
+          </Label>
 
-  const renderLayoutOptions = () => {
-    switch (numberOfPlayers) {
-      case 1:
-        return (
-          <>
-            <FormControlLabel
-              value={Orientation.Landscape}
-              control={
-                <Radio
-                  icon={
-                    <OnePlayerLandscape
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <OnePlayerLandscape
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                />
-              }
-              label=""
-            />
-            <FormControlLabel
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
               value={Orientation.Portrait}
-              control={
-                <Radio
-                  icon={
-                    <OnePlayerPortrait
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <OnePlayerPortrait
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <FormControlLabel
+            <IconWrapper>
+              <OnePlayerPortrait className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
+    case 2:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
               value={Orientation.Landscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <TwoPlayersSameSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <TwoPlayersSameSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
+            <IconWrapper>
+              <TwoPlayersSameSide className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
               value={Orientation.Portrait}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <TwoPlayersOppositePortrait
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <TwoPlayersOppositePortrait
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
+            <IconWrapper>
+              <TwoPlayersOppositePortrait className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+
+          <Label
+            htmlFor={`${numberOfPlayers}p-${Orientation.OppositeLandscape}`}
+          >
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.OppositeLandscape}`}
+              checked={selectedOrientation === Orientation.OppositeLandscape}
               value={Orientation.OppositeLandscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <TwoPlayersOppositeLandscape
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <TwoPlayersOppositeLandscape
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <FormControlLabel
+            <IconWrapper>
+              <TwoPlayersOppositeLandscape className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
+    case 3:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
               value={Orientation.Landscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <ThreePlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <ThreePlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
-              value={Orientation.Portrait}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <ThreePlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <ThreePlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
-            />
-          </>
-        );
+            <IconWrapper>
+              <ThreePlayers className="w-full h-full" />
+            </IconWrapper>
+          </Label>
 
-      case 4:
-        return (
-          <>
-            <FormControlLabel
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
+              value={Orientation.Portrait}
+              onChange={(e) => onChange(e.target.value as Orientation)}
+            />
+            <IconWrapper>
+              <ThreePlayersSide className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
+
+    case 4:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
               value={Orientation.Landscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <FourPlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <FourPlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
-              value={Orientation.Portrait}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <FourPlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <FourPlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
-            />
-          </>
-        );
+            <IconWrapper>
+              <FourPlayers className="w-full h-full" />
+            </IconWrapper>
+          </Label>
 
-      case 5:
-        return (
-          <>
-            <FormControlLabel
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
+              value={Orientation.Portrait}
+              onChange={(e) => onChange(e.target.value as Orientation)}
+            />
+            <IconWrapper>
+              <FourPlayersSide className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
+
+    case 5:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
               value={Orientation.Landscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <FivePlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <FivePlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
-              value={Orientation.Portrait}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <FivePlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <FivePlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
-            />
-          </>
-        );
+            <IconWrapper>
+              <FivePlayers className="w-full h-full" />
+            </IconWrapper>
+          </Label>
 
-      case 6:
-        return (
-          <>
-            <FormControlLabel
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
+              value={Orientation.Portrait}
+              onChange={(e) => onChange(e.target.value as Orientation)}
+            />
+            <IconWrapper>
+              <FivePlayersSide className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
+
+    case 6:
+      return (
+        <LayoutsRadioGroup>
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Landscape}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Landscape}`}
+              checked={selectedOrientation === Orientation.Landscape}
               value={Orientation.Landscape}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <SixPlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <SixPlayers
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-            <FormControlLabel
+            <IconWrapper>
+              <SixPlayers className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+
+          <Label htmlFor={`${numberOfPlayers}p-${Orientation.Portrait}`}>
+            <Input
+              type="radio"
+              id={`${numberOfPlayers}p-${Orientation.Portrait}`}
+              checked={selectedOrientation === Orientation.Portrait}
               value={Orientation.Portrait}
-              control={
-                <Radio
-                  style={{ maxWidth: iconMaxWidth, maxHeight: iconMaxHeight }}
-                  icon={
-                    <SixPlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.secondary.main}
-                    />
-                  }
-                  checkedIcon={
-                    <SixPlayersSide
-                      height={iconHeight}
-                      width={iconWidth}
-                      fill={theme.palette.primary.main}
-                    />
-                  }
-                  TouchRippleProps={{ style: { display: 'none' } }}
-                />
-              }
-              label=""
+              onChange={(e) => onChange(e.target.value as Orientation)}
             />
-          </>
-        );
+            <IconWrapper>
+              <SixPlayersSide className="w-full h-full" />
+            </IconWrapper>
+          </Label>
+        </LayoutsRadioGroup>
+      );
 
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <LayoutWrapper>
-      <RadioGroup
-        row
-        onChange={(_e, value) => {
-          onChange(value as Orientation);
-        }}
-        value={selectedOrientation}
-        style={{ justifyContent: 'center' }}
-      >
-        {renderLayoutOptions()}
-      </RadioGroup>
-    </LayoutWrapper>
-  );
+    default:
+      return null;
+  }
 };
