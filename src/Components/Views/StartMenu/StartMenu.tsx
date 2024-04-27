@@ -1,4 +1,3 @@
-import { FormControl, FormLabel, Switch } from '@mui/material';
 import Slider from '@mui/material/Slider';
 import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
@@ -19,15 +18,35 @@ import { SettingsModal } from '../../Misc/SettingsModal';
 import { SupportMe } from '../../Misc/SupportMe';
 import { LayoutOptions } from './LayoutOptions';
 
+const commanderSettings: Pick<
+  InitialGameSettings,
+  'numberOfPlayers' | 'startingLifeTotal' | 'orientation'
+> = {
+  numberOfPlayers: 4,
+  startingLifeTotal: 40,
+  orientation: Orientation.Landscape,
+};
+
+const standardSettings: Pick<
+  InitialGameSettings,
+  'numberOfPlayers' | 'startingLifeTotal' | 'orientation'
+> = {
+  numberOfPlayers: 2,
+  startingLifeTotal: 20,
+  orientation: Orientation.Landscape,
+};
+
 const MainWrapper = twc.div`w-[100dvw] h-fit pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
 
 const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row flex-wrap px-4 z-10 gap-4`;
 
-const SliderWrapper = twc.div`mx-8`;
+const SliderWrapper = twc.div`mx-8 relative`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
 const ToggleContainer = twc.div`flex flex-col items-center`;
+
+const LabelText = twc.div`text-md text-text-primary font-medium`;
 
 const playerMarks = [
   {
@@ -228,36 +247,40 @@ const Start = () => {
       </h1>
 
       <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
-        <FormControl focused={false} style={{ width: '100%' }}>
+        <div className="w-full">
           <ToggleButtonsWrapper className="mt-4">
             <ToggleContainer>
-              <FormLabel>Commander</FormLabel>
-              <Switch
-                checked={
-                  playerOptions.useCommanderDamage ??
-                  initialGameSettings?.useCommanderDamage ??
-                  true
-                }
-                onChange={(_e, value) => {
-                  if (value) {
+              <LabelText>Commander</LabelText>
+
+              <label className="inline-flex items-center cursor-pointer relative h-6 w-10">
+                <input
+                  type="checkbox"
+                  value=""
+                  checked={
+                    playerOptions.useCommanderDamage ??
+                    initialGameSettings?.useCommanderDamage ??
+                    true
+                  }
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setPlayerOptions({
+                        ...playerOptions,
+                        useCommanderDamage: e.target.checked,
+                        ...commanderSettings,
+                      });
+                      return;
+                    }
                     setPlayerOptions({
                       ...playerOptions,
-                      useCommanderDamage: value,
-                      numberOfPlayers: 4,
-                      startingLifeTotal: 40,
-                      orientation: Orientation.Landscape,
+                      useCommanderDamage: e.target.checked,
+                      ...standardSettings,
                     });
-                    return;
-                  }
-                  setPlayerOptions({
-                    ...playerOptions,
-                    useCommanderDamage: value,
-                    numberOfPlayers: 2,
-                    startingLifeTotal: 20,
-                    orientation: Orientation.Landscape,
-                  });
-                }}
-              />
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="relative mx-1 w-10 h-[0.875rem] bg-gray-900 rounded-full peer peer-checked:bg-primary-dark" />
+                <div className="absolute peer-checked:translate-x-full rtl:peer-checked:-translate-x-full bg-secondary-main peer-checked:bg-primary-main rounded-full h-5 w-5 transition-all" />
+              </label>
             </ToggleContainer>
             <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
               <button
@@ -288,7 +311,7 @@ const Start = () => {
               </div>
             </div>
           </ToggleButtonsWrapper>
-          <FormLabel>Number of Players</FormLabel>
+          <LabelText>Number of Players</LabelText>
           <SliderWrapper>
             <Slider
               title="Number of Players"
@@ -300,6 +323,7 @@ const Start = () => {
               step={null}
               marks={playerMarks}
               onChange={(_e, value) => {
+                console.log('haha');
                 setPlayerOptions({
                   ...playerOptions,
                   numberOfPlayers: value as number,
@@ -309,7 +333,7 @@ const Start = () => {
             />
           </SliderWrapper>
 
-          <FormLabel className="mt-[0.7rem]">Starting Health</FormLabel>
+          <LabelText className="mt-[0.7rem]">Starting Health</LabelText>
           <SliderWrapper>
             <Slider
               title="Starting Health"
@@ -330,7 +354,7 @@ const Start = () => {
             />
           </SliderWrapper>
 
-          <FormLabel>Layout</FormLabel>
+          <LabelText>Layout</LabelText>
           <LayoutOptions
             numberOfPlayers={playerOptions.numberOfPlayers}
             selectedOrientation={playerOptions.orientation}
@@ -341,7 +365,7 @@ const Start = () => {
               });
             }}
           />
-        </FormControl>
+        </div>
         {!isPWA && (
           <p className="text-center text-xs text-text-primary w-11/12 mt-4">
             If you're on iOS, this page works better if you{' '}
