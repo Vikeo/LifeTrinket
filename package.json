@@ -17,7 +17,6 @@
     "deploy": "bun run build && firebase deploy --only hosting"
   },
   "dependencies": {
-    "@mui/material": "^5.13.6",
     "firebase": "^10.3.0",
     "ga-4-react": "^0.1.281",
     "react": "^18.2.0",
@@ -28,26 +27,27 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@savvywombat/tailwindcss-grid-areas": "^3.1.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
     "@svgr/cli": "^8.1.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react-swc": "^3.3.2",
-    "autoprefixer": "^10.4.16",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "firebase-tools": "^12.5.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "firebase-tools": "^13.7.5",
     "install": "^0.13.0",
-    "postcss": "^8.4.32",
+    "postcss": "^8.4.38",
     "prettier": "2.8.8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vite-plugin-pwa": "^0.17.4"
+    "prop-types": "^15.8.1",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10",
+    "vite-plugin-pwa": "^0.20.0"
   }
 }

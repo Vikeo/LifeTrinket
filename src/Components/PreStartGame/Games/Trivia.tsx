@@ -122,11 +122,11 @@ export const Trivia = () => {
 
   return (
     <div
-      className="absolute flex justify-center items-center w-full h-full portrait:h-[100dvw] portrait:w-[100dvh] z-50 bg-secondary-main overflow-hidden"
+      className="absolute flex justify-center items-center w-full h-full portrait:h-[100dvw] portrait:w-[100dvh] z-50 bg-primary-main overflow-hidden"
       onClick={() => setPlaying(true)}
     >
       <button
-        className="absolute flex top-4 left-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs"
+        className="absolute flex top-4 left-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs  duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
         onClick={goToStart}
       >
         <div className="text-xl leading-[0.80rem]">{'<'}&nbsp;</div>
@@ -134,7 +134,7 @@ export const Trivia = () => {
       </button>
 
       <button
-        className="absolute flex top-4 right-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs"
+        className="absolute flex top-4 right-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs  duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
         onClick={(e) => {
           e.stopPropagation();
           setUniqueRandomQuestion();

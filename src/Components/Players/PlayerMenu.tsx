@@ -1,7 +1,5 @@
-import { Checkbox } from '@mui/material';
 import { useRef } from 'react';
 import { twc } from 'react-twc';
-import { theme } from '../../Data/theme';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
@@ -20,6 +18,7 @@ import {
 import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
+import { IconCheckbox } from '../Misc/IconCheckbox';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -129,6 +128,7 @@ const PlayerMenu = ({
     const { name, checked } = event.target;
     const updatedSettings = { ...player.settings, [name]: checked };
     const updatedPlayer = { ...player, settings: updatedSettings };
+
     updatePlayer(updatedPlayer);
   };
 
@@ -213,8 +213,8 @@ const PlayerMenu = ({
               />
             </ColorPickerButton>
             {player.settings.useCommanderDamage && (
-              <div>
-                <Checkbox
+              <div className="flex flex-col items-center">
+                <IconCheckbox
                   name="usePartner"
                   checked={player.settings.usePartner}
                   icon={
@@ -239,14 +239,13 @@ const PlayerMenu = ({
                     });
                     handleSettingsChange(e);
                   }}
-                  role="checkbox"
                   aria-checked={player.settings.usePartner}
                   aria-label="Partner"
                 />
               </div>
             )}
             <div>
-              <Checkbox
+              <IconCheckbox
                 name="usePoison"
                 checked={player.settings.usePoison}
                 icon={
@@ -271,13 +270,12 @@ const PlayerMenu = ({
                   });
                   handleSettingsChange(e);
                 }}
-                role="checkbox"
                 aria-checked={player.settings.usePoison}
                 aria-label="Poison"
               />
             </div>
             <div>
-              <Checkbox
+              <IconCheckbox
                 name="useEnergy"
                 checked={player.settings.useEnergy}
                 icon={
@@ -302,13 +300,12 @@ const PlayerMenu = ({
                   });
                   handleSettingsChange(e);
                 }}
-                role="checkbox"
                 aria-checked={player.settings.useEnergy}
                 aria-label="Energy"
               />
             </div>
             <div>
-              <Checkbox
+              <IconCheckbox
                 name="useExperience"
                 checked={player.settings.useExperience}
                 icon={
@@ -333,7 +330,6 @@ const PlayerMenu = ({
                   });
                   handleSettingsChange(e);
                 }}
-                role="checkbox"
                 aria-checked={player.settings.useExperience}
                 aria-label="Experience"
               />
@@ -353,21 +349,22 @@ const PlayerMenu = ({
                 data-[fullscreen=true]:bg-secondary-dark rounded-lg border border-transparent
               data-[fullscreen=true]:border-primary-main"
             >
-              <Checkbox
+              <IconCheckbox
+                className="p-1"
                 name="fullscreen"
                 checked={document.fullscreenElement ? true : false}
                 icon={
                   <FullscreenOff
                     size={iconSize}
-                    color={theme.palette.primary.main}
+                    className="text-primary-main"
                   />
                 }
-                checkedIcon={<FullscreenOn size={iconSize} />}
+                checkedIcon={
+                  <FullscreenOn size={iconSize} className="text-primary-main" />
+                }
                 onChange={toggleFullscreen}
-                role="checkbox"
                 aria-checked={document.fullscreenElement ? true : false}
                 aria-label="Fullscreen"
-                style={{ padding: '4px' }}
               />
             </div>
 
