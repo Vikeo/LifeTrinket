@@ -35,7 +35,7 @@ export const Dialog: React.FC<{
     <dialog
       id={id}
       ref={dialogRef}
-      className="backdrop:bg-background-backdrop border-none backdrop:backdrop-blur-[1px] open:visible invisible bg-transparent overflow-visible m-0 justify-self-center top-[10%]"
+      className="backdrop:bg-background-backdrop border-none backdrop:backdrop-blur-[1px] open:visible invisible bg-transparent overflow-visible my-0 justify-self-center top-[10%]"
     >
       <button
         onClick={() => {
@@ -47,7 +47,7 @@ export const Dialog: React.FC<{
         <Cross size="16px" className="text-text-primary" />
       </button>
 
-      <div className="h-[95%] bg-background-default rounded-2xl max-w-[548px] max-h-[80vh] flex flex-col">
+      <div className="bg-background-default rounded-2xl max-w-[548px] max-h-[80vh] flex flex-col">
         <div className="text-2xl text-center text-text-primary px-8 pt-4">
           <h2 className="">{title}</h2>
           <Separator height="1px" />
