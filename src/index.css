@@ -36,6 +36,27 @@ code {
   display: none;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: theme('colors.background.default');
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: theme('colors.primary.dark');
+  border-radius: 32px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.primary.main');
+}
+
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -52,5 +73,10 @@ code {
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
     -ms-user-select: none;
+  }
+
+  .show-scrollbar {
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
   }
 }

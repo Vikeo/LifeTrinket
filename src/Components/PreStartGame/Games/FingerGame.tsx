@@ -164,7 +164,7 @@ export const FingerGame = () => {
       // }}
     >
       <button
-        className="absolute flex top-4 left-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs"
+        className="absolute flex top-4 left-4 rounded-lg px-2 py-1 justify-center bg-primary-main text-text-primary text-xs duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
         onClick={goToStart}
       >
         <div className="text-xl leading-4">{'<'}&nbsp;</div>

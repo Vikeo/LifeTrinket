@@ -13,10 +13,10 @@ export type Player = {
 export type PlayerSettings = {
   rotation: Rotation;
   useCommanderDamage: boolean;
-  usePartner?: boolean;
-  usePoison?: boolean;
-  useEnergy?: boolean;
-  useExperience?: boolean;
+  usePartner: boolean;
+  usePoison: boolean;
+  useEnergy: boolean;
+  useExperience: boolean;
 };
 
 type ExtraCounter = {

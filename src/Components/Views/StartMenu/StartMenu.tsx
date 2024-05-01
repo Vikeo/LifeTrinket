@@ -1,8 +1,6 @@
-import Slider from '@mui/material/Slider';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
-import { theme } from '../../../Data/theme';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
@@ -13,10 +11,11 @@ import {
   PreStartMode,
   defaultInitialGameSettings,
 } from '../../../Types/Settings';
-import { InfoModal } from '../../Misc/InfoModal';
-import { SettingsModal } from '../../Misc/SettingsModal';
-import { SupportMe } from '../../Misc/SupportMe';
+
 import { LayoutOptions } from './LayoutOptions';
+import { InfoDialog } from '../../Dialogs/InfoDialog';
+import { SettingsDialog } from '../../Dialogs/SettingsDialog';
+import { ToggleButton } from '../../Misc/ToggleButton';
 
 const commanderSettings: Pick<
   InitialGameSettings,
@@ -44,59 +43,9 @@ const SliderWrapper = twc.div`mx-8 relative`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
 
-const ToggleContainer = twc.div`flex flex-col items-center`;
+export const LabelText = twc.div`text-md text-text-primary font-medium`;
 
-const LabelText = twc.div`text-md text-text-primary font-medium`;
-
-const playerMarks = [
-  {
-    value: 1,
-    label: '1',
-  },
-  {
-    value: 2,
-    label: '2',
-  },
-  {
-    value: 3,
-    label: '3',
-  },
-  {
-    value: 4,
-    label: '4',
-  },
-  {
-    value: 5,
-    label: '5',
-  },
-  {
-    value: 6,
-    label: '6',
-  },
-];
-
-const healthMarks = [
-  {
-    value: 20,
-    label: '20',
-  },
-  {
-    value: 30,
-    label: '30',
-  },
-  {
-    value: 40,
-    label: '40',
-  },
-  {
-    value: 50,
-    label: '50',
-  },
-  {
-    value: 60,
-    label: '60',
-  },
-];
+let tracked = false;
 
 const Start = () => {
   const { setPlayers } = usePlayers();
@@ -116,24 +65,21 @@ const Start = () => {
     saveCurrentGame,
   } = useGlobalSettings();
 
-  const [openInfoModal, setOpenInfoModal] = useState(false);
-  const [openSettingsModal, setOpenSettingsModal] = useState(false);
+  const infoDialogRef = useRef<HTMLDialogElement | null>(null);
+  const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || defaultInitialGameSettings
   );
 
-  let tracked = false;
   // Check for new version on mount
   useEffect(() => {
     if (!tracked) {
-      console.log('checking version');
       version.checkForNewVersion('start_menu');
 
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       tracked = true;
     }
-  }, []);
+  });
 
   useEffect(() => {
     setInitialGameSettings(playerOptions);
@@ -174,6 +120,7 @@ const Start = () => {
     setRandomizingPlayer(settings.preStartMode === PreStartMode.RandomKing);
     setShowPlay(true);
     setPlaying(false);
+    tracked = false;
   };
 
   const doResumeGame = () => {
@@ -205,198 +152,199 @@ const Start = () => {
     setRandomizingPlayer(false);
     setShowPlay(true);
     setPlaying(true);
+    tracked = false;
   };
 
-  const valueText = (value: number) => {
-    return `${value}`;
+  const openInfo = () => {
+    if (infoDialogRef.current) {
+      infoDialogRef.current.showModal();
+    }
+  };
+
+  const openSettings = () => {
+    if (settingsDialogRef.current) {
+      settingsDialogRef.current.showModal();
+      version.checkForNewVersion('settings');
+    }
   };
 
   return (
-    <MainWrapper>
-      <Info
-        color={theme.palette.primary.light}
-        size="2rem"
-        style={{ position: 'absolute', top: '1rem', left: '1rem' }}
-        onClick={() => {
-          setOpenInfoModal(!openInfoModal);
-        }}
-      />
+    <>
+      <InfoDialog dialogRef={infoDialogRef} />
 
-      <InfoModal
-        closeModal={() => {
-          setOpenInfoModal(false);
-        }}
-        isOpen={openInfoModal}
-      />
+      <SettingsDialog dialogRef={settingsDialogRef} />
 
-      <SettingsModal
-        closeModal={() => {
-          setOpenSettingsModal(false);
-        }}
-        isOpen={openSettingsModal}
-      />
+      <MainWrapper>
+        <Info
+          className="size-8 absolute top-4 left-4 text-primary-main"
+          onClick={() => {
+            openInfo();
+          }}
+        />
 
-      <SupportMe />
+        <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
+          Life Trinket
+          <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
+          <div className="flex absolute text-xs font-medium -bottom-4">
+            v{version.installedVersion}
+          </div>
+        </h1>
 
-      <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
-        Life Trinket
-        <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
-        <div className="flex absolute text-xs font-medium -bottom-4">
-          v{version.installedVersion}
-        </div>
-      </h1>
-
-      <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
-        <div className="w-full">
-          <ToggleButtonsWrapper className="mt-4">
-            <ToggleContainer>
-              <LabelText>Commander</LabelText>
-
-              <label className="inline-flex items-center cursor-pointer relative h-6 w-10">
-                <input
-                  type="checkbox"
-                  value=""
-                  checked={
-                    playerOptions.useCommanderDamage ??
-                    initialGameSettings?.useCommanderDamage ??
-                    true
-                  }
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setPlayerOptions({
-                        ...playerOptions,
-                        useCommanderDamage: e.target.checked,
-                        ...commanderSettings,
-                      });
-                      return;
-                    }
+        <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
+          <div className="w-full">
+            <ToggleButtonsWrapper className="mt-4">
+              <ToggleButton
+                label="Commander"
+                checked={
+                  playerOptions.useCommanderDamage ??
+                  initialGameSettings?.useCommanderDamage ??
+                  true
+                }
+                onChange={(e) => {
+                  if (e.target.checked) {
                     setPlayerOptions({
                       ...playerOptions,
                       useCommanderDamage: e.target.checked,
-                      ...standardSettings,
+                      ...commanderSettings,
                     });
-                  }}
-                  className="sr-only peer"
-                />
-                <div className="relative mx-1 w-10 h-[0.875rem] bg-gray-900 rounded-full peer peer-checked:bg-primary-dark" />
-                <div className="absolute peer-checked:translate-x-full rtl:peer-checked:-translate-x-full bg-secondary-main peer-checked:bg-primary-main rounded-full h-5 w-5 transition-all" />
-              </label>
-            </ToggleContainer>
-            <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
-              <button
-                className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md"
-                onClick={() => {
-                  setOpenSettingsModal(true);
+                    return;
+                  }
+                  setPlayerOptions({
+                    ...playerOptions,
+                    useCommanderDamage: e.target.checked,
+                    ...standardSettings,
+                  });
                 }}
-              >
-                <span className="text-sm flex flex-row items-center text-text-primary">
-                  <Cog />
-                  &nbsp; Game Settings
-                </span>
-              </button>
+              />
 
-              <div
-                data-not-latest-version={
-                  !version.isLatest && !!version.remoteVersion
-                }
-                className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
+              <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
+                <button
+                  className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+                  onClick={openSettings}
+                >
+                  <span className="text-sm flex flex-row items-center text-text-primary">
+                    <Cog />
+                    &nbsp;Game Settings
+                  </span>
+                </button>
+
+                <div
+                  data-not-latest-version={
+                    !version.isLatest && !!version.remoteVersion
+                  }
+                  className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
                 opacity-0 transition-all duration-200 delay-500
                 data-[not-latest-version=true]:opacity-100
                 "
-              >
-                <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
-                <span className="z-10">
-                  v{version.remoteVersion} available!
-                </span>
+                >
+                  <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
+                  <span className="z-10">
+                    v{version.remoteVersion} available!
+                  </span>
+                </div>
               </div>
-            </div>
-          </ToggleButtonsWrapper>
-          <LabelText>Number of Players</LabelText>
-          <SliderWrapper>
-            <Slider
-              title="Number of Players"
-              max={6}
-              min={1}
-              aria-label="Custom marks"
-              value={playerOptions?.numberOfPlayers ?? 4}
-              getAriaValueText={valueText}
-              step={null}
-              marks={playerMarks}
-              onChange={(_e, value) => {
-                console.log('haha');
+            </ToggleButtonsWrapper>
+            <LabelText className="mt-4">Number of Players</LabelText>
+            <SliderWrapper>
+              <input
+                className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
+                title="Number of Players"
+                type="range"
+                max={6}
+                min={1}
+                value={playerOptions?.numberOfPlayers ?? 4}
+                onChange={(e) => {
+                  setPlayerOptions({
+                    ...playerOptions,
+                    numberOfPlayers: Number.parseInt(e.target.value),
+                    orientation: Orientation.Landscape,
+                  });
+                }}
+              />
+              <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+              </div>
+            </SliderWrapper>
+
+            <LabelText className="mt-4">Starting Health</LabelText>
+            <SliderWrapper>
+              <input
+                className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
+                title="Starting Health"
+                type="range"
+                max={60}
+                min={20}
+                aria-label="Custom marks"
+                value={playerOptions?.startingLifeTotal ?? 40}
+                step={10}
+                onChange={(e) =>
+                  setPlayerOptions({
+                    ...playerOptions,
+                    startingLifeTotal: Number.parseInt(e.target.value),
+                    orientation: Orientation.Landscape,
+                  })
+                }
+              />
+              <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                <div>20</div>
+                <div>30</div>
+                <div>40</div>
+                <div>50</div>
+                <div>60</div>
+              </div>
+            </SliderWrapper>
+
+            <LabelText className="mt-4">Layout</LabelText>
+            <LayoutOptions
+              numberOfPlayers={playerOptions.numberOfPlayers}
+              selectedOrientation={playerOptions.orientation}
+              onChange={(orientation) => {
                 setPlayerOptions({
                   ...playerOptions,
-                  numberOfPlayers: value as number,
-                  orientation: Orientation.Landscape,
+                  orientation,
                 });
               }}
             />
-          </SliderWrapper>
-
-          <LabelText className="mt-[0.7rem]">Starting Health</LabelText>
-          <SliderWrapper>
-            <Slider
-              title="Starting Health"
-              max={60}
-              min={20}
-              aria-label="Custom marks"
-              value={playerOptions?.startingLifeTotal ?? 40}
-              getAriaValueText={valueText}
-              step={10}
-              marks={healthMarks}
-              onChange={(_e, value) =>
-                setPlayerOptions({
-                  ...playerOptions,
-                  startingLifeTotal: value as number,
-                  orientation: Orientation.Landscape,
-                })
-              }
-            />
-          </SliderWrapper>
-
-          <LabelText>Layout</LabelText>
-          <LayoutOptions
-            numberOfPlayers={playerOptions.numberOfPlayers}
-            selectedOrientation={playerOptions.orientation}
-            onChange={(orientation) => {
-              setPlayerOptions({
-                ...playerOptions,
-                orientation,
-              });
-            }}
-          />
+          </div>
+          {!isPWA && (
+            <p className="text-center text-xs text-text-primary w-11/12 mt-4">
+              If you're on iOS, this page works better if you{' '}
+              <strong>hide the toolbar</strong> or{' '}
+              <strong>add the app to your home screen</strong>.
+            </p>
+          )}
         </div>
-        {!isPWA && (
-          <p className="text-center text-xs text-text-primary w-11/12 mt-4">
-            If you're on iOS, this page works better if you{' '}
-            <strong>hide the toolbar</strong> or{' '}
-            <strong>add the app to your home screen</strong>.
-          </p>
-        )}
-      </div>
 
-      <StartButtonFooter>
-        <button
-          className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]"
-          onClick={doStartNewGame}
-        >
-          NEW GAME
-        </button>
-
-        {savedGame && (
+        <StartButtonFooter>
           <button
-            className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-dark px-3 py-2 rounded-md text-text-primary min-w-[150px]"
-            onClick={doResumeGame}
+            className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+            onClick={doStartNewGame}
           >
-            RESUME&nbsp;
-            <span className="text-xs">
-              ({savedGame.players.length}&nbsp;
-              {savedGame.players.length > 1 ? 'players' : 'player'})
-            </span>
+            NEW GAME
           </button>
-        )}
-      </StartButtonFooter>
-    </MainWrapper>
+
+          {savedGame && (
+            <button
+              className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
+              
+              duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark"
+              onClick={doResumeGame}
+            >
+              RESUME&nbsp;
+              <span className="text-xs">
+                ({savedGame.players.length}&nbsp;
+                {savedGame.players.length > 1 ? 'players' : 'player'})
+              </span>
+            </button>
+          )}
+        </StartButtonFooter>
+      </MainWrapper>
+    </>
   );
 };
 
