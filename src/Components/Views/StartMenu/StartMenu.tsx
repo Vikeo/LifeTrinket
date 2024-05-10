@@ -35,7 +35,7 @@ const standardSettings: Pick<
   orientation: Orientation.Landscape,
 };
 
-const MainWrapper = twc.div`w-full h-fit pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
+const MainWrapper = twc.div`h-fit pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
 
 const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row flex-wrap px-4 z-10 gap-4`;
 
@@ -173,177 +173,178 @@ const Start = () => {
       <InfoDialog dialogRef={infoDialogRef} />
 
       <SettingsDialog dialogRef={settingsDialogRef} />
+      <div className="flex justify-center items-center w-screen">
+        <MainWrapper>
+          <Info
+            className="size-8 absolute top-4 left-4 text-primary-main"
+            onClick={() => {
+              openInfo();
+            }}
+          />
 
-      <MainWrapper>
-        <Info
-          className="size-8 absolute top-4 left-4 text-primary-main"
-          onClick={() => {
-            openInfo();
-          }}
-        />
+          <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
+            Life Trinket
+            <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
+            <div className="flex absolute text-xs font-medium -bottom-4">
+              v{version.installedVersion}
+            </div>
+          </h1>
 
-        <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
-          Life Trinket
-          <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
-          <div className="flex absolute text-xs font-medium -bottom-4">
-            v{version.installedVersion}
-          </div>
-        </h1>
-
-        <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
-          <div className="w-full">
-            <ToggleButtonsWrapper className="mt-4">
-              <ToggleButton
-                label="Commander"
-                checked={
-                  playerOptions.useCommanderDamage ??
-                  initialGameSettings?.useCommanderDamage ??
-                  true
-                }
-                onChange={(e) => {
-                  if (e.target.checked) {
+          <div className="overflow-hidden items-center flex flex-col max-w-[548px] w-full mb-8 px-4">
+            <div className="w-full">
+              <ToggleButtonsWrapper className="mt-4">
+                <ToggleButton
+                  label="Commander"
+                  checked={
+                    playerOptions.useCommanderDamage ??
+                    initialGameSettings?.useCommanderDamage ??
+                    true
+                  }
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setPlayerOptions({
+                        ...playerOptions,
+                        useCommanderDamage: e.target.checked,
+                        ...commanderSettings,
+                      });
+                      return;
+                    }
                     setPlayerOptions({
                       ...playerOptions,
                       useCommanderDamage: e.target.checked,
-                      ...commanderSettings,
+                      ...standardSettings,
                     });
-                    return;
-                  }
-                  setPlayerOptions({
-                    ...playerOptions,
-                    useCommanderDamage: e.target.checked,
-                    ...standardSettings,
-                  });
-                }}
-              />
+                  }}
+                />
 
-              <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
-                <button
-                  className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
-                  onClick={openSettings}
-                >
-                  <span className="text-sm flex flex-row items-center text-text-primary">
-                    <Cog />
-                    &nbsp;Game Settings
-                  </span>
-                </button>
+                <div className="flex flex-nowrap text-nowrap relative justify-center items-start">
+                  <button
+                    className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+                    onClick={openSettings}
+                  >
+                    <span className="text-sm flex flex-row items-center text-text-primary">
+                      <Cog />
+                      &nbsp;Game Settings
+                    </span>
+                  </button>
 
-                <div
-                  data-not-latest-version={
-                    !version.isLatest && !!version.remoteVersion
-                  }
-                  className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
+                  <div
+                    data-not-latest-version={
+                      !version.isLatest && !!version.remoteVersion
+                    }
+                    className="absolute flex justify-center text-text-primary text-xxs -bottom-5 bg-primary-dark px-2 rounded-md
                 opacity-0 transition-all duration-200 delay-500
                 data-[not-latest-version=true]:opacity-100
                 "
-                >
-                  <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
-                  <span className="z-10">
-                    v{version.remoteVersion} available!
-                  </span>
+                  >
+                    <div className="absolute bg-primary-dark rotate-45 size-2 -top-[2px] z-0" />
+                    <span className="z-10">
+                      v{version.remoteVersion} available!
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </ToggleButtonsWrapper>
-            <LabelText className="mt-4">Number of Players</LabelText>
-            <SliderWrapper>
-              <input
-                className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
-                title="Number of Players"
-                type="range"
-                max={6}
-                min={1}
-                value={playerOptions?.numberOfPlayers ?? 4}
-                onChange={(e) => {
+              </ToggleButtonsWrapper>
+              <LabelText className="mt-4">Number of Players</LabelText>
+              <SliderWrapper>
+                <input
+                  className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
+                  title="Number of Players"
+                  type="range"
+                  max={6}
+                  min={1}
+                  value={playerOptions?.numberOfPlayers ?? 4}
+                  onChange={(e) => {
+                    setPlayerOptions({
+                      ...playerOptions,
+                      numberOfPlayers: Number.parseInt(e.target.value),
+                      orientation: Orientation.Landscape,
+                    });
+                  }}
+                />
+                <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                  <div>1</div>
+                  <div>2</div>
+                  <div>3</div>
+                  <div>4</div>
+                  <div>5</div>
+                  <div>6</div>
+                </div>
+              </SliderWrapper>
+
+              <LabelText className="mt-4">Starting Health</LabelText>
+              <SliderWrapper>
+                <input
+                  className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
+                  title="Starting Health"
+                  type="range"
+                  max={60}
+                  min={20}
+                  aria-label="Custom marks"
+                  value={playerOptions?.startingLifeTotal ?? 40}
+                  step={10}
+                  onChange={(e) =>
+                    setPlayerOptions({
+                      ...playerOptions,
+                      startingLifeTotal: Number.parseInt(e.target.value),
+                      orientation: Orientation.Landscape,
+                    })
+                  }
+                />
+                <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                  <div>20</div>
+                  <div>30</div>
+                  <div>40</div>
+                  <div>50</div>
+                  <div>60</div>
+                </div>
+              </SliderWrapper>
+
+              <LabelText className="mt-4">Layout</LabelText>
+              <LayoutOptions
+                numberOfPlayers={playerOptions.numberOfPlayers}
+                selectedOrientation={playerOptions.orientation}
+                onChange={(orientation) => {
                   setPlayerOptions({
                     ...playerOptions,
-                    numberOfPlayers: Number.parseInt(e.target.value),
-                    orientation: Orientation.Landscape,
+                    orientation,
                   });
                 }}
               />
-              <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
-                <div>4</div>
-                <div>5</div>
-                <div>6</div>
-              </div>
-            </SliderWrapper>
-
-            <LabelText className="mt-4">Starting Health</LabelText>
-            <SliderWrapper>
-              <input
-                className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
-                title="Starting Health"
-                type="range"
-                max={60}
-                min={20}
-                aria-label="Custom marks"
-                value={playerOptions?.startingLifeTotal ?? 40}
-                step={10}
-                onChange={(e) =>
-                  setPlayerOptions({
-                    ...playerOptions,
-                    startingLifeTotal: Number.parseInt(e.target.value),
-                    orientation: Orientation.Landscape,
-                  })
-                }
-              />
-              <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
-                <div>20</div>
-                <div>30</div>
-                <div>40</div>
-                <div>50</div>
-                <div>60</div>
-              </div>
-            </SliderWrapper>
-
-            <LabelText className="mt-4">Layout</LabelText>
-            <LayoutOptions
-              numberOfPlayers={playerOptions.numberOfPlayers}
-              selectedOrientation={playerOptions.orientation}
-              onChange={(orientation) => {
-                setPlayerOptions({
-                  ...playerOptions,
-                  orientation,
-                });
-              }}
-            />
+            </div>
+            {!isPWA && (
+              <p className="text-center text-xs text-text-primary w-11/12 mt-4">
+                If you're on iOS, this page works better if you{' '}
+                <strong>hide the toolbar</strong> or{' '}
+                <strong>add the app to your home screen</strong>.
+              </p>
+            )}
           </div>
-          {!isPWA && (
-            <p className="text-center text-xs text-text-primary w-11/12 mt-4">
-              If you're on iOS, this page works better if you{' '}
-              <strong>hide the toolbar</strong> or{' '}
-              <strong>add the app to your home screen</strong>.
-            </p>
-          )}
-        </div>
 
-        <StartButtonFooter>
-          <button
-            className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
-            onClick={doStartNewGame}
-          >
-            NEW GAME
-          </button>
-
-          {savedGame && (
+          <StartButtonFooter>
             <button
-              className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
+              className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+              onClick={doStartNewGame}
+            >
+              NEW GAME
+            </button>
+
+            {savedGame && (
+              <button
+                className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
               
               duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark"
-              onClick={doResumeGame}
-            >
-              RESUME&nbsp;
-              <span className="text-xs">
-                ({savedGame.players.length}&nbsp;
-                {savedGame.players.length > 1 ? 'players' : 'player'})
-              </span>
-            </button>
-          )}
-        </StartButtonFooter>
-      </MainWrapper>
+                onClick={doResumeGame}
+              >
+                RESUME&nbsp;
+                <span className="text-xs">
+                  ({savedGame.players.length}&nbsp;
+                  {savedGame.players.length > 1 ? 'players' : 'player'})
+                </span>
+              </button>
+            )}
+          </StartButtonFooter>
+        </MainWrapper>
+      </div>
     </>
   );
 };
