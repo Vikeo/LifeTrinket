@@ -61,6 +61,7 @@ const ButtonsSections = twc.div`
   justify-evenly
   items-center
   flex-wrap
+  h-full
   mt-0
   px-2
 `;
