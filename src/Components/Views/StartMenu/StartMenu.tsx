@@ -35,7 +35,7 @@ const standardSettings: Pick<
   orientation: Orientation.Landscape,
 };
 
-const MainWrapper = twc.div`h-fit pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
+const MainWrapper = twc.div`h-fit w-full pb-24 overflow-hidden items-center flex flex-col min-[349px]:pb-10`;
 
 const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-center flex flex-row flex-wrap px-4 z-10 gap-4`;
 
