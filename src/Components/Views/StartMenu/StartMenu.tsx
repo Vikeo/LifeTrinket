@@ -4,7 +4,7 @@ import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
-import { Cog, Info } from '../../../Icons/generated';
+import { Cog, Info, Trinket } from '../../../Icons/generated';
 import {
   InitialGameSettings,
   Orientation,
@@ -176,14 +176,15 @@ const Start = () => {
       <div className="flex justify-center items-center w-screen">
         <MainWrapper>
           <Info
-            className="size-8 absolute top-4 left-4 text-primary-main"
+            className="size-8 absolute top-7 left-4 text-primary-main"
             onClick={() => {
               openInfo();
             }}
           />
+          <Trinket className="absolute w-12 h-12 top-4 right-4" />
 
           <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
-            Life Trinket
+            <div className="flex flex-row items-center">Life Trinket</div>
             <div className="h-[1px] w-[120%] bg-common-white opacity-50" />
             <div className="flex absolute text-xs font-medium -bottom-4">
               v{version.installedVersion}

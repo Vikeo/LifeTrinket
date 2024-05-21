@@ -48,10 +48,12 @@ export const Dialog: React.FC<{
       </button>
 
       <div className="bg-background-default rounded-2xl max-w-[548px] max-h-[80vh] flex flex-col">
-        <div className="text-2xl text-center text-text-primary px-8 pt-4">
-          <h2 className="">{title}</h2>
-          <Separator height="1px" />
-        </div>
+        {title && (
+          <div className="text-2xl text-center text-text-primary px-8 pt-4">
+            <h2 className="">{title}</h2>
+            <Separator height="1px" />
+          </div>
+        )}
 
         <div className="h-full overflow-auto text-text-primary show-scrollbar px-8 pb-8">
           {children}

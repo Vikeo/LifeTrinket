@@ -13,3 +13,4 @@ export { default as PartnerTax } from './PartnerTax';
 export { default as Poison } from './Poison';
 export { default as ResetGame } from './ResetGame';
 export { default as Skull } from './Skull';
+export { default as Trinket } from './Trinket';
