@@ -14,7 +14,7 @@ export const baseColors = {
   background: {
     default: '#08253B',
     backdrop: 'rgba(0, 0, 0, 0.3)',
-    settings: 'rgba(20, 20, 0, 0.9)',
+    settings: 'rgba(0, 0, 0, 0.8)',
   },
   icons: {
     dark: '#00000080',
