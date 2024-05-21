@@ -16,7 +16,7 @@ export const InfoDialog = ({
         <h2 className="text-md underline">Contributors</h2>
         <div className="flex flex-row items-center gap-1 text-sm">
           {/* <Trinket className="size-4" /> */}
-          <a href="#">Elin:</a> Icon and colors
+          <a href="#">Elin:</a> Icon design
         </div>
         <Separator height="1px" />
       </div>

@@ -181,7 +181,9 @@ const Start = () => {
               openInfo();
             }}
           />
-          <Trinket className="absolute w-12 h-12 top-4 right-4" />
+          <a href="https://lifetrinket.com/">
+            <Trinket className="absolute w-12 h-12 top-4 right-4" />
+          </a>
 
           <h1 className="relative flex flex-col text-3xl font-bold mt-6 mb-6 text-text-primary justify-center items-center">
             <div className="flex flex-row items-center">Life Trinket</div>
