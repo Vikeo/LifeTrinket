@@ -14,6 +14,7 @@ import {
   initialGameSettingsSchema,
   settingsSchema,
 } from '../Types/Settings';
+import { gte as semverGreaterThanOrEqual } from 'semver';
 
 export const GlobalSettingsProvider = ({
   children,
@@ -244,7 +245,12 @@ export const GlobalSettingsProvider = ({
 
         setRemoteVersion(data.name);
 
-        if (data.name === import.meta.env.VITE_APP_VERSION) {
+        const isLatest = semverGreaterThanOrEqual(
+          import.meta.env.VITE_APP_VERSION,
+          data.name
+        );
+
+        if (isLatest) {
           setIsLatestVersion(true);
           return;
         }
