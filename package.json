@@ -4,7 +4,7 @@
   "version": "0.9.8",
   "type": "commonjs",
   "engines": {
-    "node": ">=18",
+    "node": ">=20",
     "yarn": "use pnpm",
     "npm": "please use pnpm"
   },
