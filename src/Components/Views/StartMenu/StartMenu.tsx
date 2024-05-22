@@ -225,7 +225,7 @@ const Start = () => {
                     className="flex justify-center self-center items-center mt-1 mb-1 bg-primary-main px-3 py-2 rounded-md transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
                     onClick={openSettings}
                   >
-                    <span className="text-sm flex flex-row items-center text-text-primary">
+                    <span className="text-sm flex flex-row items-center text-text-primary font-bold">
                       <Cog />
                       &nbsp;Game Settings
                     </span>
@@ -325,7 +325,7 @@ const Start = () => {
 
           <StartButtonFooter>
             <button
-              className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+              className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
               onClick={doStartNewGame}
             >
               NEW GAME
@@ -335,7 +335,7 @@ const Start = () => {
               <button
                 className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
               
-              duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark"
+              duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark font-bold"
                 onClick={doResumeGame}
               >
                 RESUME&nbsp;
