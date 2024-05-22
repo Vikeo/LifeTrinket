@@ -5,7 +5,7 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
 import {
-  Cross,
+  Close,
   Energy,
   Exit,
   Experience,
@@ -193,9 +193,9 @@ const PlayerMenu = ({
             analytics.trackEvent('close_player_menu_button');
             setShowPlayerMenu(false);
           }}
-          className="flex absolute top-0 right-2 z-10 bg-transparent items-center justify-center rounded-full border-solid border-primary-main border-2 p-[0.2rem]"
+          className="flex absolute top-2 right-2 z-10"
         >
-          <Cross size={buttonFontSize} className="text-primary-main " />
+          <Close size={buttonFontSize} className="text-primary-main " />
         </button>
 
         <BetterRowContainer>

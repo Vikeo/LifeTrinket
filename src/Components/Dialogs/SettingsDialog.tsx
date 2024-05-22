@@ -135,7 +135,7 @@ export const SettingsDialog = ({
             name="pre-start-modes"
             id="pre-start-modes"
             value={settings.preStartMode}
-            className="bg-primary-main border-none outline-none text-text-primary rounded-md p-1 text-xs disabled:bg-primary-dark"
+            className="bg-secondary-main border-none outline-none text-text-primary rounded-md p-1 text-xs disabled:saturate-50 font-semibold"
             onChange={(e) => {
               setSettings({
                 ...settings,
@@ -223,7 +223,7 @@ export const SettingsDialog = ({
       <Separator height="1px" />
       <div className="flex w-full justify-center">
         <button
-          className="mt-1 mb-1 bg-primary-main px-3 py-1 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"
+          className="mt-1 mb-1 bg-primary-main px-3 py-1 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
           onClick={() => {
             analytics.trackEvent('settings_save_clicked');
             dialogRef.current?.close();

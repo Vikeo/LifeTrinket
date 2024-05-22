@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Cross } from '../../Icons/generated';
+import { Close } from '../../Icons/generated';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { Separator } from '../Misc/Separator';
 
@@ -42,9 +42,9 @@ export const Dialog: React.FC<{
           analytics.trackEvent(`${id}_cross_clicked`);
           dialogRef.current?.close();
         }}
-        className="flex absolute -top-2 right-2 z-10 w-10 h-10 bg-primary-main items-center justify-center rounded-full border-solid border-primary-dark border-2"
+        className="flex absolute -top-2 right-2 z-10 w-10 h-10 bg-background-default rounded-full"
       >
-        <Cross size="16px" className="text-text-primary" />
+        <Close className="text-primary-main size-full" />
       </button>
 
       <div className="bg-background-default rounded-2xl max-w-[548px] max-h-[80vh] flex flex-col">

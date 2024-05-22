@@ -122,7 +122,7 @@ export const Trivia = () => {
 
   return (
     <div
-      className="absolute flex justify-center items-center w-full h-full portrait:h-[100dvw] portrait:w-[100dvh] z-50 bg-primary-main overflow-hidden"
+      className="absolute flex justify-center items-center w-full h-full portrait:h-[100dvw] portrait:w-[100dvh] z-50 bg-primary-dark overflow-hidden"
       onClick={() => setPlaying(true)}
     >
       <button
@@ -146,7 +146,7 @@ export const Trivia = () => {
       <div className="size-full flex flex-col  justify-between items-center whitespace-nowrap pointer-events-none webkit-user-select-none text-wrap text-center py-[10vmin] px-[10vmax]">
         <div className="text-[6vmin]">Decide who starts by answering:</div>
         <div className="flex flex-col">
-          <div className="text-[8vmin] rotate-180 text-text-primary opacity-40">
+          <div className="text-[8vmin] rotate-180 text-text-primary opacity-60">
             {randomQuestion}
           </div>
           <div className="text-[8vmin]">{randomQuestion}</div>

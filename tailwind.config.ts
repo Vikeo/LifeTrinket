@@ -4,28 +4,25 @@ import type { Config } from 'tailwindcss';
 
 export const baseColors = {
   primary: {
-    main: '#3E7D78',
-    dark: '#2D5F5B',
+    main: '#78A083',
+    dark: '#608069',
   },
   secondary: {
-    main: '#284F4C',
-    dark: '#1B3B38',
+    main: '#5D7965',
+    dark: '#4a6151',
   },
   background: {
-    default: '#08253B',
+    default: '#35374B',
     backdrop: 'rgba(0, 0, 0, 0.3)',
     settings: 'rgba(0, 0, 0, 0.8)',
   },
   icons: {
     dark: '#00000080',
-    light: '#ffffff4f',
+    light: '#F9FFE34f',
   },
   text: {
-    primary: '#F5F5F5',
-    secondary: '#76A6A5',
-  },
-  action: {
-    disabled: '#234A47',
+    primary: '#F9FFE3',
+    secondary: '#c7ccb6',
   },
   common: {
     white: '#F9FFE3',
