@@ -25,6 +25,7 @@ export type Settings = {
   showPlayerMenuCog: boolean;
   goFullscreenOnStart: boolean;
   preStartMode: PreStartMode;
+  showAnimations: boolean;
 };
 
 export type InitialGameSettings = {
@@ -57,6 +58,7 @@ export const settingsSchema = z.object({
   showPlayerMenuCog: z.boolean(),
   goFullscreenOnStart: z.boolean(),
   preStartMode: z.nativeEnum(PreStartMode),
+  showAnimations: z.boolean(),
 });
 
 export const defaultSettings: Settings = {
@@ -65,4 +67,5 @@ export const defaultSettings: Settings = {
   showStartingPlayer: true,
   showPlayerMenuCog: true,
   preStartMode: PreStartMode.None,
+  showAnimations: true,
 };

@@ -11,7 +11,7 @@ const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
 const ToggleContainer = twc.div`flex flex-row justify-between items-center -mb-1`;
 
-const Description = twc.p`mr-16 text-xs text-left text-text-secondary`;
+const Description = twc.p`mr-16 text-xs text-left text-text-secondary mt-1`;
 
 const baseGithubReleasesUrl =
   'https://github.com/Vikeo/LifeTrinket/releases/tag/';
@@ -218,6 +218,27 @@ export const SettingsDialog = ({
         </ToggleContainer>
         <Description>
           Will enter fullscreen mode when starting a game if this is enabled.
+        </Description>
+      </SettingContainer>
+
+      <SettingContainer>
+        <ToggleContainer>
+          <label>Show animations</label>
+          <ToggleButton
+            checked={settings.showAnimations}
+            onChange={() => {
+              setSettings({
+                ...settings,
+                showAnimations: !settings.showAnimations,
+              });
+            }}
+          />
+        </ToggleContainer>
+        <Description>
+          Disables the following animation:
+          <ul className="pl-1 list-inside">
+            <li className="list-disc">Glow effect on start menu</li>
+          </ul>
         </Description>
       </SettingContainer>
       <Separator height="1px" />

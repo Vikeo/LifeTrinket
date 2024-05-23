@@ -81,6 +81,86 @@ code {
   }
 }
 
+@keyframes background-orb {
+  0% {
+    bottom: 10%;
+  }
+  50% {
+    bottom: 90%;
+  }
+
+  100% {
+    bottom: 10%;
+  }
+}
+
+@keyframes move-right-left {
+  0% {
+    rotate: 0deg;
+    right: 10%;
+  }
+
+  25% {
+    right: 70%;
+  }
+
+  50% {
+    rotate: 360deg;
+    right: 10%;
+  }
+
+  75% {
+    right: 90%;
+  }
+
+  100% {
+    rotate: 0deg;
+    right: 10%;
+  }
+}
+
+.spotlight1 {
+  background: theme('colors.primary.dark');
+
+  position: fixed;
+  height: 100px;
+  width: 300px;
+  border-radius: 100%;
+  transform: translate(50%, 50%);
+  animation-duration: 30s, 60s;
+  animation-name: background-orb, move-right-left;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: alternate, alternate;
+  animation-timing-function: ease-in-out;
+
+  animation-delay: -15s, -15s;
+
+  opacity: 0.8;
+  mix-blend-mode: screen;
+
+  filter: blur(125px);
+}
+
+.spotlight2 {
+  background: theme('colors.primary.dark');
+
+  position: fixed;
+  height: 300px;
+  width: 100px;
+  border-radius: 100%;
+  transform: translate(50%, 50%);
+  animation-duration: 60s, 120s;
+  animation-name: background-orb, move-right-left;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: reverse, reverse;
+  animation-timing-function: ease-in-out;
+
+  opacity: 0.8;
+  mix-blend-mode: screen;
+
+  filter: blur(125px);
+}
+
 input[type='range'] {
   -webkit-appearance: none;
   transition: background 450ms ease-in;
