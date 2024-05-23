@@ -163,7 +163,7 @@ code {
 
 input[type='range'] {
   -webkit-appearance: none;
-  transition: background 450ms ease-in;
+  transition: background 0ms ease-in;
   margin: 10px 0;
   width: 100%;
   background: theme('colors.secondary.main');
