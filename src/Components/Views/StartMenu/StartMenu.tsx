@@ -12,10 +12,11 @@ import {
   defaultInitialGameSettings,
 } from '../../../Types/Settings';
 
-import { LayoutOptions } from './LayoutOptions';
+import { baseColors } from '../../../../tailwind.config';
 import { InfoDialog } from '../../Dialogs/InfoDialog';
 import { SettingsDialog } from '../../Dialogs/SettingsDialog';
 import { ToggleButton } from '../../Misc/ToggleButton';
+import { LayoutOptions } from './LayoutOptions';
 
 const commanderSettings: Pick<
   InitialGameSettings,
@@ -67,6 +68,8 @@ const Start = () => {
 
   const infoDialogRef = useRef<HTMLDialogElement | null>(null);
   const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
+  const playersSliderRef = useRef<HTMLInputElement | null>(null);
+  const healthSliderRef = useRef<HTMLInputElement | null>(null);
 
   const [playerOptions, setPlayerOptions] = useState<InitialGameSettings>(
     initialGameSettings || defaultInitialGameSettings
@@ -80,6 +83,68 @@ const Start = () => {
       tracked = true;
     }
   });
+
+  useEffect(() => {
+    if (!playersSliderRef.current) {
+      return;
+    }
+
+    let progress = 0;
+
+    switch (playerOptions?.numberOfPlayers) {
+      case 1:
+        progress = 0;
+        break;
+      case 2:
+        progress = 20;
+        break;
+      case 3:
+        progress = 40;
+        break;
+      case 4:
+        progress = 60;
+        break;
+      case 5:
+        progress = 80;
+        break;
+      case 6:
+        progress = 100;
+        break;
+      default:
+        break;
+    }
+
+    playersSliderRef.current.style.background = `linear-gradient(to right, ${baseColors.secondary.main} ${progress}%, ${baseColors.secondary.dark} ${progress}%)`;
+  }, [playerOptions?.numberOfPlayers]);
+
+  useEffect(() => {
+    if (!healthSliderRef.current) {
+      return;
+    }
+
+    let progress = 0;
+    switch (playerOptions?.startingLifeTotal) {
+      case 20:
+        progress = 0;
+        break;
+      case 30:
+        progress = 25;
+        break;
+      case 40:
+        progress = 50;
+        break;
+      case 50:
+        progress = 75;
+        break;
+      case 60:
+        progress = 100;
+        break;
+      default:
+        break;
+    }
+
+    healthSliderRef.current.style.background = `linear-gradient(to right, ${baseColors.secondary.main} ${progress}%, ${baseColors.secondary.dark} ${progress}%)`;
+  }, [playerOptions?.startingLifeTotal]);
 
   useEffect(() => {
     setInitialGameSettings(playerOptions);
@@ -250,6 +315,7 @@ const Start = () => {
               <LabelText className="mt-4">Number of Players</LabelText>
               <SliderWrapper>
                 <input
+                  ref={playersSliderRef}
                   className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
                   title="Number of Players"
                   type="range"
@@ -264,7 +330,7 @@ const Start = () => {
                     });
                   }}
                 />
-                <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                <div className="flex w-full justify-between px-[6px] text-text-primary pointer-events-none">
                   <div>1</div>
                   <div>2</div>
                   <div>3</div>
@@ -277,6 +343,7 @@ const Start = () => {
               <LabelText className="mt-4">Starting Health</LabelText>
               <SliderWrapper>
                 <input
+                  ref={healthSliderRef}
                   className="accent-primary-main text-primary-dark w-full h-3 rounded-lg cursor-pointer"
                   title="Starting Health"
                   type="range"
@@ -293,7 +360,7 @@ const Start = () => {
                     })
                   }
                 />
-                <div className="flex w-full justify-between px-1 text-text-primary pointer-events-none">
+                <div className="flex w-full justify-between text-text-primary pointer-events-none">
                   <div>20</div>
                   <div>30</div>
                   <div>40</div>
