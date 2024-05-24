@@ -195,7 +195,7 @@ const PlayerMenu = ({
           }}
           className="flex absolute top-2 right-2 z-10"
         >
-          <Close size={buttonFontSize} className="text-primary-main " />
+          <Close size={iconSize} className="text-primary-main" />
         </button>
 
         <BetterRowContainer>
