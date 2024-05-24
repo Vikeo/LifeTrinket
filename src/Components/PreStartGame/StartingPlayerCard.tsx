@@ -24,15 +24,9 @@ export const StartingPlayerCard = ({ player }: { player: Player }) => {
 
   return (
     <div
-      className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none"
+      className="z-20 flex absolute w-full h-full justify-center items-center select-none cursor-pointer webkit-user-select-none backdrop-blur-xl"
       style={{
         rotate: `${calcRotation}deg`,
-        backgroundImage:
-          !randomizingPlayer ||
-          (settings.preStartMode !== PreStartMode.None &&
-            settings.preStartMode !== PreStartMode.FingerGame)
-            ? `radial-gradient(circle at center, ${player.color}, ${baseColors.primary.main})`
-            : 'none',
       }}
       onClick={() => {
         setPlaying(true);
@@ -43,7 +37,7 @@ export const StartingPlayerCard = ({ player }: { player: Player }) => {
           rotate: `${calcTextRotation}deg`,
         }}
       >
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center text-text-primary font-semibold">
           <Paragraph>👑</Paragraph>
           {(!randomizingPlayer ||
             (settings.preStartMode !== PreStartMode.None &&
