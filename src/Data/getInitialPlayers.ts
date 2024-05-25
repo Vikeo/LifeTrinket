@@ -2,14 +2,14 @@ import { Player, Rotation } from '../Types/Player';
 import { InitialGameSettings, Orientation } from '../Types/Settings';
 
 export const presetColors = [
-  '#F06292', // Light Pink
-  '#4DB6AC', // Teal
-  '#FFA726', // Orange
-  '#7986CB', // Indigo
-  '#FFCC80', // Peach
-  '#90CAF9', // Pastel Blue
-  '#CE93D8', // Lilac
-  '#FF8A80', // Coral
+  '#D08182', // Muted Pink
+  '#5AAB9E', // Teal
+  '#D58B5A', // Burnt Orange
+  '#697A9A', // Soft Indigo
+  '#78B2D3', // Pastel Blue
+  '#A785BA', // Lilac
+  '#D9C17C', // Muted Yellow
+  '#FF907F', // Light Coral
 ];
 
 const getOrientationRotations = (
