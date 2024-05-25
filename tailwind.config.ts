@@ -12,7 +12,8 @@ export const baseColors = {
     dark: '#4a6151',
   },
   background: {
-    default: '#35374B',
+    default: '#2E3041', // Orig: #35374B
+    spotlight: '#777BA7',
     backdrop: 'rgba(0, 0, 0, 0.3)',
     settings: 'rgba(0, 0, 0, 0.8)',
   },
