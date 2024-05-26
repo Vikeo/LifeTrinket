@@ -1,5 +1,4 @@
 import { twc } from 'react-twc';
-import { baseColors } from '../../../tailwind.config';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
