@@ -18,8 +18,8 @@ export const baseColors = {
     settings: 'rgba(0, 0, 0, 0.8)',
   },
   icons: {
-    dark: '#00000080',
-    light: '#F9FFE34f',
+    dark: '#000000',
+    light: '#F9FFE3',
   },
   text: {
     primary: '#F9FFE3',

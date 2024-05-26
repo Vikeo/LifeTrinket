@@ -24,8 +24,7 @@ const PlayerMenuWrapper = twc.div`
   flex
   flex-col
   absolute
-  w-full
-  h-full
+  size-full
   bg-background-settings
   backdrop-blur-[3px]
   items-center
@@ -223,7 +222,7 @@ const PlayerMenu = ({
                       size={extraCountersSize}
                       color="black"
                       stroke="white"
-                      strokeWidth="30"
+                      strokeWidth="1"
                     />
                   }
                   checkedIcon={
@@ -231,7 +230,9 @@ const PlayerMenu = ({
                       size={extraCountersSize}
                       color={player.color}
                       stroke="white"
-                      strokeWidth="30"
+                      strokeWidth="1"
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
                     />
                   }
                   onChange={(e) => {
@@ -254,7 +255,7 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color="black"
                     stroke="white"
-                    strokeWidth="30"
+                    strokeWidth="2"
                   />
                 }
                 checkedIcon={
@@ -262,7 +263,9 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color={player.color}
                     stroke="white"
-                    strokeWidth="30"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
                   />
                 }
                 onChange={(e) => {
@@ -284,7 +287,7 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color="black"
                     stroke="white"
-                    strokeWidth="15"
+                    strokeWidth={2.2}
                   />
                 }
                 checkedIcon={
@@ -292,7 +295,7 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color={player.color}
                     stroke="white"
-                    strokeWidth="15"
+                    strokeWidth={2.2}
                   />
                 }
                 onChange={(e) => {
@@ -314,7 +317,7 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color="black"
                     stroke="white"
-                    strokeWidth="15"
+                    strokeWidth={2.5}
                   />
                 }
                 checkedIcon={
@@ -322,7 +325,7 @@ const PlayerMenu = ({
                     size={extraCountersSize}
                     color={player.color}
                     stroke="white"
-                    strokeWidth="15"
+                    strokeWidth={2.5}
                   />
                 }
                 onChange={(e) => {

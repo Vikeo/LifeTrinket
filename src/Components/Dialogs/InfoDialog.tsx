@@ -1,4 +1,11 @@
 import { useAnalytics } from '../../Hooks/useAnalytics';
+import {
+  CommanderTax,
+  Energy,
+  Experience,
+  PartnerTax,
+  Poison,
+} from '../../Icons/generated';
 import { BuyMeCoffee } from '../../Icons/generated/Support';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
@@ -16,7 +23,35 @@ export const InfoDialog = ({
         <h2 className="text-md underline">Contributors</h2>
         <div className="flex flex-row items-center gap-1 text-sm">
           {/* <Trinket className="size-4" /> */}
-          <a href="#">Elin:</a> Icon design
+          <div className="flex flex-col">
+            <div>
+              <a
+                href="https://github.com/Vikeo"
+                target="_blank"
+                className="text-text-secondary underline"
+              >
+                Vikeo
+              </a>
+              : Creator
+            </div>
+            <div>
+              <a href="#" className="text-text-secondary underline">
+                Elin
+              </a>
+              : Icon design
+            </div>
+          </div>
+        </div>
+        <div className="mt-2 text-text-primary">
+          Visit the{' '}
+          <a
+            href="https://github.com/Vikeo/LifeTrinket"
+            target="_blank"
+            className="text-text-secondary underline"
+          >
+            GitHub
+          </a>{' '}
+          to contribute or learn more about this web app.
         </div>
         <Separator height="1px" />
       </div>
@@ -56,6 +91,25 @@ export const InfoDialog = ({
             </li>
           </ul>
 
+          <h3 className="text-lg font-bold mb-1">Other counter symbols</h3>
+          <ul className="list-disc ml-6 mb-4">
+            <li className="flex items-center">
+              <CommanderTax className="size-6" /> - Commander Tax
+            </li>
+            <li className="flex items-center">
+              <PartnerTax className="size-6" /> - Partner Tax
+            </li>
+            <li className="flex items-center">
+              <Poison className="size-6" /> - Poison
+            </li>
+            <li className="flex items-center">
+              <Energy className="size-6" /> - Energy
+            </li>
+            <li className="flex items-center">
+              <Experience className="size-6" /> - Experience
+            </li>
+          </ul>
+
           <h3 className="text-lg font-bold mb-2">Other functionality</h3>
           <ul className="list-disc ml-6">
             <li>
@@ -74,20 +128,24 @@ export const InfoDialog = ({
               </Paragraph>
             </li>
           </ul>
+
+          <h3 className="text-lg font-bold mb-2">Acknowledgements </h3>
+          <Paragraph>
+            LifeTrinket is unofficial Fan Content permitted under the{' '}
+            <a
+              href="https://company.wizards.com/en/legal/fancontentpolicy"
+              className="text-text-secondary underline"
+              target="_blank"
+            >
+              Fan Content Policy
+            </a>
+            . Not approved or endorsed by Wizards. Portions of the material or
+            concepts, such as "Commander", used are property of Wizards of the
+            Coast. ©Wizards of the Coast LLC.
+          </Paragraph>
         </div>
       </div>
 
-      <div className="text-center mt-4 text-text-primary">
-        Visit my{' '}
-        <a
-          href="https://github.com/Vikeo/LifeTrinket"
-          target="_blank"
-          className="text-text-secondary underline"
-        >
-          GitHub
-        </a>{' '}
-        for more info about this web app.
-      </div>
       <div className="flex justify-center mt-4">
         <a
           className="flex flex-row items-center self-center border-none cursor-pointer bg-primary-main rounded-md mx-4 pr-4 pl-3 py-2 transition-colors duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark"

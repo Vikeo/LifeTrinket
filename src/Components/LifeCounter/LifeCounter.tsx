@@ -19,7 +19,7 @@ import { StartingPlayerCard } from '../PreStartGame/StartingPlayerCard';
 import Health from './Health';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
-  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none',
+  'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none opacity-50',
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
     ? `right-auto top-[1vmax] left-[27%]`
     : 'top-1/4 right-[1vmax]',

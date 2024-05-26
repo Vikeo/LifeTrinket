@@ -29,7 +29,7 @@ const ExtraCounterButton = twc.button`
   `;
 
 const IconContainer = twc.div<RotationDivProps>((props) => [
-  'w-auto',
+  'w-auto opacity-50',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'rotate-[-90deg]'
     : '',
@@ -38,7 +38,7 @@ const IconContainer = twc.div<RotationDivProps>((props) => [
 const TextContainer = twc.div`
   absolute
   top-1/2
-  left-1/2
+  left-1/2 
   `;
 
 type ExtraCounterProps = {
@@ -126,18 +126,16 @@ const ExtraCounter = ({
         }}
         aria-label={`Player ${playerIndex} extra counter: ${type}`}
       >
-        <IconContainer $rotation={rotation}>
-          {Icon}
-          <TextContainer>
-            <OutlinedText
-              fontSize={fontSize}
-              fontWeight={fontWeight}
-              strokeWidth={strokeWidth}
-            >
-              {counterTotal ? counterTotal : undefined}
-            </OutlinedText>
-          </TextContainer>
-        </IconContainer>
+        <IconContainer $rotation={rotation}>{Icon}</IconContainer>
+        <TextContainer>
+          <OutlinedText
+            fontSize={fontSize}
+            fontWeight={fontWeight}
+            strokeWidth={strokeWidth}
+          >
+            {counterTotal ? counterTotal : undefined}
+          </OutlinedText>
+        </TextContainer>
       </ExtraCounterButton>
     </ExtraCounterContainer>
   );

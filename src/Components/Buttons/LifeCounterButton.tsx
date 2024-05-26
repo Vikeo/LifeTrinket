@@ -23,6 +23,7 @@ const LifeCounterButtonTwc = twc.button`
   items-center
   select-none
   webkit-user-select-none
+  opacity-50
   `;
 
 const TextContainer = twc.div<RotationButtonProps>((props) => [
