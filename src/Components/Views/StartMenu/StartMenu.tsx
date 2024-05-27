@@ -387,7 +387,7 @@ const Start = () => {
                 }}
               />
             </div>
-            {!isPWA && (
+            {!isPWA && window.isIOS && (
               <p className="text-center text-xs text-text-primary w-11/12 mt-4">
                 If you're on iOS, this page works better if you{' '}
                 <strong>hide the toolbar</strong> or{' '}
