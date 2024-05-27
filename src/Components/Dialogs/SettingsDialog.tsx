@@ -2,7 +2,7 @@ import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { PreStartMode } from '../../Types/Settings';
-import { InstallPWA } from '../Misc/InstallPWAButton';
+import { InstallPWAButton } from '../Misc/InstallPWAButton';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
@@ -291,7 +291,7 @@ export const SettingsDialog = ({
                 </Description>
               </SettingContainer>
               <div className="flex w-full justify-center">
-                <InstallPWA />
+                <InstallPWAButton />
               </div>
             </>
           )}

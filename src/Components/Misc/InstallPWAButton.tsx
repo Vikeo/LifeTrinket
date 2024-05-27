@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BeforeInstallPromptEvent } from '../../global';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 
-export const InstallPWA = () => {
+export const InstallPWAButton = () => {
   const supportsPWARef = useRef<boolean>(false);
   const [promptInstall, setPromptInstall] =
     useState<BeforeInstallPromptEvent | null>(null);
@@ -22,7 +22,7 @@ export const InstallPWA = () => {
   }, []);
 
   if (!supportsPWARef.current) {
-    return 'lull';
+    return null;
   }
 
   return (
