@@ -2,6 +2,7 @@ import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { PreStartMode } from '../../Types/Settings';
+import { InstallPWA } from '../Misc/InstallPWAButton';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
@@ -201,25 +202,25 @@ export const SettingsDialog = ({
           is enabled.
         </Description>
       </SettingContainer>
-      <SettingContainer>
-        <ToggleContainer>
-          <label>
-            Fullscreen on start <span className="text-xs">(Android only)</span>
-          </label>
-          <ToggleButton
-            checked={settings.goFullscreenOnStart}
-            onChange={() => {
-              setSettings({
-                ...settings,
-                goFullscreenOnStart: !settings.goFullscreenOnStart,
-              });
-            }}
-          />
-        </ToggleContainer>
-        <Description>
-          Will enter fullscreen mode when starting a game if this is enabled.
-        </Description>
-      </SettingContainer>
+      {(!window.isIOS || window.isIPad) && (
+        <SettingContainer>
+          <ToggleContainer>
+            <label>Fullscreen on start</label>
+            <ToggleButton
+              checked={settings.goFullscreenOnStart}
+              onChange={() => {
+                setSettings({
+                  ...settings,
+                  goFullscreenOnStart: !settings.goFullscreenOnStart,
+                });
+              }}
+            />
+          </ToggleContainer>
+          <Description>
+            Will enter fullscreen mode when starting a game if this is enabled.
+          </Description>
+        </SettingContainer>
+      )}
 
       <SettingContainer>
         <ToggleContainer>
@@ -255,21 +256,45 @@ export const SettingsDialog = ({
       </div>
       {!isPWA && (
         <>
-          <Separator height="1px" />
-          <SettingContainer>
-            <ToggleContainer>
-              <Paragraph>
-                <b>Tip:</b> You can{' '}
-                <b>add this webapp to your home page on iOS</b> or{' '}
-                <b>install it on Android</b> to have it act just like a normal
-                app!
-              </Paragraph>
-            </ToggleContainer>
-            <Description className="mt-1">
-              If you do, this app will work offline and the toolbar will be
-              automatically hidden.
-            </Description>
-          </SettingContainer>
+          {window.isIOS && (
+            <>
+              <Separator height="1px" />
+              <SettingContainer>
+                <ToggleContainer>
+                  <Paragraph>
+                    <b>Tip:</b> You can <b>add this webapp to your home page</b>{' '}
+                    to have it act just like a normal app!
+                  </Paragraph>
+                </ToggleContainer>
+                <Description className="mt-1">
+                  If you do, this web app will work offline and the toolbar will
+                  be automatically hidden.
+                </Description>
+              </SettingContainer>
+            </>
+          )}
+
+          {!window.isIOS && (
+            <>
+              <Separator height="1px" />
+              <SettingContainer>
+                <ToggleContainer>
+                  <Paragraph>
+                    <b>Tip:</b> You can <b>install this page as a PWA</b> to
+                    have it act just like a normal app!
+                  </Paragraph>
+                </ToggleContainer>
+                <Description className="mt-1">
+                  If you do, this web app will work offline and the toolbar will
+                  be automatically hidden. PWA stands for Progressive Web
+                  Application
+                </Description>
+              </SettingContainer>
+              <div className="flex w-full justify-center">
+                <InstallPWA />
+              </div>
+            </>
+          )}
         </>
       )}
       <Separator height="1px" />

@@ -347,30 +347,35 @@ const PlayerMenu = ({
             >
               <Exit size={iconSize} style={{ rotate: '180deg' }} />
             </button>
-            <div
-              data-fullscreen={document.fullscreenElement ? true : false}
-              className="flex
+            {(!window.isIOS || window.isIPad) && (
+              <div
+                data-fullscreen={document.fullscreenElement ? true : false}
+                className="flex
                 data-[fullscreen=true]:bg-secondary-dark rounded-lg border border-transparent
               data-[fullscreen=true]:border-primary-main"
-            >
-              <IconCheckbox
-                className="p-1"
-                name="fullscreen"
-                checked={document.fullscreenElement ? true : false}
-                icon={
-                  <FullscreenOff
-                    size={iconSize}
-                    className="text-primary-main"
-                  />
-                }
-                checkedIcon={
-                  <FullscreenOn size={iconSize} className="text-primary-main" />
-                }
-                onChange={toggleFullscreen}
-                aria-checked={document.fullscreenElement ? true : false}
-                aria-label="Fullscreen"
-              />
-            </div>
+              >
+                <IconCheckbox
+                  className="p-1"
+                  name="fullscreen"
+                  checked={document.fullscreenElement ? true : false}
+                  icon={
+                    <FullscreenOff
+                      size={iconSize}
+                      className="text-primary-main"
+                    />
+                  }
+                  checkedIcon={
+                    <FullscreenOn
+                      size={iconSize}
+                      className="text-primary-main"
+                    />
+                  }
+                  onChange={toggleFullscreen}
+                  aria-checked={document.fullscreenElement ? true : false}
+                  aria-label="Fullscreen"
+                />
+              </div>
+            )}
 
             <button
               data-wake-lock-active={settings.keepAwake}
