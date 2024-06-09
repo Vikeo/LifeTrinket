@@ -3,7 +3,7 @@ import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
-import { MAX_TAP_MOVE_DISTANCE, RotationDivProps } from './CommanderDamage';
+import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
 
 const ExtraCounterContainer = twc.div`
   flex
@@ -28,17 +28,14 @@ const ExtraCounterButton = twc.button`
   webkit-user-select-none
   `;
 
-const IconContainer = twc.div<RotationDivProps>((props) => [
-  'w-auto opacity-50',
-  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
-    ? 'rotate-[-90deg]'
-    : '',
-]);
+const IconContainer = twc.div`
+  w-auto opacity-50 data-[rotation-is-side=true]:-rotate-90`;
 
 const TextContainer = twc.div`
   absolute
   top-1/2
   left-1/2 
+  data-[rotation-is-side=true]:-rotate-90
   `;
 
 type ExtraCounterProps = {
@@ -115,6 +112,9 @@ const ExtraCounter = ({
   const fontWeight = 'bold';
   const strokeWidth = isSide ? '0.4vmax' : '0.7vmin';
 
+  const rotationIsSide =
+    rotation === Rotation.SideFlipped || rotation === Rotation.Side;
+
   return (
     <ExtraCounterContainer>
       <ExtraCounterButton
@@ -126,8 +126,10 @@ const ExtraCounter = ({
         }}
         aria-label={`Player ${playerIndex} extra counter: ${type}`}
       >
-        <IconContainer $rotation={rotation}>{Icon}</IconContainer>
-        <TextContainer>
+        <IconContainer data-rotation-is-side={rotationIsSide}>
+          {Icon}
+        </IconContainer>
+        <TextContainer data-rotation-is-side={rotationIsSide}>
           <OutlinedText
             fontSize={fontSize}
             fontWeight={fontWeight}
