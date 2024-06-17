@@ -94,22 +94,14 @@ export const Play = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (
-    players.length > 1 &&
-    !preStartCompleted &&
-    settings.preStartMode !== PreStartMode.None &&
-    !playing &&
-    settings.showStartingPlayer
-  ) {
-    return (
-      <MainWrapper>
-        <PreStart gridLayout={gridLayout} />
-      </MainWrapper>
-    );
-  }
-
   return (
     <MainWrapper>
+      {players.length > 1 &&
+        !preStartCompleted &&
+        settings.preStartMode !== PreStartMode.None &&
+        !playing &&
+        settings.showStartingPlayer && <PreStart />}
+
       <Players gridLayout={gridLayout} />
     </MainWrapper>
   );

@@ -36,7 +36,7 @@ export const RoulettePlayerCard = ({ player }: { player: Player }) => {
       : player.settings.rotation;
 
   return (
-    <div className="relative flex flex-grow flex-col items-center w-full h-full overflow-hidden">
+    <div className="relative flex flex-grow flex-col items-center w-full h-full overflow-hidden bg-black">
       <div
         className="flex absolute w-full h-full justify-center items-center pointer-events-none select-none webkit-user-select-none z-10"
         style={{ backgroundColor: player.color }}

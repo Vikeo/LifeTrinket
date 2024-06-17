@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useGlobalSettings } from '../../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../../Hooks/usePlayers';
 
-export const RandomKingSelectWrapper = () => {
+export const RandomKingRandomizer = () => {
   const { setRandomizingPlayer } = useGlobalSettings();
 
   const randomIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -87,7 +87,7 @@ export const RandomKingSelectWrapper = () => {
             backgroundImage: `linear-gradient(60deg, ${gradientColors})`,
           }}
         />
-        <p className="relative z-10 text-[5vmax]">PRESS TO SELECT PLAYER</p>
+        <p className="relative z-10 text-[5vmax]">PRESS TO START</p>
       </div>
     </div>
   );

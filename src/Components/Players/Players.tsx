@@ -1,7 +1,10 @@
 import { twc } from 'react-twc';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player as PlayerType } from '../../Types/Player';
+import { PreStartMode } from '../../Types/Settings';
 import LifeCounter from '../LifeCounter/LifeCounter';
+import { RoulettePlayerCard } from '../PreStartGame/Games/RandomKing/RoulettePlayerCard';
 import { GridLayout } from '../Views/Play';
 
 const getGridArea = (player: PlayerType) => {
@@ -28,6 +31,8 @@ const PlayersWrapper = twc.div`w-full h-full bg-black`;
 export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
   const { players } = usePlayers();
 
+  const { playing, settings, preStartCompleted } = useGlobalSettings();
+
   return (
     <PlayersWrapper>
       <div className={`grid w-full h-full gap-1 box-border ${gridLayout} `}>
@@ -36,7 +41,7 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
           return (
             <div
               key={player.index}
-              className={`flex justify-center items-center align-middle ${gridArea}`}
+              className={`relative flex justify-center items-center align-middle ${gridArea}`}
             >
               <LifeCounter
                 player={player}
@@ -44,6 +49,15 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
                   (opponent) => opponent.index !== player.index
                 )}
               />
+
+              {settings.preStartMode === PreStartMode.RandomKing &&
+                !preStartCompleted &&
+                !playing &&
+                settings.showStartingPlayer && (
+                  <div className="absolute size-full z-20">
+                    <RoulettePlayerCard player={player} />
+                  </div>
+                )}
             </div>
           );
         })}
