@@ -9,10 +9,6 @@ export type RotationDivProps = TwcComponentProps<'div'> & {
   $rotation?: number;
 };
 
-export type RotationSpanProps = TwcComponentProps<'span'> & {
-  $rotation?: number;
-};
-
 export type RotationButtonProps = TwcComponentProps<'button'> & {
   $rotation?: number;
 };

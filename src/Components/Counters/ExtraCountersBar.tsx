@@ -10,8 +10,6 @@ import {
 import { CounterType, Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import ExtraCounter from '../Buttons/ExtraCounter';
-import { useEffect, useState } from 'react';
-import { checkContrast } from '../../Utils/checkContrast';
 
 const Container = twc.div<RotationDivProps>((props) => [
   'flex',
@@ -33,17 +31,6 @@ type ExtraCountersBarProps = {
 
 const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
   const { updatePlayer } = usePlayers();
-  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
-
-  useEffect(() => {
-    const contrast = checkContrast(player.color, '#00000080');
-
-    if (contrast === 'Fail') {
-      setIconColor('light');
-    } else {
-      setIconColor('dark');
-    }
-  }, [player.color]);
 
   const handleCounterChange = (
     updatedCounterTotal: number,
@@ -109,7 +96,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
             Icon={
               <CommanderTax
                 size={iconSize}
-                data-contrast={iconColor}
+                data-contrast={player.iconTheme}
                 strokeWidth={0}
                 stroke="transparent"
                 className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
@@ -132,7 +119,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
             Icon={
               <PartnerTax
                 size={iconSize}
-                data-contrast={iconColor}
+                data-contrast={player.iconTheme}
                 className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
               />
             }
@@ -153,7 +140,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
             Icon={
               <Poison
                 size={iconSize}
-                data-contrast={iconColor}
+                data-contrast={player.iconTheme}
                 className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
               />
             }
@@ -173,7 +160,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
             Icon={
               <Energy
                 size={iconSize}
-                data-contrast={iconColor}
+                data-contrast={player.iconTheme}
                 className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
               />
             }
@@ -193,7 +180,7 @@ const ExtraCountersBar = ({ player }: ExtraCountersBarProps) => {
             Icon={
               <Experience
                 size={iconSize}
-                data-contrast={iconColor}
+                data-contrast={player.iconTheme}
                 className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
               />
             }

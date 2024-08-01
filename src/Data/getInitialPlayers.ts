@@ -1,5 +1,6 @@
 import { Player, Rotation } from '../Types/Player';
 import { InitialGameSettings, Orientation } from '../Types/Settings';
+import { checkContrast } from '../Utils/checkContrast';
 
 export const presetColors = [
   '#D08182', // Muted Pink
@@ -214,6 +215,8 @@ export const createInitialPlayers = ({
       lifeTotal: startingLifeTotal,
       index: i,
       color,
+      iconTheme:
+        checkContrast(color, '#00000080') === 'Fail' ? 'light' : 'dark',
       settings: {
         useCommanderDamage,
         usePartner: false,
@@ -227,6 +230,7 @@ export const createInitialPlayers = ({
       hasLost: false,
       isStartingPlayer: false,
       isSide: rotation === Rotation.Side || rotation === Rotation.SideFlipped,
+      name: '',
     };
 
     players.push(player);

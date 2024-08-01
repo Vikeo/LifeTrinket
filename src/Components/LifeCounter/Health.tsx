@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { Player, Rotation } from '../../Types/Player';
-import {
-  RotationDivProps,
-  RotationSpanProps,
-} from '../Buttons/CommanderDamage';
+import { RotationDivProps } from '../Buttons/CommanderDamage';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
 import { OutlinedText } from '../Misc/OutlinedText';
 
@@ -32,12 +29,12 @@ const TextWrapper = twc.div`
   z-[-1]
 `;
 
-const RecentDifference = twc.div<RotationSpanProps>((props) => [
-  'absolute min-w-[20vmin] drop-shadow-none text-center bg-interface-recentDifference-background tabular-nums rounded-full p-[6px 12px] text-[8vmin] text-interface-recentDifference-text animate-fadeOut',
-  props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
-    ? 'top-1/3 translate-x-1/4 translate-y-1/2 rotate-[270deg]'
-    : 'top-1/4 left-[50%] -translate-x-1/2',
-]);
+const RecentDifference = twc.div`
+  absolute min-w-[20vmin] drop-shadow-none text-center bg-interface-recentDifference-background tabular-nums rounded-full p-[6px 12px] text-[8vmin] text-interface-recentDifference-text animate-fadeOut 
+
+  top-1/4 left-[50%] -translate-x-1/2
+  data-[isSide=true]:top-1/3 data-[isSide=true]:translate-x-1/4 data-[isSide=true]:translate-y-1/2 data-[isSide=true]:rotate-[270deg] data-[isSide=true]:left-auto
+  `;
 
 type HealthProps = {
   player: Player;
@@ -101,6 +98,10 @@ const Health = ({
     return minRatio * scaleFactor * 1;
   };
 
+  const isSide =
+    player.settings.rotation === Rotation.SideFlipped ||
+    player.settings.rotation === Rotation.Side;
+
   return (
     <LifeContainer $rotation={player.settings.rotation}>
       <LifeCounterButton
@@ -109,6 +110,31 @@ const Health = ({
         operation="subtract"
         increment={-1}
       />
+
+      {player.name && isSide ? (
+        <div className="size-full relative flex items-center justify-start">
+          <div className="fixed flex justify-center -rotate-90 left-[5.4vmax] ">
+            <div
+              data-contrast={player.iconTheme}
+              className="absolute text-[4vmin] opacity-50 font-bold
+              data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+            >
+              {player.name}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full relative flex items-start justify-center">
+          <div
+            data-contrast={player.iconTheme}
+            className="absolute text-[4vmin] -top-[1.1vmin] opacity-50 font-bold
+            data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
+          >
+            {player.name}
+          </div>
+        </div>
+      )}
+
       <TextWrapper>
         <LifeCounterTextContainer
           $rotation={player.settings.rotation}
@@ -122,10 +148,7 @@ const Health = ({
             {player.lifeTotal}
           </OutlinedText>
           {recentDifference !== 0 && (
-            <RecentDifference
-              key={differenceKey}
-              $rotation={player.settings.rotation}
-            >
+            <RecentDifference data-isSide={isSide} key={differenceKey}>
               {recentDifference > 0 ? '+' : ''}
               {recentDifference}
             </RecentDifference>

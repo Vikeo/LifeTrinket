@@ -6,7 +6,6 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Cog } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
-import { checkContrast } from '../../Utils/checkContrast';
 import {
   RotationButtonProps,
   RotationDivProps,
@@ -28,22 +27,14 @@ const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
 type SettingsButtonProps = {
   onClick: () => void;
   rotation: Rotation;
-  color: string;
+  iconTheme: 'light' | 'dark';
 };
 
-const SettingsButton = ({ onClick, rotation, color }: SettingsButtonProps) => {
-  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
-
-  useEffect(() => {
-    const contrast = checkContrast(color, '#00000080');
-
-    if (contrast === 'Fail') {
-      setIconColor('light');
-    } else {
-      setIconColor('dark');
-    }
-  }, [color]);
-
+const SettingsButton = ({
+  onClick,
+  rotation,
+  iconTheme,
+}: SettingsButtonProps) => {
   return (
     <SettingsButtonTwc
       onClick={onClick}
@@ -52,7 +43,7 @@ const SettingsButton = ({ onClick, rotation, color }: SettingsButtonProps) => {
     >
       <Cog
         size="5vmin"
-        data-contrast={iconColor}
+        data-contrast={iconTheme}
         className="data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
       />
     </SettingsButtonTwc>
@@ -215,11 +206,9 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           !playing &&
           settings.showStartingPlayer &&
           player.isStartingPlayer && <StartingPlayerCard player={player} />}
-
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
-
         <CommanderDamageBar
           opponents={opponents}
           player={player}
@@ -233,7 +222,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
               setShowPlayerMenu(!showPlayerMenu);
             }}
             rotation={player.settings.rotation}
-            color={player.color}
+            iconTheme={player.iconTheme}
           />
         )}
         {playerCanLose(player) && (
@@ -250,7 +239,6 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           handleLifeChange={handleLifeChange}
         />
         <ExtraCountersBar player={player} />
-
         <PlayerMenu
           isShown={showPlayerMenu}
           player={player}

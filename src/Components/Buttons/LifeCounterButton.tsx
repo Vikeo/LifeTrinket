@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { TwcComponentProps, twc } from 'react-twc';
 import { lifeLongPressMultiplier } from '../../Data/constants';
 import { Player, Rotation } from '../../Types/Player';
 import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
-import { checkContrast } from '../../Utils/checkContrast';
 
 type RotationButtonProps = TwcComponentProps<'div'> & {
   $align?: string;
@@ -57,18 +56,6 @@ const LifeCounterButton = ({
   const [timeoutFinished, setTimeoutFinished] = useState(false);
   const [hasPressedDown, setHasPressedDown] = useState(false);
   const downPositionRef = useRef({ x: 0, y: 0 });
-
-  const [iconColor, setIconColor] = useState<'dark' | 'light'>('dark');
-
-  useEffect(() => {
-    const contrast = checkContrast(player.color, '#00000080');
-
-    if (contrast === 'Fail') {
-      setIconColor('light');
-    } else {
-      setIconColor('dark');
-    }
-  }, [player.color]);
 
   const handleLifeChange = (increment: number) => {
     setLifeTotal(player.lifeTotal + increment);
@@ -132,7 +119,7 @@ const LifeCounterButton = ({
       <TextContainer
         $rotation={player.settings.rotation}
         $align={operation === 'add' ? 'right' : 'left'}
-        data-contrast={iconColor}
+        data-contrast={player.iconTheme}
         className="data-[contrast=dark]:text-icons-dark
         data-[contrast=light]:text-icons-light"
       >

@@ -11,6 +11,7 @@ import {
   Experience,
   FullscreenOff,
   FullscreenOn,
+  NameTag,
   PartnerTax,
   Poison,
   ResetGame,
@@ -19,6 +20,7 @@ import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { IconCheckbox } from '../Misc/IconCheckbox';
+import { checkContrast } from '../../Utils/checkContrast';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -120,8 +122,16 @@ const PlayerMenu = ({
   const { updatePlayer, resetCurrentGame, players } = usePlayers();
 
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedPlayer = { ...player, color: event.target.value };
-    updatePlayer(updatedPlayer);
+    const iconTheme =
+      checkContrast(event.target.value, '#00000080') === 'Fail'
+        ? 'light'
+        : 'dark';
+
+    updatePlayer({
+      ...player,
+      color: event.target.value,
+      iconTheme,
+    });
   };
 
   const handleSettingsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,6 +160,18 @@ const PlayerMenu = ({
     saveCurrentGame({ players, initialGameSettings });
     goToStart();
     setRandomizingPlayer(true);
+  };
+
+  const handleUpdatePlayerName = () => {
+    const newName = prompt('Enter your name', player.name);
+
+    const updatedPlayer: Player = { ...player, name: '' };
+    if (!newName) {
+      updatePlayer(updatedPlayer);
+      return;
+    }
+    updatedPlayer.name = newName;
+    updatePlayer(updatedPlayer);
   };
 
   const toggleFullscreen = () => {
@@ -394,6 +416,21 @@ const PlayerMenu = ({
               aria-label="Keep awake"
             >
               Keep Awake
+            </button>
+
+            <button
+              style={{
+                cursor: 'pointer',
+                userSelect: 'none',
+                fontSize: buttonFontSize,
+                padding: '2px',
+              }}
+              className="text-primary-main"
+              onClick={handleUpdatePlayerName}
+              role="name_tag"
+              aria-label="Name Tag"
+            >
+              <NameTag size={iconSize} />
             </button>
 
             <button

@@ -2,12 +2,14 @@ export type Player = {
   lifeTotal: number;
   index: number;
   color: string;
+  iconTheme: 'light' | 'dark';
   settings: PlayerSettings;
   commanderDamage: CommanderDamage[];
   extraCounters: ExtraCounter[];
   isStartingPlayer: boolean;
   hasLost: boolean;
   isSide: boolean;
+  name: string;
 };
 
 export type PlayerSettings = {
