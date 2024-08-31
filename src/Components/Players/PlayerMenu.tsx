@@ -11,6 +11,7 @@ import {
   Experience,
   FullscreenOff,
   FullscreenOn,
+  Monarch,
   NameTag,
   PartnerTax,
   Poison,
@@ -110,6 +111,7 @@ const PlayerMenu = ({
     wakeLock,
     goToStart,
     settings,
+    setSettings,
     setPlaying,
     setRandomizingPlayer,
     saveCurrentGame,
@@ -358,6 +360,36 @@ const PlayerMenu = ({
                 }}
                 aria-checked={player.settings.useExperience}
                 aria-label="Experience"
+              />
+            </div>
+                 <div>
+              <IconCheckbox
+                name="useMonarch"
+                checked={settings.useMonarch}
+                icon={
+                  <Monarch
+                    size={extraCountersSize}
+                    color="black"
+                    stroke="white"
+                    strokeWidth={2.5}
+                  />
+                }
+                checkedIcon={
+                  <Monarch
+                    size={extraCountersSize}
+                    color={player.color}
+                    stroke="white"
+                    strokeWidth={2.5}
+                  />
+                }
+                onChange={(e) => {
+                  analytics.trackEvent('toggle_monarch', {
+                    checked: e.target.checked,
+                  });
+                  setSettings({ ...settings, useMonarch: e.target.checked });
+                }}
+                aria-checked={settings.useMonarch}
+                aria-label="Monarch"
               />
             </div>
           </TogglesSection>

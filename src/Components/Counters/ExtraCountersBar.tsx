@@ -5,7 +5,7 @@ import {
   Energy,
   Experience,
   PartnerTax,
-  Poison,
+  Poison
 } from '../../Icons/generated';
 import { CounterType, Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
