@@ -2,7 +2,7 @@
   "name": "life-trinket",
   "private": true,
   "version": "0.9.99",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "node": ">=20",
     "yarn": "use pnpm",
