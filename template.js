@@ -34,7 +34,4 @@ const propTypesTemplate = (
   export default ${title}`;
 };
 
-
-// eslint-disable-next-line no-undef
-module.exports = propTypesTemplate;
-
+export default propTypesTemplate;

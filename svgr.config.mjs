@@ -1,7 +1,9 @@
+import propTypesTemplate from './template.js';
+
 /* eslint-disable no-undef */
 /* eslint-disable-next-line no-undef */
-module.exports = {
-  template: require('./template'),
+export default {
+  template: propTypesTemplate,
   titleProp: true,
   svgProps: {
     height: '{props.size || 16}',
@@ -27,5 +29,3 @@ module.exports = {
   typescript: true,
   outDir: './src/Icons/generated',
 };
-
-
