@@ -362,7 +362,7 @@ const PlayerMenu = ({
                 aria-label="Experience"
               />
             </div>
-                 <div>
+            <div>
               <IconCheckbox
                 name="useMonarch"
                 checked={settings.useMonarch}

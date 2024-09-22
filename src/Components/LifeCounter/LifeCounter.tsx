@@ -16,7 +16,6 @@ import ExtraCountersBar from '../Counters/ExtraCountersBar';
 import PlayerMenu from '../Players/PlayerMenu';
 import { StartingPlayerCard } from '../PreStartGame/StartingPlayerCard';
 import Health from './Health';
-import { MonarchCrown } from '../Misc/MonarchCrown';
 
 const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
   'absolute flex-grow border-none outline-none cursor-pointer bg-transparent z-[1] select-none  webkit-user-select-none opacity-50',
@@ -239,7 +238,6 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           recentDifference={recentDifference}
           handleLifeChange={handleLifeChange}
         />
-        <MonarchCrown player={player} />
 
         <ExtraCountersBar player={player} />
         <PlayerMenu
