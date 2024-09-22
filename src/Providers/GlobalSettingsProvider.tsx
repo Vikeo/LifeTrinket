@@ -94,19 +94,6 @@ export const GlobalSettingsProvider = ({
     );
   };
 
-  const removeLocalStorage = async () => {
-    localStorage.removeItem('initialGameSettings');
-    localStorage.removeItem('players');
-    localStorage.removeItem('playing');
-    localStorage.removeItem('showPlay');
-    localStorage.removeItem('preStartComplete');
-
-    setPlaying(false);
-    setShowPlay(false);
-    setPreStartCompleted(false);
-    setSettings({ ...settings, useMonarch: false });
-  };
-
   // Set settings if they are not valid
   useEffect(() => {
     // If there are no saved settings, set default settings
@@ -178,6 +165,19 @@ export const GlobalSettingsProvider = ({
   }
 
   const ctxValue = useMemo((): GlobalSettingsContextType => {
+    const removeLocalStorage = async () => {
+      localStorage.removeItem('initialGameSettings');
+      localStorage.removeItem('players');
+      localStorage.removeItem('playing');
+      localStorage.removeItem('showPlay');
+      localStorage.removeItem('preStartComplete');
+
+      setPlaying(false);
+      setShowPlay(false);
+      setPreStartCompleted(false);
+      setSettings({ ...settings, useMonarch: false });
+    };
+
     const goToStart = async () => {
       const currentPlayers = localStorage.getItem('players');
 
@@ -317,7 +317,6 @@ export const GlobalSettingsProvider = ({
     remoteVersion,
     isLatestVersion,
     analytics,
-    removeLocalStorage,
   ]);
 
   return (
