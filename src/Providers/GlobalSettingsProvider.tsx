@@ -293,7 +293,6 @@ export const GlobalSettingsProvider = ({
       setPreStartCompleted: setPreStartCompletedAndLocalStorage,
       savedGame,
       saveCurrentGame: setCurrentGameAndLocalStorage,
-
       version: {
         installedVersion: import.meta.env.VITE_APP_VERSION,
         remoteVersion,
@@ -318,6 +317,7 @@ export const GlobalSettingsProvider = ({
     remoteVersion,
     isLatestVersion,
     analytics,
+    removeLocalStorage,
   ]);
 
   return (
