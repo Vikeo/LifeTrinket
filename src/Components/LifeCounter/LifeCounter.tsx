@@ -238,6 +238,7 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           recentDifference={recentDifference}
           handleLifeChange={handleLifeChange}
         />
+
         <ExtraCountersBar player={player} />
         <PlayerMenu
           isShown={showPlayerMenu}

@@ -3,6 +3,7 @@ import {
   CommanderTax,
   Energy,
   Experience,
+  Monarch,
   PartnerTax,
   Poison,
 } from '../../Icons/generated';
@@ -107,6 +108,9 @@ export const InfoDialog = ({
             </li>
             <li className="flex items-center">
               <Experience className="size-6" /> - Experience
+            </li>
+            <li className="flex items-center">
+              <Monarch className="size-6" /> - Monarch
             </li>
           </ul>
 

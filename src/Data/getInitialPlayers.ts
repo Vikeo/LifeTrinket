@@ -231,6 +231,7 @@ export const createInitialPlayers = ({
       isStartingPlayer: false,
       isSide: rotation === Rotation.Side || rotation === Rotation.SideFlipped,
       name: '',
+      isMonarch: false,
     };
 
     players.push(player);

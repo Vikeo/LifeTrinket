@@ -7,6 +7,7 @@ export type Player = {
   commanderDamage: CommanderDamage[];
   extraCounters: ExtraCounter[];
   isStartingPlayer: boolean;
+  isMonarch: boolean;
   hasLost: boolean;
   isSide: boolean;
   name: string;

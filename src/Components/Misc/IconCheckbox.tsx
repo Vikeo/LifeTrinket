@@ -14,7 +14,7 @@ export const IconCheckbox = ({
   className?: string;
 }) => {
   return (
-    <div className={className}>
+    <div className={className} >
       <label>
         <input
           name={name}

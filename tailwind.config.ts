@@ -20,6 +20,7 @@ export const baseColors = {
   icons: {
     dark: '#000000',
     light: '#F9FFE3',
+    gold: '#FFD700',
   },
   text: {
     primary: '#F9FFE3',
