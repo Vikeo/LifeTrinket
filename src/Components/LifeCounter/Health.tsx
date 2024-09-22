@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { twc } from 'react-twc';
+import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { Player, Rotation } from '../../Types/Player';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import LifeCounterButton from '../Buttons/LifeCounterButton';
+import { MonarchCrown } from '../Misc/MonarchCrown';
 import { OutlinedText } from '../Misc/OutlinedText';
 
 const LifeContainer = twc.div<RotationDivProps>((props) => [
@@ -33,7 +35,7 @@ const RecentDifference = twc.div`
   absolute min-w-[20vmin] drop-shadow-none text-center bg-interface-recentDifference-background tabular-nums rounded-full p-[6px 12px] text-[8vmin] text-interface-recentDifference-text animate-fadeOut 
 
   top-1/4 left-[50%] -translate-x-1/2
-  data-[isSide=true]:top-1/3 data-[isSide=true]:translate-x-1/4 data-[isSide=true]:translate-y-1/2 data-[isSide=true]:rotate-[270deg] data-[isSide=true]:left-auto
+  data-[is-side=true]:top-1/3 data-[is-side=true]:translate-x-1/4 data-[is-side=true]:translate-y-1/2 data-[is-side=true]:rotate-[270deg] data-[is-side=true]:left-auto
   `;
 
 type HealthProps = {
@@ -52,6 +54,8 @@ const Health = ({
 }: HealthProps) => {
   const [fontSize, setFontSize] = useState(16);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const { settings } = useGlobalSettings();
 
   useEffect(() => {
     if (!textContainerRef.current) {
@@ -104,6 +108,8 @@ const Health = ({
 
   return (
     <LifeContainer $rotation={player.settings.rotation}>
+      {settings.useMonarch && <MonarchCrown player={player} />}
+
       <LifeCounterButton
         player={player}
         setLifeTotal={handleLifeChange}
@@ -111,29 +117,32 @@ const Health = ({
         increment={-1}
       />
 
-      {player.name && isSide ? (
-        <div className="size-full relative flex items-center justify-start">
-          <div className="fixed flex justify-center -rotate-90 left-[5.4vmax] ">
+      <div
+        data-is-side={isSide}
+        className="size-full absolute flex items-start justify-center pointer-events-none webkit-user-select-none
+                data-[is-side=true]:items-center data-[is-side=true]:justify-start
+                "
+      >
+        {player.name && isSide ? (
+          <div className="fixed flex justify-center -rotate-90 left-[5.4vmax]">
             <div
               data-contrast={player.iconTheme}
-              className="absolute text-[4vmin] opacity-50 font-bold
+              className="absolute text-[4vmin] opacity-50 font-bold text-center text-nowrap
               data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
             >
               {player.name}
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="w-full h-full relative flex items-start justify-center">
+        ) : (
           <div
             data-contrast={player.iconTheme}
-            className="absolute text-[4vmin] -top-[1.1vmin] opacity-50 font-bold
+            className="absolute text-[4vmin] -top-[1.1vmin] opacity-50 font-bold text-center
             data-[contrast=dark]:text-icons-dark data-[contrast=light]:text-icons-light"
           >
             {player.name}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <TextWrapper>
         <LifeCounterTextContainer
@@ -148,7 +157,7 @@ const Health = ({
             {player.lifeTotal}
           </OutlinedText>
           {recentDifference !== 0 && (
-            <RecentDifference data-isSide={isSide} key={differenceKey}>
+            <RecentDifference data-is-side={isSide} key={differenceKey}>
               {recentDifference > 0 ? '+' : ''}
               {recentDifference}
             </RecentDifference>
