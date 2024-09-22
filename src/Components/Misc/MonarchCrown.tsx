@@ -32,7 +32,20 @@ export const MonarchCrown = ({ player }: { player: Player }) => {
           name="useMonarch"
           checked={player.isMonarch}
           icon={<Monarch size={iconSize} color={player.color} stroke="white" />}
-          checkedIcon={<Monarch size={iconSize} color="gold" stroke="white" />}
+          checkedIcon={
+            <div>
+              <Monarch
+                size={iconSize}
+                stroke="white"
+                className="absolute blur z-[-1] text-icons-gold"
+              />
+              <Monarch
+                size={iconSize}
+                stroke="white"
+                className="text-icons-gold"
+              />
+            </div>
+          }
           onChange={(e) => {
             const updatedPlayer = { ...player, isMonarch: e.target.checked };
 

@@ -104,6 +104,7 @@ export const GlobalSettingsProvider = ({
     setPlaying(false);
     setShowPlay(false);
     setPreStartCompleted(false);
+    setSettings({ ...settings, useMonarch: false });
   };
 
   // Set settings if they are not valid
