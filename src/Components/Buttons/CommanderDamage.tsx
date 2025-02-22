@@ -30,7 +30,7 @@ const CommanderDamageButton = twc.button<RotationButtonProps>((props) => [
 ]);
 
 const CommanderDamageTextContainer = twc.div<RotationDivProps>((props) => [
-  'relative top-1/2 left-1/2 tabular-nums pointer-events-none select-none webkit-user-select-none',
+  'relative -translate-y-1/2 top-1/2 left-1/2 tabular-nums pointer-events-none select-none webkit-user-select-none',
   props.$rotation === Rotation.SideFlipped || props.$rotation === Rotation.Side
     ? 'rotate-[270deg]'
     : '',
