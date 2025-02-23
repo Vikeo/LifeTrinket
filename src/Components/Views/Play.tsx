@@ -19,6 +19,7 @@ export const Play = () => {
     useGlobalSettings();
 
   let gridLayout: GridLayout;
+
   switch (players.length) {
     case 1:
       if (initialGameSettings?.orientation === Orientation.Portrait) {
@@ -101,7 +102,6 @@ export const Play = () => {
         settings.preStartMode !== PreStartMode.None &&
         !playing &&
         settings.showStartingPlayer && <PreStart />}
-
       <Players gridLayout={gridLayout} />
     </MainWrapper>
   );

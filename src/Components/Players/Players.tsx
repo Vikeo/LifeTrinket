@@ -6,6 +6,7 @@ import { PreStartMode } from '../../Types/Settings';
 import LifeCounter from '../LifeCounter/LifeCounter';
 import { RoulettePlayerCard } from '../PreStartGame/Games/RandomKing/RoulettePlayerCard';
 import { GridLayout } from '../Views/Play';
+import { Timer } from '../Misc/Timer/Timer';
 
 const getGridArea = (player: PlayerType) => {
   switch (player.index) {
@@ -36,6 +37,7 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
   return (
     <PlayersWrapper>
       <div className={`grid w-full h-full gap-1 box-border ${gridLayout} `}>
+        <Timer />
         {players.map((player) => {
           const gridArea = getGridArea(player);
           return (

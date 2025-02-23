@@ -17,12 +17,15 @@
     "deploy": "bun run build && firebase deploy --only hosting"
   },
   "dependencies": {
+    "@mui/icons-material": "^6.4.5",
+    "@mui/material": "^6.4.5",
     "firebase": "^10.14.1",
     "ga-4-react": "^0.1.281",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-screen-wake-lock": "^3.0.2",
     "react-swipeable": "^7.0.2",
+    "react-timer-hook": "^3.0.8",
     "react-twc": "^1.4.2",
     "semver": "^7.7.1",
     "zod": "^3.24.2"
