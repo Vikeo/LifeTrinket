@@ -64,7 +64,6 @@ export const Timer = () => {
           }}
         />
         <div>
-          {/* Only show Start if the timer is not running */}
           {!isRunning && (
             <button onClick={handleStart}>
               <PlayArrowIcon />

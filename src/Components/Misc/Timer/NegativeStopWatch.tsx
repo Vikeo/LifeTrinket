@@ -1,6 +1,8 @@
 import { useStopwatch } from 'react-timer-hook';
 import { TimerStyle, TimerWrapper } from './Timer';
 import { Time } from './Time';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 
 export const NegativeStopWatch = ({
   autoStart = false,
@@ -18,9 +20,16 @@ export const NegativeStopWatch = ({
         {'-'}
         <Time time={{ hours, minutes, seconds }} />
         <div>
-          {/* Only show Start if the timer is not running */}
-          {!isRunning && <button onClick={start}>Start</button>}
-          {isRunning && <button onClick={pause}>Pause</button>}
+          {!isRunning && (
+            <button onClick={start}>
+              <PlayArrowIcon />
+            </button>
+          )}
+          {isRunning && (
+            <button onClick={pause}>
+              <PauseIcon />
+            </button>
+          )}
         </div>
       </TimerStyle>
     </TimerWrapper>
