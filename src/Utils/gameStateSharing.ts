@@ -33,14 +33,17 @@ export function exportGameState(): string {
     // Convert to JSON string
     const jsonString = JSON.stringify(compactState);
 
-    // Compress using pako (gzip)
-    const compressed = pako.deflate(jsonString);
+    // Compress using pako (gzip) with maximum compression
+    const compressed = pako.deflate(jsonString, { level: 9 });
 
     // Convert to base64 for URL safety
     const base64 = btoa(String.fromCharCode(...compressed));
 
     // Make URL-safe by replacing characters
-    const urlSafe = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const urlSafe = base64
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
 
     return urlSafe;
   } catch (error) {
@@ -82,9 +85,11 @@ export function importGameState(encodedData: string): boolean {
 
     // Map short keys back to full localStorage keys and load
     if (compactState.s) localStorage.setItem('settings', compactState.s);
-    if (compactState.i) localStorage.setItem('initialGameSettings', compactState.i);
+    if (compactState.i)
+      localStorage.setItem('initialGameSettings', compactState.i);
     if (compactState.p) localStorage.setItem('players', compactState.p);
-    if (compactState.si) localStorage.setItem('startingPlayerIndex', compactState.si);
+    if (compactState.si)
+      localStorage.setItem('startingPlayerIndex', compactState.si);
 
     // Always set playing and showPlay to false after loading
     // This ensures the user starts at the main menu and can review the state

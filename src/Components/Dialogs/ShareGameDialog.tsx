@@ -28,16 +28,17 @@ export const ShareGameDialog = ({
 
       try {
         // Small delay to ensure all localStorage writes from useEffect have completed
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 50));
 
         // Generate the shareable URL
         const url = generateShareableUrl();
         setShareableUrl(url);
 
-        // Generate QR code
+        // Generate QR code with lower error correction for less detail
         const qrDataUrl = await QRCode.toDataURL(url, {
           width: 300,
           margin: 2,
+          errorCorrectionLevel: 'L', // Low error correction = simpler QR code
           color: {
             dark: '#000000',
             light: '#FFFFFF',
