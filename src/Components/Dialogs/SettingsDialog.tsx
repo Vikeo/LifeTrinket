@@ -22,7 +22,7 @@ export const SettingsDialog = ({
 }: {
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }) => {
-  const { settings, setSettings, isPWA, version } = useGlobalSettings();
+  const { settings, setSettings, isPWA, version, setSwapMode } = useGlobalSettings();
   const analytics = useAnalytics();
 
   return (
@@ -240,6 +240,22 @@ export const SettingsDialog = ({
           <ul className="pl-1 list-inside">
             <li className="list-disc">Glow effect on start menu</li>
           </ul>
+        </Description>
+      </SettingContainer>
+      <Separator height="1px" />
+      <SettingContainer>
+        <button
+          className="w-full bg-primary-main px-3 py-2 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
+          onClick={() => {
+            analytics.trackEvent('swap_lives_clicked');
+            setSwapMode(true);
+            dialogRef.current?.close();
+          }}
+        >
+          <span className="text-sm">Swap Player Lives</span>
+        </button>
+        <Description>
+          Click to select two players to swap their life totals.
         </Description>
       </SettingContainer>
       <Separator height="1px" />

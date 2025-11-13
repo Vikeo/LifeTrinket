@@ -15,7 +15,7 @@ export type GridLayout = `grid-areas-${GridTemplateAreasKeys}`;
 
 export const Play = () => {
   const { players, setPlayers } = usePlayers();
-  const { initialGameSettings, playing, settings, preStartCompleted } =
+  const { initialGameSettings, playing, settings, preStartCompleted, swapMode, selectedPlayersForSwap, setSwapMode } =
     useGlobalSettings();
 
   let gridLayout: GridLayout;
@@ -101,6 +101,25 @@ export const Play = () => {
         settings.preStartMode !== PreStartMode.None &&
         !playing &&
         settings.showStartingPlayer && <PreStart />}
+
+      {swapMode && (
+        <div className="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 p-4 flex flex-col items-center justify-center gap-2">
+          <div className="text-white text-xl font-bold">
+            Swap Player Lives
+          </div>
+          <div className="text-white text-sm text-center">
+            Select two players to swap their life totals
+            <br />
+            ({selectedPlayersForSwap.length}/2 selected)
+          </div>
+          <button
+            className="mt-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-bold"
+            onClick={() => setSwapMode(false)}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       <Players gridLayout={gridLayout} />
     </MainWrapper>

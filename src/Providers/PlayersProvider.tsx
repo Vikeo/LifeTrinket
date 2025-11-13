@@ -83,6 +83,27 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('playing', 'false');
     };
 
+    const swapPlayerLives = (playerIndex1: number, playerIndex2: number) => {
+      const player1 = players.find((p) => p.index === playerIndex1);
+      const player2 = players.find((p) => p.index === playerIndex2);
+
+      if (!player1 || !player2) {
+        return;
+      }
+
+      const temp = player1.lifeTotal;
+      const updatedPlayer1 = { ...player1, lifeTotal: player2.lifeTotal };
+      const updatedPlayer2 = { ...player2, lifeTotal: temp };
+
+      const updatedPlayers = players.map((player) => {
+        if (player.index === playerIndex1) return updatedPlayer1;
+        if (player.index === playerIndex2) return updatedPlayer2;
+        return player;
+      });
+
+      setPlayers(updatedPlayers);
+    };
+
     return {
       players,
       setPlayers,
@@ -91,6 +112,7 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
       resetCurrentGame,
       startingPlayerIndex,
       setStartingPlayerIndex: setStartingPlayerIndexAndLocalStorage,
+      swapPlayerLives,
     };
   }, [players, startingPlayerIndex]);
 

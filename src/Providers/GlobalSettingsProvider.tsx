@@ -70,6 +70,11 @@ export const GlobalSettingsProvider = ({
     savedSettings ? JSON.parse(savedSettings) : defaultSettings
   );
 
+  const [swapMode, setSwapMode] = useState<boolean>(false);
+  const [selectedPlayersForSwap, setSelectedPlayersForSwap] = useState<
+    number[]
+  >([]);
+
   const setSettingsAndLocalStorage = (settings: Settings) => {
     setSettings(settings);
     localStorage.setItem('settings', JSON.stringify(settings));
@@ -267,6 +272,23 @@ export const GlobalSettingsProvider = ({
       }
     }
 
+    const setSwapModeWrapper = (mode: boolean) => {
+      setSwapMode(mode);
+      if (!mode) {
+        setSelectedPlayersForSwap([]);
+      }
+    };
+
+    const selectPlayerForSwap = (playerIndex: number) => {
+      if (selectedPlayersForSwap.includes(playerIndex)) {
+        setSelectedPlayersForSwap(
+          selectedPlayersForSwap.filter((i) => i !== playerIndex)
+        );
+      } else if (selectedPlayersForSwap.length < 2) {
+        setSelectedPlayersForSwap([...selectedPlayersForSwap, playerIndex]);
+      }
+    };
+
     return {
       fullscreen: { isFullscreen, enableFullscreen, disableFullscreen },
       wakeLock: {
@@ -299,6 +321,10 @@ export const GlobalSettingsProvider = ({
         isLatest: isLatestVersion,
         checkForNewVersion,
       },
+      swapMode,
+      setSwapMode: setSwapModeWrapper,
+      selectedPlayersForSwap,
+      selectPlayerForSwap,
     };
   }, [
     isFullscreen,
@@ -317,6 +343,8 @@ export const GlobalSettingsProvider = ({
     remoteVersion,
     isLatestVersion,
     analytics,
+    swapMode,
+    selectedPlayersForSwap,
   ]);
 
   return (

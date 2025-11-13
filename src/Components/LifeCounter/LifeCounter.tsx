@@ -103,8 +103,8 @@ type LifeCounterProps = {
 const RECENT_DIFFERENCE_TTL = 3_000;
 
 const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
-  const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { settings, playing } = useGlobalSettings();
+  const { updatePlayer, updateLifeTotal, swapPlayerLives } = usePlayers();
+  const { settings, playing, swapMode, selectedPlayersForSwap, selectPlayerForSwap, setSwapMode } = useGlobalSettings();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
     undefined
   );
@@ -176,10 +176,23 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
   player.settings.rotation === Rotation.SideFlipped ||
     player.settings.rotation === Rotation.Side;
 
+  useEffect(() => {
+    if (swapMode && selectedPlayersForSwap.length === 2) {
+      swapPlayerLives(selectedPlayersForSwap[0], selectedPlayersForSwap[1]);
+      setSwapMode(false);
+    }
+  }, [swapMode, selectedPlayersForSwap, swapPlayerLives, setSwapMode]);
+
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updateLifeTotal(player, updatedLifeTotal);
     setRecentDifference(recentDifference + difference);
     setDifferenceKey(Date.now());
+  };
+
+  const handlePlayerCardClick = () => {
+    if (swapMode) {
+      selectPlayerForSwap(player.index);
+    }
   };
 
   const toggleGameLost = () => {
@@ -194,9 +207,17 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
       : player.settings.rotation;
 
   const amountOfPlayers = opponents.length + 1;
+  const isSelected = selectedPlayersForSwap.includes(player.index);
 
   return (
-    <LifeCounterContentWrapper style={{ background: player.color }}>
+    <LifeCounterContentWrapper
+      style={{
+        background: player.color,
+        border: swapMode ? (isSelected ? '6px solid #FFD700' : '4px solid rgba(255,255,255,0.5)') : 'none',
+        cursor: swapMode ? 'pointer' : 'default',
+      }}
+      onClick={handlePlayerCardClick}
+    >
       <LifeCounterWrapper
         $rotation={player.settings.rotation}
         style={{ rotate: `${calcRotation}deg` }}

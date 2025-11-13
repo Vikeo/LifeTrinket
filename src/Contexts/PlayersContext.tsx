@@ -9,6 +9,7 @@ export type PlayersContextType = {
   resetCurrentGame: () => void;
   startingPlayerIndex: number;
   setStartingPlayerIndex: (index: number) => void;
+  swapPlayerLives: (playerIndex1: number, playerIndex2: number) => void;
 };
 
 export const PlayersContext = createContext<PlayersContextType | null>(null);

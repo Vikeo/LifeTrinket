@@ -45,6 +45,10 @@ export type GlobalSettingsContextType = {
   version: Version;
   savedGame: SavedGame;
   saveCurrentGame: (currentGame: SavedGame) => void;
+  swapMode: boolean;
+  setSwapMode: (swapMode: boolean) => void;
+  selectedPlayersForSwap: number[];
+  selectPlayerForSwap: (playerIndex: number) => void;
 };
 
 export const GlobalSettingsContext =
