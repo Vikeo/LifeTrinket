@@ -53,7 +53,8 @@ export const LifeTrinket = () => {
       if (success) {
         // Remove query parameter and reload the page
         // This ensures providers pick up the new localStorage values
-        window.location.href = window.location.origin + window.location.pathname;
+        window.location.href =
+          window.location.origin + window.location.pathname;
       } else {
         // Show error and remove query parameter
         setImportSuccess(false);

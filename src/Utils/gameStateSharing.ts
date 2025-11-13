@@ -16,20 +16,22 @@ export interface GameStateExport {
  */
 export function exportGameState(): string {
   try {
-    // Gather all localStorage data
-    const gameState: GameStateExport = {
-      settings: localStorage.getItem('settings'),
-      initialGameSettings: localStorage.getItem('initialGameSettings'),
-      players: localStorage.getItem('players'),
-      playing: localStorage.getItem('playing'),
-      showPlay: localStorage.getItem('showPlay'),
-      preStartComplete: localStorage.getItem('preStartComplete'),
-      savedGame: localStorage.getItem('savedGame'),
-      startingPlayerIndex: localStorage.getItem('startingPlayerIndex'),
-    };
+    // Only export essential data with very short keys
+    const compactState: Record<string, string> = {};
+
+    const s = localStorage.getItem('settings');
+    const i = localStorage.getItem('initialGameSettings');
+    const p = localStorage.getItem('players');
+    const si = localStorage.getItem('startingPlayerIndex');
+
+    // Only include non-null values
+    if (s) compactState.s = s;
+    if (i) compactState.i = i;
+    if (p) compactState.p = p;
+    if (si) compactState.si = si;
 
     // Convert to JSON string
-    const jsonString = JSON.stringify(gameState);
+    const jsonString = JSON.stringify(compactState);
 
     // Compress using pako (gzip)
     const compressed = pako.deflate(jsonString);
@@ -71,19 +73,18 @@ export function importGameState(encodedData: string): boolean {
     const decompressed = pako.inflate(bytes, { to: 'string' });
 
     // Parse JSON
-    const gameState: GameStateExport = JSON.parse(decompressed);
+    const compactState: Record<string, string> = JSON.parse(decompressed);
 
     // Validate that we have some data
-    if (!gameState || typeof gameState !== 'object') {
+    if (!compactState || typeof compactState !== 'object') {
       throw new Error('Invalid game state format');
     }
 
-    // Load into localStorage
-    Object.entries(gameState).forEach(([key, value]) => {
-      if (value !== null) {
-        localStorage.setItem(key, value);
-      }
-    });
+    // Map short keys back to full localStorage keys and load
+    if (compactState.s) localStorage.setItem('settings', compactState.s);
+    if (compactState.i) localStorage.setItem('initialGameSettings', compactState.i);
+    if (compactState.p) localStorage.setItem('players', compactState.p);
+    if (compactState.si) localStorage.setItem('startingPlayerIndex', compactState.si);
 
     // Always set playing and showPlay to false after loading
     // This ensures the user starts at the main menu and can review the state
