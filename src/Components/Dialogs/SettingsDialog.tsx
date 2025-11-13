@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
@@ -7,6 +8,7 @@ import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
 import { Dialog } from './Dialog';
+import { ShareGameDialog } from './ShareGameDialog';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
@@ -24,6 +26,7 @@ export const SettingsDialog = ({
 }) => {
   const { settings, setSettings, isPWA, version } = useGlobalSettings();
   const analytics = useAnalytics();
+  const shareGameDialogRef = useRef<HTMLDialogElement | null>(null);
 
   return (
     <Dialog id="settings" title="⚙️ Settings ⚙️" dialogRef={dialogRef}>
@@ -243,7 +246,16 @@ export const SettingsDialog = ({
         </Description>
       </SettingContainer>
       <Separator height="1px" />
-      <div className="flex w-full justify-center">
+      <div className="flex w-full justify-center gap-3">
+        <button
+          className="mt-1 mb-1 bg-secondary-main px-3 py-1 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark font-bold"
+          onClick={() => {
+            analytics.trackEvent('share_game_button_clicked');
+            shareGameDialogRef.current?.showModal();
+          }}
+        >
+          <span className="text-sm">Share Game</span>
+        </button>
         <button
           className="mt-1 mb-1 bg-primary-main px-3 py-1 rounded-md duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
           onClick={() => {
@@ -254,6 +266,7 @@ export const SettingsDialog = ({
           <span className="text-sm">Save and Close</span>
         </button>
       </div>
+      <ShareGameDialog dialogRef={shareGameDialogRef} />
       {!isPWA && (
         <>
           {window.isIOS && (
