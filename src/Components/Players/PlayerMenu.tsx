@@ -483,27 +483,27 @@ const PlayerMenu = ({
               <ResetGame size={iconSize} />
             </button>
 
-            {onForfeit && (
-              <button
-                style={{
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  fontSize: buttonFontSize,
-                  padding: '2px',
-                }}
-                className="text-red-500"
-                onClick={() => {
+            <button
+              style={{
+                cursor: 'pointer',
+                userSelect: 'none',
+                fontSize: buttonFontSize,
+                padding: '2px',
+              }}
+              className="text-red-500"
+              onClick={() => {
+                if (onForfeit) {
                   analytics.trackEvent('forfeit_game', {
                     player: player.index,
                   });
                   onForfeit();
                   setShowPlayerMenu(false);
-                }}
-                aria-label="Forfeit Game"
-              >
-                <Skull size={iconSize} />
-              </button>
-            )}
+                }
+              }}
+              aria-label="Forfeit Game"
+            >
+              <Skull size={iconSize} />
+            </button>
           </ButtonsSections>
         </BetterRowContainer>
 
