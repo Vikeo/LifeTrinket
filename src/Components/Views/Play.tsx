@@ -96,9 +96,9 @@ export const Play = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Check for game over in 1v1 games
+  // Check for game over when only one player remains
   useEffect(() => {
-    if (players.length !== 2 || winner !== null) {
+    if (players.length < 2 || winner !== null || !settings.showMatchScore) {
       return;
     }
 
@@ -108,7 +108,7 @@ export const Play = () => {
     if (activePlayers.length === 1) {
       setWinner(activePlayers[0].index);
     }
-  }, [players, winner]);
+  }, [players, winner, settings.showMatchScore]);
 
   const handleStartNextGame = () => {
     if (winner === null) return;
@@ -127,6 +127,26 @@ export const Play = () => {
     setWinner(null);
   };
 
+  const handleStay = () => {
+    if (winner === null) return;
+
+    // Update score
+    const newScore = { ...gameScore };
+    newScore[winner] = (newScore[winner] || 0) + 1;
+    setGameScore(newScore);
+
+    // Reset hasLost state for all players
+    setPlayers(
+      players.map((p) => ({
+        ...p,
+        hasLost: false,
+      }))
+    );
+
+    // Clear winner to allow new game over detection
+    setWinner(null);
+  };
+
   return (
     <MainWrapper>
       {players.length > 1 &&
@@ -141,6 +161,7 @@ export const Play = () => {
         <GameOver
           winner={players[winner]}
           onStartNextGame={handleStartNextGame}
+          onStay={handleStay}
         />
       )}
     </MainWrapper>

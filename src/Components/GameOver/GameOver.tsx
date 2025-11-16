@@ -32,23 +32,39 @@ const WinnerName = twc.div`
   mb-2
 `;
 
-const StartButton = twc.button`
+const PrimaryButton = twc.button`
   py-4 px-6 rounded-xl
   text-xl font-semibold
   bg-interface-primary
   text-white
   transition-all duration-200
   hover:scale-105 active:scale-95
-  border-2 border-transparent
-  hover:border-white/30
+  border-3 border-white/50
+  shadow-lg shadow-interface-primary/50
+`;
+
+const SecondaryButton = twc.button`
+  py-4 px-6 rounded-xl
+  text-xl font-semibold
+  bg-secondary-main
+  text-text-primary
+  transition-all duration-200
+  hover:scale-105 active:scale-95
+  border-3 border-primary-main
+  shadow-lg shadow-secondary-main/50
 `;
 
 type GameOverProps = {
   winner: Player;
   onStartNextGame: () => void;
+  onStay: () => void;
 };
 
-export const GameOver = ({ winner, onStartNextGame }: GameOverProps) => {
+export const GameOver = ({
+  winner,
+  onStartNextGame,
+  onStay,
+}: GameOverProps) => {
   return (
     <Overlay>
       <Modal>
@@ -60,9 +76,10 @@ export const GameOver = ({ winner, onStartNextGame }: GameOverProps) => {
           Won the game!
         </p>
         <ButtonContainer>
-          <StartButton onClick={onStartNextGame}>
+          <PrimaryButton onClick={onStartNextGame}>
             Start Next Game
-          </StartButton>
+          </PrimaryButton>
+          <SecondaryButton onClick={onStay}>Close</SecondaryButton>
         </ButtonContainer>
       </Modal>
     </Overlay>

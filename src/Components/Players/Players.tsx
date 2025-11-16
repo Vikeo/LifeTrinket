@@ -49,7 +49,7 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
                   (opponent) => opponent.index !== player.index
                 )}
                 matchScore={
-                  players.length === 2 && settings.showMatchScore
+                  settings.showMatchScore
                     ? gameScore[player.index]
                     : undefined
                 }

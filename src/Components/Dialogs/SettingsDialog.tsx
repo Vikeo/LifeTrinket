@@ -256,7 +256,7 @@ export const SettingsDialog = ({
           />
         </ToggleContainer>
         <Description>
-          Shows a score badge on each player's card in 1v1 games to track wins across multiple games.
+          Shows a score badge on each player's card to track wins across multiple games.
         </Description>
       </SettingContainer>
       <Separator height="1px" />
