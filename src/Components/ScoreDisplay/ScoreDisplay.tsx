@@ -3,7 +3,7 @@ import { Player } from '../../Types/Player';
 import { GameScore } from '../../Contexts/GlobalSettingsContext';
 
 const ScoreContainer = twc.div`
-  absolute top-4 right-4
+  absolute bottom-4 left-1/2 -translate-x-1/2
   bg-background-default/90 backdrop-blur-sm
   rounded-lg p-4
   shadow-lg
