@@ -31,7 +31,7 @@ const PlayersWrapper = twc.div`w-full h-full bg-black`;
 export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
   const { players } = usePlayers();
 
-  const { playing, settings, preStartCompleted } = useGlobalSettings();
+  const { playing, settings, preStartCompleted, gameScore } = useGlobalSettings();
 
   return (
     <PlayersWrapper>
@@ -48,6 +48,7 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
                 opponents={players.filter(
                   (opponent) => opponent.index !== player.index
                 )}
+                matchScore={players.length === 2 ? gameScore[player.index] : undefined}
               />
 
               {settings.preStartMode === PreStartMode.RandomKing &&

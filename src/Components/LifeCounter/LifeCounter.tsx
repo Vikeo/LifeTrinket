@@ -24,6 +24,21 @@ const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
     : 'top-1/4 right-[1vmax]',
 ]);
 
+const MatchScoreBadge = twc.div<RotationDivProps>((props) => [
+  'absolute flex items-center justify-center',
+  'bg-black/70 backdrop-blur-sm',
+  'rounded-full',
+  'w-[12vmin] h-[12vmin]',
+  'text-white font-bold',
+  'text-[6vmin]',
+  'z-[1]',
+  'pointer-events-none',
+  'select-none webkit-user-select-none',
+  props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
+    ? `left-[1vmax] top-1/4`
+    : 'left-1/4 top-[1vmax]',
+]);
+
 type SettingsButtonProps = {
   onClick: () => void;
   rotation: Rotation;
@@ -98,11 +113,12 @@ type LifeCounterProps = {
   player: Player;
   opponents: Player[];
   isStartingPlayer?: boolean;
+  matchScore?: number;
 };
 
 const RECENT_DIFFERENCE_TTL = 3_000;
 
-const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
+const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings, playing } = useGlobalSettings();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
@@ -208,6 +224,14 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           player.isStartingPlayer && <StartingPlayerCard player={player} />}
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
+        )}
+        {matchScore !== undefined && matchScore > 0 && (
+          <MatchScoreBadge
+            $rotation={player.settings.rotation}
+            style={{ rotate: `${calcRotation}deg` }}
+          >
+            {matchScore}
+          </MatchScoreBadge>
         )}
         <CommanderDamageBar
           opponents={opponents}

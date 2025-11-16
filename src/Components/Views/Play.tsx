@@ -7,7 +7,6 @@ import { Orientation, PreStartMode } from '../../Types/Settings';
 import { Players } from '../Players/Players';
 import { PreStart } from '../PreStartGame/PreStart';
 import { GameOver } from '../GameOver/GameOver';
-import { ScoreDisplay } from '../ScoreDisplay/ScoreDisplay';
 
 const MainWrapper = twc.div`w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
 
@@ -137,8 +136,6 @@ export const Play = () => {
         settings.showStartingPlayer && <PreStart />}
 
       <Players gridLayout={gridLayout} />
-
-      {players.length === 2 && <ScoreDisplay players={players} gameScore={gameScore} />}
 
       {winner !== null && (
         <GameOver
