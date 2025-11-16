@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useWakeLock } from 'react-screen-wake-lock';
 import {
+  GameScore,
   GlobalSettingsContext,
   GlobalSettingsContextType,
   SavedGame,
@@ -94,6 +95,19 @@ export const GlobalSettingsProvider = ({
     );
   };
 
+  const savedGameScore = localStorage.getItem('gameScore');
+  const [gameScore, setGameScore] = useState<GameScore>(
+    savedGameScore ? JSON.parse(savedGameScore) : {}
+  );
+  const setGameScoreAndLocalStorage = (score: GameScore) => {
+    setGameScore(score);
+    localStorage.setItem('gameScore', JSON.stringify(score));
+  };
+  const resetGameScore = () => {
+    setGameScore({});
+    localStorage.removeItem('gameScore');
+  };
+
   // Set settings if they are not valid
   useEffect(() => {
     // If there are no saved settings, set default settings
@@ -171,11 +185,13 @@ export const GlobalSettingsProvider = ({
       localStorage.removeItem('playing');
       localStorage.removeItem('showPlay');
       localStorage.removeItem('preStartComplete');
+      localStorage.removeItem('gameScore');
 
       setPlaying(false);
       setShowPlay(false);
       setPreStartCompleted(false);
       setSettings({ ...settings, useMonarch: false });
+      setGameScore({});
     };
 
     const goToStart = async () => {
@@ -299,6 +315,9 @@ export const GlobalSettingsProvider = ({
         isLatest: isLatestVersion,
         checkForNewVersion,
       },
+      gameScore,
+      setGameScore: setGameScoreAndLocalStorage,
+      resetGameScore,
     };
   }, [
     isFullscreen,
@@ -317,6 +336,7 @@ export const GlobalSettingsProvider = ({
     remoteVersion,
     isLatestVersion,
     analytics,
+    gameScore,
   ]);
 
   return (

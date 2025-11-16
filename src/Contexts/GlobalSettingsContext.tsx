@@ -14,6 +14,10 @@ export type SavedGame = {
   players: Player[];
 } | null;
 
+export type GameScore = {
+  [playerIndex: number]: number;
+};
+
 export type GlobalSettingsContextType = {
   fullscreen: {
     isFullscreen: boolean;
@@ -45,6 +49,9 @@ export type GlobalSettingsContextType = {
   version: Version;
   savedGame: SavedGame;
   saveCurrentGame: (currentGame: SavedGame) => void;
+  gameScore: GameScore;
+  setGameScore: (score: GameScore) => void;
+  resetGameScore: () => void;
 };
 
 export const GlobalSettingsContext =
