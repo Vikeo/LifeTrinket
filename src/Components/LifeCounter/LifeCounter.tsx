@@ -226,8 +226,17 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
         {matchScore !== undefined && matchScore > 0 && (
-          <MatchScoreBadge $rotation={player.settings.rotation}>
-            <div style={{ rotate: `${-calcRotation}deg` }}>{matchScore}</div>
+          <MatchScoreBadge
+            $rotation={player.settings.rotation}
+            style={{
+              rotate:
+                player.settings.rotation === Rotation.Side ||
+                player.settings.rotation === Rotation.SideFlipped
+                  ? `-90deg`
+                  : '0deg',
+            }}
+          >
+            {matchScore}
           </MatchScoreBadge>
         )}
         <CommanderDamageBar
