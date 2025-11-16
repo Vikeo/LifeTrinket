@@ -123,6 +123,7 @@ const PlayerMenu = ({
     saveCurrentGame,
     initialGameSettings,
     setPreStartCompleted,
+    gameScore,
   } = useGlobalSettings();
 
   const analytics = useAnalytics();
@@ -165,7 +166,7 @@ const PlayerMenu = ({
   };
 
   const handleGoToStart = () => {
-    saveCurrentGame({ players, initialGameSettings });
+    saveCurrentGame({ players, initialGameSettings, gameScore });
     goToStart();
     setRandomizingPlayer(true);
   };

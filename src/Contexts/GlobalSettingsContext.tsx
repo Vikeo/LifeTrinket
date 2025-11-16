@@ -12,6 +12,7 @@ type Version = {
 export type SavedGame = {
   initialGameSettings: InitialGameSettings;
   players: Player[];
+  gameScore?: GameScore;
 } | null;
 
 export type GameScore = {
