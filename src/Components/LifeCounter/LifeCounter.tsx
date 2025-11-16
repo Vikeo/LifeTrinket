@@ -28,15 +28,15 @@ const MatchScoreBadge = twc.div<RotationDivProps>((props) => [
   'absolute flex items-center justify-center',
   'bg-black/70 backdrop-blur-sm',
   'rounded-full',
-  'w-[12vmin] h-[12vmin]',
+  'w-[5vmin] h-[5vmin]',
   'text-white font-bold',
-  'text-[6vmin]',
+  'text-[3vmin]',
   'z-[1]',
   'pointer-events-none',
   'select-none webkit-user-select-none',
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
-    ? `left-[1vmax] top-1/4`
-    : 'left-1/4 top-[1vmax]',
+    ? `left-[6.5vmax] bottom-[1vmax]`
+    : 'left-[0.5vmax] top-[11.5vmin]',
 ]);
 
 type SettingsButtonProps = {
@@ -225,6 +225,12 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
         {player.hasLost && (
           <PlayerLostWrapper $rotation={player.settings.rotation} />
         )}
+        <CommanderDamageBar
+          opponents={opponents}
+          player={player}
+          key={player.index}
+          handleLifeChange={handleLifeChange}
+        />
         {matchScore !== undefined && matchScore > 0 && (
           <MatchScoreBadge
             $rotation={player.settings.rotation}
@@ -239,12 +245,6 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
             {matchScore}
           </MatchScoreBadge>
         )}
-        <CommanderDamageBar
-          opponents={opponents}
-          player={player}
-          key={player.index}
-          handleLifeChange={handleLifeChange}
-        />
         {settings.showPlayerMenuCog && (
           <SettingsButton
             onClick={() => {
