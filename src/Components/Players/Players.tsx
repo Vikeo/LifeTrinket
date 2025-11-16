@@ -48,7 +48,11 @@ export const Players = ({ gridLayout }: { gridLayout: GridLayout }) => {
                 opponents={players.filter(
                   (opponent) => opponent.index !== player.index
                 )}
-                matchScore={players.length === 2 ? gameScore[player.index] : undefined}
+                matchScore={
+                  players.length === 2 && settings.showMatchScore
+                    ? gameScore[player.index]
+                    : undefined
+                }
               />
 
               {settings.preStartMode === PreStartMode.RandomKing &&

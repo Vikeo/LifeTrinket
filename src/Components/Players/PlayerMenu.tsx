@@ -16,6 +16,7 @@ import {
   PartnerTax,
   Poison,
   ResetGame,
+  Skull,
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
@@ -90,12 +91,14 @@ type PlayerMenuProps = {
   player: Player;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
   isShown: boolean;
+  onForfeit?: () => void;
 };
 
 const PlayerMenu = ({
   player,
   setShowPlayerMenu,
   isShown,
+  onForfeit,
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -479,6 +482,28 @@ const PlayerMenu = ({
             >
               <ResetGame size={iconSize} />
             </button>
+
+            {onForfeit && (
+              <button
+                style={{
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  fontSize: buttonFontSize,
+                  padding: '2px',
+                }}
+                className="text-red-500"
+                onClick={() => {
+                  analytics.trackEvent('forfeit_game', {
+                    player: player.index,
+                  });
+                  onForfeit();
+                  setShowPlayerMenu(false);
+                }}
+                aria-label="Forfeit Game"
+              >
+                <Skull size={iconSize} />
+              </button>
+            )}
           </ButtonsSections>
         </BetterRowContainer>
 

@@ -242,6 +242,23 @@ export const SettingsDialog = ({
           </ul>
         </Description>
       </SettingContainer>
+      <SettingContainer>
+        <ToggleContainer>
+          <label>Show Match Score</label>
+          <ToggleButton
+            checked={settings.showMatchScore}
+            onChange={() => {
+              setSettings({
+                ...settings,
+                showMatchScore: !settings.showMatchScore,
+              });
+            }}
+          />
+        </ToggleContainer>
+        <Description>
+          Shows a score badge on each player's card in 1v1 games to track wins across multiple games.
+        </Description>
+      </SettingContainer>
       <Separator height="1px" />
       <div className="flex w-full justify-center">
         <button

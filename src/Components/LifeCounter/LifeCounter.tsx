@@ -268,6 +268,7 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
           isShown={showPlayerMenu}
           player={player}
           setShowPlayerMenu={setShowPlayerMenu}
+          onForfeit={playerCanLose(player) ? toggleGameLost : undefined}
         />
       </LifeCounterWrapper>
     </LifeCounterContentWrapper>
