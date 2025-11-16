@@ -19,7 +19,7 @@ export const Play = () => {
   const { players, setPlayers, resetCurrentGame, setStartingPlayerIndex } = usePlayers();
   const { initialGameSettings, playing, settings, preStartCompleted, gameScore, setGameScore } =
     useGlobalSettings();
-  const [showGameOver, setShowGameOver] = useState(false);
+  const [winner, setWinner] = useState<number | null>(null);
 
   let gridLayout: GridLayout;
   switch (players.length) {
@@ -99,31 +99,33 @@ export const Play = () => {
 
   // Check for game over in 1v1 games
   useEffect(() => {
-    if (players.length !== 2 || showGameOver) {
+    if (players.length !== 2 || winner !== null) {
       return;
     }
 
-    const playersLost = players.filter((p) => p.hasLost);
+    const activePlayers = players.filter((p) => !p.hasLost);
 
-    // Only show game over if exactly one player has lost
-    if (playersLost.length === 1) {
-      setShowGameOver(true);
+    // If only one player is alive, they are the winner
+    if (activePlayers.length === 1) {
+      setWinner(activePlayers[0].index);
     }
-  }, [players, showGameOver]);
+  }, [players, winner]);
 
-  const handleWinnerSelected = (winnerIndex: number) => {
+  const handleStartNextGame = () => {
+    if (winner === null) return;
+
     // Update score
     const newScore = { ...gameScore };
-    newScore[winnerIndex] = (newScore[winnerIndex] || 0) + 1;
+    newScore[winner] = (newScore[winner] || 0) + 1;
     setGameScore(newScore);
 
     // Set the loser as the starting player for next game
-    const loserIndex = players.find((p) => p.index !== winnerIndex)?.index ?? 0;
+    const loserIndex = players.find((p) => p.index !== winner)?.index ?? 0;
     setStartingPlayerIndex(loserIndex);
 
     // Reset game
     resetCurrentGame();
-    setShowGameOver(false);
+    setWinner(null);
   };
 
   return (
@@ -138,8 +140,11 @@ export const Play = () => {
 
       {players.length === 2 && <ScoreDisplay players={players} gameScore={gameScore} />}
 
-      {showGameOver && (
-        <GameOver players={players} onWinnerSelected={handleWinnerSelected} />
+      {winner !== null && (
+        <GameOver
+          winner={players[winner]}
+          onStartNextGame={handleStartNextGame}
+        />
       )}
     </MainWrapper>
   );

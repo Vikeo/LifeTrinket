@@ -25,9 +25,17 @@ const ButtonContainer = twc.div`
   flex flex-col gap-3
 `;
 
-const PlayerButton = twc.button`
+const WinnerName = twc.div`
+  text-3xl font-bold text-center
+  py-4 px-6 rounded-xl
+  text-white
+  mb-2
+`;
+
+const StartButton = twc.button`
   py-4 px-6 rounded-xl
   text-xl font-semibold
+  bg-interface-primary
   text-white
   transition-all duration-200
   hover:scale-105 active:scale-95
@@ -36,30 +44,25 @@ const PlayerButton = twc.button`
 `;
 
 type GameOverProps = {
-  players: Player[];
-  onWinnerSelected: (winnerIndex: number) => void;
+  winner: Player;
+  onStartNextGame: () => void;
 };
 
-export const GameOver = ({ players, onWinnerSelected }: GameOverProps) => {
-  const activePlayers = players.filter((player) => !player.hasLost);
-
+export const GameOver = ({ winner, onStartNextGame }: GameOverProps) => {
   return (
     <Overlay>
       <Modal>
         <Title>Game Over!</Title>
-        <p className="text-center text-text-secondary text-lg">
-          Who won this game?
+        <WinnerName style={{ backgroundColor: winner.color }}>
+          {winner.name || `Player ${winner.index + 1}`}
+        </WinnerName>
+        <p className="text-center text-text-primary text-2xl font-semibold">
+          Won the game!
         </p>
         <ButtonContainer>
-          {activePlayers.map((player) => (
-            <PlayerButton
-              key={player.index}
-              style={{ backgroundColor: player.color }}
-              onClick={() => onWinnerSelected(player.index)}
-            >
-              {player.name || `Player ${player.index + 1}`}
-            </PlayerButton>
-          ))}
+          <StartButton onClick={onStartNextGame}>
+            Start Next Game
+          </StartButton>
         </ButtonContainer>
       </Modal>
     </Overlay>
