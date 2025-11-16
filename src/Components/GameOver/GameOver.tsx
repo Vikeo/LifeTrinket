@@ -17,8 +17,9 @@ const Modal = twc.div`
 `;
 
 const Title = twc.h2`
-  text-4xl font-bold text-center
+  text-[7vmin] font-bold text-center
   text-text-primary
+  -mb-4
 `;
 
 const ButtonContainer = twc.div`
@@ -26,15 +27,15 @@ const ButtonContainer = twc.div`
 `;
 
 const WinnerName = twc.div`
-  text-3xl font-bold text-center
-  py-4 px-6 rounded-xl
+  text-[6vmin] font-bold text-center
+  py-[2vmin] px-[3vmin] rounded-xl
   text-white
-  mb-2
+  mb-0
 `;
 
 const PrimaryButton = twc.button`
-  py-4 px-6 rounded-xl
-  text-xl font-semibold
+  py-[2vmin] px-[3vmin] rounded-xl
+  text-[4vmin] font-semibold
   bg-interface-primary
   text-white
   transition-all duration-200
@@ -44,8 +45,8 @@ const PrimaryButton = twc.button`
 `;
 
 const SecondaryButton = twc.button`
-  py-4 px-6 rounded-xl
-  text-xl font-semibold
+  py-[2vmin] px-[3vmin] rounded-xl
+  text-[4vmin] font-semibold
   bg-secondary-main
   text-text-primary
   transition-all duration-200
@@ -68,18 +69,15 @@ export const GameOver = ({
   return (
     <Overlay>
       <Modal>
-        <Title>Game Over!</Title>
+        <Title>Winner</Title>
         <WinnerName style={{ backgroundColor: winner.color }}>
           {winner.name || `Player ${winner.index + 1}`}
         </WinnerName>
-        <p className="text-center text-text-primary text-2xl font-semibold">
-          Won the game!
-        </p>
         <ButtonContainer>
-          <PrimaryButton onClick={onStartNextGame}>
+          <SecondaryButton onClick={onStartNextGame}>
             Start Next Game
-          </PrimaryButton>
-          <SecondaryButton onClick={onStay}>Close</SecondaryButton>
+          </SecondaryButton>
+          <PrimaryButton onClick={onStay}>Close</PrimaryButton>
         </ButtonContainer>
       </Modal>
     </Overlay>
