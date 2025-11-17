@@ -1,5 +1,3 @@
-//@ts-expect-error - tailwindcss-grid-areas does not have typescript support
-import tailwindcssGridAreas from '@savvywombat/tailwindcss-grid-areas';
 import type { Config } from 'tailwindcss';
 
 export const baseColors = {
@@ -107,6 +105,6 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssGridAreas],
+  plugins: [],
 } satisfies Config;
 // #98FF98
