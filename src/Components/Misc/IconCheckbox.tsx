@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export const IconCheckbox = ({
   name,
   icon,
@@ -7,14 +9,14 @@ export const IconCheckbox = ({
   className,
 }: {
   name: string;
-  icon: JSX.Element;
-  checkedIcon: JSX.Element;
+  icon: ReactElement;
+  checkedIcon: ReactElement;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }) => {
   return (
-    <div className={className} >
+    <div className={className}>
       <label>
         <input
           name={name}
