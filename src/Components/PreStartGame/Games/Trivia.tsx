@@ -107,7 +107,7 @@ export const Trivia = () => {
   const { setPlaying, goToStart } = useGlobalSettings();
 
   const [randomQuestion, setRandomQuestion] = useState(
-    questions[Math.floor(Math.random() * questions.length)]
+    () => questions[Math.floor(Math.random() * questions.length)]
   );
 
   const setUniqueRandomQuestion = () => {

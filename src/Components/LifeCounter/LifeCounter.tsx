@@ -41,8 +41,8 @@ const MatchScoreBadge = twc.div<MatchScoreBadgeProps>((props) => [
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
     ? `left-[6.5vmax] bottom-[1vmax]`
     : props.$useCommanderDamage
-    ? 'left-[0.5vmax] top-[11.5vmin]'
-    : 'left-[0.5vmax] top-[1vmax]',
+      ? 'left-[0.5vmax] top-[11.5vmin]'
+      : 'left-[0.5vmax] top-[1vmax]',
 ]);
 
 type SettingsButtonProps = {
@@ -194,9 +194,6 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
     resizeObserver.observe(document.body);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.body.clientHeight, document.body.clientWidth]);
-
-  player.settings.rotation === Rotation.SideFlipped ||
-    player.settings.rotation === Rotation.Side;
 
   const handleLifeChange = (updatedLifeTotal: number) => {
     const difference = updateLifeTotal(player, updatedLifeTotal);

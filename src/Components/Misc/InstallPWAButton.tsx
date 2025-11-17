@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BeforeInstallPromptEvent } from '../../global';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 
 export const InstallPWAButton = () => {
-  const supportsPWARef = useRef<boolean>(false);
   const [promptInstall, setPromptInstall] =
     useState<BeforeInstallPromptEvent | null>(null);
 
@@ -11,7 +10,6 @@ export const InstallPWAButton = () => {
 
   const handler = (e: BeforeInstallPromptEvent) => {
     e.preventDefault();
-    supportsPWARef.current = true;
     setPromptInstall(e);
   };
 
@@ -21,7 +19,7 @@ export const InstallPWAButton = () => {
     return () => window.removeEventListener('transitionend', handler);
   }, []);
 
-  if (!supportsPWARef.current) {
+  if (!promptInstall) {
     return null;
   }
 
