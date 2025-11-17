@@ -1,6 +1,5 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Player } from '../Types/Player';
-import { useMemo, useState } from 'react';
 import { PlayersContextType, PlayersContext } from '../Contexts/PlayersContext';
 import { InitialGameSettings } from '../Types/Settings';
 
@@ -13,10 +12,10 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     savedStartingPlayerIndex ? parseInt(savedStartingPlayerIndex) : -1
   );
 
-  const setStartingPlayerIndexAndLocalStorage = (index: number) => {
+  const setStartingPlayerIndexAndLocalStorage = useCallback((index: number) => {
     setStartingPlayerIndex(index);
     localStorage.setItem('startingPlayerIndex', String(index));
-  };
+  }, []);
 
   const [players, setPlayers] = useState<Player[]>(
     savedPlayers ? JSON.parse(savedPlayers) : []
@@ -96,7 +95,7 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
       startingPlayerIndex,
       setStartingPlayerIndex: setStartingPlayerIndexAndLocalStorage,
     };
-  }, [players, startingPlayerIndex]);
+  }, [players, startingPlayerIndex, setStartingPlayerIndexAndLocalStorage]);
 
   return (
     <PlayersContext.Provider value={ctxValue}>

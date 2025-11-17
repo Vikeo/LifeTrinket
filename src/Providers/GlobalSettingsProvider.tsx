@@ -62,14 +62,20 @@ export const GlobalSettingsProvider = ({
   };
 
   const savedSettings = localStorage.getItem('settings');
-  const [randomizingPlayer, setRandomizingPlayer] = useState<boolean>(
-    savedSettings
-      ? Boolean(JSON.parse(savedSettings).preStartMode === 'random-king')
-      : true
-  );
-  const [settings, setSettings] = useState<Settings>(
-    savedSettings ? JSON.parse(savedSettings) : defaultSettings
-  );
+  const [randomizingPlayer, setRandomizingPlayer] = useState<boolean>(() => {
+    if (!savedSettings) return true;
+    const parsed = JSON.parse(savedSettings);
+    return Boolean(parsed.preStartMode === 'random-king');
+  });
+  const [settings, setSettings] = useState<Settings>(() => {
+    if (!savedSettings) return defaultSettings;
+    const parsed = settingsSchema.safeParse(JSON.parse(savedSettings));
+    if (!parsed.success) {
+      console.error('invalid settings, using default settings');
+      return defaultSettings;
+    }
+    return parsed.data;
+  });
 
   const setSettingsAndLocalStorage = (settings: Settings) => {
     setSettings(settings);
@@ -79,11 +85,17 @@ export const GlobalSettingsProvider = ({
   const savedGameSettings = localStorage.getItem('initialGameSettings');
 
   const [initialGameSettings, setInitialGameSettings] =
-    useState<InitialGameSettings>(
-      savedGameSettings
-        ? JSON.parse(savedGameSettings)
-        : defaultInitialGameSettings
-    );
+    useState<InitialGameSettings>(() => {
+      if (!savedGameSettings) return defaultInitialGameSettings;
+      const parsed = initialGameSettingsSchema.safeParse(
+        JSON.parse(savedGameSettings)
+      );
+      if (!parsed.success) {
+        console.error('invalid game settings, using default settings');
+        return defaultInitialGameSettings;
+      }
+      return parsed.data;
+    });
 
   const setInitialGameSettingsAndLocalStorage = (
     initialGameSettings: InitialGameSettings
@@ -107,48 +119,6 @@ export const GlobalSettingsProvider = ({
     setGameScore({});
     localStorage.removeItem('gameScore');
   };
-
-  // Set settings if they are not valid
-  useEffect(() => {
-    // If there are no saved settings, set default settings
-    if (!savedSettings) {
-      setSettingsAndLocalStorage(defaultSettings);
-      return;
-    }
-
-    const parsedSettings = settingsSchema.safeParse(JSON.parse(savedSettings));
-
-    // If saved settings are not valid, remove them
-    if (!parsedSettings.success) {
-      console.error('invalid settings, resetting to default settings');
-      setSettingsAndLocalStorage(defaultSettings);
-      return;
-    }
-    localStorage.setItem('settings', JSON.stringify(parsedSettings.data));
-  }, [settings, savedSettings]);
-
-  // Set initial game settings if they are not valid
-  useEffect(() => {
-    if (!savedGameSettings) {
-      setInitialGameSettingsAndLocalStorage(defaultInitialGameSettings);
-      return;
-    }
-
-    //parse existing game settings with zod schema
-    const parsedInitialGameSettings =
-      initialGameSettingsSchema.safeParse(initialGameSettings);
-
-    if (!parsedInitialGameSettings.success) {
-      console.error('invalid game settings, resetting to default settings');
-      setInitialGameSettingsAndLocalStorage(defaultInitialGameSettings);
-      return;
-    }
-
-    localStorage.setItem(
-      'initialGameSettings',
-      JSON.stringify(parsedInitialGameSettings.data)
-    );
-  }, [initialGameSettings, savedGameSettings]);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -302,7 +272,7 @@ export const GlobalSettingsProvider = ({
       playing,
       setPlaying: setPlayingAndLocalStorage,
       initialGameSettings,
-      setInitialGameSettings,
+      setInitialGameSettings: setInitialGameSettingsAndLocalStorage,
       settings,
       setSettings: setSettingsAndLocalStorage,
       randomizingPlayer,
@@ -334,6 +304,7 @@ export const GlobalSettingsProvider = ({
     initialGameSettings,
     settings,
     randomizingPlayer,
+    setRandomizingPlayer,
     preStartCompleted,
     savedGame,
     remoteVersion,
