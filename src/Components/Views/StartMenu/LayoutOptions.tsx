@@ -18,7 +18,7 @@ import { Orientation } from '../../../Types/Settings';
 
 const LayoutsRadioGroup = twc.div`flex flex-row justify-center items-center gap-4 self-center w-full`;
 
-const Label = twc.label`flex flex-row relative max-w-[118px] hover:bg-primary-main hover:bg-opacity-5 rounded-2xl cursor-pointer`;
+const Label = twc.label`flex flex-row relative max-w-[118px] hover:bg-white/[0.03] rounded-2xl cursor-pointer`;
 
 const Input = twc.input`peer sr-only`;
 
