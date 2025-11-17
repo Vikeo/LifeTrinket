@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { twc } from 'react-twc';
 import { twGridTemplateAreas } from '../../../tailwind.config';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
@@ -6,6 +6,7 @@ import { usePlayers } from '../../Hooks/usePlayers';
 import { Orientation, PreStartMode } from '../../Types/Settings';
 import { Players } from '../Players/Players';
 import { PreStart } from '../PreStartGame/PreStart';
+import { GameOver } from '../GameOver/GameOver';
 
 const MainWrapper = twc.div`w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
 
@@ -14,9 +15,10 @@ type GridTemplateAreasKeys = keyof typeof twGridTemplateAreas;
 export type GridLayout = `grid-areas-${GridTemplateAreasKeys}`;
 
 export const Play = () => {
-  const { players, setPlayers } = usePlayers();
-  const { initialGameSettings, playing, settings, preStartCompleted } =
+  const { players, setPlayers, resetCurrentGame, setStartingPlayerIndex } = usePlayers();
+  const { initialGameSettings, playing, settings, preStartCompleted, gameScore, setGameScore } =
     useGlobalSettings();
+  const [winner, setWinner] = useState<number | null>(null);
 
   let gridLayout: GridLayout;
   switch (players.length) {
@@ -94,6 +96,57 @@ export const Play = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Check for game over when only one player remains
+  useEffect(() => {
+    if (players.length < 2 || winner !== null || !settings.showMatchScore) {
+      return;
+    }
+
+    const activePlayers = players.filter((p) => !p.hasLost);
+
+    // If only one player is alive, they are the winner
+    if (activePlayers.length === 1) {
+      setWinner(activePlayers[0].index);
+    }
+  }, [players, winner, settings.showMatchScore]);
+
+  const handleStartNextGame = () => {
+    if (winner === null) return;
+
+    // Update score
+    const newScore = { ...gameScore };
+    newScore[winner] = (newScore[winner] || 0) + 1;
+    setGameScore(newScore);
+
+    // Set the loser as the starting player for next game
+    const loserIndex = players.find((p) => p.index !== winner)?.index ?? 0;
+    setStartingPlayerIndex(loserIndex);
+
+    // Reset game
+    resetCurrentGame();
+    setWinner(null);
+  };
+
+  const handleStay = () => {
+    if (winner === null) return;
+
+    // Update score
+    const newScore = { ...gameScore };
+    newScore[winner] = (newScore[winner] || 0) + 1;
+    setGameScore(newScore);
+
+    // Reset hasLost state for all players
+    setPlayers(
+      players.map((p) => ({
+        ...p,
+        hasLost: false,
+      }))
+    );
+
+    // Clear winner to allow new game over detection
+    setWinner(null);
+  };
+
   return (
     <MainWrapper>
       {players.length > 1 &&
@@ -103,6 +156,14 @@ export const Play = () => {
         settings.showStartingPlayer && <PreStart />}
 
       <Players gridLayout={gridLayout} />
+
+      {winner !== null && (
+        <GameOver
+          winner={players[winner]}
+          onStartNextGame={handleStartNextGame}
+          onStay={handleStay}
+        />
+      )}
     </MainWrapper>
   );
 };

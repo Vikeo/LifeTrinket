@@ -24,6 +24,27 @@ const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
     : 'top-1/4 right-[1vmax]',
 ]);
 
+type MatchScoreBadgeProps = RotationDivProps & {
+  $useCommanderDamage: boolean;
+};
+
+const MatchScoreBadge = twc.div<MatchScoreBadgeProps>((props) => [
+  'absolute flex items-center justify-center',
+  'bg-black/70 backdrop-blur-sm',
+  'rounded-full',
+  'w-[5vmin] h-[5vmin]',
+  'text-white font-bold',
+  'text-[3vmin]',
+  'z-[1]',
+  'pointer-events-none',
+  'select-none webkit-user-select-none',
+  props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
+    ? `left-[6.5vmax] bottom-[1vmax]`
+    : props.$useCommanderDamage
+    ? 'left-[0.5vmax] top-[11.5vmin]'
+    : 'left-[0.5vmax] top-[1vmax]',
+]);
+
 type SettingsButtonProps = {
   onClick: () => void;
   rotation: Rotation;
@@ -98,11 +119,12 @@ type LifeCounterProps = {
   player: Player;
   opponents: Player[];
   isStartingPlayer?: boolean;
+  matchScore?: number;
 };
 
 const RECENT_DIFFERENCE_TTL = 3_000;
 
-const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
+const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings, playing } = useGlobalSettings();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
@@ -215,6 +237,21 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           key={player.index}
           handleLifeChange={handleLifeChange}
         />
+        {matchScore !== undefined && matchScore > 0 && (
+          <MatchScoreBadge
+            $rotation={player.settings.rotation}
+            $useCommanderDamage={player.settings.useCommanderDamage}
+            style={{
+              rotate:
+                player.settings.rotation === Rotation.Side ||
+                player.settings.rotation === Rotation.SideFlipped
+                  ? `-90deg`
+                  : '0deg',
+            }}
+          >
+            {matchScore}
+          </MatchScoreBadge>
+        )}
         {settings.showPlayerMenuCog && (
           <SettingsButton
             onClick={() => {
@@ -244,6 +281,8 @@ const LifeCounter = ({ player, opponents }: LifeCounterProps) => {
           isShown={showPlayerMenu}
           player={player}
           setShowPlayerMenu={setShowPlayerMenu}
+          onForfeit={toggleGameLost}
+          totalPlayers={opponents.length + 1}
         />
       </LifeCounterWrapper>
     </LifeCounterContentWrapper>

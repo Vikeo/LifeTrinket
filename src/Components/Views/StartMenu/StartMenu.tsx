@@ -64,6 +64,7 @@ const Start = () => {
     setPlaying,
     savedGame,
     saveCurrentGame,
+    setGameScore,
   } = useGlobalSettings();
 
   const infoDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -213,6 +214,9 @@ const Start = () => {
 
     setInitialGameSettings(savedGame.initialGameSettings);
     setPlayers(savedGame.players);
+    if (savedGame.gameScore) {
+      setGameScore(savedGame.gameScore);
+    }
     saveCurrentGame(null);
     setRandomizingPlayer(false);
     setShowPlay(true);
@@ -407,15 +411,31 @@ const Start = () => {
             {savedGame && (
               <button
                 className="flex flex-grow basis-0 justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px]
-              
+
               duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark font-bold"
                 onClick={doResumeGame}
               >
-                RESUME&nbsp;
-                <span className="text-xs">
-                  ({savedGame.players.length}&nbsp;
-                  {savedGame.players.length > 1 ? 'players' : 'player'})
-                </span>
+                <div className="flex flex-col items-center">
+                  <div>
+                    RESUME&nbsp;
+                    <span className="text-xs">
+                      ({savedGame.players.length}&nbsp;
+                      {savedGame.players.length > 1 ? 'players' : 'player'})
+                    </span>
+                  </div>
+                  {savedGame.gameScore && Object.keys(savedGame.gameScore).length > 0 && (
+                    <div className="text-xs opacity-75">
+                      Score: {Object.entries(savedGame.gameScore)
+                        .map(([playerIndex, score]) => {
+                          const player = savedGame.players.find(
+                            (p) => p.index === Number(playerIndex)
+                          );
+                          return `${player?.name || `P${Number(playerIndex) + 1}`}: ${score}`;
+                        })
+                        .join(' | ')}
+                    </div>
+                  )}
+                </div>
               </button>
             )}
           </StartButtonFooter>

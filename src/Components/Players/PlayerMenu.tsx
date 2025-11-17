@@ -16,6 +16,7 @@ import {
   PartnerTax,
   Poison,
   ResetGame,
+  Skull,
 } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
@@ -90,16 +91,21 @@ type PlayerMenuProps = {
   player: Player;
   setShowPlayerMenu: (showPlayerMenu: boolean) => void;
   isShown: boolean;
+  onForfeit?: () => void;
+  totalPlayers: number;
 };
 
 const PlayerMenu = ({
   player,
   setShowPlayerMenu,
   isShown,
+  onForfeit,
+  totalPlayers,
 }: PlayerMenuProps) => {
   const settingsContainerRef = useRef<HTMLDivElement | null>(null);
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
   const endGameDialogRef = useRef<HTMLDialogElement | null>(null);
+  const forfeitGameDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -117,6 +123,7 @@ const PlayerMenu = ({
     saveCurrentGame,
     initialGameSettings,
     setPreStartCompleted,
+    gameScore,
   } = useGlobalSettings();
 
   const analytics = useAnalytics();
@@ -159,7 +166,7 @@ const PlayerMenu = ({
   };
 
   const handleGoToStart = () => {
-    saveCurrentGame({ players, initialGameSettings });
+    saveCurrentGame({ players, initialGameSettings, gameScore });
     goToStart();
     setRandomizingPlayer(true);
   };
@@ -479,6 +486,32 @@ const PlayerMenu = ({
             >
               <ResetGame size={iconSize} />
             </button>
+
+            <button
+              style={{
+                cursor: 'pointer',
+                userSelect: 'none',
+                fontSize: buttonFontSize,
+                padding: '2px',
+              }}
+              className="text-red-500"
+              onClick={() => {
+                if (totalPlayers === 2) {
+                  forfeitGameDialogRef.current?.show();
+                } else {
+                  if (onForfeit) {
+                    analytics.trackEvent('forfeit_game', {
+                      player: player.index,
+                    });
+                    onForfeit();
+                    setShowPlayerMenu(false);
+                  }
+                }
+              }}
+              aria-label="Forfeit Game"
+            >
+              <Skull size={iconSize} />
+            </button>
           </ButtonsSections>
         </BetterRowContainer>
 
@@ -550,6 +583,48 @@ const PlayerMenu = ({
                   onClick={() => {
                     handleGoToStart();
                     endGameDialogRef.current?.close();
+                  }}
+                  style={{ fontSize: iconSize }}
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        </dialog>
+
+        <dialog
+          ref={forfeitGameDialogRef}
+          className="z-[999] size-full bg-background-settings overflow-y-scroll"
+          onClick={() => forfeitGameDialogRef.current?.close()}
+        >
+          <div className="flex size-full items-center justify-center">
+            <div className="flex flex-col justify-center p-4 gap-2 bg-background-default rounded-xl border-none">
+              <h1
+                className="text-center text-text-primary"
+                style={{ fontSize: extraCountersSize }}
+              >
+                Forfeit Game?
+              </h1>
+              <div className="flex justify-evenly gap-2">
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
+                  style={{ fontSize: iconSize }}
+                  onClick={() => forfeitGameDialogRef.current?.close()}
+                >
+                  No
+                </button>
+                <button
+                  className="bg-primary-main border border-primary-dark text-text-primary rounded-lg flex-grow"
+                  onClick={() => {
+                    if (onForfeit) {
+                      analytics.trackEvent('forfeit_game', {
+                        player: player.index,
+                      });
+                      onForfeit();
+                      setShowPlayerMenu(false);
+                      forfeitGameDialogRef.current?.close();
+                    }
                   }}
                   style={{ fontSize: iconSize }}
                 >

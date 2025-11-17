@@ -27,6 +27,7 @@ export type Settings = {
   preStartMode: PreStartMode;
   showAnimations: boolean;
   useMonarch: boolean;
+  showMatchScore: boolean;
 };
 
 export type InitialGameSettings = {
@@ -61,6 +62,7 @@ export const settingsSchema = z.object({
   preStartMode: z.nativeEnum(PreStartMode),
   showAnimations: z.boolean(),
   useMonarch: z.boolean().default(false),
+  showMatchScore: z.boolean().default(true),
 });
 
 export const defaultSettings: Settings = {
@@ -71,4 +73,5 @@ export const defaultSettings: Settings = {
   preStartMode: PreStartMode.None,
   showAnimations: true,
   useMonarch: false,
+  showMatchScore: true,
 };

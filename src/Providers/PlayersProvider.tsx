@@ -61,7 +61,11 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      const newStartingPlayerIndex = Math.floor(Math.random() * players.length);
+      // Use the saved starting player index if available, otherwise random
+      const newStartingPlayerIndex =
+        startingPlayerIndex >= 0
+          ? startingPlayerIndex
+          : Math.floor(Math.random() * players.length);
 
       players.forEach((player: Player) => {
         player.commanderDamage.map((damage) => {
