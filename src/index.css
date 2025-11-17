@@ -1,6 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-primary-main: #78A083;
+  --color-primary-dark: #608069;
+  --color-secondary-main: #5D7965;
+  --color-secondary-dark: #4a6151;
+  --color-background-default: #2E3041;
+  --color-background-spotlight: #777BA7;
+  --color-background-backdrop: rgba(0, 0, 0, 0.3);
+  --color-background-settings: rgba(0, 0, 0, 0.8);
+  --color-icons-dark: #000000;
+  --color-icons-light: #F9FFE3;
+  --color-icons-gold: #FFD700;
+  --color-text-primary: #F9FFE3;
+  --color-text-secondary: #c7ccb6;
+  --color-common-white: #F9FFE3;
+  --color-common-black: #000000;
+  --color-lifeCounter-text: rgba(0, 0, 0, 0.4);
+  --color-lifeCounter-lostWrapper: #000000;
+  --color-interface-loseButton-background: #43434380;
+  --color-interface-recentDifference-background: rgba(255, 255, 255, 0.6);
+  --color-interface-recentDifference-text: #333333;
+
+  --font-size-xxs: 0.625rem;
+  --line-height-xxs: 1rem;
+
+  --breakpoint-modalSm: 548px;
+}
 
 html {
   overflow: hidden;
@@ -14,7 +40,7 @@ html,
 body {
   height: 100%;
   position: relative;
-  background-color: theme('colors.background.default');
+  background-color: var(--color-background-default);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -31,7 +57,7 @@ code {
     monospace;
 }
 
-// hide scrollbar globally
+/* hide scrollbar globally */
 ::-webkit-scrollbar {
   display: none;
 }
@@ -43,18 +69,18 @@ code {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background-color: theme('colors.background.default');
+  background-color: var(--color-background-default);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.primary.dark');
+  background: var(--color-primary-dark);
   border-radius: 32px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: theme('colors.primary.main');
+  background: var(--color-primary-main);
 }
 
 * {
@@ -78,6 +104,67 @@ code {
   .show-scrollbar {
     scrollbar-width: auto;
     -ms-overflow-style: auto;
+  }
+
+  /* Grid template areas */
+  .grid-areas-onePlayerLandscape {
+    grid-template-areas: 'player0 player0';
+  }
+  .grid-areas-onePlayerPortrait {
+    grid-template-areas: 'player0' 'player0';
+  }
+  .grid-areas-twoPlayersOppositeLandscape {
+    grid-template-areas: 'player0' 'player1';
+  }
+  .grid-areas-twoPlayersOppositePortrait {
+    grid-template-areas: 'player0 player1' 'player0 player1';
+  }
+  .grid-areas-twoPlayersSameSideLandscape {
+    grid-template-areas: 'player0 player1';
+  }
+  .grid-areas-threePlayers {
+    grid-template-areas: 'player0 player0' 'player1 player2';
+  }
+  .grid-areas-threePlayersSide {
+    grid-template-areas: 'player0 player0 player0 player2' 'player1 player1 player1 player2';
+  }
+  .grid-areas-fourPlayerPortrait {
+    grid-template-areas: 'player0 player1 player1 player1 player1 player3' 'player0 player2 player2 player2 player2 player3';
+  }
+  .grid-areas-fourPlayer {
+    grid-template-areas: 'player0 player1' 'player2 player3';
+  }
+  .grid-areas-fivePlayers {
+    grid-template-areas: 'player0 player0 player0 player1 player1 player1' 'player2 player2 player3 player3 player4 player4';
+  }
+  .grid-areas-fivePlayersSide {
+    grid-template-areas: 'player0 player0 player0 player0 player0 player1 player1 player1 player1 player1 player2' 'player3 player3 player3 player3 player3 player4 player4 player4 player4 player4 player2';
+  }
+  .grid-areas-sixPlayers {
+    grid-template-areas: 'player0 player1 player2' 'player3 player4 player5';
+  }
+  .grid-areas-sixPlayersSide {
+    grid-template-areas: 'player0 player1 player1 player1 player1 player1 player1  player2 player2 player2 player2 player2 player2 player3' 'player0 player4 player4 player4 player4 player4 player4 player5 player5 player5 player5 player5 player5 player3';
+  }
+
+  /* Grid area assignments */
+  .grid-in-player0 {
+    grid-area: player0;
+  }
+  .grid-in-player1 {
+    grid-area: player1;
+  }
+  .grid-in-player2 {
+    grid-area: player2;
+  }
+  .grid-in-player3 {
+    grid-area: player3;
+  }
+  .grid-in-player4 {
+    grid-area: player4;
+  }
+  .grid-in-player5 {
+    grid-area: player5;
   }
 }
 
@@ -120,7 +207,7 @@ code {
 }
 
 .spotlight1 {
-  background: theme('colors.background.default');
+  background: var(--color-background-default);
 
   position: fixed;
   height: 10vmax;
@@ -142,7 +229,7 @@ code {
 }
 
 .spotlight2 {
-  background: theme('colors.background.default');
+  background: var(--color-background-default);
 
   position: fixed;
   height: 30vmax;
@@ -166,7 +253,7 @@ input[type='range'] {
   transition: background 0ms ease-in;
   margin: 10px 0;
   width: 100%;
-  background: theme('colors.secondary.main');
+  background: var(--color-secondary-main);
 }
 input[type='range']:focus {
   outline: none;
@@ -187,7 +274,7 @@ input[type='range']::-webkit-slider-thumb {
   height: 20px;
   width: 20px;
   border-radius: 100px;
-  background: theme('colors.primary.main');
+  background: var(--color-primary-main);
   cursor: pointer;
   margin-top: -3px;
 }
@@ -207,7 +294,7 @@ input[type='range']::-moz-range-thumb {
   height: 20px;
   width: 20px;
   border-radius: 100px;
-  background: theme('colors.primary.main');
+  background: var(--color-primary-main);
   cursor: pointer;
 }
 
@@ -225,7 +312,7 @@ input[type='range']::-ms-thumb {
   height: 20px;
   width: 20px;
   border-radius: 100px;
-  background: theme('colors.primary.main');
+  background: var(--color-primary-main);
   cursor: pointer;
   margin-top: -3px;
 }
