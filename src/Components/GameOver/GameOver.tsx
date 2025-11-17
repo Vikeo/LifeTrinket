@@ -2,7 +2,7 @@ import { twc } from 'react-twc';
 import { Player } from '../../Types/Player';
 
 const Overlay = twc.div`
-  absolute top-0 left-0 w-full h-full
+  fixed top-0 left-0 w-[100dvmax] h-[100dvmin]
   bg-black/80 backdrop-blur-sm
   flex items-center justify-center
   z-50

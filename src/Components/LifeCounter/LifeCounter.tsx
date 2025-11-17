@@ -24,7 +24,11 @@ const SettingsButtonTwc = twc.button<RotationButtonProps>((props) => [
     : 'top-1/4 right-[1vmax]',
 ]);
 
-const MatchScoreBadge = twc.div<RotationDivProps>((props) => [
+type MatchScoreBadgeProps = RotationDivProps & {
+  $useCommanderDamage: boolean;
+};
+
+const MatchScoreBadge = twc.div<MatchScoreBadgeProps>((props) => [
   'absolute flex items-center justify-center',
   'bg-black/70 backdrop-blur-sm',
   'rounded-full',
@@ -36,7 +40,9 @@ const MatchScoreBadge = twc.div<RotationDivProps>((props) => [
   'select-none webkit-user-select-none',
   props.$rotation === Rotation.Side || props.$rotation === Rotation.SideFlipped
     ? `left-[6.5vmax] bottom-[1vmax]`
-    : 'left-[0.5vmax] top-[11.5vmin]',
+    : props.$useCommanderDamage
+    ? 'left-[0.5vmax] top-[11.5vmin]'
+    : 'left-[0.5vmax] top-[1vmax]',
 ]);
 
 type SettingsButtonProps = {
@@ -234,6 +240,7 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
         {matchScore !== undefined && matchScore > 0 && (
           <MatchScoreBadge
             $rotation={player.settings.rotation}
+            $useCommanderDamage={player.settings.useCommanderDamage}
             style={{
               rotate:
                 player.settings.rotation === Rotation.Side ||
