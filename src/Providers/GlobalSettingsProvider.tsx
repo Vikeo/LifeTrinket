@@ -240,17 +240,20 @@ export const GlobalSettingsProvider = ({
 
     async function checkForNewVersion(source: 'settings' | 'start_menu') {
       try {
+        const token = import.meta.env.VITE_REPO_READ_ACCESS_TOKEN;
+        const headers: HeadersInit = {
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        };
+
+        // Only add authorization if token is available
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const result = await fetch(
           'https://api.github.com/repos/Vikeo/LifeTrinket/releases/latest',
-          {
-            headers: {
-              Authorization: `Bearer ${
-                import.meta.env.VITE_REPO_READ_ACCESS_TOKEN
-              }`,
-              Accept: 'application/vnd.github+json',
-              'X-GitHub-Api-Version': '2022-11-28',
-            },
-          }
+          { headers }
         );
         const data = await result.json();
 
