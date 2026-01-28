@@ -9,7 +9,8 @@ import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 const initializeTelemetry = () => {
   // Check if we have Faro configuration
   const faroUrl = import.meta.env.VITE_GRAFANA_FARO_URL;
-  const faroAppName = import.meta.env.VITE_GRAFANA_FARO_APP_NAME || 'LifeTrinket';
+  const faroAppName =
+    import.meta.env.VITE_GRAFANA_FARO_APP_NAME || 'LifeTrinket';
 
   // If no configuration, log to console instead (development mode)
   if (!faroUrl) {
@@ -40,7 +41,9 @@ const initializeTelemetry = () => {
     ],
   });
 
-  console.info('[Grafana Faro] Initialized successfully. Sending metrics to Grafana Cloud.');
+  console.info(
+    '[Grafana Faro] Initialized successfully. Sending metrics to Grafana Cloud.'
+  );
 
   return faro;
 };
