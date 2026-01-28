@@ -8,6 +8,11 @@ export const useMetrics = () => {
       return;
     }
 
+    // Convert all attribute values to strings (Faro only accepts strings in context)
+    const context = attributes ? Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [key, String(value)])
+    ) : undefined;
+
     // Push measurement to Faro
     faro.api.pushMeasurement(
       {
@@ -17,7 +22,7 @@ export const useMetrics = () => {
         },
       },
       {
-        context: attributes,
+        context,
       }
     );
   }, []);
@@ -28,6 +33,11 @@ export const useMetrics = () => {
       return;
     }
 
+    // Convert all attribute values to strings (Faro only accepts strings in context)
+    const context = attributes ? Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [key, String(value)])
+    ) : undefined;
+
     faro.api.pushMeasurement(
       {
         type: 'life_gained',
@@ -36,7 +46,7 @@ export const useMetrics = () => {
         },
       },
       {
-        context: attributes,
+        context,
       }
     );
   }, []);
@@ -47,6 +57,11 @@ export const useMetrics = () => {
       return;
     }
 
+    // Convert all attribute values to strings (Faro only accepts strings in context)
+    const context = attributes ? Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [key, String(value)])
+    ) : undefined;
+
     faro.api.pushMeasurement(
       {
         type: 'commander_damage_dealt',
@@ -55,7 +70,7 @@ export const useMetrics = () => {
         },
       },
       {
-        context: attributes,
+        context,
       }
     );
   }, []);
@@ -71,6 +86,11 @@ export const useMetrics = () => {
       return;
     }
 
+    // Convert all attribute values to strings (Faro only accepts strings in context)
+    const stringAttributes = attributes ? Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [key, String(value)])
+    ) : {};
+
     faro.api.pushMeasurement(
       {
         type: 'extra_counter_changed',
@@ -82,7 +102,7 @@ export const useMetrics = () => {
         context: {
           counter_type: counterType,
           direction,
-          ...attributes,
+          ...stringAttributes,
         },
       }
     );
@@ -94,10 +114,15 @@ export const useMetrics = () => {
       return;
     }
 
+    // Convert all attribute values to strings (Faro only accepts strings in context)
+    const stringAttributes = attributes ? Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [key, String(value)])
+    ) : {};
+
     // Track as an event for game start
     faro.api.pushEvent('game_started', {
-      player_count: playerCount,
-      ...attributes,
+      player_count: String(playerCount),
+      ...stringAttributes,
     });
   }, []);
 
