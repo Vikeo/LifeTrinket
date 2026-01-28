@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
+import { useMetrics } from '../../Hooks/useMetrics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Cog } from '../../Icons/generated';
@@ -127,6 +128,7 @@ const RECENT_DIFFERENCE_TTL = 3_000;
 const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings, playing } = useGlobalSettings();
+  const metrics = useMetrics();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
     undefined
   );
@@ -168,9 +170,18 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
     }
 
     recentDifferenceTimerRef.current = setTimeout(() => {
-      analytics.trackEvent('life_changed', {
-        lifeChangedAmount: recentDifference,
-      });
+      // Track life gained and lost separately for better analytics insights
+      if (recentDifference > 0) {
+        analytics.trackEvent('life_gained', {
+          amount: recentDifference,
+        });
+        metrics.trackLifeGained(recentDifference);
+      } else if (recentDifference < 0) {
+        analytics.trackEvent('life_lost', {
+          amount: Math.abs(recentDifference),
+        });
+        metrics.trackLifeLost(Math.abs(recentDifference));
+      }
       setRecentDifference(0);
     }, RECENT_DIFFERENCE_TTL);
 

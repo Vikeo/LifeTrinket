@@ -18,6 +18,8 @@
     "release": "bash scripts/create-release.sh"
   },
   "dependencies": {
+    "@grafana/faro-react": "^2.2.0",
+    "@grafana/faro-web-tracing": "^2.2.0",
     "firebase": "^12.6.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
