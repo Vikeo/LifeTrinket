@@ -12,6 +12,11 @@ on:
 jobs:
   lint_and_build:
     runs-on: ubuntu-latest
+    env:
+      VITE_REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
+      VITE_FIREBASE_ANALYTICS_API_KEY: ${{ secrets.FIREBASE_ANALYTICS_API_KEY }}
+      VITE_GRAFANA_FARO_URL: ${{ secrets.GRAFANA_FARO_URL }}
+      VITE_GRAFANA_FARO_APP_NAME: ${{ secrets.GRAFANA_FARO_APP_NAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

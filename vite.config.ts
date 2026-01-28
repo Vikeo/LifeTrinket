@@ -28,5 +28,11 @@ export default defineConfig({
     VITE_FIREBASE_ANALYTICS_API_KEY: JSON.stringify(
       process.env.VITE_FIREBASE_ANALYTICS_API_KEY
     ),
+    VITE_GRAFANA_FARO_URL: JSON.stringify(
+      process.env.VITE_GRAFANA_FARO_URL
+    ),
+    VITE_GRAFANA_FARO_APP_NAME: JSON.stringify(
+      process.env.VITE_GRAFANA_FARO_APP_NAME
+    ),
   },
 });
