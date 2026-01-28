@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
+import { useMetrics } from '../../../Hooks/useMetrics';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info, Trinket } from '../../../Icons/generated';
@@ -51,6 +52,7 @@ let tracked = false;
 const Start = () => {
   const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
+  const metrics = useMetrics();
   const {
     fullscreen,
     wakeLock,
@@ -168,6 +170,8 @@ const Start = () => {
       ...settings,
       isPWA,
     });
+
+    metrics.trackGameStarted(initialGameSettings.numberOfPlayers);
 
     try {
       if (settings.goFullscreenOnStart) {

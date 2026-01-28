@@ -1,6 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TwcComponentProps, twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
+import { useAnalytics } from '../../Hooks/useAnalytics';
+import { useMetrics } from '../../Hooks/useMetrics';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
@@ -14,6 +16,7 @@ export type RotationButtonProps = TwcComponentProps<'button'> & {
 };
 
 export const MAX_TAP_MOVE_DISTANCE = 20;
+const COMMANDER_DAMAGE_DEBOUNCE = 2_000;
 
 const CommanderDamageContainer = twc.div<RotationDivProps>((props) => [
   'flex flex-grow',
@@ -61,9 +64,41 @@ export const CommanderDamage = ({
   handleLifeChange,
 }: CommanderDamageButtonComponentProps) => {
   const { updatePlayer } = usePlayers();
+  const analytics = useAnalytics();
+  const metrics = useMetrics();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const damageTrackingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [downLongPressed, setDownLongPressed] = useState(false);
+  const [recentDamageChange, setRecentDamageChange] = useState(0);
   const downPositionRef = useRef({ x: 0, y: 0 });
+
+  // Track commander damage changes with debouncing
+  useEffect(() => {
+    if (recentDamageChange === 0) {
+      clearTimeout(damageTrackingTimerRef.current);
+      return;
+    }
+
+    damageTrackingTimerRef.current = setTimeout(() => {
+      if (recentDamageChange > 0) {
+        analytics.trackEvent('commander_damage_increased', {
+          amount: recentDamageChange,
+        });
+        metrics.trackCommanderDamage(recentDamageChange);
+      } else if (recentDamageChange < 0) {
+        analytics.trackEvent('commander_damage_decreased', {
+          amount: Math.abs(recentDamageChange),
+        });
+        // We don't track negative commander damage in metrics (damage removed is not a metric we want)
+      }
+      setRecentDamageChange(0);
+    }, COMMANDER_DAMAGE_DEBOUNCE);
+
+    return () => {
+      clearTimeout(damageTrackingTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recentDamageChange]);
 
   const handleCommanderDamageChange = (
     index: number,
@@ -85,6 +120,7 @@ export const CommanderDamage = ({
       };
       updatePlayer(updatedPlayer);
       handleLifeChange(player.lifeTotal - increment);
+      setRecentDamageChange(recentDamageChange + increment);
       return;
     }
     if (currentCommanderDamage.damageTotal === 0 && increment === -1) {
@@ -100,6 +136,7 @@ export const CommanderDamage = ({
     };
     updatePlayer(updatedPlayer);
     handleLifeChange(player.lifeTotal - increment);
+    setRecentDamageChange(recentDamageChange + increment);
   };
 
   const handleDownInput = ({ opponentIndex, isPartner, event }: InputProps) => {
