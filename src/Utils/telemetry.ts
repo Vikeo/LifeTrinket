@@ -4,6 +4,7 @@ import {
   ReactIntegration,
 } from '@grafana/faro-react';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
+import { UserActionInstrumentation } from '@grafana/faro-web-sdk';
 
 // List of allowed origins for telemetry
 // Only metrics from these domains will be sent to Grafana
@@ -53,6 +54,9 @@ const initializeTelemetry = () => {
 
       // Tracing package to get end-to-end visibility for HTTP requests
       new TracingInstrumentation(),
+
+      // User actions instrumentation for tracking user interactions
+      new UserActionInstrumentation(),
 
       // React integration for component error boundaries
       // Note: We don't use React Router, so we skip the router option

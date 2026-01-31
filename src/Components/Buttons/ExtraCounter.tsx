@@ -3,6 +3,7 @@ import { twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useMetrics } from '../../Hooks/useMetrics';
+import { useUserActions } from '../../Hooks/useUserActions';
 import { CounterType, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
 import { MAX_TAP_MOVE_DISTANCE } from './CommanderDamage';
@@ -63,6 +64,7 @@ const ExtraCounter = ({
 }: ExtraCounterProps) => {
   const analytics = useAnalytics();
   const metrics = useMetrics();
+  const userActions = useUserActions();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const counterTrackingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [timeoutFinished, setTimeoutFinished] = useState(false);
@@ -79,12 +81,20 @@ const ExtraCounter = ({
 
     counterTrackingTimerRef.current = setTimeout(() => {
       if (recentCounterChange > 0) {
+        // Start user action first to capture measurements within its context
+        userActions.trackCounterChangeAction(type, recentCounterChange, playerIndex);
+
+        // Then push measurement and event (these will be associated with the user action)
         analytics.trackEvent('extra_counter_increased', {
           amount: recentCounterChange,
           counterType: type,
         });
         metrics.trackExtraCounterChange(recentCounterChange, type, 'increased');
       } else if (recentCounterChange < 0) {
+        // Start user action first to capture measurements within its context
+        userActions.trackCounterChangeAction(type, recentCounterChange, playerIndex);
+
+        // Then push measurement and event (these will be associated with the user action)
         analytics.trackEvent('extra_counter_decreased', {
           amount: Math.abs(recentCounterChange),
           counterType: type,
