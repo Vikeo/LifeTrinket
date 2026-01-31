@@ -3,6 +3,7 @@ import { twc } from 'react-twc';
 import { createInitialPlayers } from '../../../Data/getInitialPlayers';
 import { useAnalytics } from '../../../Hooks/useAnalytics';
 import { useMetrics } from '../../../Hooks/useMetrics';
+import { useUserActions } from '../../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../../Hooks/usePlayers';
 import { Cog, Info, Trinket } from '../../../Icons/generated';
@@ -53,6 +54,7 @@ const Start = () => {
   const { setPlayers } = usePlayers();
   const analytics = useAnalytics();
   const metrics = useMetrics();
+  const userActions = useUserActions();
   const {
     fullscreen,
     wakeLock,
@@ -172,6 +174,10 @@ const Start = () => {
     });
 
     metrics.trackGameStarted(initialGameSettings.numberOfPlayers);
+    userActions.trackGameStartAction(
+      initialGameSettings.numberOfPlayers,
+      initialGameSettings.startingLifeTotal
+    );
 
     try {
       if (settings.goFullscreenOnStart) {

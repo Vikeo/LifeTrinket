@@ -3,6 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useMetrics } from '../../Hooks/useMetrics';
+import { useUserActions } from '../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Cog } from '../../Icons/generated';
@@ -129,6 +130,7 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
   const { settings, playing } = useGlobalSettings();
   const metrics = useMetrics();
+  const userActions = useUserActions();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
     undefined
   );
@@ -150,12 +152,14 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
       e.event.stopPropagation();
       analytics.trackEvent('open_player_menu_swipe');
       metrics.trackEvent('open_player_menu_swipe');
+      userActions.trackMenuInteraction('player_menu', 'open_swipe');
       setShowPlayerMenu(true);
     },
     onSwipedUp: (e) => {
       e.event.stopPropagation();
       analytics.trackEvent('close_player_menu_swipe');
       metrics.trackEvent('close_player_menu_swipe');
+      userActions.trackMenuInteraction('player_menu', 'close_swipe');
       setShowPlayerMenu(false);
     },
 
@@ -174,11 +178,19 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
     recentDifferenceTimerRef.current = setTimeout(() => {
       // Track life gained and lost separately for better analytics insights
       if (recentDifference > 0) {
+        // Start user action first to capture the measurement within its context
+        userActions.trackLifeChangeAction(recentDifference, player.index);
+
+        // Then push measurement and event (these will be associated with the user action)
         analytics.trackEvent('life_gained', {
           amount: recentDifference,
         });
         metrics.trackLifeGained(recentDifference);
       } else if (recentDifference < 0) {
+        // Start user action first to capture the measurement within its context
+        userActions.trackLifeChangeAction(recentDifference, player.index);
+
+        // Then push measurement and event (these will be associated with the user action)
         analytics.trackEvent('life_lost', {
           amount: Math.abs(recentDifference),
         });
@@ -267,6 +279,7 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
             onClick={() => {
               analytics.trackEvent('open_player_menu_button');
               metrics.trackEvent('open_player_menu_button');
+              userActions.trackMenuInteraction('player_menu', 'open_button');
               setShowPlayerMenu(!showPlayerMenu);
             }}
             rotation={player.settings.rotation}

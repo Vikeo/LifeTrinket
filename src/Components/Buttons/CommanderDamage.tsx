@@ -3,6 +3,7 @@ import { TwcComponentProps, twc } from 'react-twc';
 import { decrementTimeoutMs } from '../../Data/constants';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useMetrics } from '../../Hooks/useMetrics';
+import { useUserActions } from '../../Hooks/useUserActions';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Player, Rotation } from '../../Types/Player';
 import { OutlinedText } from '../Misc/OutlinedText';
@@ -66,6 +67,7 @@ export const CommanderDamage = ({
   const { updatePlayer } = usePlayers();
   const analytics = useAnalytics();
   const metrics = useMetrics();
+  const userActions = useUserActions();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const damageTrackingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [downLongPressed, setDownLongPressed] = useState(false);
@@ -81,6 +83,7 @@ export const CommanderDamage = ({
 
     damageTrackingTimerRef.current = setTimeout(() => {
       if (recentDamageChange > 0) {
+        // User action is started when damage is dealt (in handleCommanderDamageChange)
         analytics.trackEvent('commander_damage_increased', {
           amount: recentDamageChange,
         });
@@ -106,6 +109,17 @@ export const CommanderDamage = ({
     isPartner: boolean
   ) => {
     const currentCommanderDamage = player.commanderDamage[index];
+
+    // Start user action FIRST if this is damage being dealt (positive increment)
+    if (increment > 0) {
+      userActions.trackCommanderDamageAction(
+        increment,
+        index,
+        player.index,
+        isPartner
+      );
+    }
+
     if (isPartner) {
       if (currentCommanderDamage.partnerDamageTotal === 0 && increment === -1) {
         return;
