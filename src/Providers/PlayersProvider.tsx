@@ -2,24 +2,49 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Player } from '../Types/Player';
 import { PlayersContextType, PlayersContext } from '../Contexts/PlayersContext';
 import { InitialGameSettings } from '../Types/Settings';
+import type { SharedGameState } from '../Types/SharedState';
 
-export const PlayersProvider = ({ children }: { children: ReactNode }) => {
-  const savedPlayers = localStorage.getItem('players');
+export const PlayersProvider = ({
+  children,
+  sharedState,
+}: {
+  children: ReactNode;
+  sharedState?: SharedGameState | null;
+}) => {
+  // Prioritize shared state over localStorage
+  const savedPlayers = sharedState?.players || localStorage.getItem('players');
+  const savedStartingPlayerIndex =
+    sharedState?.startingPlayerIndex ?? localStorage.getItem('startingPlayerIndex');
 
-  const savedStartingPlayerIndex = localStorage.getItem('startingPlayerIndex');
-
-  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(
-    savedStartingPlayerIndex ? parseInt(savedStartingPlayerIndex) : -1
-  );
+  const [startingPlayerIndex, setStartingPlayerIndex] = useState<number>(() => {
+    if (sharedState?.startingPlayerIndex !== undefined) {
+      return sharedState.startingPlayerIndex;
+    }
+    if (savedStartingPlayerIndex !== null) {
+      return typeof savedStartingPlayerIndex === 'number'
+        ? savedStartingPlayerIndex
+        : parseInt(savedStartingPlayerIndex);
+    }
+    return -1;
+  });
 
   const setStartingPlayerIndexAndLocalStorage = useCallback((index: number) => {
     setStartingPlayerIndex(index);
     localStorage.setItem('startingPlayerIndex', String(index));
   }, []);
 
-  const [players, setPlayers] = useState<Player[]>(
-    savedPlayers ? JSON.parse(savedPlayers) : []
-  );
+  const [players, setPlayers] = useState<Player[]>(() => {
+    if (sharedState?.players) {
+      return sharedState.players;
+    }
+    if (typeof savedPlayers === 'string') {
+      return JSON.parse(savedPlayers);
+    }
+    if (Array.isArray(savedPlayers)) {
+      return savedPlayers;
+    }
+    return [];
+  });
 
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));

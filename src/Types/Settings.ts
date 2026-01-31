@@ -41,7 +41,7 @@ export type InitialGameSettings = {
 export const initialGameSettingsSchema = z.object({
   startingLifeTotal: z.number().min(1).max(200),
   useCommanderDamage: z.boolean(),
-  gameFormat: z.nativeEnum(GameFormat),
+  gameFormat: z.nativeEnum(GameFormat).optional(),
   numberOfPlayers: z.number().min(1).max(6),
   orientation: z.nativeEnum(Orientation),
 });

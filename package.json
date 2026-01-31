@@ -1,7 +1,7 @@
 {
   "name": "life-trinket",
   "private": true,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "commonjs",
   "engines": {
     "node": ">=20",
@@ -21,6 +21,8 @@
     "@grafana/faro-react": "^2.2.0",
     "@grafana/faro-web-tracing": "^2.2.0",
     "firebase": "^12.6.0",
+    "lz-string": "^1.5.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-screen-wake-lock": "^3.1.1",
@@ -33,7 +35,9 @@
     "@eslint/js": "^9.39.1",
     "@svgr/cli": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.17",
+    "@types/lz-string": "^1.5.0",
     "@types/prop-types": "^15.7.15",
+    "@types/qrcode.react": "^3.0.0",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@types/semver": "^7.7.1",
