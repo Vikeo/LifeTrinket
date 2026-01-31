@@ -1,12 +1,16 @@
+import { useRef, useState } from 'react';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
+import { usePlayers } from '../../Hooks/usePlayers';
 import { PreStartMode } from '../../Types/Settings';
 import { InstallPWAButton } from '../Misc/InstallPWAButton';
 import { Separator } from '../Misc/Separator';
 import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
 import { Dialog } from './Dialog';
+import { ShareDialog } from './ShareDialog';
+import { generateShareUrl } from '../../Utils/shareState';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
@@ -22,11 +26,36 @@ export const SettingsDialog = ({
 }: {
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }) => {
-  const { settings, setSettings, isPWA, version } = useGlobalSettings();
+  const { settings, setSettings, isPWA, version, initialGameSettings, gameScore } = useGlobalSettings();
+  const { players, startingPlayerIndex } = usePlayers();
   const analytics = useAnalytics();
 
+  const shareDialogRef = useRef<HTMLDialogElement | null>(null);
+  const [shareUrl, setShareUrl] = useState<string>('');
+
+  const handleShareGame = () => {
+    try {
+      const url = generateShareUrl(
+        players,
+        initialGameSettings,
+        startingPlayerIndex,
+        gameScore,
+        version.installedVersion
+      );
+      setShareUrl(url);
+      analytics.trackEvent('game_shared');
+      shareDialogRef.current?.showModal();
+    } catch (error) {
+      console.error('Failed to generate share URL:', error);
+      analytics.trackEvent('game_share_failed');
+    }
+  };
+
+  const hasGameToShare = players && players.length > 0;
+
   return (
-    <Dialog id="settings" title="⚙️ Settings ⚙️" dialogRef={dialogRef}>
+    <>
+      <Dialog id="settings" title="⚙️ Settings ⚙️" dialogRef={dialogRef}>
       <div className="flex flex-col mb-2 w-full">
         <div className="text-text-primary flex items-center gap-2">
           Current version: {version.installedVersion}{' '}
@@ -91,6 +120,44 @@ export const SettingsDialog = ({
           </>
         )}
       </div>
+      <Separator height="1px" />
+
+      {/* Share Game Section */}
+      <SettingContainer>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between items-center">
+            <label>Share Game</label>
+            <button
+              onClick={handleShareGame}
+              disabled={!hasGameToShare}
+              className="px-4 py-2 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                />
+              </svg>
+              Share via QR
+            </button>
+          </div>
+          <Description>
+            Generate a QR code to share your current game state with other players. They can scan it to load the exact same game.
+            {!hasGameToShare && (
+              <span className="block mt-1 text-red-500">
+                Start a game first to enable sharing.
+              </span>
+            )}
+          </Description>
+        </div>
+      </SettingContainer>
       <Separator height="1px" />
 
       <SettingContainer>
@@ -316,5 +383,8 @@ export const SettingsDialog = ({
       )}
       <Separator height="1px" />
     </Dialog>
+
+    <ShareDialog dialogRef={shareDialogRef} shareUrl={shareUrl} />
+    </>
   );
 };

@@ -17,11 +17,14 @@ import {
   settingsSchema,
 } from '../Types/Settings';
 import { gte as semverGreaterThanOrEqual } from 'semver';
+import type { SharedGameState } from '../Types/SharedState';
 
 export const GlobalSettingsProvider = ({
   children,
+  sharedState,
 }: {
   children: ReactNode;
+  sharedState?: SharedGameState | null;
 }) => {
   const analytics = useAnalytics();
   const metrics = useMetrics();
@@ -41,9 +44,13 @@ export const GlobalSettingsProvider = ({
   };
 
   const savedPlaying = localStorage.getItem('playing');
-  const [playing, setPlaying] = useState<boolean>(
-    savedPlaying ? savedPlaying === 'true' : false
-  );
+  const [playing, setPlaying] = useState<boolean>(() => {
+    // If shared state exists, auto-start the game
+    if (sharedState) {
+      return true;
+    }
+    return savedPlaying ? savedPlaying === 'true' : false;
+  });
   const setPlayingAndLocalStorage = (playing: boolean) => {
     setPlaying(playing);
     localStorage.setItem('playing', String(playing));
@@ -55,9 +62,13 @@ export const GlobalSettingsProvider = ({
   );
 
   const savedShowPlay = localStorage.getItem('showPlay');
-  const [showPlay, setShowPlay] = useState<boolean>(
-    savedShowPlay ? savedShowPlay === 'true' : false
-  );
+  const [showPlay, setShowPlay] = useState<boolean>(() => {
+    // If shared state exists, show the play view
+    if (sharedState) {
+      return true;
+    }
+    return savedShowPlay ? savedShowPlay === 'true' : false;
+  });
   const setShowPlayAndLocalStorage = (showPlay: boolean) => {
     setShowPlay(showPlay);
     localStorage.setItem('showPlay', String(showPlay));
@@ -88,6 +99,10 @@ export const GlobalSettingsProvider = ({
 
   const [initialGameSettings, setInitialGameSettings] =
     useState<InitialGameSettings>(() => {
+      // Prioritize shared state
+      if (sharedState?.initialGameSettings) {
+        return sharedState.initialGameSettings;
+      }
       if (!savedGameSettings) return defaultInitialGameSettings;
       const parsed = initialGameSettingsSchema.safeParse(
         JSON.parse(savedGameSettings)
@@ -110,9 +125,13 @@ export const GlobalSettingsProvider = ({
   };
 
   const savedGameScore = localStorage.getItem('gameScore');
-  const [gameScore, setGameScore] = useState<GameScore>(
-    savedGameScore ? JSON.parse(savedGameScore) : {}
-  );
+  const [gameScore, setGameScore] = useState<GameScore>(() => {
+    // Prioritize shared state
+    if (sharedState?.gameScore) {
+      return sharedState.gameScore;
+    }
+    return savedGameScore ? JSON.parse(savedGameScore) : {};
+  });
   const setGameScoreAndLocalStorage = (score: GameScore) => {
     setGameScore(score);
     localStorage.setItem('gameScore', JSON.stringify(score));
@@ -149,6 +168,18 @@ export const GlobalSettingsProvider = ({
   if (active && released === undefined) {
     request();
   }
+
+  // Track when a game is loaded from shared state
+  useEffect(() => {
+    if (sharedState) {
+      analytics.trackEvent('game_loaded_from_share', {
+        shared_version: sharedState.version,
+        player_count: sharedState.players.length,
+        has_game_score: !!sharedState.gameScore,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount - sharedState and analytics are stable
 
   const ctxValue = useMemo((): GlobalSettingsContextType => {
     const removeLocalStorage = async () => {
