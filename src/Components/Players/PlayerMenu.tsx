@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
+import { useMetrics } from '../../Hooks/useMetrics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { useSafeRotate } from '../../Hooks/useSafeRotate';
@@ -127,6 +128,7 @@ const PlayerMenu = ({
   } = useGlobalSettings();
 
   const analytics = useAnalytics();
+  const metrics = useMetrics();
 
   const { updatePlayer, resetCurrentGame, players } = usePlayers();
 
@@ -163,6 +165,7 @@ const PlayerMenu = ({
     }
 
     analytics.trackEvent('reset_game');
+    metrics.trackEvent('reset_game');
   };
 
   const handleGoToStart = () => {
@@ -221,6 +224,7 @@ const PlayerMenu = ({
         <button
           onClick={() => {
             analytics.trackEvent('close_player_menu_button');
+            metrics.trackEvent('close_player_menu_button');
             setShowPlayerMenu(false);
           }}
           className="flex absolute top-2 right-2 z-10"
@@ -238,6 +242,9 @@ const PlayerMenu = ({
                 value={player.color}
                 onClick={() => {
                   analytics.trackEvent('color_picker_opened', {
+                    player: player.index,
+                  });
+                  metrics.trackEvent('color_picker_opened', {
                     player: player.index,
                   });
                 }}
@@ -268,6 +275,9 @@ const PlayerMenu = ({
                   }
                   onChange={(e) => {
                     analytics.trackEvent('toggle_partner', {
+                      checked: e.target.checked,
+                    });
+                    metrics.trackEvent('toggle_partner', {
                       checked: e.target.checked,
                     });
                     handleSettingsChange(e);
@@ -303,6 +313,9 @@ const PlayerMenu = ({
                   analytics.trackEvent('toggle_poison', {
                     checked: e.target.checked,
                   });
+                  metrics.trackEvent('toggle_poison', {
+                    checked: e.target.checked,
+                  });
                   handleSettingsChange(e);
                 }}
                 aria-checked={player.settings.usePoison}
@@ -331,6 +344,9 @@ const PlayerMenu = ({
                 }
                 onChange={(e) => {
                   analytics.trackEvent('toggle_energy', {
+                    checked: e.target.checked,
+                  });
+                  metrics.trackEvent('toggle_energy', {
                     checked: e.target.checked,
                   });
                   handleSettingsChange(e);
@@ -363,6 +379,9 @@ const PlayerMenu = ({
                   analytics.trackEvent('toggle_experience', {
                     checked: e.target.checked,
                   });
+                  metrics.trackEvent('toggle_experience', {
+                    checked: e.target.checked,
+                  });
                   handleSettingsChange(e);
                 }}
                 aria-checked={player.settings.useExperience}
@@ -391,6 +410,9 @@ const PlayerMenu = ({
                 }
                 onChange={(e) => {
                   analytics.trackEvent('toggle_monarch', {
+                    checked: e.target.checked,
+                  });
+                  metrics.trackEvent('toggle_monarch', {
                     checked: e.target.checked,
                   });
                   setSettings({ ...settings, useMonarch: e.target.checked });
@@ -501,6 +523,9 @@ const PlayerMenu = ({
                 } else {
                   if (onForfeit) {
                     analytics.trackEvent('forfeit_game', {
+                      player: player.index,
+                    });
+                    metrics.trackEvent('forfeit_game', {
                       player: player.index,
                     });
                     onForfeit();
@@ -619,6 +644,9 @@ const PlayerMenu = ({
                   onClick={() => {
                     if (onForfeit) {
                       analytics.trackEvent('forfeit_game', {
+                        player: player.index,
+                      });
+                      metrics.trackEvent('forfeit_game', {
                         player: player.index,
                       });
                       onForfeit();

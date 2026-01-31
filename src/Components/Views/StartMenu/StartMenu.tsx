@@ -204,6 +204,12 @@ const Start = () => {
       isPWA,
     });
 
+    metrics.trackEvent('game_resumed', {
+      ...initialGameSettings,
+      ...settings,
+      isPWA,
+    });
+
     try {
       if (settings.goFullscreenOnStart) {
         fullscreen.enableFullscreen();

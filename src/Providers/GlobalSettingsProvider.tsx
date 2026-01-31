@@ -7,6 +7,7 @@ import {
   SavedGame,
 } from '../Contexts/GlobalSettingsContext';
 import { useAnalytics } from '../Hooks/useAnalytics';
+import { useMetrics } from '../Hooks/useMetrics';
 import {
   InitialGameSettings,
   Settings,
@@ -23,6 +24,7 @@ export const GlobalSettingsProvider = ({
   children: ReactNode;
 }) => {
   const analytics = useAnalytics();
+  const metrics = useMetrics();
 
   const localSavedGame = localStorage.getItem('savedGame');
   const [savedGame, setCurrentGame] = useState<SavedGame>(
@@ -171,6 +173,9 @@ export const GlobalSettingsProvider = ({
         analytics.trackEvent('go_to_start', {
           playersBeforeReset: currentPlayers,
         });
+        metrics.trackEvent('go_to_start', {
+          playersBeforeReset: currentPlayers,
+        });
       }
 
       await removeLocalStorage();
@@ -250,6 +255,11 @@ export const GlobalSettingsProvider = ({
           installedVersion: import.meta.env.VITE_APP_VERSION,
         });
 
+        metrics.trackEvent(`${source}_has_new_version`, {
+          remoteVersion: data.name,
+          installedVersion: import.meta.env.VITE_APP_VERSION,
+        });
+
         setIsLatestVersion(false);
       } catch (error) {
         console.error('error getting latest version string', error);
@@ -310,6 +320,7 @@ export const GlobalSettingsProvider = ({
     remoteVersion,
     isLatestVersion,
     analytics,
+    metrics,
     gameScore,
   ]);
 
