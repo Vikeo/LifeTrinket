@@ -5,8 +5,27 @@ import {
 } from '@grafana/faro-react';
 import { TracingInstrumentation } from '@grafana/faro-web-tracing';
 
+// List of allowed origins for telemetry
+// Only metrics from these domains will be sent to Grafana
+const ALLOWED_ORIGINS = [
+  'https://lifetrinket.com',
+  'https://www.lifetrinket.com',
+  'https://life-trinket.web.app',
+  'https://life-trinket.firebaseapp.com',
+];
+
 // Initialize Grafana Faro for frontend observability
 const initializeTelemetry = () => {
+  const currentOrigin = window.location.origin;
+
+  // Check if current origin is allowed
+  if (!ALLOWED_ORIGINS.includes(currentOrigin)) {
+    console.info(
+      `[Grafana Faro] Disabled: Origin "${currentOrigin}" is not in the allowed list. Telemetry will not be sent.`
+    );
+    return null;
+  }
+
   // Check if we have Faro configuration
   const faroUrl = import.meta.env.VITE_GRAFANA_FARO_URL;
   const faroAppName =
