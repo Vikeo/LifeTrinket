@@ -10,7 +10,6 @@ import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
 import { Dialog } from './Dialog';
 import { ShareDialog } from './ShareDialog';
-import { generateShareUrl } from '../../Utils/shareState';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
@@ -33,27 +32,19 @@ export const SettingsDialog = ({
     version,
     initialGameSettings,
     gameScore,
+    lifeHistory,
   } = useGlobalSettings();
   const { players, startingPlayerIndex } = usePlayers();
   const analytics = useAnalytics();
 
   const shareDialogRef = useRef<HTMLDialogElement | null>(null);
-  const [shareUrl, setShareUrl] = useState<string>('');
 
   const handleShareGame = () => {
     try {
-      const url = generateShareUrl(
-        players,
-        initialGameSettings,
-        startingPlayerIndex,
-        gameScore,
-        version.installedVersion
-      );
-      setShareUrl(url);
       analytics.trackEvent('game_shared');
       shareDialogRef.current?.showModal();
     } catch (error) {
-      console.error('Failed to generate share URL:', error);
+      console.error('Failed to open share dialog:', error);
       analytics.trackEvent('game_share_failed');
     }
   };
@@ -395,7 +386,15 @@ export const SettingsDialog = ({
         <Separator height="1px" />
       </Dialog>
 
-      <ShareDialog dialogRef={shareDialogRef} shareUrl={shareUrl} />
+      <ShareDialog
+        dialogRef={shareDialogRef}
+        players={players}
+        initialGameSettings={initialGameSettings}
+        startingPlayerIndex={startingPlayerIndex}
+        gameScore={gameScore}
+        lifeHistory={lifeHistory}
+        version={version.installedVersion}
+      />
     </>
   );
 };

@@ -145,6 +145,10 @@ export const GlobalSettingsProvider = ({
 
   const savedLifeHistory = localStorage.getItem('lifeHistory');
   const [lifeHistory, setLifeHistory] = useState<LifeHistoryEvent[]>(() => {
+    // Prioritize shared state
+    if (sharedState?.lifeHistory) {
+      return sharedState.lifeHistory;
+    }
     if (!savedLifeHistory) return [];
     const parsed = lifeHistorySchema.safeParse(JSON.parse(savedLifeHistory));
     if (!parsed.success) {
@@ -200,7 +204,18 @@ export const GlobalSettingsProvider = ({
         shared_version: sharedState.version,
         player_count: sharedState.players.length,
         has_game_score: !!sharedState.gameScore,
+        has_life_history:
+          !!sharedState.lifeHistory && sharedState.lifeHistory.length > 0,
+        life_history_events: sharedState.lifeHistory?.length || 0,
       });
+
+      // Persist shared life history to localStorage
+      if (sharedState.lifeHistory && sharedState.lifeHistory.length > 0) {
+        localStorage.setItem(
+          'lifeHistory',
+          JSON.stringify(sharedState.lifeHistory)
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount - sharedState and analytics are stable

@@ -1,21 +1,66 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Dialog } from './Dialog';
 import { useAnalytics } from '../../Hooks/useAnalytics';
+import { generateShareUrl } from '../../Utils/shareState';
+import type { Player, LifeHistoryEvent } from '../../Types/Player';
+import type { InitialGameSettings } from '../../Types/Settings';
+import type { GameScore } from '../../Contexts/GlobalSettingsContext';
 
 export const ShareDialog: React.FC<{
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
-  shareUrl: string;
-}> = ({ dialogRef, shareUrl }) => {
+  players: Player[];
+  initialGameSettings: InitialGameSettings;
+  startingPlayerIndex: number;
+  gameScore?: GameScore;
+  lifeHistory?: LifeHistoryEvent[];
+  version: string;
+}> = ({
+  dialogRef,
+  players,
+  initialGameSettings,
+  startingPlayerIndex,
+  gameScore,
+  lifeHistory,
+  version,
+}) => {
   const analytics = useAnalytics();
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>(
+    'idle'
+  );
+  const [includeGameScore, setIncludeGameScore] = useState<boolean>(true);
+  const [includeLifeHistory, setIncludeLifeHistory] = useState<boolean>(true);
   const urlInputRef = useRef<HTMLInputElement>(null);
+
+  // Generate share URL based on checkbox selections
+  const shareUrl = useMemo(() => {
+    return generateShareUrl(
+      players,
+      initialGameSettings,
+      startingPlayerIndex,
+      includeGameScore ? gameScore : undefined,
+      includeLifeHistory ? lifeHistory : undefined,
+      version
+    );
+  }, [
+    players,
+    initialGameSettings,
+    startingPlayerIndex,
+    gameScore,
+    lifeHistory,
+    version,
+    includeGameScore,
+    includeLifeHistory,
+  ]);
 
   const handleCopyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopyStatus('copied');
-      analytics.trackEvent('share_link_copied');
+      analytics.trackEvent('share_link_copied', {
+        include_game_score: includeGameScore,
+        include_life_history: includeLifeHistory,
+      });
 
       // Reset status after 2 seconds
       setTimeout(() => {
@@ -60,6 +105,37 @@ export const ShareDialog: React.FC<{
           <p className="text-sm text-text-secondary text-center">
             Scan this QR code to load the game
           </p>
+        </div>
+
+        {/* Share options checkboxes */}
+        <div className="flex flex-col gap-2 px-4 py-3 bg-background-paper rounded-lg border border-divider">
+          <p className="text-sm font-medium text-text-primary mb-1">
+            Include in share:
+          </p>
+          <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeGameScore}
+              onChange={(e) => setIncludeGameScore(e.target.checked)}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <span>Match Score</span>
+          </label>
+
+          <label className="flex items-center gap-2 text-sm text-text-primary cursor-pointer">
+            <input
+              type="checkbox"
+              checked={includeLifeHistory}
+              onChange={(e) => setIncludeLifeHistory(e.target.checked)}
+              className="w-4 h-4 cursor-pointer"
+            />
+            <span>Life History</span>
+            {lifeHistory && lifeHistory.length > 0 && (
+              <span className="text-xs text-text-secondary">
+                ({lifeHistory.length} events)
+              </span>
+            )}
+          </label>
         </div>
 
         {/* URL Display and Copy */}

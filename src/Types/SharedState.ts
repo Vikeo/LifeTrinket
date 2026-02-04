@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { initialGameSettingsSchema } from './Settings';
+import { initialGameSettingsSchema, lifeHistoryEventSchema } from './Settings';
 import { CounterType, Rotation } from './Player';
 
 // Zod schemas for Player types
@@ -45,6 +45,7 @@ export const sharedGameStateSchema = z.object({
   initialGameSettings: initialGameSettingsSchema,
   players: z.array(playerSchema),
   gameScore: gameScoreSchema.optional(),
+  lifeHistory: z.array(lifeHistoryEventSchema).optional(),
   startingPlayerIndex: z.number(),
   timestamp: z.number(),
 });
