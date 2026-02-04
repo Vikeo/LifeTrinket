@@ -213,15 +213,12 @@ export const GlobalSettingsProvider = ({
       localStorage.removeItem('showPlay');
       localStorage.removeItem('preStartComplete');
       localStorage.removeItem('gameScore');
-      // Note: lifeHistory is intentionally NOT removed here - it persists between games
-      // and is only cleared when starting a new game
 
       setPlaying(false);
       setShowPlay(false);
       setPreStartCompleted(false);
       setSettings({ ...settings, useMonarch: false });
       setGameScore({});
-      // Note: lifeHistory is intentionally NOT cleared here - it persists until a new game starts
     };
 
     const goToStart = async () => {

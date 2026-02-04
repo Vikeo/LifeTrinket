@@ -192,7 +192,6 @@ const Start = () => {
       wakeLock.request();
     }
 
-    // Clear life history when starting a new game
     clearLifeHistory();
 
     setInitialGameSettings(initialGameSettings);
