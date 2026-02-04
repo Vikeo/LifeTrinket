@@ -1,20 +1,75 @@
 {
   "short_name": "Life Trinket",
-  "name": "Life Trinket - A simple life counter for Magic: The Gathering",
+  "name": "Life Trinket - MTG Life Counter & Commander Damage Tracker",
+  "description": "Free offline MTG life counter PWA for up to 6 players. Track life totals, commander damage, partner damage, poison, energy, and experience counters. Share games via QR code. Perfect for Commander/EDH games.",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "categories": [
+    "games",
+    "utilities",
+    "entertainment"
+  ],
+  "dir": "ltr",
+  "lang": "en-US",
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "screenshots": [
+    {
+      "src": "screenshot.png",
+      "type": "image/png",
+      "sizes": "3024x1724",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start 4 Player Game",
+      "short_name": "4 Players",
+      "description": "Quick start Commander game with 4 players",
+      "url": "/?players=4",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Start 2 Player Game",
+      "short_name": "2 Players",
+      "description": "Quick start game with 2 players",
+      "url": "/?players=2",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }

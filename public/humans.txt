@@ -1,0 +1,18 @@
+/* TEAM */
+Developer: Viktor Raadberg
+Site: https://life-trinket.web.app/
+Location: Sweden
+
+/* THANKS */
+Magic: The Gathering players everywhere
+The React & Vite community
+Contributors and users who provide feedback
+
+/* SITE */
+Last update: 2026/02/04
+Standards: HTML5, CSS3, JavaScript ES2020+
+Components: React 19, Vite, Tailwind CSS v4
+Software: TypeScript, PWA
+Technologies: Service Workers, LocalStorage, Firebase Hosting
+Accessibility: WCAG 2.1 AA compliant color contrast
+SEO: Structured data, Open Graph, Twitter Cards, sitemap.xml

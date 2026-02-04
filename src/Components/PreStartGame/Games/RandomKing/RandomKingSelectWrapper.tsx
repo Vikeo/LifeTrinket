@@ -68,16 +68,21 @@ export const RandomKingRandomizer = () => {
 
   const gradientColors = players.map((player) => player.color).join(', ');
 
+  const handleStop = () => {
+    if (randomIntervalRef.current) {
+      clearInterval(randomIntervalRef.current);
+      randomIntervalRef.current = null;
+    }
+    setRandomizingPlayer(false);
+    setPreStartCompleted(true);
+  };
+
   return (
     <div
-      className="absolute flex justify-center items-center h-screen w-screen portrait:h-[100vw] portrait:w-[100vh] z-40 cursor-pointer text-5xl"
-      onClick={() => {
-        if (randomIntervalRef.current) {
-          clearInterval(randomIntervalRef.current);
-          randomIntervalRef.current = null;
-        }
-        setRandomizingPlayer(false);
-        setPreStartCompleted(true);
+      className="absolute flex justify-center items-center h-screen w-screen portrait:h-[100vw] portrait:w-[100vh] z-40 cursor-pointer text-5xl touch-none"
+      onPointerDown={(e) => {
+        e.preventDefault();
+        handleStop();
       }}
     >
       <div className="absolute flex top-[30%] justify-center items-center px-8 py-4">

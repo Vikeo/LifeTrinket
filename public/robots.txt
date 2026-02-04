@@ -1,3 +1,28 @@
 # https://www.robotstxt.org/robotstxt.html
+# Life Trinket - MTG Life Counter
+
+# Allow all crawlers
 User-agent: *
 Disallow:
+
+# Allow AI crawlers for better discoverability
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Sitemap
+Sitemap: https://life-trinket.web.app/sitemap.xml
