@@ -2,7 +2,10 @@ import { useMemo } from 'react';
 import { LifeTrinket } from './Components/LifeTrinket';
 import { GlobalSettingsProvider } from './Providers/GlobalSettingsProvider';
 import { PlayersProvider } from './Providers/PlayersProvider';
-import { getSharedStateFromUrl, clearSharedStateFromUrl } from './Utils/shareState';
+import {
+  getSharedStateFromUrl,
+  clearSharedStateFromUrl,
+} from './Utils/shareState';
 
 const App = () => {
   // Check for shared state in URL during initialization

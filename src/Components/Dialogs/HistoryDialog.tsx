@@ -27,20 +27,23 @@ export const HistoryDialog: React.FC<{
     }
   };
 
-  const formatTimestamp = useCallback((timestamp: number) => {
-    const diff = now - timestamp;
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
+  const formatTimestamp = useCallback(
+    (timestamp: number) => {
+      const diff = now - timestamp;
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
 
-    if (hours > 0) {
-      return `${hours}h ${minutes % 60}m ago`;
-    } else if (minutes > 0) {
-      return `${minutes}m ago`;
-    } else {
-      return `${seconds}s ago`;
-    }
-  }, [now]);
+      if (hours > 0) {
+        return `${hours}h ${minutes % 60}m ago`;
+      } else if (minutes > 0) {
+        return `${minutes}m ago`;
+      } else {
+        return `${seconds}s ago`;
+      }
+    },
+    [now]
+  );
 
   const formatDifference = (difference: number) => {
     return difference > 0 ? `+${difference}` : `${difference}`;
@@ -57,7 +60,8 @@ export const HistoryDialog: React.FC<{
         {lifeHistory.length > 0 && (
           <div className="flex justify-between items-center">
             <p className="text-sm text-text-secondary">
-              {lifeHistory.length} {lifeHistory.length === 1 ? 'event' : 'events'} recorded
+              {lifeHistory.length}{' '}
+              {lifeHistory.length === 1 ? 'event' : 'events'} recorded
             </p>
             <button
               onClick={handleClearHistory}
@@ -92,77 +96,96 @@ export const HistoryDialog: React.FC<{
           </div>
         ) : (
           <div className="flex flex-col gap-2 max-h-96 overflow-y-auto">
-            {[...lifeHistory].reverse().map((event: LifeHistoryEvent, index: number) => {
-              // Calculate total commander damage and self-inflicted change
-              const totalCommanderDamage = event.damageSources?.reduce((sum, source) => sum + source.amount, 0) || 0;
-              const selfInflictedChange = event.difference - totalCommanderDamage;
+            {[...lifeHistory]
+              .reverse()
+              .map((event: LifeHistoryEvent, index: number) => {
+                // Calculate total commander damage and self-inflicted change
+                const totalCommanderDamage =
+                  event.damageSources?.reduce(
+                    (sum, source) => sum + source.amount,
+                    0
+                  ) || 0;
+                const selfInflictedChange =
+                  event.difference - totalCommanderDamage;
 
-              return (
-                <div
-                  key={lifeHistory.length - index - 1}
-                  className="flex items-center gap-3 p-3 bg-background-paper rounded-lg border border-divider"
-                >
-                  {/* Player indicator */}
+                return (
                   <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: event.playerColor }}
-                  />
+                    key={lifeHistory.length - index - 1}
+                    className="flex items-center gap-3 p-3 bg-background-paper rounded-lg border border-divider"
+                  >
+                    {/* Player indicator */}
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: event.playerColor }}
+                    />
 
-                  {/* Event details */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">
-                      {event.playerName}
-                    </p>
-                    <p className="text-xs text-text-secondary">
-                      {event.oldTotal} → {event.newTotal}
-                      {event.difference !== 0 && (
-                        <span className={`ml-2 font-medium ${getDifferenceColor(event.difference)}`}>
-                          {formatDifference(event.difference)}
-                        </span>
-                      )}
-                    </p>
+                    {/* Event details */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {event.playerName}
+                      </p>
+                      <p className="text-xs text-text-secondary">
+                        {event.oldTotal} → {event.newTotal}
+                        {event.difference !== 0 && (
+                          <span
+                            className={`ml-2 font-medium ${getDifferenceColor(event.difference)}`}
+                          >
+                            {formatDifference(event.difference)}
+                          </span>
+                        )}
+                      </p>
 
-                    {/* Damage sources breakdown */}
-                    {event.damageSources && event.damageSources.length > 0 && (
-                      <div className="flex flex-col gap-0.5 mt-1">
-                        {event.damageSources.map((source, sourceIndex) => (
-                          <div key={sourceIndex} className="flex items-center gap-1.5">
-                            <div
-                              className="w-2 h-2 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: source.opponentColor }}
-                            />
-                            <p className="text-xs text-text-secondary italic">
-                              {source.opponentName}
-                              {source.isPartner && ' (Partner)'}:
-                              <span className={`ml-1 font-medium ${getDifferenceColor(source.amount)}`}>
-                                {formatDifference(source.amount)}
-                              </span>
-                            </p>
-                          </div>
-                        ))}
-                        {/* Show self-inflicted change if it exists */}
-                        {selfInflictedChange !== 0 && (
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full flex-shrink-0 bg-text-secondary opacity-50" />
-                            <p className="text-xs text-text-secondary italic">
-                              Self:
-                              <span className={`ml-1 font-medium ${getDifferenceColor(selfInflictedChange)}`}>
-                                {formatDifference(selfInflictedChange)}
-                              </span>
-                            </p>
+                      {/* Damage sources breakdown */}
+                      {event.damageSources &&
+                        event.damageSources.length > 0 && (
+                          <div className="flex flex-col gap-0.5 mt-1">
+                            {event.damageSources.map((source, sourceIndex) => (
+                              <div
+                                key={sourceIndex}
+                                className="flex items-center gap-1.5"
+                              >
+                                <div
+                                  className="w-2 h-2 rounded-full flex-shrink-0"
+                                  style={{
+                                    backgroundColor: source.opponentColor,
+                                  }}
+                                />
+                                <p className="text-xs text-text-secondary italic">
+                                  {source.opponentName}
+                                  {source.isPartner && ' (Partner)'}:
+                                  <span
+                                    className={`ml-1 font-medium ${getDifferenceColor(source.amount)}`}
+                                  >
+                                    {formatDifference(source.amount)}
+                                  </span>
+                                </p>
+                              </div>
+                            ))}
+                            {/* Show self-inflicted change if it exists */}
+                            {selfInflictedChange !== 0 && (
+                              <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full flex-shrink-0 bg-text-secondary opacity-50" />
+                                <p className="text-xs text-text-secondary italic">
+                                  Self:
+                                  <span
+                                    className={`ml-1 font-medium ${getDifferenceColor(selfInflictedChange)}`}
+                                  >
+                                    {formatDifference(selfInflictedChange)}
+                                  </span>
+                                </p>
+                              </div>
+                            )}
                           </div>
                         )}
-                      </div>
-                    )}
-                  </div>
+                    </div>
 
-                  {/* Timestamp */}
-                  <p className="text-xs text-text-secondary whitespace-nowrap">
-                    {formatTimestamp(event.timestamp)}
-                  </p>
-                </div>
-              );
-            })}
+                    {/* Timestamp */}
+                    <p className="text-xs text-text-secondary whitespace-nowrap">
+                      {formatTimestamp(event.timestamp)}
+                    </p>
+                  </div>
+                );
+              })}
           </div>
         )}
 
@@ -170,8 +193,9 @@ export const HistoryDialog: React.FC<{
         {lifeHistory.length > 0 && (
           <div className="bg-background-paper border border-divider p-3 rounded-lg">
             <p className="text-xs text-text-secondary">
-              <strong className="text-text-primary">Tournament Play:</strong> This history can be shown to judges to resolve disputes.
-              History is automatically cleared when you start a new game.
+              <strong className="text-text-primary">Tournament Play:</strong>{' '}
+              This history can be shown to judges to resolve disputes. History
+              is automatically cleared when you start a new game.
             </p>
           </div>
         )}
