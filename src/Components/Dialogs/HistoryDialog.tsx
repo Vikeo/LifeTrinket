@@ -115,9 +115,11 @@ export const HistoryDialog: React.FC<{
                     </p>
                     <p className="text-xs text-text-secondary">
                       {event.oldTotal} → {event.newTotal}
-                      <span className={`ml-2 font-medium ${getDifferenceColor(event.difference)}`}>
-                        {formatDifference(event.difference)}
-                      </span>
+                      {event.difference !== 0 && (
+                        <span className={`ml-2 font-medium ${getDifferenceColor(event.difference)}`}>
+                          {formatDifference(event.difference)}
+                        </span>
+                      )}
                     </p>
 
                     {/* Damage sources breakdown */}

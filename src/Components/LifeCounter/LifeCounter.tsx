@@ -141,13 +141,18 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
 
   // Track initial state for history batching
   const initialLifeTotalRef = useRef<number | null>(null);
-  const damageSourcesMapRef = useRef<Map<string, {
-    opponentId: number;
-    opponentName: string;
-    opponentColor: string;
-    isPartner: boolean;
-    amount: number;
-  }>>(new Map());
+  const damageSourcesMapRef = useRef<
+    Map<
+      string,
+      {
+        opponentId: number;
+        opponentName: string;
+        opponentColor: string;
+        isPartner: boolean;
+        amount: number;
+      }
+    >
+  >(new Map());
 
   const calcRot = player.isSide
     ? player.settings.rotation - 180
@@ -179,14 +184,15 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const analytics = useAnalytics();
 
   useEffect(() => {
-    if (recentDifference === 0) {
+    // Only exit early if there's no difference AND no damage sources to track
+    if (recentDifference === 0 && damageSourcesMapRef.current.size === 0) {
       clearTimeout(recentDifferenceTimerRef.current);
       initialLifeTotalRef.current = null;
       damageSourcesMapRef.current.clear();
       return;
     }
 
-    // Capture initial life total when difference starts accumulating
+    // Capture initial life total when difference starts accumulating or damage sources are added
     if (initialLifeTotalRef.current === null) {
       initialLifeTotalRef.current = player.lifeTotal - recentDifference;
     }
