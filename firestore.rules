@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Shared games collection
+    match /sharedGames/{gameId} {
+      // Allow anyone to read shared games (needed for QR code recipients)
+      allow read: if true;
+
+      // Allow anyone to create new shared games
+      // Note: In production, you may want to add rate limiting via App Check
+      allow create: if true;
+
+      // Prevent updates and deletes to maintain data integrity
+      allow update, delete: if false;
+    }
+  }
+}

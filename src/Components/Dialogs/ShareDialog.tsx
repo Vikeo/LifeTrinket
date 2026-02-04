@@ -1,8 +1,13 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useCallback } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Dialog } from './Dialog';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { generateShareUrl, estimateEncodedSize } from '../../Utils/shareState';
+import {
+  createShortUrl,
+  generateShortShareUrl,
+} from '../../Utils/firebaseShortener';
+import { sharedGameStateSchema } from '../../Types/SharedState';
 import type { Player, LifeHistoryEvent } from '../../Types/Player';
 import type { InitialGameSettings } from '../../Types/Settings';
 import type { GameScore } from '../../Contexts/GlobalSettingsContext';
@@ -30,10 +35,17 @@ export const ShareDialog: React.FC<{
   );
   const [includeGameScore, setIncludeGameScore] = useState<boolean>(true);
   const [includeLifeHistory, setIncludeLifeHistory] = useState<boolean>(true);
+  const [shortUrlLoading, setShortUrlLoading] = useState<boolean>(false);
+  const [shortUrlError, setShortUrlError] = useState<string | null>(null);
+  const [shortUrl, setShortUrl] = useState<string | null>(null);
   const urlInputRef = useRef<HTMLInputElement>(null);
 
   // Generate share URL based on checkbox selections
+  // If short URL is available, use that; otherwise use direct encoding
   const shareUrl = useMemo(() => {
+    if (shortUrl) {
+      return shortUrl;
+    }
     return generateShareUrl(
       players,
       initialGameSettings,
@@ -51,6 +63,7 @@ export const ShareDialog: React.FC<{
     version,
     includeGameScore,
     includeLifeHistory,
+    shortUrl,
   ]);
 
   // Calculate data size
@@ -81,7 +94,8 @@ export const ShareDialog: React.FC<{
   };
 
   // Check if data is too large for QR code (max ~2953 bytes for level L)
-  const isTooLarge = dataSize > 2900;
+  // But if we have a short URL, it's never too large
+  const isTooLarge = dataSize > 2900 && !shortUrl;
 
   // Determine QR code size based on data size
   // Larger data needs larger QR code for readability
@@ -126,6 +140,60 @@ export const ShareDialog: React.FC<{
       }
     }
   };
+
+  const handleCreateShortUrl = useCallback(async () => {
+    setShortUrlLoading(true);
+    setShortUrlError(null);
+
+    try {
+      // Create game state object
+      const gameState = sharedGameStateSchema.parse({
+        version,
+        initialGameSettings,
+        players,
+        gameScore: includeGameScore ? gameScore : undefined,
+        lifeHistory: includeLifeHistory ? lifeHistory : undefined,
+        startingPlayerIndex,
+        timestamp: Date.now(),
+      });
+
+      // Upload to Firestore and get short ID
+      const shortId = await createShortUrl(gameState);
+
+      // Generate short URL
+      const generatedShortUrl = generateShortShareUrl(shortId);
+      setShortUrl(generatedShortUrl);
+
+      analytics.trackEvent('short_url_created', {
+        data_size: dataSize,
+        include_game_score: includeGameScore,
+        include_life_history: includeLifeHistory,
+      });
+    } catch (error) {
+      console.error('Failed to create short URL:', error);
+      setShortUrlError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to create short URL. Please try again.'
+      );
+      analytics.trackEvent('short_url_failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+    } finally {
+      setShortUrlLoading(false);
+    }
+  }, [
+    players,
+    initialGameSettings,
+    startingPlayerIndex,
+    gameScore,
+    lifeHistory,
+    version,
+    includeGameScore,
+    includeLifeHistory,
+    dataSize,
+    analytics,
+  ]);
 
   return (
     <Dialog id="share-dialog" title="Share Game" dialogRef={dialogRef}>
@@ -286,23 +354,92 @@ export const ShareDialog: React.FC<{
           )}
         </div>
 
+        {/* URL Shortener Section */}
+        {isTooLarge && !shortUrl && (
+          <div className="bg-primary-main/10 p-4 rounded-lg border border-primary-main/30">
+            <p className="text-sm text-text-primary font-medium mb-2">
+              🔗 Create Shortened URL
+            </p>
+            <p className="text-sm text-text-secondary mb-3">
+              Your game data ({formatSize(dataSize)}) exceeds the QR code limit.
+              Create a shortened URL to generate a scannable QR code!
+            </p>
+            <p className="text-xs text-text-secondary mb-3 italic">
+              ⏱️ Links expire after 30 minutes
+            </p>
+            <button
+              onClick={handleCreateShortUrl}
+              disabled={shortUrlLoading}
+              className="w-full px-4 py-2 bg-primary-main text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {shortUrlLoading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Creating shortened URL...
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                  Create Shortened URL
+                </>
+              )}
+            </button>
+            {shortUrlError && (
+              <p className="text-sm text-red-500 mt-2">{shortUrlError}</p>
+            )}
+          </div>
+        )}
+
         {/* Instructions */}
-        {isTooLarge ? (
+        {isTooLarge && !shortUrl ? (
           <div className="bg-background-paper p-4 rounded-lg border border-divider">
             <p className="text-sm text-text-primary font-medium mb-2">
-              💡 Data Too Large for QR Code
-            </p>
-            <p className="text-sm text-text-secondary mb-2">
-              Your game has too much data for a QR code
-              <br />({formatSize(dataSize)}) (max ~2.9 KB).
-            </p>
-            <p className="text-sm text-text-secondary">
-              <strong className="text-text-primary">Solutions:</strong>
+              💡 Alternative Solutions
             </p>
             <ul className="text-sm text-text-secondary mt-1 space-y-1 list-disc list-inside">
-              <li>Uncheck "Life History" above (usually the largest data)</li>
+              <li>Uncheck "Life History" above to reduce data size</li>
               <li>Or copy the share link and send it directly</li>
             </ul>
+          </div>
+        ) : shortUrl ? (
+          <div className="bg-green-500/10 p-4 rounded-lg border border-green-500/30">
+            <p className="text-sm text-text-primary font-medium mb-2">
+              ✅ Shortened URL Created!
+            </p>
+            <p className="text-sm text-text-secondary">
+              Your game has been uploaded and a QR code has been generated. The shortened URL is ready to share!
+            </p>
           </div>
         ) : (
           <div className="bg-background-paper p-4 rounded-lg">

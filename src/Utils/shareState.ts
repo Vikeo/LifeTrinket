@@ -88,22 +88,43 @@ export function generateShareUrl(
 /**
  * Extracts shared game state from the current URL hash
  * Returns null if no shared state is present
+ * Supports both direct encoding (#game=) and shortened URLs (#s=)
  */
-export function getSharedStateFromUrl(): SharedGameState | null {
+export async function getSharedStateFromUrl(): Promise<SharedGameState | null> {
   const hash = window.location.hash;
 
-  if (!hash || !hash.startsWith('#game=')) {
+  if (!hash) {
     return null;
   }
 
-  const encoded = hash.substring(6); // Remove '#game='
-
-  try {
-    return decodeGameState(encoded);
-  } catch (error) {
-    console.error('Failed to decode shared game state from URL:', error);
-    return null;
+  // Handle shortened URLs (#s=shortId)
+  if (hash.startsWith('#s=')) {
+    const shortId = hash.substring(3); // Remove '#s='
+    try {
+      const { getSharedGame } = await import('./firebaseShortener');
+      const gameState = await getSharedGame(shortId);
+      if (!gameState) {
+        console.error('Shared game not found for short ID:', shortId);
+      }
+      return gameState;
+    } catch (error) {
+      console.error('Failed to retrieve shared game from short URL:', error);
+      return null;
+    }
   }
+
+  // Handle direct encoding (#game=encodedData)
+  if (hash.startsWith('#game=')) {
+    const encoded = hash.substring(6); // Remove '#game='
+    try {
+      return decodeGameState(encoded);
+    } catch (error) {
+      console.error('Failed to decode shared game state from URL:', error);
+      return null;
+    }
+  }
+
+  return null;
 }
 
 /**
