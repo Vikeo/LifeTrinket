@@ -443,18 +443,20 @@ const Start = () => {
                       {savedGame.players.length > 1 ? 'players' : 'player'})
                     </span>
                   </div>
-                  {savedGame.gameScore && Object.keys(savedGame.gameScore).length > 0 && (
-                    <div className="text-xs opacity-75">
-                      Score: {Object.entries(savedGame.gameScore)
-                        .map(([playerIndex, score]) => {
-                          const player = savedGame.players.find(
-                            (p) => p.index === Number(playerIndex)
-                          );
-                          return `${player?.name || `P${Number(playerIndex) + 1}`}: ${score}`;
-                        })
-                        .join(' | ')}
-                    </div>
-                  )}
+                  {savedGame.gameScore &&
+                    Object.keys(savedGame.gameScore).length > 0 && (
+                      <div className="text-xs opacity-75">
+                        Score:{' '}
+                        {Object.entries(savedGame.gameScore)
+                          .map(([playerIndex, score]) => {
+                            const player = savedGame.players.find(
+                              (p) => p.index === Number(playerIndex)
+                            );
+                            return `${player?.name || `P${Number(playerIndex) + 1}`}: ${score}`;
+                          })
+                          .join(' | ')}
+                      </div>
+                    )}
                 </div>
               </button>
             )}

@@ -204,8 +204,8 @@ const PlayerMenu = ({
     player.settings.rotation === Rotation.Side
       ? `${player.settings.rotation - 180}deg`
       : player.settings.rotation === Rotation.SideFlipped
-      ? `${player.settings.rotation - 180}deg`
-      : '';
+        ? `${player.settings.rotation - 180}deg`
+        : '';
 
   return (
     <PlayerMenuWrapper
