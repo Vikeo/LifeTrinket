@@ -1,12 +1,12 @@
 # Life Trinket - Feature TODO
 
-**Status:** 24/46 features implemented (52%) • Based on 2024-2025 user research
+**Status:** 25/46 features implemented (54%) • Based on 2024-2025 user research
 
 ---
 
 ## 🔴 HIGH PRIORITY (Critical Gaps)
 
-- [ ] **Life History/Transcript** `[Medium]`
+- [x] **Life History/Transcript** `[Medium]`
       #1 most requested — Required for tournament play, resolves disputes
 
 - [ ] **Undo Button** `[Low-Medium]`

@@ -6,6 +6,7 @@ import { useMetrics } from '../../Hooks/useMetrics';
 import { useUserActions } from '../../Hooks/useUserActions';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
+import { recentDifferenceTTL } from '../../Data/constants';
 import { Cog } from '../../Icons/generated';
 import { Player, Rotation } from '../../Types/Player';
 import {
@@ -124,11 +125,9 @@ type LifeCounterProps = {
   matchScore?: number;
 };
 
-const RECENT_DIFFERENCE_TTL = 3_000;
-
 const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const { updatePlayer, updateLifeTotal } = usePlayers();
-  const { settings, playing } = useGlobalSettings();
+  const { settings, playing, addLifeHistoryEvent } = useGlobalSettings();
   const metrics = useMetrics();
   const userActions = useUserActions();
   const recentDifferenceTimerRef = useRef<NodeJS.Timeout | undefined>(
@@ -139,6 +138,21 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const [recentDifference, setRecentDifference] = useState(0);
   const [differenceKey, setDifferenceKey] = useState(Date.now());
   const [isLandscape, setIsLandscape] = useState(false);
+
+  // Track initial state for history batching
+  const initialLifeTotalRef = useRef<number | null>(null);
+  const damageSourcesMapRef = useRef<
+    Map<
+      string,
+      {
+        opponentId: number;
+        opponentName: string;
+        opponentColor: string;
+        isPartner: boolean;
+        amount: number;
+      }
+    >
+  >(new Map());
 
   const calcRot = player.isSide
     ? player.settings.rotation - 180
@@ -170,9 +184,17 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
   const analytics = useAnalytics();
 
   useEffect(() => {
-    if (recentDifference === 0) {
+    // Only exit early if there's no difference AND no damage sources to track
+    if (recentDifference === 0 && damageSourcesMapRef.current.size === 0) {
       clearTimeout(recentDifferenceTimerRef.current);
+      initialLifeTotalRef.current = null;
+      damageSourcesMapRef.current.clear();
       return;
+    }
+
+    // Capture initial life total when difference starts accumulating or damage sources are added
+    if (initialLifeTotalRef.current === null) {
+      initialLifeTotalRef.current = player.lifeTotal - recentDifference;
     }
 
     recentDifferenceTimerRef.current = setTimeout(() => {
@@ -196,8 +218,29 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
         });
         metrics.trackLifeLost(Math.abs(recentDifference));
       }
+
+      // Record history after animation completes
+      if (initialLifeTotalRef.current !== null) {
+        const finalLifeTotal = player.lifeTotal;
+        const damageSources = Array.from(damageSourcesMapRef.current.values());
+
+        addLifeHistoryEvent({
+          playerId: player.index,
+          playerName: player.name || `Player ${player.index + 1}`,
+          playerColor: player.color,
+          oldTotal: initialLifeTotalRef.current,
+          newTotal: finalLifeTotal,
+          difference: finalLifeTotal - initialLifeTotalRef.current,
+          timestamp: Date.now(),
+          damageSources: damageSources.length > 0 ? damageSources : undefined,
+        });
+
+        initialLifeTotalRef.current = null;
+        damageSourcesMapRef.current.clear();
+      }
+
       setRecentDifference(0);
-    }, RECENT_DIFFERENCE_TTL);
+    }, recentDifferenceTTL);
 
     return () => {
       clearTimeout(recentDifferenceTimerRef.current);
@@ -220,8 +263,34 @@ const LifeCounter = ({ player, opponents, matchScore }: LifeCounterProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.body.clientHeight, document.body.clientWidth]);
 
-  const handleLifeChange = (updatedLifeTotal: number) => {
+  const handleLifeChange = (
+    updatedLifeTotal: number,
+    commanderDamageContext?: {
+      opponentId: number;
+      opponentName: string;
+      opponentColor: string;
+      isPartner: boolean;
+    }
+  ) => {
     const difference = updateLifeTotal(player, updatedLifeTotal);
+
+    // Accumulate commander damage sources
+    if (commanderDamageContext) {
+      const key = `${commanderDamageContext.opponentId}-${commanderDamageContext.isPartner}`;
+      const existing = damageSourcesMapRef.current.get(key);
+
+      if (existing) {
+        // Accumulate amount for this source
+        existing.amount += difference;
+      } else {
+        // Add new damage source
+        damageSourcesMapRef.current.set(key, {
+          ...commanderDamageContext,
+          amount: difference,
+        });
+      }
+    }
+
     setRecentDifference(recentDifference + difference);
     setDifferenceKey(Date.now());
   };

@@ -47,3 +47,22 @@ export enum Rotation {
   Flipped = 180,
   SideFlipped = 270,
 }
+
+export type DamageSource = {
+  opponentId: number;
+  opponentName: string;
+  opponentColor: string;
+  isPartner: boolean;
+  amount: number;
+};
+
+export type LifeHistoryEvent = {
+  playerId: number;
+  playerName: string;
+  playerColor: string;
+  oldTotal: number;
+  newTotal: number;
+  difference: number;
+  timestamp: number;
+  damageSources?: DamageSource[];
+};
