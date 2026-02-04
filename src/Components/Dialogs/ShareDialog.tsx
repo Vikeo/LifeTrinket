@@ -87,8 +87,7 @@ export const ShareDialog: React.FC<{
   // Larger data needs larger QR code for readability
   const qrSize = useMemo(() => {
     if (dataSize < 500) return 280;
-    if (dataSize < 1000) return 320;
-    if (dataSize < 2000) return 360;
+    if (dataSize < 1000) return 360;
     return 400;
   }, [dataSize]);
 
@@ -133,12 +132,18 @@ export const ShareDialog: React.FC<{
       <div className="flex flex-col gap-6 py-4">
         {/* QR Code */}
         <div className="flex flex-col items-center gap-3">
-          <div className="bg-white p-4 rounded-xl" style={{ width: qrSize + 32, height: qrSize + 32 }}>
+          <p className="text-sm text-text-secondary text-center">
+            Scan this QR code to load the game
+          </p>
+          <div
+            className={`p-4 rounded-xl ${isTooLarge ? 'bg-red-500/10' : 'bg-white'}`}
+            style={{ width: qrSize + 32, height: qrSize + 32 }}
+          >
             {isTooLarge ? (
               // Error state when data is too large
               <div className="flex flex-col items-center justify-center gap-3 w-full h-full">
                 <svg
-                  className="w-16 h-16 text-yellow-500"
+                  className="w-16 h-16 text-red-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -170,14 +175,9 @@ export const ShareDialog: React.FC<{
           </div>
           <div className="flex flex-col items-center gap-1">
             {!isTooLarge && (
-              <>
-                <p className="text-sm text-text-secondary text-center">
-                  Scan this QR code to load the game
-                </p>
-                <p className="text-xs text-text-secondary">
-                  Data size: {formatSize(dataSize)}
-                </p>
-              </>
+              <p className="text-xs text-text-secondary">
+                Data size: {formatSize(dataSize)}
+              </p>
             )}
             {dataSize > 2000 && !isTooLarge && (
               <p className="text-xs text-yellow-500 text-center px-4">
@@ -185,7 +185,7 @@ export const ShareDialog: React.FC<{
               </p>
             )}
             {isTooLarge && (
-              <p className="text-xs text-yellow-600 text-center px-4">
+              <p className="text-xs text-red-400 text-center px-4">
                 Uncheck "Life History" below to generate QR code
               </p>
             )}
@@ -293,7 +293,8 @@ export const ShareDialog: React.FC<{
               💡 Data Too Large for QR Code
             </p>
             <p className="text-sm text-text-secondary mb-2">
-              Your game has too much data ({formatSize(dataSize)}) for a QR code (max ~2.9 KB).
+              Your game has too much data for a QR code
+              <br />({formatSize(dataSize)}) (max ~2.9 KB).
             </p>
             <p className="text-sm text-text-secondary">
               <strong className="text-text-primary">Solutions:</strong>
@@ -301,7 +302,6 @@ export const ShareDialog: React.FC<{
             <ul className="text-sm text-text-secondary mt-1 space-y-1 list-disc list-inside">
               <li>Uncheck "Life History" above (usually the largest data)</li>
               <li>Or copy the share link and send it directly</li>
-              <li>Consider clearing old history entries from the player menu</li>
             </ul>
           </div>
         ) : (
