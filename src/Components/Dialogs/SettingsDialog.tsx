@@ -33,6 +33,7 @@ export const SettingsDialog = ({
     initialGameSettings,
     gameScore,
     lifeHistory,
+    savedGame,
   } = useGlobalSettings();
   const { players, startingPlayerIndex } = usePlayers();
   const analytics = useAnalytics();
@@ -49,7 +50,7 @@ export const SettingsDialog = ({
     }
   };
 
-  const hasGameToShare = players && players.length > 0;
+  const hasGameToShare = (players && players.length > 0) || savedGame !== null;
 
   return (
     <>
@@ -147,11 +148,12 @@ export const SettingsDialog = ({
               </button>
             </div>
             <Description>
-              Generate a QR code to share your current game state with other
-              players. They can scan it to load the exact same game.
+              Generate a QR code to share your{' '}
+              {players && players.length > 0 ? 'current' : 'saved'} game state
+              with other players. They can scan it to load the exact same game.
               {!hasGameToShare && (
                 <span className="block mt-1 text-red-500">
-                  Start a game first to enable sharing.
+                  Start or save a game first to enable sharing.
                 </span>
               )}
             </Description>
@@ -388,10 +390,22 @@ export const SettingsDialog = ({
 
       <ShareDialog
         dialogRef={shareDialogRef}
-        players={players}
-        initialGameSettings={initialGameSettings}
-        startingPlayerIndex={startingPlayerIndex}
-        gameScore={gameScore}
+        players={players && players.length > 0 ? players : savedGame?.players || []}
+        initialGameSettings={
+          players && players.length > 0
+            ? initialGameSettings
+            : savedGame?.initialGameSettings || initialGameSettings
+        }
+        startingPlayerIndex={
+          players && players.length > 0
+            ? startingPlayerIndex
+            : savedGame?.players.findIndex((p) => p.isStartingPlayer) ?? 0
+        }
+        gameScore={
+          players && players.length > 0
+            ? gameScore
+            : savedGame?.gameScore
+        }
         lifeHistory={lifeHistory}
         version={version.installedVersion}
       />
