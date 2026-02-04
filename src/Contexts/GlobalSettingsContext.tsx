@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { InitialGameSettings, Settings } from '../Types/Settings';
-import { Player } from '../Types/Player';
+import { LifeHistoryEvent, Player } from '../Types/Player';
 
 type Version = {
   installedVersion: string;
@@ -53,6 +53,9 @@ export type GlobalSettingsContextType = {
   gameScore: GameScore;
   setGameScore: (score: GameScore) => void;
   resetGameScore: () => void;
+  lifeHistory: LifeHistoryEvent[];
+  addLifeHistoryEvent: (event: LifeHistoryEvent) => void;
+  clearLifeHistory: () => void;
 };
 
 export const GlobalSettingsContext =

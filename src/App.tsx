@@ -21,11 +21,11 @@ const App = () => {
   }, []);
 
   return (
-    <PlayersProvider sharedState={sharedState}>
-      <GlobalSettingsProvider sharedState={sharedState}>
+    <GlobalSettingsProvider sharedState={sharedState}>
+      <PlayersProvider sharedState={sharedState}>
         <LifeTrinket />
-      </GlobalSettingsProvider>
-    </PlayersProvider>
+      </PlayersProvider>
+    </GlobalSettingsProvider>
   );
 };
 

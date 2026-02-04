@@ -10,6 +10,7 @@ import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
 import { Dialog } from './Dialog';
 import { ShareDialog } from './ShareDialog';
+import { HistoryDialog } from './HistoryDialog';
 import { generateShareUrl } from '../../Utils/shareState';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
@@ -26,11 +27,12 @@ export const SettingsDialog = ({
 }: {
   dialogRef: React.MutableRefObject<HTMLDialogElement | null>;
 }) => {
-  const { settings, setSettings, isPWA, version, initialGameSettings, gameScore } = useGlobalSettings();
+  const { settings, setSettings, isPWA, version, initialGameSettings, gameScore, lifeHistory } = useGlobalSettings();
   const { players, startingPlayerIndex } = usePlayers();
   const analytics = useAnalytics();
 
   const shareDialogRef = useRef<HTMLDialogElement | null>(null);
+  const historyDialogRef = useRef<HTMLDialogElement | null>(null);
   const [shareUrl, setShareUrl] = useState<string>('');
 
   const handleShareGame = () => {
@@ -49,6 +51,11 @@ export const SettingsDialog = ({
       console.error('Failed to generate share URL:', error);
       analytics.trackEvent('game_share_failed');
     }
+  };
+
+  const handleViewHistory = () => {
+    analytics.trackEvent('life_history_opened');
+    historyDialogRef.current?.showModal();
   };
 
   const hasGameToShare = players && players.length > 0;
@@ -155,6 +162,43 @@ export const SettingsDialog = ({
                 Start a game first to enable sharing.
               </span>
             )}
+          </Description>
+        </div>
+      </SettingContainer>
+      <Separator height="1px" />
+
+      {/* Life History Section */}
+      <SettingContainer>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between items-center">
+            <label>Life History</label>
+            <button
+              onClick={handleViewHistory}
+              className="px-4 py-2 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              View History
+              {lifeHistory.length > 0 && (
+                <span className="bg-white/20 px-2 py-0.5 rounded-full text-xs">
+                  {lifeHistory.length}
+                </span>
+              )}
+            </button>
+          </div>
+          <Description>
+            View a detailed log of all life changes during the current game. This can be shown to judges for tournament play.
           </Description>
         </div>
       </SettingContainer>
@@ -385,6 +429,7 @@ export const SettingsDialog = ({
     </Dialog>
 
     <ShareDialog dialogRef={shareDialogRef} shareUrl={shareUrl} />
+    <HistoryDialog dialogRef={historyDialogRef} />
     </>
   );
 };

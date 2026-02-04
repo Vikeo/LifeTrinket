@@ -69,6 +69,7 @@ const Start = () => {
     savedGame,
     saveCurrentGame,
     setGameScore,
+    clearLifeHistory,
   } = useGlobalSettings();
 
   const infoDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -190,6 +191,9 @@ const Start = () => {
     if (settings.keepAwake && !wakeLock.active) {
       wakeLock.request();
     }
+
+    // Clear life history when starting a new game
+    clearLifeHistory();
 
     setInitialGameSettings(initialGameSettings);
     setPlayers(createInitialPlayers(initialGameSettings));

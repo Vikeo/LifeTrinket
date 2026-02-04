@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useWakeLock } from 'react-screen-wake-lock';
 import {
   GameScore,
@@ -14,8 +14,10 @@ import {
   defaultInitialGameSettings,
   defaultSettings,
   initialGameSettingsSchema,
+  lifeHistorySchema,
   settingsSchema,
 } from '../Types/Settings';
+import { LifeHistoryEvent } from '../Types/Player';
 import { gte as semverGreaterThanOrEqual } from 'semver';
 import type { SharedGameState } from '../Types/SharedState';
 
@@ -141,6 +143,28 @@ export const GlobalSettingsProvider = ({
     localStorage.removeItem('gameScore');
   };
 
+  const savedLifeHistory = localStorage.getItem('lifeHistory');
+  const [lifeHistory, setLifeHistory] = useState<LifeHistoryEvent[]>(() => {
+    if (!savedLifeHistory) return [];
+    const parsed = lifeHistorySchema.safeParse(JSON.parse(savedLifeHistory));
+    if (!parsed.success) {
+      console.error('invalid life history, using empty array');
+      return [];
+    }
+    return parsed.data;
+  });
+  const addLifeHistoryEvent = useCallback((event: LifeHistoryEvent) => {
+    setLifeHistory((prevHistory) => {
+      const updatedHistory = [...prevHistory, event];
+      localStorage.setItem('lifeHistory', JSON.stringify(updatedHistory));
+      return updatedHistory;
+    });
+  }, []);
+  const clearLifeHistory = useCallback(() => {
+    setLifeHistory([]);
+    localStorage.removeItem('lifeHistory');
+  }, []);
+
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
@@ -189,12 +213,15 @@ export const GlobalSettingsProvider = ({
       localStorage.removeItem('showPlay');
       localStorage.removeItem('preStartComplete');
       localStorage.removeItem('gameScore');
+      // Note: lifeHistory is intentionally NOT removed here - it persists between games
+      // and is only cleared when starting a new game
 
       setPlaying(false);
       setShowPlay(false);
       setPreStartCompleted(false);
       setSettings({ ...settings, useMonarch: false });
       setGameScore({});
+      // Note: lifeHistory is intentionally NOT cleared here - it persists until a new game starts
     };
 
     const goToStart = async () => {
@@ -332,6 +359,9 @@ export const GlobalSettingsProvider = ({
       gameScore,
       setGameScore: setGameScoreAndLocalStorage,
       resetGameScore,
+      lifeHistory,
+      addLifeHistoryEvent,
+      clearLifeHistory,
     };
   }, [
     isFullscreen,
@@ -353,6 +383,9 @@ export const GlobalSettingsProvider = ({
     analytics,
     metrics,
     gameScore,
+    lifeHistory,
+    addLifeHistoryEvent,
+    clearLifeHistory,
   ]);
 
   return (

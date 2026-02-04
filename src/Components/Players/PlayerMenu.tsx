@@ -24,6 +24,7 @@ import { PreStartMode } from '../../Types/Settings';
 import { RotationDivProps } from '../Buttons/CommanderDamage';
 import { IconCheckbox } from '../Misc/IconCheckbox';
 import { checkContrast } from '../../Utils/checkContrast';
+import { HistoryDialog } from '../Dialogs/HistoryDialog';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -107,6 +108,7 @@ const PlayerMenu = ({
   const resetGameDialogRef = useRef<HTMLDialogElement | null>(null);
   const endGameDialogRef = useRef<HTMLDialogElement | null>(null);
   const forfeitGameDialogRef = useRef<HTMLDialogElement | null>(null);
+  const historyDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const { isSide } = useSafeRotate({
     rotation: player.settings.rotation,
@@ -502,6 +504,36 @@ const PlayerMenu = ({
                 padding: '2px',
               }}
               className="text-primary-main"
+              onClick={() => {
+                analytics.trackEvent('life_history_opened_from_player_menu');
+                historyDialogRef.current?.showModal();
+              }}
+              role="button"
+              aria-label="Life History"
+            >
+              <svg
+                width={iconSize}
+                height={iconSize}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </button>
+
+            <button
+              style={{
+                cursor: 'pointer',
+                userSelect: 'none',
+                fontSize: buttonFontSize,
+                padding: '2px',
+              }}
+              className="text-primary-main"
               onClick={() => resetGameDialogRef.current?.show()}
               role="checkbox"
               aria-label="Reset Game"
@@ -662,6 +694,8 @@ const PlayerMenu = ({
             </div>
           </div>
         </dialog>
+
+        <HistoryDialog dialogRef={historyDialogRef} />
       </SettingsContainer>
     </PlayerMenuWrapper>
   );

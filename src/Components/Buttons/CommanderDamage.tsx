@@ -50,7 +50,15 @@ const PartnerDamageSeparator = twc.div<RotationDivProps>((props) => [
 type CommanderDamageButtonComponentProps = {
   player: Player;
   opponent: Player;
-  handleLifeChange: (updatedLifeTotal: number) => void;
+  handleLifeChange: (
+    updatedLifeTotal: number,
+    commanderDamageContext?: {
+      opponentId: number;
+      opponentName: string;
+      opponentColor: string;
+      isPartner: boolean;
+    }
+  ) => void;
 };
 
 type InputProps = {
@@ -120,6 +128,14 @@ export const CommanderDamage = ({
       );
     }
 
+    // Create commander damage context for history tracking
+    const commanderDamageContext = {
+      opponentId: opponent.index,
+      opponentName: opponent.name || `Player ${opponent.index + 1}`,
+      opponentColor: opponent.color,
+      isPartner,
+    };
+
     if (isPartner) {
       if (currentCommanderDamage.partnerDamageTotal === 0 && increment === -1) {
         return;
@@ -133,7 +149,7 @@ export const CommanderDamage = ({
         commanderDamage: updatedCommanderDamage,
       };
       updatePlayer(updatedPlayer);
-      handleLifeChange(player.lifeTotal - increment);
+      handleLifeChange(player.lifeTotal - increment, commanderDamageContext);
       setRecentDamageChange(recentDamageChange + increment);
       return;
     }
@@ -149,7 +165,7 @@ export const CommanderDamage = ({
       commanderDamage: updatedCommanderDamage,
     };
     updatePlayer(updatedPlayer);
-    handleLifeChange(player.lifeTotal - increment);
+    handleLifeChange(player.lifeTotal - increment, commanderDamageContext);
     setRecentDamageChange(recentDamageChange + increment);
   };
 

@@ -75,3 +75,24 @@ export const defaultSettings: Settings = {
   useMonarch: false,
   showMatchScore: true,
 };
+
+const damageSourceSchema = z.object({
+  opponentId: z.number(),
+  opponentName: z.string(),
+  opponentColor: z.string(),
+  isPartner: z.boolean(),
+  amount: z.number(),
+});
+
+export const lifeHistoryEventSchema = z.object({
+  playerId: z.number(),
+  playerName: z.string(),
+  playerColor: z.string(),
+  oldTotal: z.number(),
+  newTotal: z.number(),
+  difference: z.number(),
+  timestamp: z.number(),
+  damageSources: z.array(damageSourceSchema).optional(),
+});
+
+export const lifeHistorySchema = z.array(lifeHistoryEventSchema);
