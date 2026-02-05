@@ -1,6 +1,12 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
-import { sharedGameStateSchema, type SharedGameState } from '../Types/SharedState';
-import type { Player } from '../Types/Player';
+import {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+} from 'lz-string';
+import {
+  sharedGameStateSchema,
+  type SharedGameState,
+} from '../Types/SharedState';
+import type { Player, LifeHistoryEvent } from '../Types/Player';
 import type { InitialGameSettings } from '../Types/Settings';
 import type { GameScore } from '../Contexts/GlobalSettingsContext';
 
@@ -12,6 +18,7 @@ export function encodeGameState(
   initialGameSettings: InitialGameSettings,
   startingPlayerIndex: number,
   gameScore?: GameScore,
+  lifeHistory?: LifeHistoryEvent[],
   version: string = import.meta.env.VITE_APP_VERSION || '1.0.0'
 ): string {
   const state: SharedGameState = {
@@ -19,6 +26,7 @@ export function encodeGameState(
     initialGameSettings,
     players,
     gameScore,
+    lifeHistory,
     startingPlayerIndex,
     timestamp: Date.now(),
   };
@@ -61,6 +69,7 @@ export function generateShareUrl(
   initialGameSettings: InitialGameSettings,
   startingPlayerIndex: number,
   gameScore?: GameScore,
+  lifeHistory?: LifeHistoryEvent[],
   version?: string
 ): string {
   const encoded = encodeGameState(
@@ -68,6 +77,7 @@ export function generateShareUrl(
     initialGameSettings,
     startingPlayerIndex,
     gameScore,
+    lifeHistory,
     version
   );
 
@@ -102,7 +112,11 @@ export function getSharedStateFromUrl(): SharedGameState | null {
 export function clearSharedStateFromUrl(): void {
   if (window.location.hash.startsWith('#game=')) {
     // Remove the hash without triggering a navigation
-    history.replaceState(null, '', window.location.pathname + window.location.search);
+    history.replaceState(
+      null,
+      '',
+      window.location.pathname + window.location.search
+    );
   }
 }
 
@@ -115,6 +129,7 @@ export function estimateEncodedSize(
   initialGameSettings: InitialGameSettings,
   startingPlayerIndex: number,
   gameScore?: GameScore,
+  lifeHistory?: LifeHistoryEvent[],
   version?: string
 ): number {
   const encoded = encodeGameState(
@@ -122,6 +137,7 @@ export function estimateEncodedSize(
     initialGameSettings,
     startingPlayerIndex,
     gameScore,
+    lifeHistory,
     version
   );
 

@@ -506,6 +506,7 @@ const PlayerMenu = ({
               className="text-primary-main"
               onClick={() => {
                 analytics.trackEvent('life_history_opened_from_player_menu');
+                metrics.trackEvent('life_history_opened_from_player_menu');
                 historyDialogRef.current?.showModal();
               }}
               role="button"
