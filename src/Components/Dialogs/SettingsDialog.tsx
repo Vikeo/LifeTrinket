@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { twc } from 'react-twc';
 import { useAnalytics } from '../../Hooks/useAnalytics';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
@@ -10,7 +10,6 @@ import { Paragraph } from '../Misc/TextComponents';
 import { ToggleButton } from '../Misc/ToggleButton';
 import { Dialog } from './Dialog';
 import { ShareDialog } from './ShareDialog';
-import { generateShareUrl } from '../../Utils/shareState';
 
 const SettingContainer = twc.div`w-full flex flex-col mb-2`;
 
@@ -33,32 +32,25 @@ export const SettingsDialog = ({
     version,
     initialGameSettings,
     gameScore,
+    lifeHistory,
+    savedGame,
   } = useGlobalSettings();
   const { players, startingPlayerIndex } = usePlayers();
   const analytics = useAnalytics();
 
   const shareDialogRef = useRef<HTMLDialogElement | null>(null);
-  const [shareUrl, setShareUrl] = useState<string>('');
 
   const handleShareGame = () => {
     try {
-      const url = generateShareUrl(
-        players,
-        initialGameSettings,
-        startingPlayerIndex,
-        gameScore,
-        version.installedVersion
-      );
-      setShareUrl(url);
       analytics.trackEvent('game_shared');
       shareDialogRef.current?.showModal();
     } catch (error) {
-      console.error('Failed to generate share URL:', error);
+      console.error('Failed to open share dialog:', error);
       analytics.trackEvent('game_share_failed');
     }
   };
 
-  const hasGameToShare = players && players.length > 0;
+  const hasGameToShare = (players && players.length > 0) || savedGame !== null;
 
   return (
     <>
@@ -156,11 +148,12 @@ export const SettingsDialog = ({
               </button>
             </div>
             <Description>
-              Generate a QR code to share your current game state with other
-              players. They can scan it to load the exact same game.
+              Generate a QR code to share your{' '}
+              {players && players.length > 0 ? 'current' : 'saved'} game state
+              with other players. They can scan it to load the exact same game.
               {!hasGameToShare && (
                 <span className="block mt-1 text-red-500">
-                  Start a game first to enable sharing.
+                  Start or save a game first to enable sharing.
                 </span>
               )}
             </Description>
@@ -395,7 +388,27 @@ export const SettingsDialog = ({
         <Separator height="1px" />
       </Dialog>
 
-      <ShareDialog dialogRef={shareDialogRef} shareUrl={shareUrl} />
+      <ShareDialog
+        dialogRef={shareDialogRef}
+        players={players && players.length > 0 ? players : savedGame?.players || []}
+        initialGameSettings={
+          players && players.length > 0
+            ? initialGameSettings
+            : savedGame?.initialGameSettings || initialGameSettings
+        }
+        startingPlayerIndex={
+          players && players.length > 0
+            ? startingPlayerIndex
+            : savedGame?.players.findIndex((p) => p.isStartingPlayer) ?? 0
+        }
+        gameScore={
+          players && players.length > 0
+            ? gameScore
+            : savedGame?.gameScore
+        }
+        lifeHistory={lifeHistory}
+        version={version.installedVersion}
+      />
     </>
   );
 };
