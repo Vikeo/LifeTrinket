@@ -1,10 +1,7 @@
-import { twc } from 'react-twc';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { Player, Rotation } from '../../Types/Player';
 import { PreStartMode } from '../../Types/Settings';
-import { Paragraph } from '../Misc/TextComponents';
-
-export const DynamicText = twc.div`text-[8vmin] whitespace-nowrap`;
+import { DynamicText, Paragraph } from '../Misc/TextComponents';
 
 export const StartingPlayerCard = ({ player }: { player: Player }) => {
   const { settings, setPlaying, randomizingPlayer } = useGlobalSettings();
