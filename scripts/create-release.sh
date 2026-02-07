@@ -17,39 +17,53 @@ if [ -z "$CURRENT_VERSION" ]; then
   exit 1
 fi
 
-echo -e "${BLUE}Current version in package.json:${NC} ${GREEN}$CURRENT_VERSION${NC}"
+echo -e "${BLUE}Current version:${NC} ${GREEN}$CURRENT_VERSION${NC}"
 
 # Check if we're on a clean working tree
 if [[ -n $(git status -s) ]]; then
-  echo -e "${YELLOW}Warning: You have uncommitted changes.${NC}"
+  echo -e "${RED}Error: You have uncommitted changes. Please commit or stash them first.${NC}"
+  exit 1
 fi
 
 # Fetch latest tags from remote
 echo -e "\n${BLUE}Fetching latest tags from remote...${NC}"
 git fetch --tags
 
-# Check if tag already exists locally or remotely
-if git rev-parse "$CURRENT_VERSION" >/dev/null 2>&1; then
-  echo -e "${RED}Error: Tag '$CURRENT_VERSION' already exists!${NC}"
-  echo -e "${YELLOW}Please update the version in package.json before creating a new release.${NC}"
-  echo -e "${YELLOW}Current version: $CURRENT_VERSION${NC}"
-  exit 1
-fi
+# Prompt for version bump type
+echo -e "\n${BLUE}Select version bump type:${NC}"
+echo -e "  1) patch (${CURRENT_VERSION} → x.x.+1)"
+echo -e "  2) minor (${CURRENT_VERSION} → x.+1.0)"
+echo -e "  3) major (${CURRENT_VERSION} → +1.0.0)"
+echo -e "  4) custom"
+read -rp "Choice [1]: " BUMP_CHOICE
+BUMP_CHOICE=${BUMP_CHOICE:-1}
 
-# Get the latest tag (if any)
-LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+# Parse current version
+IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-if [ -n "$LATEST_TAG" ]; then
-  echo -e "${BLUE}Latest existing tag:${NC} ${YELLOW}$LATEST_TAG${NC}"
-
-  # Compare versions
-  if [ "$LATEST_TAG" = "$CURRENT_VERSION" ]; then
-    echo -e "${RED}Error: Latest tag matches current version ($CURRENT_VERSION)${NC}"
-    echo -e "${YELLOW}Please update the version in package.json before creating a new release.${NC}"
+case "$BUMP_CHOICE" in
+  1) NEW_VERSION="$MAJOR.$MINOR.$((PATCH + 1))" ;;
+  2) NEW_VERSION="$MAJOR.$((MINOR + 1)).0" ;;
+  3) NEW_VERSION="$((MAJOR + 1)).0.0" ;;
+  4)
+    read -rp "Enter new version: " NEW_VERSION
+    if [[ ! "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      echo -e "${RED}Error: Invalid version format. Expected x.y.z${NC}"
+      exit 1
+    fi
+    ;;
+  *)
+    echo -e "${RED}Error: Invalid choice${NC}"
     exit 1
-  fi
-else
-  echo -e "${YELLOW}No existing tags found. This will be the first release.${NC}"
+    ;;
+esac
+
+echo -e "\n${BLUE}Version bump:${NC} ${YELLOW}$CURRENT_VERSION${NC} → ${GREEN}$NEW_VERSION${NC}"
+
+# Check if tag already exists
+if git rev-parse "$NEW_VERSION" >/dev/null 2>&1; then
+  echo -e "${RED}Error: Tag '$NEW_VERSION' already exists!${NC}"
+  exit 1
 fi
 
 # Get release description from user
@@ -57,12 +71,38 @@ echo -e "\n${BLUE}Enter release description (optional, press Enter to skip):${NC
 read -r RELEASE_DESCRIPTION
 
 if [ -z "$RELEASE_DESCRIPTION" ]; then
-  RELEASE_DESCRIPTION="Release $CURRENT_VERSION"
+  RELEASE_DESCRIPTION="Release $NEW_VERSION"
 fi
 
+# Bump version in package.json
+node -e "
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+pkg.version = '$NEW_VERSION';
+fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
+"
+
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Failed to update package.json${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ Updated package.json to $NEW_VERSION${NC}"
+
+# Commit the version bump
+git add package.json
+git commit -m "$NEW_VERSION"
+
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Failed to commit version bump${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ Committed version bump${NC}"
+
 # Create annotated tag with description
-echo -e "\n${BLUE}Creating tag '$CURRENT_VERSION'...${NC}"
-git tag -a "$CURRENT_VERSION" -m "$RELEASE_DESCRIPTION"
+echo -e "\n${BLUE}Creating tag '$NEW_VERSION'...${NC}"
+git tag -a "$NEW_VERSION" -m "$RELEASE_DESCRIPTION"
 
 if [ $? -ne 0 ]; then
   echo -e "${RED}Error: Failed to create tag${NC}"
@@ -71,17 +111,17 @@ fi
 
 echo -e "${GREEN}✓ Tag created successfully${NC}"
 
-# Push tag to remote
-echo -e "\n${BLUE}Pushing tag to remote...${NC}"
-git push origin "$CURRENT_VERSION"
+# Push commit and tag to remote
+echo -e "\n${BLUE}Pushing to remote...${NC}"
+git push && git push origin "$NEW_VERSION"
 
 if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to push tag${NC}"
-  echo -e "${YELLOW}Tag was created locally. You can try pushing manually:${NC}"
-  echo -e "  git push origin $CURRENT_VERSION"
+  echo -e "${RED}Error: Failed to push${NC}"
+  echo -e "${YELLOW}Commit and tag were created locally. You can try pushing manually:${NC}"
+  echo -e "  git push && git push origin $NEW_VERSION"
   exit 1
 fi
 
-echo -e "\n${GREEN}✓ Tag pushed successfully!${NC}"
-echo -e "${BLUE}GitHub Actions will now build and deploy version $CURRENT_VERSION${NC}"
+echo -e "\n${GREEN}✓ Release $NEW_VERSION pushed successfully!${NC}"
+echo -e "${BLUE}GitHub Actions will now build and deploy version $NEW_VERSION${NC}"
 echo -e "${BLUE}Check the progress at:${NC} https://github.com/Vikeo/LifeTrinket/actions"

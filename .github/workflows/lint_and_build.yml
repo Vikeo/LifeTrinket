@@ -23,28 +23,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check package.json version updated
-        if: github.event_name == 'pull_request'
-        run: |
-          # Get the base branch version
-          git fetch origin ${{ github.base_ref }}
-          BASE_VERSION=$(git show origin/${{ github.base_ref }}:package.json | grep '"version":' | head -1 | sed 's/.*"version": "\(.*\)".*/\1/')
-
-          # Get the PR branch version
-          PR_VERSION=$(grep '"version":' package.json | head -1 | sed 's/.*"version": "\(.*\)".*/\1/')
-
-          echo "Base branch version: $BASE_VERSION"
-          echo "PR branch version: $PR_VERSION"
-
-          # Compare versions
-          if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
-            echo "❌ Error: package.json version has not been updated!"
-            echo "Please bump the version in package.json before merging."
-            exit 1
-          else
-            echo "✅ Version updated from $BASE_VERSION to $PR_VERSION"
-          fi
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
