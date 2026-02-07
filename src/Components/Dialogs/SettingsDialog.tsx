@@ -329,6 +329,52 @@ export const SettingsDialog = ({
             multiple games.
           </Description>
         </SettingContainer>
+        <SettingContainer>
+          <ToggleContainer>
+            <label>Round Timer</label>
+            <ToggleButton
+              checked={settings.showTimer}
+              onChange={() => {
+                setSettings({
+                  ...settings,
+                  showTimer: !settings.showTimer,
+                });
+              }}
+            />
+          </ToggleContainer>
+          <Description>
+            Shows a countdown progress bar at the top of the play area. Tap to
+            pause/resume. Alerts when time runs out.
+          </Description>
+          {settings.showTimer && (
+            <div className="mt-2 flex flex-col gap-2 ml-2 pl-2 border-l-2 border-white/20">
+              <div className="flex flex-row justify-between items-center">
+                <label htmlFor="countdown-minutes" className="text-sm">
+                  Minutes
+                </label>
+                <input
+                  type="number"
+                  id="countdown-minutes"
+                  name="countdown-minutes"
+                  min={1}
+                  max={999}
+                  value={settings.countdownMinutes}
+                  className="bg-secondary-main border-none outline-none text-text-primary rounded-md p-1 text-xs font-semibold w-16 text-center"
+                  onChange={(e) => {
+                    const val = Math.max(
+                      1,
+                      Math.min(999, Number(e.target.value) || 1)
+                    );
+                    setSettings({
+                      ...settings,
+                      countdownMinutes: val,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          )}
+        </SettingContainer>
         <Separator height="1px" />
         <div className="flex w-full justify-center">
           <button

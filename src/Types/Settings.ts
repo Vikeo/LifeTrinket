@@ -28,6 +28,8 @@ export type Settings = {
   showAnimations: boolean;
   useMonarch: boolean;
   showMatchScore: boolean;
+  showTimer: boolean;
+  countdownMinutes: number;
 };
 
 export type InitialGameSettings = {
@@ -63,6 +65,8 @@ export const settingsSchema = z.object({
   showAnimations: z.boolean(),
   useMonarch: z.boolean().default(false),
   showMatchScore: z.boolean().default(true),
+  showTimer: z.boolean().default(false),
+  countdownMinutes: z.number().min(1).max(999).default(50),
 });
 
 export const defaultSettings: Settings = {
@@ -74,6 +78,8 @@ export const defaultSettings: Settings = {
   showAnimations: true,
   useMonarch: false,
   showMatchScore: true,
+  showTimer: false,
+  countdownMinutes: 50,
 };
 
 const damageSourceSchema = z.object({

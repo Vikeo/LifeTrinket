@@ -228,6 +228,8 @@ export const GlobalSettingsProvider = ({
       localStorage.removeItem('showPlay');
       localStorage.removeItem('preStartComplete');
       localStorage.removeItem('gameScore');
+      localStorage.removeItem('timerStartedAt');
+      localStorage.removeItem('timerAccumulatedMs');
 
       setPlaying(false);
       setShowPlay(false);
