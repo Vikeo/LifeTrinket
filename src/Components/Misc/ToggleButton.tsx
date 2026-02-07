@@ -1,4 +1,4 @@
-import { LabelText } from '../Views/StartMenu/StartMenu';
+import { LabelText } from './TextComponents';
 
 export const ToggleButton = ({
   label,

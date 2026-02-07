@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useGlobalSettings } from '../../../../Hooks/useGlobalSettings';
 import { Player, Rotation } from '../../../../Types/Player';
 import { Paragraph } from '../../../Misc/TextComponents';
-import { DynamicText } from '../../StartingPlayerCard';
+import { DynamicText } from '../../../Misc/TextComponents';
 
 export const RoulettePlayerCard = ({ player }: { player: Player }) => {
   const startPlayingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);

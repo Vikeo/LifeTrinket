@@ -17,6 +17,7 @@ import {
 import { baseColors } from '../../../../tailwind.config';
 import { InfoDialog } from '../../Dialogs/InfoDialog';
 import { SettingsDialog } from '../../Dialogs/SettingsDialog';
+import { LabelText } from '../../Misc/TextComponents';
 import { ToggleButton } from '../../Misc/ToggleButton';
 import { LayoutOptions } from './LayoutOptions';
 
@@ -45,8 +46,6 @@ const StartButtonFooter = twc.div`w-full max-w-[548px] fixed bottom-4 z-1 items-
 const SliderWrapper = twc.div`mx-8 relative`;
 
 const ToggleButtonsWrapper = twc.div`flex flex-row justify-between items-center`;
-
-export const LabelText = twc.div`text-md text-text-primary font-medium`;
 
 let tracked = false;
 
