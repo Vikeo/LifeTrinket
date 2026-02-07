@@ -136,8 +136,7 @@ export const ShareDialog: React.FC<{
             Scan this QR code to load the game
           </p>
           <div
-            className={`p-4 rounded-xl ${isTooLarge ? 'bg-red-500/10' : 'bg-white'}`}
-            style={{ width: qrSize + 32, height: qrSize + 32 }}
+            className={`-mx-8 ${isTooLarge ? 'bg-red-500/10 p-4 aspect-square' : 'bg-white p-1'}`}
           >
             {isTooLarge ? (
               // Error state when data is too large
@@ -170,6 +169,7 @@ export const ShareDialog: React.FC<{
                 size={qrSize}
                 level="L"
                 includeMargin={false}
+                className="w-full h-auto"
               />
             )}
           </div>

@@ -4,11 +4,12 @@ import { twGridTemplateAreas } from '../../../tailwind.config';
 import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Orientation, PreStartMode } from '../../Types/Settings';
+import { GameTimer } from '../GameTimer/GameTimer';
 import { Players } from '../Players/Players';
 import { PreStart } from '../PreStartGame/PreStart';
 import { GameOver } from '../GameOver/GameOver';
 
-const MainWrapper = twc.div`w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
+const MainWrapper = twc.div`relative w-[100dvmax] h-[100dvmin] overflow-hidden, setPlayers`;
 
 type GridTemplateAreasKeys = keyof typeof twGridTemplateAreas;
 
@@ -156,6 +157,8 @@ export const Play = () => {
         settings.showStartingPlayer && <PreStart />}
 
       <Players gridLayout={gridLayout} />
+
+      {settings.showTimer && <GameTimer />}
 
       {winner !== null && (
         <GameOver
