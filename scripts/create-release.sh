@@ -125,7 +125,7 @@ fi
 
 echo -e "${GREEN}✓ PR created: $PR_URL${NC}"
 
-gh pr merge --merge --delete-branch
+gh pr merge --merge
 
 if [ $? -ne 0 ]; then
   echo -e "${RED}Error: Failed to merge PR${NC}"
@@ -133,11 +133,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo -e "${GREEN}✓ PR merged and branch cleaned up${NC}"
+echo -e "${GREEN}✓ PR merged${NC}"
 
-# Switch back to main and pull the merged commit
+# Switch back to main, pull, and clean up local release branch
 git checkout main
 git pull
+git branch -D "$RELEASE_BRANCH" 2>/dev/null
 
 # Create annotated tag with description on the merged commit
 echo -e "\n${BLUE}Creating tag '$NEW_VERSION'...${NC}"
