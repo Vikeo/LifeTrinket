@@ -100,7 +100,46 @@ fi
 
 echo -e "${GREEN}✓ Committed version bump${NC}"
 
-# Create annotated tag with description
+# Push version bump via PR (branch protection requires it)
+RELEASE_BRANCH="release/$NEW_VERSION"
+
+echo -e "\n${BLUE}Creating release branch '$RELEASE_BRANCH'...${NC}"
+git checkout -b "$RELEASE_BRANCH"
+git push -u origin "$RELEASE_BRANCH"
+
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Failed to push release branch${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ Release branch pushed${NC}"
+
+echo -e "\n${BLUE}Creating and merging PR...${NC}"
+PR_URL=$(gh pr create --title "$NEW_VERSION" --body "$RELEASE_DESCRIPTION" 2>&1)
+
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Failed to create PR${NC}"
+  echo -e "$PR_URL"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ PR created: $PR_URL${NC}"
+
+gh pr merge --merge --delete-branch
+
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Error: Failed to merge PR${NC}"
+  echo -e "${YELLOW}PR was created but not merged. Merge manually: $PR_URL${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}✓ PR merged and branch cleaned up${NC}"
+
+# Switch back to main and pull the merged commit
+git checkout main
+git pull
+
+# Create annotated tag with description on the merged commit
 echo -e "\n${BLUE}Creating tag '$NEW_VERSION'...${NC}"
 git tag -a "$NEW_VERSION" -m "$RELEASE_DESCRIPTION"
 
@@ -111,14 +150,14 @@ fi
 
 echo -e "${GREEN}✓ Tag created successfully${NC}"
 
-# Push commit and tag to remote
-echo -e "\n${BLUE}Pushing to remote...${NC}"
-git push && git push origin "$NEW_VERSION"
+# Push the tag
+echo -e "\n${BLUE}Pushing tag to remote...${NC}"
+git push origin "$NEW_VERSION"
 
 if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to push${NC}"
-  echo -e "${YELLOW}Commit and tag were created locally. You can try pushing manually:${NC}"
-  echo -e "  git push && git push origin $NEW_VERSION"
+  echo -e "${RED}Error: Failed to push tag${NC}"
+  echo -e "${YELLOW}Tag was created locally. Push manually:${NC}"
+  echo -e "  git push origin $NEW_VERSION"
   exit 1
 fi
 
