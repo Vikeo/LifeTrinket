@@ -4,7 +4,38 @@ name: Deploy to Firebase Hosting
     tags:
       - '*'
 jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Get version from tag
+        id: tag
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Update package.json version
+        run: |
+          node -e "
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+          pkg.version = '${{ steps.tag.outputs.version }}';
+          fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "bump version to ${{ steps.tag.outputs.version }}"
+          git push
+
   build_and_deploy:
+    needs: bump_version
     runs-on: ubuntu-latest
     env:
       VITE_REPO_READ_ACCESS_TOKEN: ${{ secrets.REPO_READ_ACCESS_TOKEN }}
@@ -13,7 +44,9 @@ jobs:
       VITE_GRAFANA_FARO_APP_NAME: ${{ secrets.GRAFANA_FARO_APP_NAME }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -42,28 +75,23 @@ jobs:
   release:
     needs: build_and_deploy
     runs-on: ubuntu-latest
-    env:
-      working-directory: ${{ github.workspace }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: get version
-        id: version
-        uses: notiz-dev/github-action-json-property@v0.2.0
-
+        uses: actions/checkout@v4
         with:
-          path: 'package.json'
-          prop_path: 'version'
+          ref: main
+
+      - name: Get version from tag
+        id: tag
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Create Release Note
-        id: create_release_note
-        run: echo "Release Note for version ${{ steps.version.outputs.prop }}" > release_note.txt
+        run: echo "Release Note for version ${{ steps.tag.outputs.version }}" > release_note.txt
 
       - name: Create Release
         uses: ncipollo/release-action@v1.13.0
         with:
           bodyFile: release_note.txt
           commit: ${{ github.sha }}
-          tag: '${{ steps.version.outputs.prop }}'
+          tag: '${{ steps.tag.outputs.version }}'
           token: ${{ secrets.RELEASE_TOKEN }}
