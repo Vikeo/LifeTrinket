@@ -9,6 +9,23 @@ NC='\033[0m' # No Color
 
 echo -e "${BLUE}=== LifeTrinket Release Script ===${NC}\n"
 
+# Ensure we're on main
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+  echo -e "${RED}Error: Must be on 'main' branch (currently on '$CURRENT_BRANCH')${NC}"
+  exit 1
+fi
+
+# Check if we're on a clean working tree
+if [[ -n $(git status -s) ]]; then
+  echo -e "${RED}Error: You have uncommitted changes. Please commit or stash them first.${NC}"
+  exit 1
+fi
+
+# Fetch latest tags from remote
+echo -e "\n${BLUE}Fetching latest...${NC}"
+git pull --tags
+
 # Get current version from package.json
 CURRENT_VERSION=$(node -p "require('./package.json').version")
 
@@ -18,16 +35,6 @@ if [ -z "$CURRENT_VERSION" ]; then
 fi
 
 echo -e "${BLUE}Current version:${NC} ${GREEN}$CURRENT_VERSION${NC}"
-
-# Check if we're on a clean working tree
-if [[ -n $(git status -s) ]]; then
-  echo -e "${RED}Error: You have uncommitted changes. Please commit or stash them first.${NC}"
-  exit 1
-fi
-
-# Fetch latest tags from remote
-echo -e "\n${BLUE}Fetching latest tags from remote...${NC}"
-git fetch --tags
 
 # Prompt for version bump type
 echo -e "\n${BLUE}Select version bump type:${NC}"
@@ -74,73 +81,7 @@ if [ -z "$RELEASE_DESCRIPTION" ]; then
   RELEASE_DESCRIPTION="Release $NEW_VERSION"
 fi
 
-# Bump version in package.json
-node -e "
-const fs = require('fs');
-const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-pkg.version = '$NEW_VERSION';
-fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');
-"
-
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to update package.json${NC}"
-  exit 1
-fi
-
-echo -e "${GREEN}✓ Updated package.json to $NEW_VERSION${NC}"
-
-# Commit the version bump
-git add package.json
-git commit -m "$NEW_VERSION"
-
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to commit version bump${NC}"
-  exit 1
-fi
-
-echo -e "${GREEN}✓ Committed version bump${NC}"
-
-# Push version bump via PR (branch protection requires it)
-RELEASE_BRANCH="release/$NEW_VERSION"
-
-echo -e "\n${BLUE}Creating release branch '$RELEASE_BRANCH'...${NC}"
-git checkout -b "$RELEASE_BRANCH"
-git push -u origin "$RELEASE_BRANCH"
-
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to push release branch${NC}"
-  exit 1
-fi
-
-echo -e "${GREEN}✓ Release branch pushed${NC}"
-
-echo -e "\n${BLUE}Creating and merging PR...${NC}"
-PR_URL=$(gh pr create --title "$NEW_VERSION" --body "$RELEASE_DESCRIPTION" 2>&1)
-
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to create PR${NC}"
-  echo -e "$PR_URL"
-  exit 1
-fi
-
-echo -e "${GREEN}✓ PR created: $PR_URL${NC}"
-
-gh pr merge --merge
-
-if [ $? -ne 0 ]; then
-  echo -e "${RED}Error: Failed to merge PR${NC}"
-  echo -e "${YELLOW}PR was created but not merged. Merge manually: $PR_URL${NC}"
-  exit 1
-fi
-
-echo -e "${GREEN}✓ PR merged${NC}"
-
-# Switch back to main, pull, and clean up local release branch
-git checkout main
-git pull
-git branch -D "$RELEASE_BRANCH" 2>/dev/null
-
-# Create annotated tag with description on the merged commit
+# Create and push annotated tag
 echo -e "\n${BLUE}Creating tag '$NEW_VERSION'...${NC}"
 git tag -a "$NEW_VERSION" -m "$RELEASE_DESCRIPTION"
 
@@ -149,9 +90,8 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo -e "${GREEN}✓ Tag created successfully${NC}"
+echo -e "${GREEN}✓ Tag created${NC}"
 
-# Push the tag
 echo -e "\n${BLUE}Pushing tag to remote...${NC}"
 git push origin "$NEW_VERSION"
 
@@ -163,5 +103,8 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "\n${GREEN}✓ Release $NEW_VERSION pushed successfully!${NC}"
-echo -e "${BLUE}GitHub Actions will now build and deploy version $NEW_VERSION${NC}"
-echo -e "${BLUE}Check the progress at:${NC} https://github.com/Vikeo/LifeTrinket/actions"
+echo -e "${BLUE}GitHub Actions will now:${NC}"
+echo -e "  1. Update package.json to $NEW_VERSION"
+echo -e "  2. Build and deploy to Firebase"
+echo -e "  3. Create a GitHub Release"
+echo -e "${BLUE}Check progress at:${NC} https://github.com/Vikeo/LifeTrinket/actions"
