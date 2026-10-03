@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { TRACK_ID_LENGTH, type TrackLink } from '../../Types/Tracking';
+import {
+  TRACK_ID_LENGTH,
+  hubNodeSchema,
+  type HubNode,
+  type TrackLink,
+} from '../../Types/Tracking';
 
 /**
  * EventTrinket's public address, for the way back to the event.
@@ -76,4 +81,47 @@ export function storeEventHub(
 /** The hub page in EventTrinket that lists the round's pairings. */
 export function eventHubUrl(sessionId: string, base: string = EVENTTRINKET_URL): string {
   return `${base.replace(/\/+$/, '')}/hub/${sessionId}`;
+}
+
+/**
+ * Reads a hub node, or returns null.
+ *
+ * EventTrinket writes this node, but anyone can, so its shape is not
+ * trusted. An expired node counts as missing: its event is over.
+ */
+export function parseHubNode(raw: unknown, now: number): HubNode | null {
+  const parsed = hubNodeSchema.safeParse(raw);
+  if (!parsed.success || parsed.data.exp < now) {
+    return null;
+  }
+  return parsed.data;
+}
+
+/**
+ * Whether to ask the player to go back to the event, and for which round.
+ *
+ * The organizer paired the next round when the hub's round no longer holds
+ * this game. Comparing ids, not round numbers, needs nothing new in the
+ * track link, and it stays quiet for a player who opens their link late, or
+ * for a name the organizer corrects in the current round.
+ *
+ * A round the player answered "Not now" to is not asked again. The round
+ * after it is.
+ */
+export function planNextRoundPrompt({
+  hub,
+  gameId,
+  dismissedRound,
+}: {
+  hub: HubNode | null;
+  gameId: string | null;
+  dismissedRound: number | null;
+}): { round: number } | null {
+  if (!hub || !gameId || hub.round === dismissedRound) {
+    return null;
+  }
+  if (hub.p.some((pairing) => pairing.id === gameId)) {
+    return null;
+  }
+  return { round: hub.round };
 }

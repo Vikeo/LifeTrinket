@@ -5,6 +5,7 @@ import { useGlobalSettings } from '../../Hooks/useGlobalSettings';
 import { usePlayers } from '../../Hooks/usePlayers';
 import { Orientation, PreStartMode } from '../../Types/Settings';
 import { GameTimer } from '../GameTimer/GameTimer';
+import { NextRoundPrompt } from '../Tracking/NextRoundPrompt';
 import { Players } from '../Players/Players';
 import { PreStart } from '../PreStartGame/PreStart';
 import { GameOver } from '../GameOver/GameOver';
@@ -197,6 +198,11 @@ export const Play = () => {
           that preference, and only the component knows whether it has one.
           It renders nothing at all otherwise. */}
       <GameTimer />
+
+      {/* Above the timer's "Time's Up" overlay: a new round means that one
+          is over. Renders nothing unless a tracked game's event has moved
+          on to the next round. */}
+      <NextRoundPrompt />
 
       {winner !== null && (
         <GameOver

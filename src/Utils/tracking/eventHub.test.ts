@@ -5,7 +5,9 @@ import {
   EVENT_HUB_KEY,
   EVENT_HUB_MAX_AGE_MS,
   eventHubUrl,
+  parseHubNode,
   planEventHub,
+  planNextRoundPrompt,
   readEventHub,
   storeEventHub,
 } from './eventHub';
@@ -108,5 +110,60 @@ describe('the shipped .env.production', () => {
 
   it('agrees with the fallback in eventHub.ts', () => {
     expect(value('VITE_EVENTTRINKET_URL')).toBe(EVENTTRINKET_URL);
+  });
+});
+
+describe('planNextRoundPrompt', () => {
+  const GAME = 'AAAAAAAAAABBBBBBBBBB';
+  const hub = (round: number, ids: string[]) => ({
+    v: 1 as const,
+    round,
+    exp: NOW + 1000,
+    p: ids.map((id) => ({ a: 'Anna', b: 'Bo', id })),
+  });
+
+  it('asks nothing while this game is in the current round', () => {
+    expect(planNextRoundPrompt({ hub: hub(1, [GAME]), gameId: GAME, dismissedRound: null })).toBeNull();
+  });
+
+  it('asks once the round no longer holds this game', () => {
+    expect(
+      planNextRoundPrompt({ hub: hub(2, ['XXXXXXXXXXYYYYYYYYYY']), gameId: GAME, dismissedRound: null })
+    ).toEqual({ round: 2 });
+  });
+
+  it('asks nothing again for a round the player said not now to', () => {
+    expect(
+      planNextRoundPrompt({ hub: hub(2, ['XXXXXXXXXXYYYYYYYYYY']), gameId: GAME, dismissedRound: 2 })
+    ).toBeNull();
+  });
+
+  it('asks again for the round after that', () => {
+    expect(
+      planNextRoundPrompt({ hub: hub(3, ['XXXXXXXXXXYYYYYYYYYY']), gameId: GAME, dismissedRound: 2 })
+    ).toEqual({ round: 3 });
+  });
+
+  it('asks nothing without a hub or without a game', () => {
+    expect(planNextRoundPrompt({ hub: null, gameId: GAME, dismissedRound: null })).toBeNull();
+    expect(planNextRoundPrompt({ hub: hub(2, []), gameId: null, dismissedRound: null })).toBeNull();
+  });
+});
+
+describe('parseHubNode', () => {
+  const valid = { v: 1, round: 2, exp: NOW + 1000, p: [{ a: 'Anna', b: 'Bo', id: 'AAAAAAAAAABBBBBBBBBB' }] };
+
+  it('accepts a valid node', () => {
+    expect(parseHubNode(valid, NOW)).toEqual(valid);
+  });
+
+  it('reads a round with no pairings as an empty list', () => {
+    expect(parseHubNode({ v: 1, round: 2, exp: NOW + 1000 }, NOW)?.p).toEqual([]);
+  });
+
+  it('rejects a malformed or expired node', () => {
+    expect(parseHubNode({ ...valid, p: 'nope' }, NOW)).toBeNull();
+    expect(parseHubNode(valid, NOW + 2000)).toBeNull();
+    expect(parseHubNode(null, NOW)).toBeNull();
   });
 });

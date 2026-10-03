@@ -58,3 +58,26 @@ export const roundNodeSchema = z.object({
 });
 
 export type RoundNode = z.infer<typeof roundNodeSchema>;
+
+/**
+ * `/hubs/$sessionId`, written by EventTrinket and only ever read here. It
+ * lists the pairings of the tournament's current round.
+ */
+export const hubNodeSchema = z.object({
+  v: z.literal(1),
+  round: z.number().int().positive(),
+  exp: z.number(),
+  // The database keeps no empty arrays, so a round with no pairings reads
+  // back with no `p` at all.
+  p: z
+    .array(
+      z.object({
+        a: z.string(),
+        b: z.string(),
+        id: z.string().length(TRACK_ID_LENGTH),
+      })
+    )
+    .default([]),
+});
+
+export type HubNode = z.infer<typeof hubNodeSchema>;
