@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   readonly VITE_TRACK_DATABASE_URL: string | undefined;
   readonly VITE_TRACK_PROJECT_ID: string | undefined;
   readonly VITE_TRACK_API_KEY: string | undefined;
+  // EventTrinket's public address, for the way back to the event's hub.
+  readonly VITE_EVENTTRINKET_URL: string | undefined;
 }
 
 interface ImportMeta {

@@ -66,15 +66,19 @@ export const SESSION_SCOPED_KEYS = [
 ] as const;
 
 /**
- * Keys owned by the tracking module (`Utils/tracking/trackLink.ts` and
- * `Hooks/useGameTracker.ts`). They are not cleared from here: `trackedGame`
- * is what says a new game is starting at all, and the other two are already
- * keyed to a game id, so a new game cannot read the previous game's values.
+ * Keys owned by the tracking module (`Utils/tracking/trackLink.ts`,
+ * `Utils/tracking/eventHub.ts` and `Hooks/useGameTracker.ts`). They are not
+ * cleared from here: `trackedGame` is what says a new game is starting at
+ * all, `trackedGameT0` and `trackedGameSession` are already keyed to a game
+ * id, so a new game cannot read the previous game's values, and `eventHub`
+ * is the way back to the event, which a player needs most after the game.
+ * It carries its own expiry.
  */
 export const TRACKING_KEYS = [
   'trackedGame',
   'trackedGameT0',
   'trackedGameSession',
+  'eventHub',
 ] as const;
 
 /**
@@ -99,7 +103,8 @@ export type PersistedKey =
   | 'savedGame'
   | 'trackedGame'
   | 'trackedGameT0'
-  | 'trackedGameSession';
+  | 'trackedGameSession'
+  | 'eventHub';
 
 export type GameScopedKey = (typeof GAME_SCOPED_KEYS)[number];
 

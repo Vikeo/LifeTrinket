@@ -26,6 +26,7 @@ import { IconCheckbox } from '../Misc/IconCheckbox';
 import { checkContrast } from '../../Utils/checkContrast';
 import { HistoryDialog } from '../Dialogs/HistoryDialog';
 import { TrackingChip } from '../Tracking/TrackingChip';
+import { BackToEventButton } from '../Tracking/BackToEventButton';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -231,9 +232,11 @@ const PlayerMenu = ({
         {/* Opposite the close button, so the two share the menu's top edge.
             Absolute like it is, because the wrapper centres its content and
             a child in the flow would push the whole menu down. Renders
-            nothing at all unless this game is tracked. */}
-        <div className="absolute left-2 top-2 z-10">
+            nothing at all unless this game is tracked, or this device
+            played in an event. */}
+        <div className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
           <TrackingChip />
+          <BackToEventButton />
         </div>
 
         <button

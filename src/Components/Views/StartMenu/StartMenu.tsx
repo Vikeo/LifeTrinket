@@ -21,6 +21,7 @@ import { SettingsDialog } from '../../Dialogs/SettingsDialog';
 import { LabelText } from '../../Misc/TextComponents';
 import { ToggleButton } from '../../Misc/ToggleButton';
 import { LayoutOptions } from './LayoutOptions';
+import { eventHubUrl, readEventHub } from '../../../Utils/tracking/eventHub';
 
 const commanderSettings: Pick<
   InitialGameSettings,
@@ -71,6 +72,9 @@ const Start = () => {
     setGameScore,
     clearLifeHistory,
   } = useGlobalSettings();
+
+  // Read once per mount. The start menu does not change the stored event.
+  const [eventHub] = useState(() => readEventHub());
 
   const infoDialogRef = useRef<HTMLDialogElement | null>(null);
   const settingsDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -431,6 +435,17 @@ const Start = () => {
           </div>
 
           <StartButtonFooter>
+            {/* The way back to the event, for a player who reset the game
+                or closed the tab. The start menu has no player menu, so the
+                button there cannot help them. Same tab, like that button. */}
+            {eventHub && (
+              <a
+                href={eventHubUrl(eventHub.r)}
+                className="flex flex-grow basis-full justify-center self-center items-center bg-secondary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-secondary-dark font-bold"
+              >
+                BACK TO EVENT
+              </a>
+            )}
             <button
               className="flex flex-grow basis-0 justify-center self-center items-center bg-primary-main px-3 py-2 rounded-md text-text-primary min-w-[150px] duration-200 ease-in-out shadow-[1px_2px_4px_0px_rgba(0,0,0,0.3)] hover:bg-primary-dark font-bold"
               onClick={doStartNewGame}

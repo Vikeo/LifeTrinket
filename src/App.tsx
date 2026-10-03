@@ -12,6 +12,7 @@ import {
   storeTrackLink,
   type TrackEntry,
 } from './Utils/tracking/trackLink';
+import { planEventHub, storeEventHub } from './Utils/tracking/eventHub';
 
 const App = ({
   /**
@@ -52,6 +53,13 @@ const App = ({
     // longer validates.
     if (trackEntry) {
       storeTrackLink(trackEntry.link);
+      // The way back to the event. It outlives the tracked game, which
+      // "Reset game" clears. A link with no event leaves an earlier event
+      // where it is.
+      const hub = planEventHub(trackEntry.link, Date.now());
+      if (hub) {
+        storeEventHub(hub);
+      }
     } else {
       clearStoredTrackLink();
     }
