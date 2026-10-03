@@ -21,7 +21,7 @@ import { LifeHistoryEvent } from '../Types/Player';
 import { gte as semverGreaterThanOrEqual } from 'semver';
 import type { SharedGameState } from '../Types/SharedState';
 import type { TrackLink } from '../Types/Tracking';
-import { clearStoredTrackLink } from '../Utils/tracking/trackLink';
+import { clearStoredTrackLink, storeTrackLink } from '../Utils/tracking/trackLink';
 import { clearKeys, keysToClearOnGoToStart } from '../Utils/storageScope';
 
 export const GlobalSettingsProvider = ({
@@ -195,6 +195,11 @@ export const GlobalSettingsProvider = ({
     // subscription up would keep a tournament's clock on the screen of a
     // kitchen-table game started afterwards.
     setTrackedRoundId(null);
+  }, []);
+  const resumeTrackedGame = useCallback((link: TrackLink) => {
+    storeTrackLink(link);
+    setTrackedGameId(link.id);
+    setTrackedRoundId(link.r ?? null);
   }, []);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -402,6 +407,7 @@ export const GlobalSettingsProvider = ({
       trackedGameId,
       trackedRoundId,
       clearTrackedGame,
+      resumeTrackedGame,
     };
   }, [
     isFullscreen,
@@ -429,6 +435,7 @@ export const GlobalSettingsProvider = ({
     trackedGameId,
     trackedRoundId,
     clearTrackedGame,
+    resumeTrackedGame,
   ]);
 
   return (

@@ -5,6 +5,7 @@ import {
   getTrackLinkFromUrl,
   clearTrackLinkFromUrl,
   readTrackEntry,
+  readSavedTrackLink,
 } from './trackLink';
 import { roundNodeSchema, type TrackLink } from '../../Types/Tracking';
 
@@ -182,5 +183,25 @@ describe('readTrackEntry', () => {
 
     expect(() => readTrackEntry(storage, '')).not.toThrow();
     expect(readTrackEntry(storage, '')).toBeNull();
+  });
+});
+
+describe('readSavedTrackLink', () => {
+  it('returns the link a saved game carries', () => {
+    expect(readSavedTrackLink({ players: [], trackLink: link })).toEqual(link);
+  });
+
+  // Every game saved before this field existed has none, and resumes
+  // untracked, as it did before.
+  it('returns null for a saved game without a link', () => {
+    expect(readSavedTrackLink({ players: [] })).toBeNull();
+    expect(readSavedTrackLink(null)).toBeNull();
+  });
+
+  // savedGame is read from storage without a schema, so the link in it is
+  // checked here before it can start publishing.
+  it('returns null for a link that does not validate', () => {
+    expect(readSavedTrackLink({ trackLink: { ...link, id: 'short' } })).toBeNull();
+    expect(readSavedTrackLink({ trackLink: 'nope' })).toBeNull();
   });
 });

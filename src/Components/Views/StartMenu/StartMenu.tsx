@@ -22,6 +22,7 @@ import { LabelText } from '../../Misc/TextComponents';
 import { ToggleButton } from '../../Misc/ToggleButton';
 import { LayoutOptions } from './LayoutOptions';
 import { eventHubUrl, readEventHub } from '../../../Utils/tracking/eventHub';
+import { readSavedTrackLink } from '../../../Utils/tracking/trackLink';
 
 const commanderSettings: Pick<
   InitialGameSettings,
@@ -69,6 +70,7 @@ const Start = () => {
     setPlaying,
     savedGame,
     saveCurrentGame,
+    resumeTrackedGame,
     setGameScore,
     clearLifeHistory,
   } = useGlobalSettings();
@@ -239,6 +241,11 @@ const Start = () => {
     setPlayers(savedGame.players);
     if (savedGame.gameScore) {
       setGameScore(savedGame.gameScore);
+    }
+    // A tracked game publishes again from where it stopped.
+    const trackLink = readSavedTrackLink(savedGame);
+    if (trackLink) {
+      resumeTrackedGame(trackLink);
     }
     saveCurrentGame(null);
     setRandomizingPlayer(false);

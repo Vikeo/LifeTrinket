@@ -115,3 +115,19 @@ export function storeTrackLink(link: TrackLink): void {
 export function clearStoredTrackLink(): void {
   localStorage.removeItem(TRACKED_GAME_KEY);
 }
+
+/**
+ * The track link a saved game carries, or null.
+ *
+ * "Back to start" clears the tracked game, so the link travels inside the
+ * saved game and "Resume" puts it back. `savedGame` is read from storage
+ * without a schema, so the link is checked here before it can publish.
+ * A game saved before this field existed has none, and resumes untracked.
+ */
+export function readSavedTrackLink(savedGame: unknown): TrackLink | null {
+  if (typeof savedGame !== 'object' || savedGame === null || !('trackLink' in savedGame)) {
+    return null;
+  }
+  const parsed = trackLinkSchema.safeParse(savedGame.trackLink);
+  return parsed.success ? parsed.data : null;
+}

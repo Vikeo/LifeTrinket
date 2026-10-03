@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import { InitialGameSettings, Settings } from '../Types/Settings';
 import { LifeHistoryEvent, Player } from '../Types/Player';
+import type { TrackLink } from '../Types/Tracking';
 
 type Version = {
   installedVersion: string;
@@ -13,6 +14,11 @@ export type SavedGame = {
   initialGameSettings: InitialGameSettings;
   players: Player[];
   gameScore?: GameScore;
+  /**
+   * The link of a tracked game, so "Resume" can publish again. Read it
+   * through `readSavedTrackLink`, which validates it.
+   */
+  trackLink?: TrackLink;
 } | null;
 
 export type GameScore = {
@@ -64,6 +70,12 @@ export type GlobalSettingsContextType = {
   trackedRoundId: string | null;
   /** Stops publishing. A game that has been reset is no longer that game. */
   clearTrackedGame: () => void;
+  /**
+   * Publishes again for a game that "Back to start" stopped, when the
+   * player resumes it. The same device and the same game id, so the tracker
+   * continues the game the way a reload does.
+   */
+  resumeTrackedGame: (link: TrackLink) => void;
 };
 
 export const GlobalSettingsContext =

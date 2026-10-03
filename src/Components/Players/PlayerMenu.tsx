@@ -27,6 +27,7 @@ import { checkContrast } from '../../Utils/checkContrast';
 import { HistoryDialog } from '../Dialogs/HistoryDialog';
 import { TrackingChip } from '../Tracking/TrackingChip';
 import { BackToEventButton } from '../Tracking/BackToEventButton';
+import { readStoredTrackLink } from '../../Utils/tracking/trackLink';
 
 const PlayerMenuWrapper = twc.div`
   flex
@@ -177,7 +178,10 @@ const PlayerMenu = ({
   };
 
   const handleGoToStart = () => {
-    saveCurrentGame({ players, initialGameSettings, gameScore });
+    // The link goes with the game, because goToStart stops the tracking and
+    // deletes the stored link. "Resume" puts it back.
+    const trackLink = readStoredTrackLink() ?? undefined;
+    saveCurrentGame({ players, initialGameSettings, gameScore, trackLink });
     goToStart();
     setRandomizingPlayer(true);
   };
